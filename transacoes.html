@@ -27,6 +27,8 @@
     --warning-soft: rgba(255, 184, 0, 0.1);
     --info: #38bdf8;
     --info-soft: rgba(56, 189, 248, 0.1);
+    --ia: #a855f7;
+    --ia-soft: rgba(168, 85, 247, 0.1);
     --text: #ffffff;
     --text-mute: #a3a3a3;
     --text-faint: #525252;
@@ -42,6 +44,20 @@
   
   body { padding-bottom: 100px; }
   
+  input, textarea, select {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    caret-color: var(--brand);
+  }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-input) inset !important;
+    -webkit-text-fill-color: #fff !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+  
   .header {
     padding: 16px 20px;
     background: var(--bg);
@@ -55,15 +71,12 @@
   }
   
   .back-btn {
-    width: 36px;
-    height: 36px;
+    width: 36px; height: 36px;
     border-radius: 10px;
     background: var(--bg-card);
     border: 1px solid var(--border);
     color: var(--text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     font-size: 18px;
     flex-shrink: 0;
@@ -78,24 +91,19 @@
   }
   
   .brand-mark-mini {
-    width: 28px;
-    height: 28px;
+    width: 28px; height: 28px;
     background: var(--brand);
     border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     cursor: pointer;
   }
   
   .brand-mark-mini::before {
     content: '';
-    width: 10px;
-    height: 10px;
+    width: 10px; height: 10px;
     border: 2px solid var(--bg);
     border-radius: 3px;
-    border-top: none;
-    border-right: none;
+    border-top: none; border-right: none;
   }
   
   .container {
@@ -116,17 +124,14 @@
   }
   
   .nav-btn {
-    width: 40px;
-    height: 40px;
+    width: 40px; height: 40px;
     border-radius: 10px;
     background: transparent;
     border: none;
     color: var(--text);
     font-size: 20px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
   }
   
   .nav-btn:active { background: var(--bg-elev); }
@@ -214,8 +219,7 @@
   
   .resumo-item-label::before {
     content: '';
-    width: 6px;
-    height: 6px;
+    width: 6px; height: 6px;
     border-radius: 50%;
   }
   
@@ -296,13 +300,10 @@
   }
   
   .transacao-icon {
-    width: 42px;
-    height: 42px;
+    width: 42px; height: 42px;
     border-radius: 12px;
     background: var(--bg-elev);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     font-size: 20px;
     flex-shrink: 0;
     position: relative;
@@ -311,8 +312,7 @@
   .transacao-icon.recorrente::after {
     content: '🔁';
     position: absolute;
-    bottom: -4px;
-    right: -4px;
+    bottom: -4px; right: -4px;
     font-size: 11px;
     background: var(--bg);
     border-radius: 50%;
@@ -322,8 +322,7 @@
   .transacao-icon.parcela::after {
     content: '💳';
     position: absolute;
-    bottom: -4px;
-    right: -4px;
+    bottom: -4px; right: -4px;
     font-size: 11px;
     background: var(--bg);
     border-radius: 50%;
@@ -369,6 +368,11 @@
   .transacao-meta-tag.parcela {
     background: var(--warning-soft);
     color: var(--warning);
+  }
+  
+  .transacao-meta-tag.ia {
+    background: var(--ia-soft);
+    color: var(--ia);
   }
   
   .transacao-valor {
@@ -510,25 +514,22 @@
   }
   
   .modal-close {
-    width: 32px;
-    height: 32px;
+    width: 32px; height: 32px;
     border-radius: 10px;
     background: var(--bg-elev);
     border: 1px solid var(--border);
     color: var(--text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     font-size: 18px;
   }
   
   .modal-body { padding: 0 24px 24px; }
   
-  /* ===== ANEXO (foto/PDF) — MELHORADO ===== */
+  /* ANEXO IA - DESTAQUE */
   .anexo-area {
-    background: var(--bg-input);
-    border: 2px dashed var(--border-strong);
+    background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-input) 100%);
+    border: 2px dashed rgba(168, 85, 247, 0.4);
     border-radius: 14px;
     padding: 16px;
     margin-bottom: 16px;
@@ -537,13 +538,19 @@
   
   .anexo-titulo {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-mute);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ia);
     text-align: center;
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+  }
+  
+  .anexo-subtitulo {
+    font-size: 11px;
+    color: var(--text-mute);
+    text-align: center;
+    margin-bottom: 12px;
   }
   
   .anexo-btns {
@@ -563,7 +570,7 @@
     color: var(--text);
   }
   
-  .anexo-btn:active { transform: scale(0.97); border-color: var(--brand); }
+  .anexo-btn:active { transform: scale(0.97); border-color: var(--ia); }
   
   .anexo-btn-icon {
     font-size: 24px;
@@ -576,20 +583,44 @@
     font-weight: 600;
   }
   
-  .anexo-hint {
-    font-size: 11px;
-    color: var(--text-faint);
+  /* ANALISANDO IA */
+  .ia-analyzing {
     text-align: center;
-    margin-top: 10px;
+    padding: 20px;
   }
+  
+  .ia-spinner {
+    width: 48px; height: 48px;
+    border: 3px solid var(--ia-soft);
+    border-top-color: var(--ia);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 14px;
+  }
+  
+  .ia-analyzing-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ia);
+    margin-bottom: 4px;
+  }
+  
+  .ia-analyzing-sub {
+    font-size: 11px;
+    color: var(--text-mute);
+  }
+  
+  @keyframes spin { to { transform: rotate(360deg); } }
   
   /* PREVIEW */
   .anexo-preview-area {
     border-style: solid;
-    border-color: var(--brand);
+    border-color: var(--ia);
     padding: 0;
     position: relative;
     overflow: hidden;
+    background: var(--bg-input);
   }
   
   .anexo-preview-img {
@@ -616,25 +647,36 @@
   
   .anexo-remover {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 32px;
-    height: 32px;
+    top: 8px; right: 8px;
+    width: 32px; height: 32px;
     background: rgba(0,0,0,0.75);
     border: none;
     border-radius: 50%;
     color: white;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     font-size: 16px;
     z-index: 5;
   }
   
+  .ia-badge {
+    position: absolute;
+    top: 8px; left: 8px;
+    background: var(--ia);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
   .anexo-input { display: none; }
   
-  /* TOGGLE TIPO */
   .toggle-tipo {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -716,6 +758,11 @@
   
   .field input::placeholder { color: var(--text-faint); }
   
+  .field.ia-preenchido input {
+    border-color: var(--ia);
+    background: var(--ia-soft);
+  }
+  
   .field-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -734,6 +781,11 @@
   
   .valor-input-wrapper:focus-within { border-color: var(--brand); }
   
+  .valor-input-wrapper.ia-preenchido {
+    border-color: var(--ia);
+    background: var(--ia-soft);
+  }
+  
   .valor-prefix {
     color: var(--text-mute);
     font-family: 'Space Grotesk', sans-serif;
@@ -751,6 +803,15 @@
     font-weight: 700;
     font-size: 24px;
     padding: 0;
+  }
+  
+  .valor-input-wrapper.saida input {
+    color: var(--danger) !important;
+    -webkit-text-fill-color: var(--danger) !important;
+  }
+  .valor-input-wrapper.entrada input {
+    color: var(--brand) !important;
+    -webkit-text-fill-color: var(--brand) !important;
   }
   
   .categoria-grid {
@@ -776,6 +837,11 @@
     border-color: var(--brand);
   }
   
+  .categoria-opt.ia-selected {
+    background: var(--ia-soft);
+    border-color: var(--ia);
+  }
+  
   .categoria-opt-icon { font-size: 22px; margin-bottom: 4px; }
   .categoria-opt-label {
     font-size: 10px;
@@ -786,7 +852,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .categoria-opt.selected .categoria-opt-label { color: var(--text); }
+  .categoria-opt.selected .categoria-opt-label,
+  .categoria-opt.ia-selected .categoria-opt-label { color: var(--text); }
   
   .info-box {
     background: var(--info-soft);
@@ -797,6 +864,20 @@
     font-size: 12px;
     color: var(--info);
     line-height: 1.5;
+  }
+  
+  .ia-box {
+    background: var(--ia-soft);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 14px;
+    font-size: 12px;
+    color: var(--ia);
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
   
   .btn {
@@ -939,16 +1020,13 @@
   }
   
   .loader-circle {
-    width: 32px;
-    height: 32px;
+    width: 32px; height: 32px;
     border: 3px solid var(--border);
     border-radius: 50%;
     border-top-color: var(--brand);
     animation: spin 0.8s linear infinite;
     margin: 40px auto;
   }
-  
-  @keyframes spin { to { transform: rotate(360deg); } }
   
   .hidden { display: none !important; }
 </style>
@@ -1004,12 +1082,10 @@
 
 <button class="fab" onclick="abrirModalNova()">+ Nova transação</button>
 
-<!-- INPUTS DE ARQUIVO -->
 <input type="file" id="input-camera" class="anexo-input" accept="image/*" capture="environment" onchange="processarAnexo(event)">
 <input type="file" id="input-galeria" class="anexo-input" accept="image/*" onchange="processarAnexo(event)">
 <input type="file" id="input-arquivo" class="anexo-input" accept="image/*,application/pdf" onchange="processarAnexo(event)">
 
-<!-- MODAL FORM -->
 <div class="modal-overlay" id="modal-form">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -1020,10 +1096,10 @@
     <div class="modal-body">
       <div class="msg" id="msg-form"></div>
       
-      <!-- ANEXO -->
       <div class="anexo-area" id="anexo-area">
         <div id="anexo-vazio">
-          <div class="anexo-titulo">📎 Anexar comprovante</div>
+          <div class="anexo-titulo">✨ IA lê pra você</div>
+          <div class="anexo-subtitulo">Foto do cupom → preenchimento automático</div>
           <div class="anexo-btns">
             <div class="anexo-btn" onclick="document.getElementById('input-camera').click()">
               <div class="anexo-btn-icon">📷</div>
@@ -1034,16 +1110,28 @@
               <div class="anexo-btn-label">Galeria / PDF</div>
             </div>
           </div>
-          <div class="anexo-hint">Opcional · IA vai ler em breve 🤖</div>
         </div>
+        
+        <div id="anexo-analisando" class="hidden ia-analyzing">
+          <div class="ia-spinner"></div>
+          <div class="ia-analyzing-text">🤖 IA analisando...</div>
+          <div class="ia-analyzing-sub">Lendo valor, estabelecimento, data</div>
+        </div>
+        
         <div id="anexo-preview" class="hidden">
           <img id="preview-img" class="anexo-preview-img hidden">
           <div id="preview-pdf" class="anexo-preview-pdf hidden">
             <div class="anexo-preview-pdf-icon">📄</div>
             <div class="anexo-preview-pdf-nome" id="preview-pdf-nome">arquivo.pdf</div>
           </div>
+          <div class="ia-badge hidden" id="ia-badge">✨ IA</div>
           <button class="anexo-remover" onclick="removerAnexo()">✕</button>
         </div>
+      </div>
+      
+      <div class="ia-box hidden" id="ia-resultado">
+        <span>✨</span>
+        <span id="ia-resultado-texto">IA leu o cupom — confira os dados antes de salvar</span>
       </div>
       
       <div class="toggle-tipo">
@@ -1051,7 +1139,7 @@
         <div class="toggle-opt entrada" data-tipo="entrada" onclick="selecionarTipo('entrada')">+ Entrada</div>
       </div>
       
-      <div class="valor-input-wrapper">
+      <div class="valor-input-wrapper saida" id="valor-wrapper">
         <span class="valor-prefix">R$</span>
         <input type="text" inputmode="decimal" id="f-valor" placeholder="0,00" oninput="formatarValor(this)">
       </div>
@@ -1119,7 +1207,7 @@
       </div>
       
       <div id="campo-recorrente" class="hidden">
-        <div class="info-box">🔁 Vai aparecer todo mês no dia escolhido. Aluguel, pensão, plano de saúde, Netflix.</div>
+        <div class="info-box">🔁 Vai aparecer todo mês no dia escolhido. Aluguel, pensão, plano, Netflix.</div>
         <div class="field">
           <label>Dia do mês que vence</label>
           <input type="number" id="f-dia-mes" min="1" max="31" placeholder="Ex: 10">
@@ -1131,7 +1219,6 @@
   </div>
 </div>
 
-<!-- MODAL DETALHE -->
 <div class="modal-overlay" id="modal-detalhe">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -1191,6 +1278,7 @@
   
   const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+  const IA_FUNCTION_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
   window.supabase = supabase;
   
@@ -1207,9 +1295,25 @@
   let editandoId = null;
   let anexoFile = null;
   let anexoEhPdf = false;
+  let iaProcessou = false;
+  let camposPreenchidosIA = new Set();
   
   const hojeRef = new Date();
   let mesAtual = { ano: hojeRef.getFullYear(), mes: hojeRef.getMonth() };
+  
+  // Mapeia categoria sugerida da IA → nome real no banco
+  const mapeamentoIA = {
+    'alimentacao': 'Alimentação',
+    'transporte': 'Transporte',
+    'moradia': 'Moradia',
+    'saude': 'Saúde',
+    'educacao': 'Educação',
+    'lazer': 'Lazer',
+    'vestuario': 'Vestuário',
+    'mercado': 'Mercado',
+    'delivery': 'Delivery',
+    'outros': 'Outros'
+  };
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -1428,11 +1532,13 @@
     
     const ehProjetada = t._projetada;
     const ehParcela = t.parcela_numero && t.parcela_total;
+    const ehIA = t.origem === 'foto' || t.origem === 'foto_ia';
     const iconClass = ehProjetada ? 'recorrente' : (ehParcela ? 'parcela' : '');
     
     const tags = [];
     if (ehProjetada) tags.push('<span class="transacao-meta-tag previsto">PREVISTO</span>');
     if (ehParcela) tags.push(`<span class="transacao-meta-tag parcela">${t.parcela_numero}/${t.parcela_total}</span>`);
+    if (ehIA && !ehProjetada) tags.push('<span class="transacao-meta-tag ia">✨ IA</span>');
     if (pagto && !ehProjetada) tags.push(`<span class="transacao-meta-tag">${pagto}</span>`);
     
     return `
@@ -1516,10 +1622,9 @@
   
   window.formatarValor = function(input) {
     let v = input.value.replace(/\D/g, '');
-    if (!v) { input.value = ''; validarForm(); return; }
+    if (!v) { input.value = ''; return; }
     v = (parseInt(v) / 100).toFixed(2);
     input.value = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-    validarForm();
   };
   
   function renderCategorias() {
@@ -1535,10 +1640,9 @@
   }
   
   window.selecionarCategoria = function(id) {
-    document.querySelectorAll('.categoria-opt').forEach(o => o.classList.remove('selected'));
+    document.querySelectorAll('.categoria-opt').forEach(o => o.classList.remove('selected', 'ia-selected'));
     document.querySelector(`.categoria-opt[data-id="${id}"]`)?.classList.add('selected');
     categoriaSelecionada = id;
-    validarForm();
   };
   
   window.selecionarTipo = function(tipo) {
@@ -1546,8 +1650,13 @@
     document.querySelectorAll('.toggle-opt').forEach(o => o.classList.remove('active'));
     document.querySelector(`.toggle-opt[data-tipo="${tipo}"]`)?.classList.add('active');
     categoriaSelecionada = null;
+    
+    // Atualiza cor do valor
+    const wrapper = document.getElementById('valor-wrapper');
+    wrapper.classList.remove('entrada', 'saida');
+    wrapper.classList.add(tipo);
+    
     renderCategorias();
-    validarForm();
   };
   
   window.selecionarLancamento = function(tipo) {
@@ -1558,31 +1667,7 @@
     document.getElementById('campo-unica').classList.toggle('hidden', tipo !== 'unica');
     document.getElementById('campo-parcelada').classList.toggle('hidden', tipo !== 'parcelada');
     document.getElementById('campo-recorrente').classList.toggle('hidden', tipo !== 'recorrente');
-    
-    validarForm();
   };
-  
-  function validarForm() {
-    const valor = valorParaNumero(document.getElementById('f-valor').value);
-    const desc = document.getElementById('f-descricao').value.trim();
-    
-    let especifico = true;
-    if (lancamentoSelecionado === 'recorrente') {
-      const dia = parseInt(document.getElementById('f-dia-mes').value);
-      especifico = dia >= 1 && dia <= 31;
-    } else if (lancamentoSelecionado === 'parcelada') {
-      const parcelas = parseInt(document.getElementById('f-parcelas').value);
-      const data = document.getElementById('f-data-parcela').value;
-      especifico = parcelas >= 2 && parcelas <= 24 && data;
-    }
-    
-    const valido = valor > 0 && desc && categoriaSelecionada && especifico;
-    document.getElementById('btn-salvar').disabled = !valido;
-  }
-  
-  ['f-descricao', 'f-dia-mes', 'f-parcelas', 'f-data-parcela'].forEach(id => {
-    document.getElementById(id).addEventListener('input', validarForm);
-  });
   
   window.trocarFiltro = function(f) {
     filtroAtual = f;
@@ -1597,6 +1682,8 @@
     lancamentoSelecionado = 'unica';
     anexoFile = null;
     anexoEhPdf = false;
+    iaProcessou = false;
+    camposPreenchidosIA.clear();
     
     document.getElementById('modal-form-titulo').textContent = 'Nova transação';
     document.getElementById('btn-salvar').textContent = 'Cadastrar';
@@ -1609,6 +1696,7 @@
     document.getElementById('f-dia-mes').value = '';
     document.getElementById('f-parcelas').value = '';
     document.getElementById('msg-form').className = 'msg';
+    document.getElementById('ia-resultado').classList.add('hidden');
     
     removerAnexo();
     selecionarLancamento('unica');
@@ -1620,8 +1708,8 @@
     document.getElementById(id).classList.remove('show');
   };
   
-  // ===== ANEXO (foto/PDF) =====
-  window.processarAnexo = function(e) {
+  // ===== ANEXO + IA =====
+  window.processarAnexo = async function(e) {
     const file = e.target.files[0];
     if (!file) return;
     
@@ -1629,8 +1717,20 @@
     anexoEhPdf = file.type === 'application/pdf';
     
     document.getElementById('anexo-vazio').classList.add('hidden');
-    document.getElementById('anexo-preview').classList.remove('hidden');
+    document.getElementById('anexo-preview').classList.add('hidden');
+    document.getElementById('anexo-analisando').classList.remove('hidden');
     document.getElementById('anexo-area').classList.add('anexo-preview-area');
+    
+    document.getElementById('input-camera').value = '';
+    document.getElementById('input-galeria').value = '';
+    document.getElementById('input-arquivo').value = '';
+    
+    // Lê arquivo como base64
+    const base64 = await fileToBase64(file);
+    
+    // Mostra preview
+    document.getElementById('anexo-analisando').classList.add('hidden');
+    document.getElementById('anexo-preview').classList.remove('hidden');
     
     if (anexoEhPdf) {
       document.getElementById('preview-img').classList.add('hidden');
@@ -1640,32 +1740,134 @@
       document.getElementById('preview-pdf').classList.add('hidden');
       const img = document.getElementById('preview-img');
       img.classList.remove('hidden');
-      const reader = new FileReader();
-      reader.onload = (ev) => { img.src = ev.target.result; };
-      reader.readAsDataURL(file);
+      img.src = base64;
     }
     
-    // Limpa os 3 inputs pra poder selecionar de novo o mesmo
-    document.getElementById('input-camera').value = '';
-    document.getElementById('input-galeria').value = '';
-    document.getElementById('input-arquivo').value = '';
+    // CHAMA A IA pra ler
+    document.getElementById('anexo-analisando').classList.remove('hidden');
+    document.getElementById('anexo-preview').classList.add('hidden');
     
-    // FUTURO: Aqui vai chamar Claude API pra ler a notinha
-    // const dadosIA = await analisarAnexoComIA(file);
-    // preencherCamposComIA(dadosIA);
+    try {
+      const resp = await fetch(IA_FUNCTION_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_KEY
+        },
+        body: JSON.stringify({
+          tipo: 'ler_notinha',
+          imagem_base64: base64,
+          max_tokens: 600
+        })
+      });
+      
+      const data = await resp.json();
+      
+      document.getElementById('anexo-analisando').classList.add('hidden');
+      document.getElementById('anexo-preview').classList.remove('hidden');
+      document.getElementById('ia-badge').classList.remove('hidden');
+      
+      if (data.resultado && !data.resultado.erro) {
+        iaProcessou = true;
+        preencherComIA(data.resultado);
+      } else if (data.resultado?.erro) {
+        document.getElementById('ia-resultado').classList.remove('hidden');
+        document.getElementById('ia-resultado-texto').textContent = '⚠️ IA não conseguiu ler: ' + data.resultado.erro;
+      } else {
+        document.getElementById('ia-resultado').classList.remove('hidden');
+        document.getElementById('ia-resultado-texto').textContent = '⚠️ IA não conseguiu processar. Preencha manualmente.';
+      }
+    } catch (err) {
+      console.error('Erro IA:', err);
+      document.getElementById('anexo-analisando').classList.add('hidden');
+      document.getElementById('anexo-preview').classList.remove('hidden');
+      document.getElementById('ia-resultado').classList.remove('hidden');
+      document.getElementById('ia-resultado-texto').textContent = '⚠️ Erro ao chamar IA. Preencha manualmente.';
+    }
   };
+  
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+  
+  function preencherComIA(dados) {
+    // VALOR
+    if (dados.valor && dados.valor > 0) {
+      document.getElementById('f-valor').value = Number(dados.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+      document.getElementById('valor-wrapper').classList.add('ia-preenchido');
+      camposPreenchidosIA.add('valor');
+    }
+    
+    // DESCRIÇÃO
+    if (dados.descricao) {
+      document.getElementById('f-descricao').value = dados.descricao;
+      camposPreenchidosIA.add('descricao');
+    }
+    
+    // DATA
+    if (dados.data) {
+      document.getElementById('f-data').value = dados.data;
+      camposPreenchidosIA.add('data');
+    }
+    
+    // FORMA PAGAMENTO
+    if (dados.forma_pagamento) {
+      document.getElementById('f-pagamento').value = dados.forma_pagamento;
+      camposPreenchidosIA.add('pagamento');
+    }
+    
+    // CATEGORIA
+    if (dados.categoria_sugerida) {
+      const nomeCategoria = mapeamentoIA[dados.categoria_sugerida];
+      if (nomeCategoria) {
+        const cat = categorias.find(c => 
+          c.tipo === 'saida' && 
+          (c.nome.toLowerCase() === nomeCategoria.toLowerCase() ||
+           c.nome.toLowerCase().includes(dados.categoria_sugerida.toLowerCase()))
+        );
+        if (cat) {
+          categoriaSelecionada = cat.id;
+          setTimeout(() => {
+            const opt = document.querySelector(`.categoria-opt[data-id="${cat.id}"]`);
+            if (opt) {
+              opt.classList.add('ia-selected');
+            }
+          }, 100);
+        }
+      }
+    }
+    
+    // Feedback visual
+    document.getElementById('ia-resultado').classList.remove('hidden');
+    const camposCount = camposPreenchidosIA.size;
+    const conf = dados.confianca || 'media';
+    const emoji = conf === 'alta' ? '✨' : (conf === 'media' ? '✅' : '⚠️');
+    document.getElementById('ia-resultado-texto').textContent = `${emoji} IA preencheu ${camposCount} campo${camposCount > 1 ? 's' : ''} (confiança ${conf}). Confira antes de salvar.`;
+  }
   
   window.removerAnexo = function() {
     anexoFile = null;
     anexoEhPdf = false;
+    iaProcessou = false;
+    camposPreenchidosIA.clear();
     document.getElementById('input-camera').value = '';
     document.getElementById('input-galeria').value = '';
     document.getElementById('input-arquivo').value = '';
     document.getElementById('anexo-vazio').classList.remove('hidden');
     document.getElementById('anexo-preview').classList.add('hidden');
+    document.getElementById('anexo-analisando').classList.add('hidden');
     document.getElementById('anexo-area').classList.remove('anexo-preview-area');
+    document.getElementById('ia-badge').classList.add('hidden');
     document.getElementById('preview-img').classList.add('hidden');
     document.getElementById('preview-pdf').classList.add('hidden');
+    document.getElementById('ia-resultado').classList.add('hidden');
+    document.getElementById('valor-wrapper').classList.remove('ia-preenchido');
   };
   
   async function uploadAnexo() {
@@ -1691,7 +1893,11 @@
     const valor = valorParaNumero(document.getElementById('f-valor').value);
     const descricao = document.getElementById('f-descricao').value.trim();
     
-    if (!valor || !descricao || !categoriaSelecionada) return;
+    if (!valor || !descricao || !categoriaSelecionada) {
+      document.getElementById('msg-form').className = 'msg show msg-error';
+      document.getElementById('msg-form').textContent = 'Preencha valor, descrição e categoria';
+      return;
+    }
     
     const btn = document.getElementById('btn-salvar');
     btn.disabled = true;
@@ -1719,6 +1925,13 @@
       result = await supabase.from('transacoes').update(upd).eq('id', editandoId);
     } else if (lancamentoSelecionado === 'recorrente') {
       const dia = parseInt(document.getElementById('f-dia-mes').value);
+      if (!dia || dia < 1 || dia > 31) {
+        document.getElementById('msg-form').className = 'msg show msg-error';
+        document.getElementById('msg-form').textContent = 'Coloca um dia válido (1-31)';
+        btn.disabled = false;
+        btn.textContent = 'Cadastrar';
+        return;
+      }
       result = await supabase.from('transacoes_recorrentes').insert({
         user_id: usuario.id,
         tipo: tipoSelecionado,
@@ -1731,6 +1944,14 @@
       const parcelas = parseInt(document.getElementById('f-parcelas').value);
       const dataInicial = document.getElementById('f-data-parcela').value;
       const pagamento = document.getElementById('f-pagamento-parc').value;
+      
+      if (!parcelas || parcelas < 2 || !dataInicial) {
+        document.getElementById('msg-form').className = 'msg show msg-error';
+        document.getElementById('msg-form').textContent = 'Preencha número de parcelas e data inicial';
+        btn.disabled = false;
+        btn.textContent = 'Cadastrar';
+        return;
+      }
       
       const compraId = crypto.randomUUID();
       const valorParcela = +(valor / parcelas).toFixed(2);
@@ -1751,7 +1972,7 @@
           descricao: `${descricao} (${i+1}/${parcelas})`,
           data: dataParcela.toISOString().split('T')[0],
           forma_pagamento: pagamento,
-          origem: 'manual',
+          origem: iaProcessou ? 'foto_ia' : 'manual',
           compra_id: compraId,
           parcela_numero: i + 1,
           parcela_total: parcelas,
@@ -1770,7 +1991,7 @@
         categoria_id: categoriaSelecionada,
         valor, descricao, data,
         forma_pagamento: pagamento,
-        origem: anexoUrl ? 'foto' : 'manual',
+        origem: iaProcessou ? 'foto_ia' : (anexoUrl ? 'foto' : 'manual'),
         foto_url: anexoUrl
       });
     }
@@ -1784,9 +2005,9 @@
     }
     
     if (!editandoId) {
-      const xpGanho = anexoFile ? 10 : 5;
-      const labelXp = anexoFile ? (anexoEhPdf ? '+10 XP 📄' : '+10 XP 📸') : '+5 XP 💰';
-      await darXP(xpGanho, 'transacao_cadastrada', 'Transação cadastrada');
+      const xpGanho = iaProcessou ? 15 : (anexoFile ? 10 : 5);
+      const labelXp = iaProcessou ? '+15 XP ✨ IA' : (anexoFile ? '+10 XP 📸' : '+5 XP 💰');
+      await darXP(xpGanho, 'transacao_cadastrada', 'Transação cadastrada' + (iaProcessou ? ' (com IA)' : ''));
       mostrarToast(labelXp);
     }
     
@@ -1835,6 +2056,7 @@
     
     let tipoLabel = t.tipo === 'entrada' ? '+ Entrada' : '− Saída';
     if (ehProjetada) tipoLabel += ' (previsto)';
+    if (t.origem === 'foto_ia') tipoLabel += ' ✨';
     document.getElementById('detalhe-tipo').textContent = tipoLabel;
     
     document.getElementById('detalhe-categoria').textContent = cat ? `${cat.icone} ${cat.nome}` : '—';
@@ -1853,7 +2075,6 @@
       document.getElementById('linha-parcela').style.display = 'none';
     }
     
-    // Anexo
     const imgEl = document.getElementById('detalhe-anexo-img');
     const pdfEl = document.getElementById('detalhe-anexo-pdf');
     imgEl.classList.add('hidden');
