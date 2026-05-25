@@ -245,9 +245,7 @@
   
   .divida:active { transform: scale(0.99); }
   
-  .divida.quitada {
-    opacity: 0.6;
-  }
+  .divida.quitada { opacity: 0.6; }
   
   .divida-header {
     display: flex;
@@ -301,25 +299,10 @@
     letter-spacing: 0.05em;
   }
   
-  .divida-tag.atraso {
-    background: var(--danger-soft);
-    color: var(--danger);
-  }
-  
-  .divida-tag.juros {
-    background: var(--warning-soft);
-    color: var(--warning);
-  }
-  
-  .divida-tag.quitada {
-    background: var(--brand-soft);
-    color: var(--brand);
-  }
-  
-  .divida-tag.parcelas {
-    background: var(--info-soft);
-    color: var(--info);
-  }
+  .divida-tag.atraso { background: var(--danger-soft); color: var(--danger); }
+  .divida-tag.juros { background: var(--warning-soft); color: var(--warning); }
+  .divida-tag.quitada { background: var(--brand-soft); color: var(--brand); }
+  .divida-tag.negociada { background: var(--info-soft); color: var(--info); }
   
   .empty {
     background: var(--bg-card);
@@ -500,17 +483,6 @@
     -webkit-text-fill-color: var(--danger) !important;
   }
   
-  .info-box {
-    background: var(--info-soft);
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 14px;
-    font-size: 12px;
-    color: var(--info);
-    line-height: 1.5;
-  }
-  
   .btn {
     width: 100%;
     padding: 16px;
@@ -556,14 +528,6 @@
   
   .btn-ia:active { background: var(--ia-hover); transform: scale(0.985); }
   
-  .btn-ia:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background: var(--bg-elev);
-    color: var(--text-faint);
-    box-shadow: none;
-  }
-  
   .detalhe-card {
     background: var(--bg-input);
     border-radius: 14px;
@@ -577,10 +541,11 @@
     align-items: center;
     padding: 8px 0;
     border-bottom: 1px solid var(--border);
+    gap: 12px;
   }
   
   .detalhe-linha:last-child { border-bottom: none; }
-  .detalhe-label { font-size: 13px; color: var(--text-mute); }
+  .detalhe-label { font-size: 13px; color: var(--text-mute); flex-shrink: 0; }
   .detalhe-valor {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 14px;
@@ -598,7 +563,6 @@
     color: var(--danger);
   }
   
-  /* ===== NEGOCIADOR IA ===== */
   .ia-card {
     background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-input) 100%);
     border: 1px solid rgba(168, 85, 247, 0.3);
@@ -613,9 +577,6 @@
     font-weight: 700;
     color: var(--ia);
     margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
   }
   
   .ia-card-subtitulo {
@@ -754,7 +715,6 @@
 
 <button class="fab" onclick="abrirModalNova()">+ Cadastrar dívida</button>
 
-<!-- MODAL FORMULÁRIO -->
 <div class="modal-overlay" id="modal-form">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -790,7 +750,7 @@
       
       <div class="field-row">
         <div class="field">
-          <label>Vencimento original</label>
+          <label>Vencimento</label>
           <input type="date" id="f-vencimento">
         </div>
         <div class="field">
@@ -809,7 +769,6 @@
   </div>
 </div>
 
-<!-- MODAL DETALHE -->
 <div class="modal-overlay" id="modal-detalhe">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -836,19 +795,22 @@
         </div>
         <div class="detalhe-linha" id="linha-atraso">
           <div class="detalhe-label">Atraso</div>
-          <div class="detalhe-valor" id="detalhe-atraso" style="color:var(--danger);">—</div>
+          <div class="detalhe-valor" id="detalhe-atraso">—</div>
         </div>
         <div class="detalhe-linha">
           <div class="detalhe-label">Juros mensal</div>
           <div class="detalhe-valor" id="detalhe-juros">—</div>
         </div>
+        <div class="detalhe-linha" id="linha-status">
+          <div class="detalhe-label">Status</div>
+          <div class="detalhe-valor" id="detalhe-status">—</div>
+        </div>
         <div class="detalhe-linha" id="linha-obs" style="display:none;">
           <div class="detalhe-label">Observação</div>
-          <div class="detalhe-valor" id="detalhe-obs" style="font-size:12px;text-align:right;max-width:60%;">—</div>
+          <div class="detalhe-valor" id="detalhe-obs" style="font-size:12px;max-width:60%;">—</div>
         </div>
       </div>
       
-      <!-- NEGOCIADOR IA -->
       <div class="ia-card" id="ia-card">
         <div class="ia-card-titulo">✨ Negociador IA</div>
         <div class="ia-card-subtitulo">A IA cria um script personalizado pra você ligar pro credor e conseguir desconto. <strong>+20 XP ao usar.</strong></div>
@@ -896,6 +858,13 @@
     'outro': 'Outro'
   };
   
+  const statusLabel = {
+    'ativa': 'Ativa',
+    'quitada': 'Quitada',
+    'negociada': 'Negociada',
+    'em_negociacao': 'Em negociação'
+  };
+  
   let usuario;
   let dividas = [];
   let detalheAtual = null;
@@ -923,10 +892,14 @@
       .from('dividas')
       .select('*')
       .eq('user_id', usuario.id)
-      .order('quitada', { ascending: true })
+      .order('status', { ascending: true })
       .order('valor_original', { ascending: false });
     dividas = data || [];
     renderTudo();
+  }
+  
+  function ehQuitada(d) {
+    return d.status === 'quitada';
   }
   
   function renderTudo() {
@@ -936,8 +909,8 @@
   }
   
   function renderTatu() {
-    const ativas = dividas.filter(d => !d.quitada);
-    const quitadas = dividas.filter(d => d.quitada);
+    const ativas = dividas.filter(d => !ehQuitada(d));
+    const quitadas = dividas.filter(d => ehQuitada(d));
     const total = ativas.reduce((a, d) => a + Number(d.valor_atual || d.valor_original), 0);
     const el = document.getElementById('tatu-text');
     
@@ -955,10 +928,9 @@
   }
   
   function renderResumo() {
-    const ativas = dividas.filter(d => !d.quitada);
+    const ativas = dividas.filter(d => !ehQuitada(d));
     const total = ativas.reduce((a, d) => a + Number(d.valor_atual || d.valor_original), 0);
-    const quitadas = dividas.filter(d => d.quitada).length;
-    const ativasCount = ativas.length;
+    const quitadas = dividas.filter(d => ehQuitada(d)).length;
     
     document.getElementById('resumo-area').innerHTML = `
       <div class="resumo">
@@ -967,7 +939,7 @@
         <div class="resumo-stats">
           <div class="resumo-stat">
             <div class="resumo-stat-label">Ativas</div>
-            <div class="resumo-stat-valor warning">${ativasCount}</div>
+            <div class="resumo-stat-valor warning">${ativas.length}</div>
           </div>
           <div class="resumo-stat">
             <div class="resumo-stat-label">Quitadas</div>
@@ -982,8 +954,8 @@
     let lista = document.getElementById('lista');
     let filtradas = dividas;
     
-    if (filtroAtual === 'ativas') filtradas = dividas.filter(d => !d.quitada);
-    else if (filtroAtual === 'quitadas') filtradas = dividas.filter(d => d.quitada);
+    if (filtroAtual === 'ativas') filtradas = dividas.filter(d => !ehQuitada(d));
+    else if (filtroAtual === 'quitadas') filtradas = dividas.filter(d => ehQuitada(d));
     
     if (filtradas.length === 0) {
       lista.innerHTML = `
@@ -1009,18 +981,20 @@
   
   function dividaHTML(d) {
     const valor = d.valor_atual || d.valor_original;
-    const atraso = diasAtraso(d.vencimento_original);
+    const atraso = diasAtraso(d.data_vencimento);
     const tags = [];
     
-    if (d.quitada) {
+    if (ehQuitada(d)) {
       tags.push('<span class="divida-tag quitada">✓ QUITADA</span>');
+    } else if (d.status === 'negociada') {
+      tags.push('<span class="divida-tag negociada">EM NEGOCIAÇÃO</span>');
     } else {
       if (atraso > 0) tags.push(`<span class="divida-tag atraso">${atraso} dias atrasada</span>`);
       if (d.juros_mensal && Number(d.juros_mensal) > 0) tags.push(`<span class="divida-tag juros">${d.juros_mensal}% a.m.</span>`);
     }
     
     return `
-      <div class="divida ${d.quitada ? 'quitada' : ''}" onclick="abrirDetalhe('${d.id}')">
+      <div class="divida ${ehQuitada(d) ? 'quitada' : ''}" onclick="abrirDetalhe('${d.id}')">
         <div class="divida-header">
           <div class="divida-info">
             <div class="divida-credor">${d.credor}</div>
@@ -1097,7 +1071,7 @@
         credor, tipo,
         valor_original: valor,
         valor_atual: valor,
-        vencimento_original: vencimento,
+        data_vencimento: vencimento,
         juros_mensal: juros,
         observacoes: obs,
         atualizado_em: new Date().toISOString()
@@ -1108,10 +1082,10 @@
         credor, tipo,
         valor_original: valor,
         valor_atual: valor,
-        vencimento_original: vencimento,
+        data_vencimento: vencimento,
         juros_mensal: juros,
         observacoes: obs,
-        quitada: false
+        status: 'ativa'
       });
     }
     
@@ -1139,16 +1113,17 @@
     scriptIA = '';
     
     const valor = d.valor_atual || d.valor_original;
-    const atraso = diasAtraso(d.vencimento_original);
+    const atraso = diasAtraso(d.data_vencimento);
     
     document.getElementById('detalhe-titulo').textContent = d.credor;
     document.getElementById('detalhe-valor-big').textContent = 'R$ ' + formatarMoeda(valor);
     document.getElementById('detalhe-credor').textContent = d.credor;
     document.getElementById('detalhe-tipo').textContent = tiposLabel[d.tipo] || '—';
-    document.getElementById('detalhe-vencimento').textContent = d.vencimento_original ? formatarData(d.vencimento_original) : '—';
+    document.getElementById('detalhe-vencimento').textContent = d.data_vencimento ? formatarData(d.data_vencimento) : '—';
     document.getElementById('detalhe-atraso').textContent = atraso > 0 ? `${atraso} dias` : 'em dia';
     document.getElementById('detalhe-atraso').style.color = atraso > 0 ? 'var(--danger)' : 'var(--brand)';
     document.getElementById('detalhe-juros').textContent = d.juros_mensal ? `${d.juros_mensal}% a.m.` : '—';
+    document.getElementById('detalhe-status').textContent = statusLabel[d.status] || d.status || 'Ativa';
     
     if (d.observacoes) {
       document.getElementById('linha-obs').style.display = 'flex';
@@ -1157,13 +1132,12 @@
       document.getElementById('linha-obs').style.display = 'none';
     }
     
-    // Reset IA
     document.getElementById('ia-card').classList.remove('hidden');
     document.getElementById('ia-analisando').classList.add('hidden');
     document.getElementById('ia-resposta-area').classList.add('hidden');
     document.getElementById('btn-pedir-ia').disabled = false;
     
-    if (d.quitada) {
+    if (ehQuitada(d)) {
       document.getElementById('btn-quitar').classList.add('hidden');
       document.getElementById('ia-card').classList.add('hidden');
     } else {
@@ -1173,7 +1147,6 @@
     document.getElementById('modal-detalhe').classList.add('show');
   };
   
-  // ====== NEGOCIADOR IA ======
   window.pedirAjudaIA = async function() {
     if (!detalheAtual) return;
     
@@ -1186,14 +1159,14 @@
     
     const d = detalheAtual;
     const valor = d.valor_atual || d.valor_original;
-    const atraso = diasAtraso(d.vencimento_original);
+    const atraso = diasAtraso(d.data_vencimento);
     
     const mensagem = `Quero negociar essa dívida e preciso de uma estratégia completa:
 
 **Credor:** ${d.credor}
 **Tipo:** ${tiposLabel[d.tipo] || 'dívida'}
 **Valor:** R$ ${formatarMoeda(valor)}
-**Vencimento original:** ${d.vencimento_original ? formatarData(d.vencimento_original) : 'não informado'}
+**Vencimento original:** ${d.data_vencimento ? formatarData(d.data_vencimento) : 'não informado'}
 **Atraso:** ${atraso > 0 ? atraso + ' dias' : 'em dia ainda'}
 **Juros mensal:** ${d.juros_mensal ? d.juros_mensal + '%' : 'não informado'}
 ${d.observacoes ? '**Observação:** ' + d.observacoes : ''}
@@ -1234,7 +1207,7 @@ Quero algo que eu possa usar AGORA, sem floreio.`;
         mostrarToast('+20 XP ✨ IA');
       } else {
         document.getElementById('ia-card').classList.remove('hidden');
-        alert('⚠️ IA não conseguiu responder. Tenta de novo em alguns segundos.');
+        alert('⚠️ IA não conseguiu responder. Tenta de novo.');
         btn.disabled = false;
       }
     } catch (err) {
@@ -1249,14 +1222,12 @@ Quero algo que eu possa usar AGORA, sem floreio.`;
   window.copiarScript = function() {
     if (!scriptIA) return;
     
-    // Limpa markdown pra copiar texto puro
     const textoPuro = scriptIA
       .replace(/\*\*(.+?)\*\*/g, '$1')
       .replace(/^#+ /gm, '')
       .replace(/^- /gm, '• ')
       .replace(/```[\s\S]*?```/g, '');
     
-    // IMPORTANTE: SÍNCRONO pra iOS
     navigator.clipboard.writeText(textoPuro);
     
     const btn = document.getElementById('btn-copiar-script');
@@ -1280,12 +1251,10 @@ Quero algo que eu possa usar AGORA, sem floreio.`;
     html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
     html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     
-    // Listas
     html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
     html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
     html = html.replace(/(<li>.*<\/li>\n?)+/g, (match) => '<ul>' + match + '</ul>');
     
-    // Parágrafos
     html = html.split('\n\n').map(p => {
       p = p.trim();
       if (!p) return '';
@@ -1301,8 +1270,7 @@ Quero algo que eu possa usar AGORA, sem floreio.`;
     if (!confirm(`Marcar "${detalheAtual.credor}" como QUITADA? Vai te dar XP de conquista! 🏆`)) return;
     
     const { error } = await supabase.from('dividas').update({
-      quitada: true,
-      data_quitacao: new Date().toISOString().split('T')[0],
+      status: 'quitada',
       atualizado_em: new Date().toISOString()
     }).eq('id', detalheAtual.id);
     
@@ -1317,9 +1285,8 @@ Quero algo que eu possa usar AGORA, sem floreio.`;
     fecharModal('modal-detalhe');
     await carregarDividas();
     
-    // Verifica se quitou TODAS pra subir nível
     setTimeout(async () => {
-      const ativas = dividas.filter(d => !d.quitada);
+      const ativas = dividas.filter(d => !ehQuitada(d));
       if (ativas.length === 0 && dividas.length > 0) {
         const { data: p } = await supabase.from('perfis').select('nivel_jornada').eq('id', usuario.id).single();
         if (p && p.nivel_jornada < 3) {
@@ -1341,7 +1308,7 @@ Quero algo que eu possa usar AGORA, sem floreio.`;
     document.getElementById('f-credor').value = detalheAtual.credor;
     document.getElementById('f-tipo').value = detalheAtual.tipo || 'cartao';
     document.getElementById('f-valor').value = formatarMoeda(detalheAtual.valor_atual || detalheAtual.valor_original);
-    document.getElementById('f-vencimento').value = detalheAtual.vencimento_original || '';
+    document.getElementById('f-vencimento').value = detalheAtual.data_vencimento || '';
     document.getElementById('f-juros').value = detalheAtual.juros_mensal || '';
     document.getElementById('f-obs').value = detalheAtual.observacoes || '';
     
