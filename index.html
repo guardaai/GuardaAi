@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0d0d0d">
+<title>GuardaAí - Entrar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  
+  :root {
+    --bg: #0d0d0d;
+    --bg-card: #1a1a1a;
+    --bg-input: #242424;
+    --border: #2d2d2d;
+    --verde: #1e7a35;
+    --verde-hover: #2aab47;
+    --azul: #0891b2;
+    --dourado: #c9973c;
+    --vermelho: #c0392b;
+    --texto: #f5f1e8;
+    --texto-suave: #999;
+    --texto-fraco: #666;
+  }
+  
+  html, body {
+    background: var(--bg);
+    color: var(--texto);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 40px 0 30px;
+  }
+  
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--verde);
+    letter-spacing: 3px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  
+  .logo-badge {
+    display: inline-block;
+    background: var(--verde);
+    color: var(--bg);
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    vertical-align: super;
+  }
+  
+  .tagline {
+    color: var(--texto-suave);
+    font-size: 14px;
+    margin-top: 8px;
+  }
+  
+  .mascote {
+    font-size: 60px;
+    margin: 20px 0;
+    display: block;
+    text-align: center;
+  }
+  
+  /* CONTAINER */
+  .container {
+    max-width: 420px;
+    margin: 0 auto;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  /* TABS */
+  .tabs {
+    display: flex;
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 24px;
+  }
+  
+  .tab {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    background: transparent;
+    border: none;
+    color: var(--texto-suave);
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .tab.active {
+    background: var(--verde);
+    color: var(--texto);
+  }
+  
+  /* FORM */
+  .form {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid var(--border);
+  }
+  
+  .form-titulo {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  
+  .form-subtitulo {
+    color: var(--texto-suave);
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  
+  .campo {
+    margin-bottom: 14px;
+  }
+  
+  .campo label {
+    display: block;
+    font-size: 12px;
+    color: var(--texto-suave);
+    margin-bottom: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .campo input {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    color: var(--texto);
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    transition: border 0.2s;
+  }
+  
+  .campo input:focus {
+    outline: none;
+    border-color: var(--verde);
+  }
+  
+  .campo input::placeholder {
+    color: var(--texto-fraco);
+  }
+  
+  /* BOTÕES */
+  .btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    margin-top: 8px;
+  }
+  
+  .btn-verde {
+    background: var(--verde);
+    color: var(--texto);
+  }
+  
+  .btn-verde:active {
+    background: var(--verde-hover);
+    transform: scale(0.98);
+  }
+  
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  /* MENSAGENS */
+  .msg {
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    margin-bottom: 14px;
+    display: none;
+  }
+  
+  .msg.show { display: block; }
+  
+  .msg-erro {
+    background: rgba(192, 57, 43, 0.15);
+    border: 1px solid var(--vermelho);
+    color: #e74c3c;
+  }
+  
+  .msg-sucesso {
+    background: rgba(30, 122, 53, 0.15);
+    border: 1px solid var(--verde);
+    color: var(--verde-hover);
+  }
+  
+  .msg-info {
+    background: rgba(8, 145, 178, 0.15);
+    border: 1px solid var(--azul);
+    color: #38bdf8;
+  }
+  
+  /* RODAPÉ */
+  .rodape {
+    text-align: center;
+    color: var(--texto-fraco);
+    font-size: 11px;
+    padding: 30px 0 10px;
+  }
+  
+  /* LOADING */
+  .loading {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 0.8s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* TIPO ESPECÍFICO DE TELA */
+  .tela { display: none; }
+  .tela.ativa { display: block; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo" onclick="window.location.reload()">
+    GUARDAAÍ<span class="logo-badge">v1.0</span>
+  </div>
+  <div class="tagline">Seu copiloto financeiro</div>
+  <span class="mascote">🦔</span>
+</div>
+
+<div class="container">
+  
+  <div class="tabs">
+    <button class="tab active" id="tab-entrar" onclick="trocarTab('entrar')">Entrar</button>
+    <button class="tab" id="tab-cadastrar" onclick="trocarTab('cadastrar')">Cadastrar</button>
+  </div>
+  
+  <!-- TELA ENTRAR -->
+  <div class="tela ativa" id="tela-entrar">
+    <div class="form">
+      <div class="form-titulo">Bem-vindo de volta!</div>
+      <div class="form-subtitulo">Vamos continuar sua jornada</div>
+      
+      <div class="msg" id="msg-entrar"></div>
+      
+      <div class="campo">
+        <label>E-mail</label>
+        <input type="email" id="email-entrar" placeholder="seu@email.com" autocomplete="email">
+      </div>
+      
+      <div class="campo">
+        <label>Senha</label>
+        <input type="password" id="senha-entrar" placeholder="Sua senha" autocomplete="current-password">
+      </div>
+      
+      <button class="btn btn-verde" id="btn-entrar" onclick="entrar()">Entrar</button>
+    </div>
+  </div>
+  
+  <!-- TELA CADASTRAR -->
+  <div class="tela" id="tela-cadastrar">
+    <div class="form">
+      <div class="form-titulo">Começar agora</div>
+      <div class="form-subtitulo">Em 1 minuto você tá no jogo</div>
+      
+      <div class="msg" id="msg-cadastrar"></div>
+      
+      <div class="campo">
+        <label>Como vou te chamar?</label>
+        <input type="text" id="nome-cadastrar" placeholder="Seu primeiro nome" autocomplete="given-name">
+      </div>
+      
+      <div class="campo">
+        <label>E-mail</label>
+        <input type="email" id="email-cadastrar" placeholder="seu@email.com" autocomplete="email">
+      </div>
+      
+      <div class="campo">
+        <label>Crie uma senha</label>
+        <input type="password" id="senha-cadastrar" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+      </div>
+      
+      <button class="btn btn-verde" id="btn-cadastrar" onclick="cadastrar()">Criar conta grátis</button>
+    </div>
+  </div>
+  
+</div>
+
+<div class="rodape">
+  Feito com 💚 no Brasil • v1.0
+</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+  
+  // ===== CONFIG SUPABASE =====
+  const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+  
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  window.supabase = supabase;
+  
+  // ===== VERIFICA SE JÁ ESTÁ LOGADO =====
+  (async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      window.location.href = 'home.html?v=1';
+    }
+  })();
+  
+  // ===== FUNÇÕES =====
+  window.trocarTab = function(tab) {
+    document.getElementById('tab-entrar').classList.toggle('active', tab === 'entrar');
+    document.getElementById('tab-cadastrar').classList.toggle('active', tab === 'cadastrar');
+    document.getElementById('tela-entrar').classList.toggle('ativa', tab === 'entrar');
+    document.getElementById('tela-cadastrar').classList.toggle('ativa', tab === 'cadastrar');
+  };
+  
+  function mostrarMsg(id, tipo, texto) {
+    const el = document.getElementById(id);
+    el.className = `msg show msg-${tipo}`;
+    el.textContent = texto;
+  }
+  
+  function esconderMsg(id) {
+    const el = document.getElementById(id);
+    el.className = 'msg';
+  }
+  
+  window.entrar = async function() {
+    esconderMsg('msg-entrar');
+    
+    const email = document.getElementById('email-entrar').value.trim();
+    const senha = document.getElementById('senha-entrar').value;
+    
+    if (!email || !senha) {
+      mostrarMsg('msg-entrar', 'erro', 'Preenche e-mail e senha');
+      return;
+    }
+    
+    const btn = document.getElementById('btn-entrar');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="loading"></span>Entrando...';
+    
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password: senha
+    });
+    
+    if (error) {
+      mostrarMsg('msg-entrar', 'erro', traduzirErro(error.message));
+      btn.disabled = false;
+      btn.textContent = 'Entrar';
+      return;
+    }
+    
+    mostrarMsg('msg-entrar', 'sucesso', 'Boa! Redirecionando...');
+    setTimeout(() => {
+      window.location.href = 'home.html?v=1';
+    }, 600);
+  };
+  
+  window.cadastrar = async function() {
+    esconderMsg('msg-cadastrar');
+    
+    const nome = document.getElementById('nome-cadastrar').value.trim();
+    const email = document.getElementById('email-cadastrar').value.trim();
+    const senha = document.getElementById('senha-cadastrar').value;
+    
+    if (!nome || !email || !senha) {
+      mostrarMsg('msg-cadastrar', 'erro', 'Preenche todos os campos');
+      return;
+    }
+    
+    if (senha.length < 6) {
+      mostrarMsg('msg-cadastrar', 'erro', 'Senha precisa ter no mínimo 6 caracteres');
+      return;
+    }
+    
+    const btn = document.getElementById('btn-cadastrar');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="loading"></span>Criando conta...';
+    
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password: senha,
+      options: {
+        data: { nome }
+      }
+    });
+    
+    if (error) {
+      mostrarMsg('msg-cadastrar', 'erro', traduzirErro(error.message));
+      btn.disabled = false;
+      btn.textContent = 'Criar conta grátis';
+      return;
+    }
+    
+    mostrarMsg('msg-cadastrar', 'sucesso', `Bem-vindo, ${nome}! 🦔 Preparando sua jornada...`);
+    setTimeout(() => {
+      window.location.href = 'diagnostico.html?v=1';
+    }, 1200);
+  };
+  
+  function traduzirErro(msg) {
+    const m = msg.toLowerCase();
+    if (m.includes('invalid login')) return 'E-mail ou senha incorretos';
+    if (m.includes('already registered') || m.includes('already been registered')) return 'Esse e-mail já tem conta. Tente entrar.';
+    if (m.includes('password')) return 'Problema com a senha. Mínimo 6 caracteres.';
+    if (m.includes('email')) return 'E-mail inválido';
+    if (m.includes('network')) return 'Sem conexão. Verifica sua internet.';
+    return msg;
+  }
+</script>
+
+</body>
+</html>
