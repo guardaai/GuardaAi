@@ -55,7 +55,6 @@
     -webkit-text-fill-color: #fff !important;
   }
   
-  /* TOP BAR */
   .topbar {
     padding: 16px 20px;
     display: flex;
@@ -96,6 +95,35 @@
     letter-spacing: -0.02em;
   }
   
+  .topbar-actions {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .chat-btn {
+    width: 38px; height: 38px;
+    border-radius: 12px;
+    background: var(--ia-soft);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    color: var(--ia);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    position: relative;
+  }
+  
+  .chat-btn:active { background: rgba(168, 85, 247, 0.2); }
+  
+  .chat-btn::after {
+    content: '';
+    position: absolute;
+    top: 4px; right: 4px;
+    width: 8px; height: 8px;
+    background: var(--brand);
+    border: 2px solid var(--bg);
+    border-radius: 50%;
+  }
+  
   .menu-btn {
     width: 38px; height: 38px;
     border-radius: 12px;
@@ -113,7 +141,6 @@
     padding: 0 20px;
   }
   
-  /* SAUDAÇÃO */
   .saudacao {
     padding: 20px 0 14px;
   }
@@ -131,7 +158,6 @@
     color: var(--text-mute);
   }
   
-  /* NÍVEL ATUAL */
   .nivel-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -167,9 +193,7 @@
     gap: 10px;
   }
   
-  .nivel-emoji {
-    font-size: 32px;
-  }
+  .nivel-emoji { font-size: 32px; }
   
   .nivel-num {
     font-family: 'Space Grotesk', sans-serif;
@@ -223,7 +247,6 @@
     transition: width 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
   }
   
-  /* TATU FALA */
   .tatu-card {
     display: flex;
     gap: 12px;
@@ -233,7 +256,11 @@
     border-radius: 16px;
     padding: 14px;
     margin-bottom: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
   }
+  
+  .tatu-card:active { transform: scale(0.99); border-color: var(--ia); }
   
   .tatu-emoji { font-size: 28px; flex-shrink: 0; }
   
@@ -246,7 +273,20 @@
   
   .tatu-texto strong { color: var(--text); }
   
-  /* INSIGHTS IA */
+  .tatu-chat-cta {
+    background: var(--ia);
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-top: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
   .insights-card {
     background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%);
     border: 1px solid rgba(168, 85, 247, 0.3);
@@ -397,7 +437,6 @@
   
   @keyframes spin { to { transform: rotate(360deg); } }
   
-  /* STATS GRID */
   .stats-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -445,7 +484,6 @@
     margin-top: 2px;
   }
   
-  /* AÇÃO PRINCIPAL */
   .acao-principal {
     width: 100%;
     background: var(--brand);
@@ -470,7 +508,30 @@
     transform: scale(0.985);
   }
   
-  /* MENU CARDS */
+  .acao-chat {
+    width: 100%;
+    background: var(--ia);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 14px;
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .acao-chat:active {
+    background: var(--ia-hover);
+    transform: scale(0.985);
+  }
+  
   .menu-titulo {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 11px;
@@ -518,7 +579,6 @@
     line-height: 1.3;
   }
   
-  /* MISSÃO SEMANAL */
   .missao-card {
     background: var(--bg-card);
     border: 1px solid var(--warning-soft);
@@ -554,7 +614,6 @@
     line-height: 1.4;
   }
   
-  /* DRAWER MENU */
   .drawer-overlay {
     position: fixed;
     inset: 0;
@@ -610,14 +669,9 @@
   .drawer-item:active { opacity: 0.6; }
   
   .drawer-item-emoji { font-size: 20px; }
-  .drawer-item-label {
-    font-size: 14px;
-    font-weight: 500;
-  }
-  
+  .drawer-item-label { font-size: 14px; font-weight: 500; }
   .drawer-item.danger { color: var(--danger); }
   
-  /* LEVEL UP CELEBRATION */
   .levelup-overlay {
     position: fixed;
     inset: 0;
@@ -738,7 +792,10 @@
     <div class="logo-mark"></div>
     <div class="logo-text">guardaí</div>
   </div>
-  <button class="menu-btn" onclick="abrirDrawer()">☰</button>
+  <div class="topbar-actions">
+    <button class="chat-btn" onclick="window.location.href='chat.html?v=1'" title="Chat com Tatu">💬</button>
+    <button class="menu-btn" onclick="abrirDrawer()">☰</button>
+  </div>
 </div>
 
 <div class="container">
@@ -754,7 +811,6 @@
 
 </div>
 
-<!-- DRAWER MENU -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="fecharDrawer(event)">
   <div class="drawer" onclick="event.stopPropagation()">
     <div class="drawer-header">
@@ -764,6 +820,10 @@
     <a href="home.html?v=1" class="drawer-item">
       <div class="drawer-item-emoji">🏠</div>
       <div class="drawer-item-label">Início</div>
+    </a>
+    <a href="chat.html?v=1" class="drawer-item">
+      <div class="drawer-item-emoji">💬</div>
+      <div class="drawer-item-label">Chat com Tatu</div>
     </a>
     <a href="transacoes.html?v=1" class="drawer-item">
       <div class="drawer-item-emoji">💸</div>
@@ -792,14 +852,13 @@
   </div>
 </div>
 
-<!-- LEVEL UP MODAL -->
 <div class="levelup-overlay" id="levelup-overlay">
   <div class="levelup-modal" id="levelup-modal">
     <div class="levelup-emoji" id="levelup-emoji">🎉</div>
     <div class="levelup-titulo">LEVEL UP!</div>
     <div class="levelup-nivel" id="levelup-nivel">Nível 2</div>
     <div class="levelup-nome" id="levelup-nome">Resgate</div>
-    <div class="levelup-desc" id="levelup-desc">Você desbloqueou uma nova fase da sua jornada!</div>
+    <div class="levelup-desc" id="levelup-desc">Você desbloqueou uma nova fase!</div>
     <button class="btn-continuar" onclick="fecharLevelUp()">Continuar jornada</button>
   </div>
 </div>
@@ -817,13 +876,12 @@
     2: { emoji: '🚨', nome: 'Resgate', xp_max: 1000, desc: 'Foco em quitar as dívidas.' },
     3: { emoji: '⚖️', nome: 'Estabilização', xp_max: 3000, desc: 'Construir reserva de emergência.' },
     4: { emoji: '🏗️', nome: 'Construção', xp_max: 8000, desc: 'Multiplicar patrimônio.' },
-    5: { emoji: '🚀', nome: 'Liberdade', xp_max: 999999, desc: 'Independência financeira alcançada!' }
+    5: { emoji: '🚀', nome: 'Liberdade', xp_max: 999999, desc: 'Independência alcançada!' }
   };
   
   let usuario, perfil, gamificacao;
   let dividas = [], transacoes = [], metas = [], patrimonio = [];
   let mesAtual = new Date();
-  let insightsCache = null;
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -870,6 +928,7 @@
       ${renderNivelCard(nivel, info)}
       ${renderTatuCard(nivel)}
       <div id="insights-area"></div>
+      ${renderAcaoChat()}
       ${renderStats(nivel)}
       ${renderAcaoPrincipal(nivel)}
       ${renderMissao(nivel)}
@@ -936,7 +995,7 @@
     let texto = '';
     
     if (nivel === 1) {
-      texto = '🦔 Vamos fazer seu <strong>diagnóstico financeiro</strong> pra começar a jornada!';
+      texto = '🦔 Vamos fazer seu <strong>diagnóstico financeiro</strong> pra começar!';
     } else if (nivel === 2) {
       const ativas = dividas.filter(d => d.status !== 'quitada');
       const quitadas = dividas.filter(d => d.status === 'quitada').length;
@@ -947,12 +1006,12 @@
       } else if (ativas.length === 0) {
         texto = '🦔 <strong>TUDO QUITADO!</strong> Você venceu o Resgate! 🏆';
       } else if (quitadas > 0) {
-        texto = `🦔 Você já quitou <strong>${quitadas}</strong>. Faltam <strong>${ativas.length}</strong>. Não pare agora!`;
+        texto = `🦔 Já quitou <strong>${quitadas}</strong>. Faltam <strong>${ativas.length}</strong>. Não pare!`;
       } else {
-        texto = `🦔 <strong>R$ ${formatarMoeda(totalDivida)}</strong> em dívidas. Use a IA pra negociar — descontos de 30-70% são comuns.`;
+        texto = `🦔 <strong>R$ ${formatarMoeda(totalDivida)}</strong> em dívidas. Use a IA pra negociar.`;
       }
     } else if (nivel === 3) {
-      texto = '🦔 Hora de <strong>construir reserva de emergência</strong>! Meta: 6 meses de gastos parados.';
+      texto = '🦔 Hora de <strong>construir reserva</strong>! Meta: 6 meses de gastos.';
     } else if (nivel === 4) {
       texto = '🦔 Hora de <strong>multiplicar patrimônio</strong>! Diversificação é a chave.';
     } else {
@@ -960,17 +1019,27 @@
     }
     
     return `
-      <div class="tatu-card">
+      <div class="tatu-card" onclick="window.location.href='chat.html?v=1'">
         <div class="tatu-emoji">🦔</div>
-        <div class="tatu-texto">${texto}</div>
+        <div class="tatu-texto">
+          ${texto}
+          <div><span class="tatu-chat-cta">💬 Conversar com Tatu</span></div>
+        </div>
       </div>
+    `;
+  }
+  
+  function renderAcaoChat() {
+    return `
+      <button class="acao-chat" onclick="window.location.href='chat.html?v=1'">
+        <span>💬</span> Pergunte algo ao Tatu
+      </button>
     `;
   }
   
   function renderStats(nivel) {
     const entrada = transacoes.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
     const saida = transacoes.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
-    const saldo = entrada - saida;
     
     let cards = `
       <div class="stat-card" onclick="window.location.href='transacoes.html?v=1'">
@@ -1042,11 +1111,7 @@
       acao = "window.location.href='metas.html?v=1'";
     } else if (nivel === 4) {
       const totalPat = patrimonio.reduce((a, p) => a + Number(p.valor_atual || 0), 0);
-      if (totalPat === 0) {
-        label = '💎 Fazer primeiro aporte';
-      } else {
-        label = '📊 Diversificar carteira';
-      }
+      label = totalPat === 0 ? '💎 Primeiro aporte' : '📊 Diversificar carteira';
       acao = "window.location.href='patrimonio.html?v=1'";
     } else {
       label = '🚀 Ver patrimônio';
@@ -1115,10 +1180,15 @@
           <div class="menu-card-titulo">Patrimônio</div>
           <div class="menu-card-sub">Investimentos</div>
         </a>
-        <a href="educacao.html?v=1" class="menu-card" style="grid-column: span 2;">
+        <a href="chat.html?v=1" class="menu-card" style="background:linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%);border-color:rgba(168, 85, 247, 0.3);">
+          <div class="menu-card-emoji">💬</div>
+          <div class="menu-card-titulo" style="color:var(--ia);">Chat IA</div>
+          <div class="menu-card-sub">Pergunte ao Tatu</div>
+        </a>
+        <a href="educacao.html?v=1" class="menu-card">
           <div class="menu-card-emoji">📚</div>
           <div class="menu-card-titulo">Aprender</div>
-          <div class="menu-card-sub">Trilha de educação financeira</div>
+          <div class="menu-card-sub">Trilha de educação</div>
         </a>
       </div>
     `;
@@ -1150,7 +1220,6 @@
       return;
     }
     
-    // Verifica cache (24h)
     const cacheKey = `insights_${usuario.id}_${mesAtual.getFullYear()}_${mesAtual.getMonth()}`;
     const cached = localStorage.getItem(cacheKey);
     
@@ -1165,7 +1234,6 @@
       } catch (e) {}
     }
     
-    // Não tem cache válido — gera novo
     area.innerHTML = `
       <div class="insights-card">
         <div class="insights-header">
@@ -1208,7 +1276,7 @@
       try {
         const parsed = JSON.parse(cached);
         const idade = (Date.now() - parsed.timestamp) / (1000 * 60 * 60);
-        if (idade < 24) return; // Já mostrado no render
+        if (idade < 24) return;
       } catch (e) {}
     }
     
@@ -1218,12 +1286,10 @@
   async function gerarInsightsIA() {
     if (transacoes.length < 3) return;
     
-    // Prepara contexto resumido
     const entrada = transacoes.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
     const saida = transacoes.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
     const saldo = entrada - saida;
     
-    // Agrupa por categoria
     const porCategoria = {};
     transacoes.filter(t => t.tipo === 'saida').forEach(t => {
       const cat = t.categorias?.nome || 'Outros';
@@ -1237,7 +1303,6 @@
       .map(([nome, valor]) => `${nome}: R$ ${formatarMoeda(valor)}`)
       .join(', ');
     
-    // Busca mês anterior pra comparação
     const inicioMesAnt = new Date(mesAtual.getFullYear(), mesAtual.getMonth() - 1, 1).toISOString().split('T')[0];
     const fimMesAnt = new Date(mesAtual.getFullYear(), mesAtual.getMonth(), 0).toISOString().split('T')[0];
     
@@ -1286,7 +1351,6 @@ Nível na jornada: ${perfil?.nivel_jornada || 1}${contextoAnterior}`;
       const data = await resp.json();
       
       if (data.resposta) {
-        // Salva no cache
         const cacheKey = `insights_${usuario.id}_${mesAtual.getFullYear()}_${mesAtual.getMonth()}`;
         localStorage.setItem(cacheKey, JSON.stringify({
           texto: data.resposta,
@@ -1295,7 +1359,6 @@ Nível na jornada: ${perfil?.nivel_jornada || 1}${contextoAnterior}`;
         
         mostrarInsights(data.resposta, false);
         
-        // Dá XP só na primeira vez do mês
         const xpKey = `insights_xp_${usuario.id}_${mesAtual.getFullYear()}_${mesAtual.getMonth()}`;
         if (!localStorage.getItem(xpKey)) {
           localStorage.setItem(xpKey, 'true');
@@ -1359,7 +1422,6 @@ Nível na jornada: ${perfil?.nivel_jornada || 1}${contextoAnterior}`;
     return html;
   }
   
-  // ===== LEVEL UP =====
   function checarLevelUp() {
     const ultimo = localStorage.getItem(`lastNivel_${usuario.id}`);
     const atual = perfil?.nivel_jornada || 1;
@@ -1403,7 +1465,6 @@ Nível na jornada: ${perfil?.nivel_jornada || 1}${contextoAnterior}`;
     }
   }
   
-  // ===== DRAWER =====
   window.abrirDrawer = function() {
     document.getElementById('drawer-overlay').classList.add('show');
   };
