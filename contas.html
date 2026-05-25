@@ -108,7 +108,6 @@
     padding: 16px 20px 20px;
   }
   
-  /* SALDO TOTAL CARD */
   .saldo-total {
     background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elev) 100%);
     border: 1px solid var(--border);
@@ -159,7 +158,6 @@
     position: relative;
   }
   
-  /* TATU TIP */
   .tatu-tip {
     display: flex;
     gap: 12px;
@@ -182,7 +180,6 @@
   
   .tatu-tip-texto strong { color: var(--text); }
   
-  /* SECTION TITLE */
   .secao-titulo {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 11px;
@@ -193,7 +190,6 @@
     margin: 18px 4px 10px;
   }
   
-  /* CONTA CARD */
   .conta-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -284,12 +280,6 @@
     font-weight: 600;
   }
   
-  .conta-limite {
-    font-size: 10px;
-    color: var(--text-mute);
-    margin-top: 2px;
-  }
-  
   .empty {
     background: var(--bg-card);
     border: 1px dashed var(--border-strong);
@@ -315,7 +305,6 @@
     margin: 0 auto;
   }
   
-  /* FAB */
   .fab {
     position: fixed;
     bottom: 24px;
@@ -341,7 +330,7 @@
     background: var(--brand-hover);
   }
   
-  /* MODAL */
+  /* MODAL - CORRIGIDO: altura fixa no body, footer SEMPRE visível */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -361,10 +350,12 @@
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 24px 24px 0 0;
-    max-height: 92vh;
+    height: 90vh;
+    max-height: 90vh;
     display: flex;
     flex-direction: column;
     animation: slideUp 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+    overflow: hidden;
   }
   
   @keyframes slideUp {
@@ -409,16 +400,18 @@
   
   .modal-body {
     padding: 0 24px;
-    flex: 1;
+    flex: 1 1 auto;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    min-height: 0;
   }
   
   .modal-footer {
-    padding: 16px 24px 24px;
+    padding: 16px 24px;
     flex-shrink: 0;
     background: var(--bg-card);
     border-top: 1px solid var(--border);
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
   }
   
   .field { margin-bottom: 14px; }
@@ -453,7 +446,6 @@
     gap: 10px;
   }
   
-  /* TIPO SELECTOR */
   .tipo-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -489,7 +481,6 @@
   
   .tipo-opcao.active .tipo-label { color: var(--brand); }
   
-  /* BANCOS PRESET */
   .bancos-presets {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -521,7 +512,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 14px;
     color: white;
     font-weight: 700;
   }
@@ -533,7 +524,6 @@
     color: var(--text);
   }
   
-  /* COR PICKER */
   .cores-grid {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
@@ -556,7 +546,6 @@
     transform: scale(1.1);
   }
   
-  /* EMOJI PICKER */
   .emojis-grid {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
@@ -766,7 +755,6 @@
 
 <button class="fab" onclick="abrirModalNova()">+ Nova conta</button>
 
-<!-- MODAL FORM -->
 <div class="modal-overlay" id="modal-form">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -824,7 +812,7 @@
       <div id="saldo-inicial-section">
         <div class="secao-titulo">Saldo inicial</div>
         <div class="info-box">
-          💡 Quanto você tem nessa conta <strong>HOJE</strong>. Para cartão de crédito, deixe zero (a fatura é controlada nas dívidas).
+          💡 Quanto você tem nessa conta <strong>HOJE</strong>.
         </div>
         <div class="valor-input-wrapper">
           <span class="valor-prefix">R$</span>
@@ -835,7 +823,7 @@
       <div id="cartao-section" class="hidden">
         <div class="secao-titulo">Dados do cartão</div>
         <div class="info-box">
-          💳 Cartão de crédito não tem saldo, tem <strong>limite disponível</strong>. Cadastre o limite total.
+          💳 Cartão de crédito não tem saldo, tem <strong>limite disponível</strong>.
         </div>
         <div class="field">
           <label>Limite total</label>
@@ -856,6 +844,8 @@
         </div>
       </div>
       
+      <div style="height:20px;"></div>
+      
     </div>
     <div class="modal-footer">
       <button class="btn btn-primary" id="btn-salvar" onclick="salvarConta()">Cadastrar conta</button>
@@ -863,7 +853,6 @@
   </div>
 </div>
 
-<!-- MODAL DETALHE -->
 <div class="modal-overlay" id="modal-detalhe">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -930,18 +919,18 @@
   };
   
   const bancosPresets = [
-    { nome: 'Nubank', cor: '#820AD1', icone: '🟣', sigla: 'NU' },
-    { nome: 'Itaú', cor: '#EC7000', icone: '🟠', sigla: 'IT' },
-    { nome: 'Bradesco', cor: '#CC092F', icone: '🔴', sigla: 'BR' },
-    { nome: 'Banco do Brasil', cor: '#FFEF38', icone: '🟡', sigla: 'BB' },
-    { nome: 'Santander', cor: '#EC0000', icone: '🔴', sigla: 'SA' },
-    { nome: 'Caixa', cor: '#005CA9', icone: '🔵', sigla: 'CX' },
-    { nome: 'Inter', cor: '#FF7A00', icone: '🟠', sigla: 'IN' },
-    { nome: 'C6 Bank', cor: '#1F1F1F', icone: '⚫', sigla: 'C6' },
-    { nome: 'PicPay', cor: '#21C25E', icone: '🟢', sigla: 'PP' },
-    { nome: 'Mercado Pago', cor: '#00B1EA', icone: '🔵', sigla: 'MP' },
-    { nome: 'PagBank', cor: '#FCB814', icone: '🟡', sigla: 'PB' },
-    { nome: 'Outro', cor: '#555555', icone: '🏦', sigla: '?' }
+    { nome: 'Nubank', cor: '#820AD1', sigla: 'NU' },
+    { nome: 'Itaú', cor: '#EC7000', sigla: 'IT' },
+    { nome: 'Bradesco', cor: '#CC092F', sigla: 'BR' },
+    { nome: 'Banco do Brasil', cor: '#FFEF38', sigla: 'BB' },
+    { nome: 'Santander', cor: '#EC0000', sigla: 'SA' },
+    { nome: 'Caixa', cor: '#005CA9', sigla: 'CX' },
+    { nome: 'Inter', cor: '#FF7A00', sigla: 'IN' },
+    { nome: 'C6 Bank', cor: '#1F1F1F', sigla: 'C6' },
+    { nome: 'PicPay', cor: '#21C25E', sigla: 'PP' },
+    { nome: 'Mercado Pago', cor: '#00B1EA', sigla: 'MP' },
+    { nome: 'PagBank', cor: '#FCB814', sigla: 'PB' },
+    { nome: 'Outro', cor: '#555555', sigla: '?' }
   ];
   
   const coresDisponiveis = [
@@ -987,7 +976,6 @@
     
     contas = contasData || [];
     
-    // Calcula saldo real de cada conta (saldo_inicial + entradas - saidas)
     saldosCalculados = {};
     for (const c of contas) {
       const { data: trans } = await supabase
@@ -1028,13 +1016,13 @@
     const ativas = contas.filter(c => c.ativa).length;
     
     if (contas.length === 0) {
-      el.innerHTML = 'Cadastre <strong>todas suas contas</strong> (banco, carteira, cartão) pra ter controle total do seu dinheiro!';
+      el.innerHTML = 'Cadastre <strong>todas suas contas</strong> (banco, carteira, cartão) pra ter controle total!';
     } else if (ativas < 2) {
-      el.innerHTML = `Você tem ${ativas} conta cadastrada. <strong>Cadastre mais</strong> pra separar onde seu dinheiro está!`;
+      el.innerHTML = `Você tem ${ativas} conta. <strong>Cadastre mais</strong> pra separar onde seu dinheiro está!`;
     } else if (!contas.some(c => c.tipo === 'cartao_credito')) {
-      el.innerHTML = `${ativas} contas cadastradas! Não esqueça de cadastrar seus <strong>cartões de crédito</strong> com limite e datas.`;
+      el.innerHTML = `${ativas} contas cadastradas! Não esqueça dos seus <strong>cartões de crédito</strong>.`;
     } else {
-      el.innerHTML = `<strong>${ativas} contas</strong> ativas. Quando cadastrar transações, escolha em qual conta cada uma vai!`;
+      el.innerHTML = `<strong>${ativas} contas</strong> ativas. Quando lançar transação, escolha em qual conta vai!`;
     }
   }
   
@@ -1052,7 +1040,6 @@
       return;
     }
     
-    // Agrupa: ativas primeiro, inativas depois
     const ativas = contas.filter(c => c.ativa);
     const inativas = contas.filter(c => !c.ativa);
     
@@ -1076,7 +1063,6 @@
     
     let saldoLabel, saldoValor, saldoClasse;
     if (ehCartao) {
-      // Pra cartão: limite - gasto da fatura (vou simplificar mostrando o limite total por enquanto)
       saldoLabel = 'Limite';
       saldoValor = `R$ ${formatarMoeda(c.limite || 0)}`;
       saldoClasse = 'neutro';
@@ -1134,13 +1120,11 @@
     tipoSelecionado = tipo;
     document.querySelectorAll('.tipo-opcao').forEach(t => t.classList.toggle('active', t.dataset.tipo === tipo));
     
-    // Mostra/esconde seções específicas
     const isCartao = tipo === 'cartao_credito';
     document.getElementById('cartao-section').classList.toggle('hidden', !isCartao);
     document.getElementById('saldo-inicial-section').classList.toggle('hidden', isCartao);
     document.getElementById('banco-section').classList.toggle('hidden', tipo === 'carteira' || tipo === 'outro');
     
-    // Atualiza emoji padrão
     if (tipo === 'cartao_credito') { emojiSelecionado = '💳'; }
     else if (tipo === 'carteira') { emojiSelecionado = '💰'; }
     else if (tipo === 'poupanca') { emojiSelecionado = '🐷'; }
@@ -1248,7 +1232,6 @@
     if (editandoId) {
       result = await supabase.from('contas').update(dados).eq('id', editandoId);
     } else {
-      // Primeira conta vira padrão
       if (contas.length === 0 && !isCartao) dados.padrao = true;
       dados.user_id = usuario.id;
       result = await supabase.from('contas').insert(dados);
@@ -1297,7 +1280,6 @@
       if (c.dia_vencimento) document.getElementById('detalhe-vencimento').textContent = `Dia ${c.dia_vencimento}`;
     }
     
-    // Card de saldo grande
     const saldoArea = document.getElementById('detalhe-saldo-area');
     if (ehCartao) {
       saldoArea.innerHTML = `
@@ -1341,7 +1323,6 @@
     renderCoresGrid();
     renderEmojisGrid();
     
-    // Marca banco selecionado
     document.querySelectorAll('.banco-preset').forEach(el => {
       el.classList.toggle('active', el.dataset.banco === detalheAtual.banco);
     });
@@ -1366,7 +1347,6 @@
   window.excluirConta = async function() {
     if (!detalheAtual) return;
     
-    // Verifica se tem transações vinculadas
     const { count } = await supabase
       .from('transacoes')
       .select('*', { count: 'exact', head: true })
@@ -1374,7 +1354,7 @@
     
     let msg = `Excluir "${detalheAtual.nome}"?`;
     if (count > 0) {
-      msg += `\n\n⚠️ ${count} transação(ões) ficarão SEM conta vinculada (não vão sumir).`;
+      msg += `\n\n⚠️ ${count} transação(ões) ficarão SEM conta vinculada.`;
     }
     msg += '\n\nNão pode ser desfeito.';
     
