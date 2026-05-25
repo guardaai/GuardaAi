@@ -28,6 +28,7 @@
     --info: #38bdf8;
     --info-soft: rgba(56, 189, 248, 0.1);
     --ia: #a855f7;
+    --ia-hover: #9333ea;
     --ia-soft: rgba(168, 85, 247, 0.1);
     --text: #ffffff;
     --text-mute: #a3a3a3;
@@ -166,7 +167,7 @@
     border: 1px solid var(--border);
     border-radius: 14px;
     padding: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
   
   .tatu-tip-emoji { font-size: 24px; flex-shrink: 0; }
@@ -179,6 +180,48 @@
   }
   
   .tatu-tip-texto strong { color: var(--text); }
+  
+  .quick-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  
+  .quick-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .quick-btn:active { transform: scale(0.97); }
+  
+  .quick-btn.ia {
+    background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%);
+    border-color: rgba(168, 85, 247, 0.3);
+  }
+  
+  .quick-btn-icon { font-size: 22px; }
+  .quick-btn-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .quick-btn.ia .quick-btn-label { color: var(--ia); }
+  .quick-btn-sub {
+    font-size: 10px;
+    color: var(--text-mute);
+    line-height: 1.2;
+  }
   
   .secao-titulo {
     font-family: 'Space Grotesk', sans-serif;
@@ -330,7 +373,7 @@
     background: var(--brand-hover);
   }
   
-  /* MODAL - CORRIGIDO: altura fixa no body, footer SEMPRE visível */
+  /* MODAL CORRIGIDO */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -638,6 +681,14 @@
     margin-top: 8px;
   }
   
+  .btn-ia {
+    background: var(--ia);
+    color: white;
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
+  }
+  
+  .btn-ia:active { background: var(--ia-hover); transform: scale(0.985); }
+  
   .msg {
     padding: 12px;
     border-radius: 10px;
@@ -653,6 +704,12 @@
     background: var(--danger-soft);
     border: 1px solid rgba(255, 71, 87, 0.3);
     color: #ff6b78;
+  }
+  
+  .msg-success {
+    background: var(--brand-soft);
+    border: 1px solid rgba(0, 217, 126, 0.3);
+    color: var(--brand);
   }
   
   .xp-toast {
@@ -725,6 +782,122 @@
     line-height: 1.5;
   }
   
+  /* IA UPLOAD */
+  .upload-area {
+    background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-input) 100%);
+    border: 2px dashed rgba(168, 85, 247, 0.4);
+    border-radius: 14px;
+    padding: 28px 16px;
+    text-align: center;
+    margin-bottom: 14px;
+    cursor: pointer;
+  }
+  
+  .upload-area:active { transform: scale(0.98); }
+  .upload-emoji { font-size: 40px; margin-bottom: 8px; }
+  .upload-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    color: var(--ia);
+    margin-bottom: 4px;
+    font-size: 15px;
+  }
+  .upload-sub {
+    font-size: 12px;
+    color: var(--text-mute);
+    line-height: 1.4;
+  }
+  
+  .input-hidden { display: none; }
+  
+  .preview-area {
+    border: 2px solid var(--ia);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    position: relative;
+    background: var(--bg-input);
+  }
+  
+  .preview-area img {
+    width: 100%;
+    max-height: 240px;
+    object-fit: contain;
+    display: block;
+  }
+  
+  .preview-remover {
+    position: absolute;
+    top: 8px; right: 8px;
+    width: 32px; height: 32px;
+    background: rgba(0,0,0,0.75);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  
+  .ia-badge {
+    position: absolute;
+    top: 8px; left: 8px;
+    background: var(--ia);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  
+  .ia-analisando {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  
+  .ia-spinner {
+    width: 48px; height: 48px;
+    border: 3px solid var(--ia-soft);
+    border-top-color: var(--ia);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 14px;
+  }
+  
+  .ia-resultado-box {
+    background: var(--ia-soft);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 14px;
+  }
+  
+  .ia-resultado-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ia);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .ia-resultado-linha {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 12px;
+  }
+  
+  .ia-resultado-label { color: var(--text-mute); }
+  .ia-resultado-valor {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: var(--text);
+  }
+  
   .hidden { display: none !important; }
 </style>
 </head>
@@ -743,7 +916,20 @@
   <div class="tatu-tip">
     <div class="tatu-tip-emoji">🦔</div>
     <div class="tatu-tip-texto" id="tatu-tip-texto">
-      Cadastre <strong>todas suas contas</strong> (banco, carteira, cartão) pra ter controle total do seu dinheiro!
+      Cadastre <strong>todas suas contas</strong> (banco, carteira, cartão) pra ter controle total!
+    </div>
+  </div>
+  
+  <div class="quick-actions">
+    <div class="quick-btn" onclick="abrirModalNova()">
+      <div class="quick-btn-icon">✍️</div>
+      <div class="quick-btn-label">Cadastrar manual</div>
+      <div class="quick-btn-sub">Você digita</div>
+    </div>
+    <div class="quick-btn ia" onclick="abrirModalIA()">
+      <div class="quick-btn-icon">✨</div>
+      <div class="quick-btn-label">Cadastrar por foto</div>
+      <div class="quick-btn-sub">IA lê print/fatura</div>
     </div>
   </div>
   
@@ -755,6 +941,9 @@
 
 <button class="fab" onclick="abrirModalNova()">+ Nova conta</button>
 
+<input type="file" id="input-ia" class="input-hidden" accept="image/*,application/pdf" onchange="processarIA(event)">
+
+<!-- MODAL FORM -->
 <div class="modal-overlay" id="modal-form">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -764,6 +953,8 @@
     </div>
     <div class="modal-body">
       <div class="msg" id="msg-form"></div>
+      
+      <div id="ia-resultado-area"></div>
       
       <div class="secao-titulo" style="margin-top:0;">Tipo de conta</div>
       <div class="tipo-grid">
@@ -823,7 +1014,7 @@
       <div id="cartao-section" class="hidden">
         <div class="secao-titulo">Dados do cartão</div>
         <div class="info-box">
-          💳 Cartão de crédito não tem saldo, tem <strong>limite disponível</strong>.
+          💳 Cartão de crédito não tem saldo, tem <strong>limite</strong>.
         </div>
         <div class="field">
           <label>Limite total</label>
@@ -853,6 +1044,63 @@
   </div>
 </div>
 
+<!-- MODAL IA -->
+<div class="modal-overlay" id="modal-ia">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">✨ Cadastrar por foto</div>
+      <button class="modal-close" onclick="fecharModal('modal-ia')">✕</button>
+    </div>
+    <div class="modal-body">
+      
+      <div id="ia-vazio">
+        <div class="info-box">
+          📸 Tire foto/print de uma dessas opções e a IA cadastra tudo automaticamente:
+        </div>
+        
+        <div class="upload-area" onclick="document.getElementById('input-ia').click()">
+          <div class="upload-emoji">📱</div>
+          <div class="upload-titulo">Toque pra escolher imagem</div>
+          <div class="upload-sub">Print do app do banco, fatura do cartão ou foto do cartão</div>
+        </div>
+        
+        <div class="info-box" style="background:rgba(255,184,0,0.1);border-color:rgba(255,184,0,0.3);color:var(--warning);">
+          💡 <strong>Exemplos do que enviar:</strong><br>
+          • Tela do app Nubank/Itaú/Bradesco com saldo<br>
+          • Tela de fatura mostrando limite + vencimento<br>
+          • Foto do cartão físico (frente)<br>
+          • PDF da fatura mensal completa
+        </div>
+      </div>
+      
+      <div id="ia-preview-area" class="hidden">
+        <div class="preview-area">
+          <img id="ia-preview-img">
+          <div class="ia-badge">✨ IA</div>
+          <button class="preview-remover" onclick="removerPreviewIA()">✕</button>
+        </div>
+      </div>
+      
+      <div id="ia-analisando-area" class="hidden ia-analisando">
+        <div class="ia-spinner"></div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--ia);margin-bottom:4px;">🤖 IA lendo a imagem...</div>
+        <div style="font-size:12px;color:var(--text-mute);">Extraindo banco, saldo, datas</div>
+      </div>
+      
+      <div id="ia-resultado-cad" class="hidden">
+        <div class="msg msg-success show">✅ <strong>Dados extraídos!</strong> Revise e confirme.</div>
+        <div id="ia-resultado-preview"></div>
+      </div>
+      
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary hidden" id="btn-confirmar-ia" onclick="confirmarCadastroIA()">Continuar e revisar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETALHE -->
 <div class="modal-overlay" id="modal-detalhe">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -907,6 +1155,7 @@
   
   const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+  const IA_FUNCTION_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
   
   const tiposLabel = {
@@ -949,6 +1198,7 @@
   let bancoSelecionado = null;
   let editandoId = null;
   let detalheAtual = null;
+  let dadosIA = null;
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -1016,13 +1266,13 @@
     const ativas = contas.filter(c => c.ativa).length;
     
     if (contas.length === 0) {
-      el.innerHTML = 'Cadastre <strong>todas suas contas</strong> (banco, carteira, cartão) pra ter controle total!';
+      el.innerHTML = 'Cadastre <strong>todas suas contas</strong>. Use o botão ✨ pra IA fazer por você!';
     } else if (ativas < 2) {
-      el.innerHTML = `Você tem ${ativas} conta. <strong>Cadastre mais</strong> pra separar onde seu dinheiro está!`;
+      el.innerHTML = `Você tem ${ativas} conta. <strong>Cadastre mais</strong> com IA via foto!`;
     } else if (!contas.some(c => c.tipo === 'cartao_credito')) {
-      el.innerHTML = `${ativas} contas cadastradas! Não esqueça dos seus <strong>cartões de crédito</strong>.`;
+      el.innerHTML = `${ativas} contas! Não esqueça dos seus <strong>cartões de crédito</strong>.`;
     } else {
-      el.innerHTML = `<strong>${ativas} contas</strong> ativas. Quando lançar transação, escolha em qual conta vai!`;
+      el.innerHTML = `<strong>${ativas} contas</strong> ativas! Quando lançar transação, escolha onde vai.`;
     }
   }
   
@@ -1034,7 +1284,7 @@
         <div class="empty">
           <div class="empty-emoji">🏦</div>
           <div class="empty-title">Sem contas cadastradas</div>
-          <div class="empty-desc">Comece cadastrando seu banco principal, carteira ou cartão.</div>
+          <div class="empty-desc">Tire print do app do seu banco que a IA cadastra automaticamente!</div>
         </div>
       `;
       return;
@@ -1173,6 +1423,7 @@
   
   window.abrirModalNova = function() {
     editandoId = null;
+    dadosIA = null;
     document.getElementById('modal-form-titulo').textContent = 'Nova conta';
     document.getElementById('btn-salvar').textContent = 'Cadastrar conta';
     document.getElementById('f-nome').value = '';
@@ -1181,6 +1432,7 @@
     document.getElementById('f-fechamento').value = '';
     document.getElementById('f-vencimento').value = '';
     document.getElementById('msg-form').className = 'msg';
+    document.getElementById('ia-resultado-area').innerHTML = '';
     tipoSelecionado = 'conta_corrente';
     corSelecionada = '#00d97e';
     emojiSelecionado = '🏦';
@@ -1192,8 +1444,185 @@
     document.getElementById('modal-form').classList.add('show');
   };
   
+  window.abrirModalIA = function() {
+    document.getElementById('ia-vazio').classList.remove('hidden');
+    document.getElementById('ia-preview-area').classList.add('hidden');
+    document.getElementById('ia-analisando-area').classList.add('hidden');
+    document.getElementById('ia-resultado-cad').classList.add('hidden');
+    document.getElementById('btn-confirmar-ia').classList.add('hidden');
+    document.getElementById('input-ia').value = '';
+    dadosIA = null;
+    document.getElementById('modal-ia').classList.add('show');
+  };
+  
+  window.removerPreviewIA = function() {
+    document.getElementById('ia-vazio').classList.remove('hidden');
+    document.getElementById('ia-preview-area').classList.add('hidden');
+    document.getElementById('input-ia').value = '';
+  };
+  
   window.fecharModal = function(id) {
     document.getElementById(id).classList.remove('show');
+  };
+  
+  window.processarIA = async function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    document.getElementById('ia-vazio').classList.add('hidden');
+    document.getElementById('ia-preview-area').classList.remove('hidden');
+    document.getElementById('ia-analisando-area').classList.remove('hidden');
+    document.getElementById('ia-resultado-cad').classList.add('hidden');
+    
+    const base64 = await fileToBase64(file);
+    document.getElementById('ia-preview-img').src = base64;
+    
+    try {
+      const resp = await fetch(IA_FUNCTION_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_KEY
+        },
+        body: JSON.stringify({
+          tipo: 'analisar_conta',
+          imagem_base64: base64,
+          max_tokens: 1500
+        })
+      });
+      
+      const data = await resp.json();
+      document.getElementById('ia-analisando-area').classList.add('hidden');
+      
+      if (data.resultado && !data.resultado.erro) {
+        dadosIA = data.resultado;
+        document.getElementById('ia-resultado-cad').classList.remove('hidden');
+        document.getElementById('btn-confirmar-ia').classList.remove('hidden');
+        document.getElementById('ia-resultado-preview').innerHTML = renderPreviewIA(data.resultado);
+      } else if (data.resultado?.erro) {
+        alert('⚠️ ' + data.resultado.erro);
+        fecharModal('modal-ia');
+      } else {
+        alert('⚠️ IA não conseguiu processar. Cadastra manual.');
+        fecharModal('modal-ia');
+      }
+    } catch (err) {
+      console.error('Erro IA:', err);
+      document.getElementById('ia-analisando-area').classList.add('hidden');
+      alert('⚠️ Erro: ' + err.message);
+    }
+  };
+  
+  function renderPreviewIA(r) {
+    let html = '<div class="ia-resultado-box">';
+    html += '<div class="ia-resultado-titulo">🤖 Dados detectados pela IA</div>';
+    
+    if (r.tipo_conta) {
+      html += `<div class="ia-resultado-linha"><span class="ia-resultado-label">Tipo:</span><span class="ia-resultado-valor">${tiposLabel[r.tipo_conta] || r.tipo_conta}</span></div>`;
+    }
+    if (r.banco_detectado) {
+      html += `<div class="ia-resultado-linha"><span class="ia-resultado-label">Banco:</span><span class="ia-resultado-valor">${r.banco_detectado}</span></div>`;
+    }
+    if (r.nome_sugerido) {
+      html += `<div class="ia-resultado-linha"><span class="ia-resultado-label">Nome:</span><span class="ia-resultado-valor">${r.nome_sugerido}</span></div>`;
+    }
+    if (r.saldo_atual !== null && r.saldo_atual !== undefined) {
+      html += `<div class="ia-resultado-linha"><span class="ia-resultado-label">Saldo:</span><span class="ia-resultado-valor">R$ ${formatarMoeda(r.saldo_atual)}</span></div>`;
+    }
+    if (r.limite_total) {
+      html += `<div class="ia-resultado-linha"><span class="ia-resultado-label">Limite total:</span><span class="ia-resultado-valor">R$ ${formatarMoeda(r.limite_total)}</span></div>`;
+    }
+    if (r.dia_fechamento) {
+      html += `<div class="ia-resultado-linha"><span class="ia-resultado-label">Fechamento:</span><span class="ia-resultado-valor">Dia ${r.dia_fechamento}</span></div>`;
+    }
+    if (r.dia_vencimento) {
+      html += `<div class="ia-resultado-linha"><span class="ia-resultado-label">Vencimento:</span><span class="ia-resultado-valor">Dia ${r.dia_vencimento}</span></div>`;
+    }
+    
+    html += '</div>';
+    
+    if (r.tem_divida && r.valor_divida) {
+      html += `
+        <div class="info-box" style="background:rgba(255,184,0,0.1);border-color:rgba(255,184,0,0.3);color:var(--warning);">
+          ⚠️ <strong>Fatura aberta detectada: R$ ${formatarMoeda(r.valor_divida)}</strong><br>
+          Depois de cadastrar a conta, você pode cadastrar essa fatura como dívida em "Dívidas".
+        </div>
+      `;
+    }
+    
+    if (r.observacao) {
+      html += `<div class="info-box">💡 ${r.observacao}</div>`;
+    }
+    
+    return html;
+  }
+  
+  window.confirmarCadastroIA = function() {
+    if (!dadosIA) return;
+    
+    fecharModal('modal-ia');
+    abrirModalNova();
+    
+    // Preenche formulário com dados da IA
+    setTimeout(() => {
+      const r = dadosIA;
+      
+      // Tipo
+      if (r.tipo_conta) {
+        trocarTipo(r.tipo_conta);
+      }
+      
+      // Banco - procura preset
+      if (r.banco_detectado) {
+        const idx = bancosPresets.findIndex(b => 
+          b.nome.toLowerCase() === r.banco_detectado.toLowerCase() ||
+          r.banco_detectado.toLowerCase().includes(b.nome.toLowerCase())
+        );
+        if (idx >= 0) {
+          selecionarBanco(idx);
+        } else {
+          bancoSelecionado = r.banco_detectado;
+        }
+      }
+      
+      // Nome
+      if (r.nome_sugerido) {
+        document.getElementById('f-nome').value = r.nome_sugerido;
+      }
+      
+      // Cor
+      if (r.cor_sugerida) {
+        const corHex = r.cor_sugerida.toUpperCase();
+        if (coresDisponiveis.includes(corHex) || coresDisponiveis.includes(corHex.toLowerCase())) {
+          selecionarCor(corHex.toLowerCase());
+        }
+      }
+      
+      // Valores específicos
+      if (r.tipo_conta === 'cartao_credito') {
+        if (r.limite_total) {
+          document.getElementById('f-limite').value = formatarMoeda(r.limite_total);
+        }
+        if (r.dia_fechamento) {
+          document.getElementById('f-fechamento').value = r.dia_fechamento;
+        }
+        if (r.dia_vencimento) {
+          document.getElementById('f-vencimento').value = r.dia_vencimento;
+        }
+      } else {
+        if (r.saldo_atual !== null && r.saldo_atual !== undefined) {
+          document.getElementById('f-saldo').value = formatarMoeda(r.saldo_atual);
+        }
+      }
+      
+      // Mostra resultado IA dentro do form
+      document.getElementById('ia-resultado-area').innerHTML = `
+        <div class="msg msg-success show">
+          ✨ <strong>Pré-preenchido pela IA</strong> com confiança ${r.confianca || 'média'}. Revise e ajuste se precisar.
+        </div>
+      `;
+    }, 100);
   };
   
   window.salvarConta = async function() {
@@ -1246,10 +1675,14 @@
     }
     
     if (!editandoId) {
-      await darXP(15, 'conta_cadastrada', 'Conta cadastrada: ' + nome);
-      mostrarToast('+15 XP 🏦');
+      // XP maior se foi pela IA
+      const xp = dadosIA ? 25 : 15;
+      const acao = dadosIA ? 'conta_via_ia' : 'conta_cadastrada';
+      await darXP(xp, acao, 'Conta cadastrada: ' + nome);
+      mostrarToast(`+${xp} XP ${dadosIA ? '✨ IA' : '🏦'}`);
     }
     
+    dadosIA = null;
     fecharModal('modal-form');
     await carregarContas();
     render();
@@ -1305,6 +1738,7 @@
   window.editarConta = function() {
     if (!detalheAtual) return;
     editandoId = detalheAtual.id;
+    dadosIA = null;
     
     document.getElementById('modal-form-titulo').textContent = 'Editar conta';
     document.getElementById('btn-salvar').textContent = 'Salvar';
@@ -1313,6 +1747,7 @@
     document.getElementById('f-limite').value = detalheAtual.limite ? formatarMoeda(detalheAtual.limite) : '';
     document.getElementById('f-fechamento').value = detalheAtual.dia_fechamento || '';
     document.getElementById('f-vencimento').value = detalheAtual.dia_vencimento || '';
+    document.getElementById('ia-resultado-area').innerHTML = '';
     
     tipoSelecionado = detalheAtual.tipo;
     corSelecionada = detalheAtual.cor;
@@ -1365,6 +1800,15 @@
     await carregarContas();
     render();
   };
+  
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
   
   function formatarMoeda(v) {
     return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
