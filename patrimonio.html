@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0a0a">
+<title>patrimônio • guardaí</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
+  
+  :root {
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --bg-elev: #1c1c1c;
+    --bg-input: #181818;
+    --border: #252525;
+    --border-strong: #353535;
+    --brand: #00d97e;
+    --brand-hover: #00ba6b;
+    --brand-soft: rgba(0, 217, 126, 0.1);
+    --danger: #ff4757;
+    --danger-soft: rgba(255, 71, 87, 0.1);
+    --warning: #ffb800;
+    --warning-soft: rgba(255, 184, 0, 0.1);
+    --info: #38bdf8;
+    --info-soft: rgba(56, 189, 248, 0.1);
+    --purple: #a855f7;
+    --purple-soft: rgba(168, 85, 247, 0.1);
+    --text: #ffffff;
+    --text-mute: #a3a3a3;
+    --text-faint: #525252;
+  }
+  
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  body { padding-bottom: 100px; }
+  
+  /* iOS INPUT FIX */
+  input, textarea, select {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    caret-color: var(--brand);
+  }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-input) inset !important;
+    -webkit-text-fill-color: #fff !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+  .valor-input-wrapper input {
+    color: var(--brand) !important;
+    -webkit-text-fill-color: var(--brand) !important;
+  }
+  
+  .header {
+    padding: 16px 20px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .back-btn {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  
+  .header-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    flex: 1;
+  }
+  
+  .brand-mark-mini {
+    width: 28px; height: 28px;
+    background: var(--brand);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  
+  .brand-mark-mini::before {
+    content: '';
+    width: 10px; height: 10px;
+    border: 2px solid var(--bg);
+    border-radius: 3px;
+    border-top: none; border-right: none;
+  }
+  
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* TATU */
+  .tatu-bubble {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 18px;
+  }
+  
+  .tatu-emoji { font-size: 28px; flex-shrink: 0; }
+  
+  .tatu-text {
+    flex: 1;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-mute);
+  }
+  
+  .tatu-text strong { color: var(--text); }
+  
+  /* PATRIMÔNIO TOTAL */
+  .total-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .total-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 240px;
+    height: 240px;
+    background: radial-gradient(circle, var(--brand-soft) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  
+  .total-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    color: var(--text-mute);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+    position: relative;
+  }
+  
+  .total-valor {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--brand);
+    line-height: 1;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  
+  .total-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    font-size: 13px;
+    color: var(--text-mute);
+  }
+  
+  .total-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .total-meta-item strong {
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+  }
+  
+  /* DISTRIBUIÇÃO POR TIPO */
+  .dist-bar {
+    display: flex;
+    height: 8px;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-top: 14px;
+    background: var(--bg-elev);
+    position: relative;
+  }
+  
+  .dist-bar-seg {
+    height: 100%;
+    transition: width 0.6s;
+  }
+  
+  .dist-legenda {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 14px;
+    position: relative;
+  }
+  
+  .dist-leg-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+  }
+  
+  .dist-leg-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  
+  .dist-leg-nome {
+    color: var(--text-mute);
+    flex: 1;
+  }
+  
+  .dist-leg-pct {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+  }
+  
+  /* SEÇÃO */
+  .section { margin-bottom: 16px; }
+  
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    color: var(--text-mute);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    padding: 0 4px;
+  }
+  
+  /* ATIVO */
+  .ativo-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.15s;
+  }
+  
+  .ativo-card:active { transform: scale(0.99); }
+  
+  .ativo-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  
+  .ativo-info { flex: 1; min-width: 0; }
+  
+  .ativo-nome {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .ativo-meta {
+    font-size: 12px;
+    color: var(--text-mute);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .ativo-tag {
+    background: var(--bg-elev);
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .ativo-valor {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--brand);
+    text-align: right;
+    white-space: nowrap;
+  }
+  
+  /* EMPTY */
+  .empty {
+    background: var(--bg-card);
+    border: 1px dashed var(--border-strong);
+    border-radius: 16px;
+    padding: 36px 20px;
+    text-align: center;
+  }
+  
+  .empty-emoji { font-size: 44px; margin-bottom: 10px; }
+  
+  .empty-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  
+  .empty-desc {
+    font-size: 13px;
+    color: var(--text-mute);
+    line-height: 1.5;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  
+  /* FAB */
+  .fab {
+    position: fixed;
+    bottom: 24px;
+    right: 50%;
+    transform: translateX(50%);
+    z-index: 90;
+    width: calc(100% - 40px);
+    max-width: 440px;
+    background: var(--brand);
+    color: #001a0e;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0, 217, 126, 0.3);
+  }
+  
+  .fab:active {
+    transform: translateX(50%) scale(0.97);
+    background: var(--brand-hover);
+  }
+  
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 100;
+    display: none;
+    align-items: flex-end;
+    backdrop-filter: blur(4px);
+  }
+  
+  .modal-overlay.show { display: flex; }
+  
+  .modal {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px 24px 0 0;
+    max-height: 92vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  
+  .modal-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--border-strong);
+    border-radius: 100px;
+    margin: 12px auto;
+  }
+  
+  .modal-header {
+    padding: 8px 24px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  
+  .modal-close {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    color: var(--text);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  
+  .modal-body { padding: 0 24px 24px; }
+  
+  /* TIPO PICKER */
+  .tipo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  
+  .tipo-opt {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .tipo-opt.selected {
+    background: var(--brand-soft);
+    border-color: var(--brand);
+  }
+  
+  .tipo-opt-icon { font-size: 22px; }
+  
+  .tipo-opt-info { flex: 1; min-width: 0; }
+  
+  .tipo-opt-nome {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  
+  .tipo-opt-desc {
+    font-size: 10px;
+    color: var(--text-mute);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* FIELD */
+  .field { margin-bottom: 14px; }
+  
+  .field label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-mute);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  
+  .field input, .field select {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    color: var(--text);
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--brand);
+  }
+  
+  .field input::placeholder { color: var(--text-faint); }
+  
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .valor-input-wrapper {
+    display: flex;
+    align-items: center;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+  
+  .valor-input-wrapper:focus-within { border-color: var(--brand); }
+  
+  .valor-prefix {
+    color: var(--text-mute);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-right: 8px;
+  }
+  
+  .valor-input-wrapper input {
+    background: transparent;
+    border: none;
+    flex: 1;
+    text-align: right;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    padding: 0;
+  }
+  
+  .info-box {
+    background: var(--info-soft);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 14px;
+    font-size: 12px;
+    color: var(--info);
+    line-height: 1.5;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    margin-top: 8px;
+  }
+  
+  .btn-primary { background: var(--brand); color: #001a0e; }
+  .btn-primary:active { background: var(--brand-hover); transform: scale(0.985); }
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--bg-elev);
+    color: var(--text-faint);
+  }
+  
+  .btn-secondary {
+    background: var(--bg-elev);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  
+  .btn-danger {
+    background: var(--danger-soft);
+    color: var(--danger);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+  }
+  
+  .detalhe-grid {
+    background: var(--bg-input);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .detalhe-linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .detalhe-linha:last-child { border-bottom: none; }
+  .detalhe-label { font-size: 13px; color: var(--text-mute); }
+  .detalhe-valor {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .detalhe-valor-big {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    margin: 8px 0 16px;
+    letter-spacing: -0.02em;
+    color: var(--brand);
+  }
+  
+  .msg {
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    margin-bottom: 14px;
+    display: none;
+    font-weight: 500;
+  }
+  
+  .msg.show { display: block; }
+  
+  .msg-error {
+    background: var(--danger-soft);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    color: #ff6b78;
+  }
+  
+  .xp-toast {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--brand);
+    color: #001a0e;
+    padding: 12px 20px;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    z-index: 200;
+    box-shadow: 0 8px 32px rgba(0, 217, 126, 0.4);
+    display: none;
+    animation: toastIn 0.4s cubic-bezier(0.34, 1.5, 0.64, 1);
+  }
+  
+  @keyframes toastIn {
+    0% { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+    100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+  }
+  
+  .loader-circle {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border);
+    border-radius: 50%;
+    border-top-color: var(--brand);
+    animation: spin 0.8s linear infinite;
+    margin: 40px auto;
+  }
+  
+  @keyframes spin { to { transform: rotate(360deg); } }
+  
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="back-btn" onclick="window.location.href='home.html?v=1'">‹</button>
+  <div class="header-title">Patrimônio</div>
+  <div class="brand-mark-mini" onclick="window.location.href='home.html?v=1'"></div>
+</div>
+
+<div class="container">
+
+  <div class="tatu-bubble">
+    <div class="tatu-emoji">🦔</div>
+    <div class="tatu-text" id="tatu-text">
+      Hora de fazer o dinheiro <strong>trabalhar pra você</strong>. Cadastre seus investimentos pra acompanhar.
+    </div>
+  </div>
+
+  <div id="container-conteudo">
+    <div class="loader-circle"></div>
+  </div>
+
+</div>
+
+<button class="fab" onclick="abrirModalNovo()">+ Adicionar ativo</button>
+
+<!-- MODAL FORM -->
+<div class="modal-overlay" id="modal-form">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="modal-titulo">Novo ativo</div>
+      <button class="modal-close" onclick="fecharModal('modal-form')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msg" id="msg-form"></div>
+      
+      <div class="field">
+        <label>Tipo de ativo</label>
+        <div class="tipo-grid" id="tipo-grid"></div>
+      </div>
+      
+      <div class="field">
+        <label>Quanto investiu? (valor total)</label>
+        <div class="valor-input-wrapper">
+          <span class="valor-prefix">R$</span>
+          <input type="text" inputmode="decimal" id="f-valor" placeholder="0,00" oninput="formatarValor(this)">
+        </div>
+      </div>
+      
+      <div class="field">
+        <label>Nome ou descrição</label>
+        <input type="text" id="f-nome" placeholder="Ex: CDB Banco Inter, Tesouro Selic 2029, MXRF11...">
+      </div>
+      
+      <div class="field">
+        <label>Instituição <span style="color:var(--text-faint)">(opcional)</span></label>
+        <input type="text" id="f-instituicao" placeholder="Ex: Banco Inter, XP, Nubank...">
+      </div>
+      
+      <div class="field-row">
+        <div class="field">
+          <label>Rendimento <span style="color:var(--text-faint)">(opcional)</span></label>
+          <input type="text" id="f-rendimento" placeholder="Ex: 110% CDI, IPCA+5%">
+        </div>
+        <div class="field">
+          <label>Vencimento <span style="color:var(--text-faint)">(opcional)</span></label>
+          <input type="date" id="f-vencimento">
+        </div>
+      </div>
+      
+      <div class="info-box" id="info-tipo" style="display:none;"></div>
+      
+      <button class="btn btn-primary" id="btn-salvar" onclick="salvarAtivo()">Cadastrar ativo</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETALHE -->
+<div class="modal-overlay" id="modal-detalhe">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="detalhe-titulo">Ativo</div>
+      <button class="modal-close" onclick="fecharModal('modal-detalhe')">✕</button>
+    </div>
+    <div class="modal-body">
+      
+      <div class="detalhe-valor-big" id="detalhe-valor-big">R$ 0,00</div>
+      
+      <div class="detalhe-grid">
+        <div class="detalhe-linha">
+          <div class="detalhe-label">Tipo</div>
+          <div class="detalhe-valor" id="detalhe-tipo">—</div>
+        </div>
+        <div class="detalhe-linha" id="linha-instituicao">
+          <div class="detalhe-label">Instituição</div>
+          <div class="detalhe-valor" id="detalhe-instituicao">—</div>
+        </div>
+        <div class="detalhe-linha" id="linha-rendimento">
+          <div class="detalhe-label">Rendimento</div>
+          <div class="detalhe-valor" id="detalhe-rendimento">—</div>
+        </div>
+        <div class="detalhe-linha" id="linha-vencimento">
+          <div class="detalhe-label">Vencimento</div>
+          <div class="detalhe-valor" id="detalhe-vencimento">—</div>
+        </div>
+        <div class="detalhe-linha">
+          <div class="detalhe-label">Cadastrado em</div>
+          <div class="detalhe-valor" id="detalhe-criado">—</div>
+        </div>
+      </div>
+      
+      <button class="btn btn-primary" onclick="atualizarValor()">+ Atualizar valor</button>
+      <button class="btn btn-secondary" onclick="editarAtivo()">Editar</button>
+      <button class="btn btn-danger" onclick="excluirAtivo()">Excluir</button>
+      
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ATUALIZAR VALOR -->
+<div class="modal-overlay" id="modal-atualizar">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">Atualizar valor</div>
+      <button class="modal-close" onclick="fecharModal('modal-atualizar')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msg" id="msg-atualizar"></div>
+      
+      <div class="info-box" id="info-atualizar">
+        Qual o valor atual desse ativo?
+      </div>
+      
+      <div class="valor-input-wrapper">
+        <span class="valor-prefix">R$</span>
+        <input type="text" inputmode="decimal" id="f-novo-valor" placeholder="0,00" oninput="formatarValor(this); validarAtualizar()">
+      </div>
+      
+      <button class="btn btn-primary" id="btn-atualizar" onclick="confirmarAtualizar()" disabled style="margin-top:14px;">Atualizar</button>
+    </div>
+  </div>
+</div>
+
+<div class="xp-toast" id="xp-toast">+50 XP</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+  
+  const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  
+  const tiposAtivo = {
+    'renda_fixa': { nome: 'Renda Fixa', desc: 'CDB, LCI, LCA, Tesouro', icone: '🏦', cor: '#00d97e' },
+    'tesouro': { nome: 'Tesouro Direto', desc: 'Selic, IPCA, Prefixado', icone: '🏛️', cor: '#38bdf8' },
+    'fii': { nome: 'Fundos Imobiliários', desc: 'MXRF11, KNRI11...', icone: '🏢', cor: '#a855f7' },
+    'acao': { nome: 'Ações', desc: 'PETR4, ITUB4, BBAS3...', icone: '📈', cor: '#ffb800' },
+    'cripto': { nome: 'Criptomoedas', desc: 'BTC, ETH...', icone: '₿', cor: '#f97316' },
+    'imovel': { nome: 'Imóvel', desc: 'Casa, apartamento, terreno', icone: '🏠', cor: '#ec4899' },
+    'veiculo': { nome: 'Veículo', desc: 'Carro, moto', icone: '🚗', cor: '#14b8a6' },
+    'outro': { nome: 'Outro', desc: 'Empresa, ouro, etc.', icone: '💎', cor: '#8b5cf6' }
+  };
+  
+  const dicasTipo = {
+    'renda_fixa': '💡 Renda fixa é o ponto de partida ideal. Risco baixo, rentabilidade previsível.',
+    'tesouro': '🏛️ Tesouro Direto é o investimento mais seguro do Brasil — garantido pelo governo.',
+    'fii': '🏢 FIIs pagam dividendos mensais. Bom pra renda passiva.',
+    'acao': '📈 Ações têm maior volatilidade. Estude antes de comprar.',
+    'cripto': '₿ Volatilidade alta. Recomenda-se até 5-10% da carteira.',
+    'imovel': '🏠 Imóveis trazem segurança patrimonial mas baixa liquidez.',
+    'veiculo': '🚗 Veículos desvalorizam com o tempo. Mas é parte do seu patrimônio.',
+    'outro': '💎 Para empresas, ouro, NFTs ou qualquer outro tipo de bem.'
+  };
+  
+  let usuario;
+  let ativos = [];
+  let tipoSelecionado = null;
+  let detalheAtual = null;
+  let editandoId = null;
+  
+  (async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      window.location.href = 'index.html?v=1';
+      return;
+    }
+    usuario = session.user;
+    
+    await carregarAtivos();
+    setupTipoPicker();
+  })();
+  
+  async function carregarAtivos() {
+    const { data } = await supabase
+      .from('patrimonio')
+      .select('*')
+      .eq('user_id', usuario.id)
+      .eq('ativo', true)
+      .order('valor_atual', { ascending: false });
+    
+    ativos = data || [];
+    renderTudo();
+  }
+  
+  function renderTudo() {
+    renderTatu();
+    renderConteudo();
+  }
+  
+  function renderTatu() {
+    const el = document.getElementById('tatu-text');
+    if (ativos.length === 0) {
+      el.innerHTML = 'Hora de fazer o dinheiro <strong>trabalhar pra você</strong>. Cadastre seus investimentos pra acompanhar.';
+    } else {
+      const total = ativos.reduce((acc, a) => acc + Number(a.valor_atual), 0);
+      if (ativos.length === 1) {
+        el.innerHTML = `🎉 <strong>Primeiro aporte feito!</strong> Continue diversificando.`;
+      } else if (ativos.length < 5) {
+        el.innerHTML = `💪 <strong>${ativos.length} ativos</strong> cadastrados. Diversificar é o segredo.`;
+      } else {
+        el.innerHTML = `🏆 Portfólio <strong>diversificado</strong> com ${ativos.length} ativos. Excelente!`;
+      }
+    }
+  }
+  
+  function renderConteudo() {
+    const container = document.getElementById('container-conteudo');
+    
+    if (ativos.length === 0) {
+      container.innerHTML = `
+        <div class="empty">
+          <div class="empty-emoji">📈</div>
+          <div class="empty-title">Comece a investir</div>
+          <div class="empty-desc">Cadastre seu primeiro investimento — pode ser CDB do banco, Tesouro Direto, ações, FII, imóvel, qualquer coisa.</div>
+        </div>
+      `;
+      return;
+    }
+    
+    const total = ativos.reduce((acc, a) => acc + Number(a.valor_atual), 0);
+    
+    // Agrupa por tipo
+    const porTipo = {};
+    ativos.forEach(a => {
+      const t = a.tipo || 'outro';
+      if (!porTipo[t]) porTipo[t] = { total: 0, qtd: 0 };
+      porTipo[t].total += Number(a.valor_atual);
+      porTipo[t].qtd++;
+    });
+    
+    // Ordena tipos por valor
+    const tiposOrdenados = Object.keys(porTipo).sort((a, b) => porTipo[b].total - porTipo[a].total);
+    
+    // Barra de distribuição
+    const distBar = tiposOrdenados.map(t => {
+      const pct = (porTipo[t].total / total) * 100;
+      const cor = tiposAtivo[t]?.cor || '#8b5cf6';
+      return `<div class="dist-bar-seg" style="width:${pct}%;background:${cor};"></div>`;
+    }).join('');
+    
+    // Legenda
+    const legenda = tiposOrdenados.map(t => {
+      const pct = ((porTipo[t].total / total) * 100).toFixed(1);
+      const info = tiposAtivo[t] || tiposAtivo.outro;
+      return `
+        <div class="dist-leg-item">
+          <div class="dist-leg-dot" style="background:${info.cor};"></div>
+          <div class="dist-leg-nome">${info.icone} ${info.nome}</div>
+          <div class="dist-leg-pct">${pct}%</div>
+        </div>
+      `;
+    }).join('');
+    
+    // Lista de ativos
+    const listaAtivos = ativos.map(a => {
+      const info = tiposAtivo[a.tipo] || tiposAtivo.outro;
+      return `
+        <div class="ativo-card" onclick="abrirDetalhe('${a.id}')">
+          <div class="ativo-icon" style="background:${info.cor}20;color:${info.cor};">${info.icone}</div>
+          <div class="ativo-info">
+            <div class="ativo-nome">${a.nome}</div>
+            <div class="ativo-meta">
+              <span class="ativo-tag">${info.nome.toUpperCase()}</span>
+              ${a.instituicao || ''}
+            </div>
+          </div>
+          <div class="ativo-valor">R$ ${formatarMoeda(a.valor_atual)}</div>
+        </div>
+      `;
+    }).join('');
+    
+    container.innerHTML = `
+      <div class="total-card">
+        <div class="total-label">Patrimônio investido</div>
+        <div class="total-valor">R$ ${formatarMoeda(total)}</div>
+        <div class="total-meta">
+          <div class="total-meta-item">📊 <strong>${ativos.length}</strong> ativos</div>
+          <div class="total-meta-item">🎯 <strong>${tiposOrdenados.length}</strong> tipos</div>
+        </div>
+        <div class="dist-bar">${distBar}</div>
+        <div class="dist-legenda">${legenda}</div>
+      </div>
+      
+      <div class="section">
+        <div class="section-title">Seus ativos</div>
+        ${listaAtivos}
+      </div>
+    `;
+  }
+  
+  function setupTipoPicker() {
+    document.getElementById('tipo-grid').innerHTML = Object.entries(tiposAtivo).map(([k, v]) => `
+      <div class="tipo-opt" data-tipo="${k}" onclick="selecionarTipo('${k}')">
+        <div class="tipo-opt-icon">${v.icone}</div>
+        <div class="tipo-opt-info">
+          <div class="tipo-opt-nome">${v.nome}</div>
+          <div class="tipo-opt-desc">${v.desc}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+  
+  window.selecionarTipo = function(t) {
+    tipoSelecionado = t;
+    document.querySelectorAll('.tipo-opt').forEach(o => o.classList.toggle('selected', o.dataset.tipo === t));
+    
+    const info = document.getElementById('info-tipo');
+    info.style.display = 'block';
+    info.textContent = dicasTipo[t] || '';
+  };
+  
+  function formatarMoeda(v) {
+    return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  
+  function formatarData(d) {
+    if (!d) return '—';
+    return new Date(d.includes('T') ? d : d + 'T00:00:00').toLocaleDateString('pt-BR');
+  }
+  
+  window.formatarValor = function(input) {
+    let v = input.value.replace(/\D/g, '');
+    if (!v) { input.value = ''; return; }
+    v = (parseInt(v) / 100).toFixed(2);
+    input.value = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  };
+  
+  function valorParaNumero(str) {
+    if (!str) return 0;
+    return Number(str.replace(/\./g, '').replace(',', '.')) || 0;
+  }
+  
+  window.abrirModalNovo = function() {
+    editandoId = null;
+    tipoSelecionado = null;
+    document.getElementById('modal-titulo').textContent = 'Novo ativo';
+    document.getElementById('btn-salvar').textContent = 'Cadastrar ativo';
+    document.getElementById('f-valor').value = '';
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-instituicao').value = '';
+    document.getElementById('f-rendimento').value = '';
+    document.getElementById('f-vencimento').value = '';
+    document.getElementById('msg-form').className = 'msg';
+    document.getElementById('info-tipo').style.display = 'none';
+    document.querySelectorAll('.tipo-opt').forEach(o => o.classList.remove('selected'));
+    document.getElementById('modal-form').classList.add('show');
+  };
+  
+  window.fecharModal = function(id) {
+    document.getElementById(id).classList.remove('show');
+  };
+  
+  window.salvarAtivo = async function() {
+    const valor = valorParaNumero(document.getElementById('f-valor').value);
+    const nome = document.getElementById('f-nome').value.trim();
+    const instituicao = document.getElementById('f-instituicao').value.trim() || null;
+    const rendimento = document.getElementById('f-rendimento').value.trim() || null;
+    const vencimento = document.getElementById('f-vencimento').value || null;
+    
+    if (!tipoSelecionado) {
+      document.getElementById('msg-form').className = 'msg show msg-error';
+      document.getElementById('msg-form').textContent = 'Escolha um tipo de ativo';
+      return;
+    }
+    
+    if (!nome || valor <= 0) {
+      document.getElementById('msg-form').className = 'msg show msg-error';
+      document.getElementById('msg-form').textContent = 'Preencha nome e valor';
+      return;
+    }
+    
+    const btn = document.getElementById('btn-salvar');
+    btn.disabled = true;
+    btn.textContent = 'Salvando...';
+    
+    const payload = {
+      tipo: tipoSelecionado,
+      nome,
+      instituicao,
+      valor_investido: valor,
+      valor_atual: valor,
+      rendimento_esperado: rendimento,
+      vencimento,
+      ativo: true
+    };
+    
+    let result;
+    let ehPrimeiro = ativos.length === 0;
+    
+    if (editandoId) {
+      result = await supabase.from('patrimonio').update(payload).eq('id', editandoId);
+    } else {
+      result = await supabase.from('patrimonio').insert({
+        ...payload,
+        user_id: usuario.id
+      });
+    }
+    
+    if (result.error) {
+      document.getElementById('msg-form').className = 'msg show msg-error';
+      document.getElementById('msg-form').textContent = 'Erro: ' + result.error.message;
+      btn.disabled = false;
+      btn.textContent = editandoId ? 'Salvar alterações' : 'Cadastrar ativo';
+      return;
+    }
+    
+    if (!editandoId) {
+      const xp = ehPrimeiro ? 200 : 50;
+      const msg = ehPrimeiro ? `🎉 +${xp} XP — Primeiro aporte!` : `+${xp} XP 📈`;
+      await darXP(xp, ehPrimeiro ? 'primeiro_aporte' : 'novo_ativo', 'Ativo cadastrado: ' + nome);
+      mostrarToast(msg);
+    }
+    
+    fecharModal('modal-form');
+    await carregarAtivos();
+  };
+  
+  window.abrirDetalhe = function(id) {
+    const a = ativos.find(x => x.id === id);
+    if (!a) return;
+    detalheAtual = a;
+    
+    const info = tiposAtivo[a.tipo] || tiposAtivo.outro;
+    
+    document.getElementById('detalhe-titulo').textContent = a.nome;
+    document.getElementById('detalhe-valor-big').textContent = 'R$ ' + formatarMoeda(a.valor_atual);
+    document.getElementById('detalhe-tipo').textContent = info.icone + ' ' + info.nome;
+    
+    if (a.instituicao) {
+      document.getElementById('linha-instituicao').style.display = 'flex';
+      document.getElementById('detalhe-instituicao').textContent = a.instituicao;
+    } else {
+      document.getElementById('linha-instituicao').style.display = 'none';
+    }
+    
+    if (a.rendimento_esperado) {
+      document.getElementById('linha-rendimento').style.display = 'flex';
+      document.getElementById('detalhe-rendimento').textContent = a.rendimento_esperado;
+    } else {
+      document.getElementById('linha-rendimento').style.display = 'none';
+    }
+    
+    if (a.vencimento) {
+      document.getElementById('linha-vencimento').style.display = 'flex';
+      document.getElementById('detalhe-vencimento').textContent = formatarData(a.vencimento);
+    } else {
+      document.getElementById('linha-vencimento').style.display = 'none';
+    }
+    
+    document.getElementById('detalhe-criado').textContent = formatarData(a.criado_em);
+    
+    document.getElementById('modal-detalhe').classList.add('show');
+  };
+  
+  window.editarAtivo = function() {
+    if (!detalheAtual) return;
+    const a = detalheAtual;
+    
+    editandoId = a.id;
+    tipoSelecionado = a.tipo;
+    
+    document.getElementById('modal-titulo').textContent = 'Editar ativo';
+    document.getElementById('btn-salvar').textContent = 'Salvar alterações';
+    document.getElementById('f-valor').value = formatarMoeda(a.valor_atual);
+    document.getElementById('f-nome').value = a.nome;
+    document.getElementById('f-instituicao').value = a.instituicao || '';
+    document.getElementById('f-rendimento').value = a.rendimento_esperado || '';
+    document.getElementById('f-vencimento').value = a.vencimento || '';
+    document.getElementById('msg-form').className = 'msg';
+    
+    setTimeout(() => selecionarTipo(a.tipo), 50);
+    
+    fecharModal('modal-detalhe');
+    document.getElementById('modal-form').classList.add('show');
+  };
+  
+  window.excluirAtivo = async function() {
+    if (!detalheAtual) return;
+    if (!confirm(`Excluir "${detalheAtual.nome}"? Não pode ser desfeito.`)) return;
+    
+    await supabase.from('patrimonio').delete().eq('id', detalheAtual.id);
+    fecharModal('modal-detalhe');
+    await carregarAtivos();
+  };
+  
+  window.atualizarValor = function() {
+    if (!detalheAtual) return;
+    document.getElementById('f-novo-valor').value = formatarMoeda(detalheAtual.valor_atual);
+    document.getElementById('msg-atualizar').className = 'msg';
+    document.getElementById('info-atualizar').innerHTML = `Qual o valor atual de <strong>${detalheAtual.nome}</strong>?`;
+    document.getElementById('btn-atualizar').disabled = false;
+    document.getElementById('modal-atualizar').classList.add('show');
+  };
+  
+  window.validarAtualizar = function() {
+    const v = valorParaNumero(document.getElementById('f-novo-valor').value);
+    document.getElementById('btn-atualizar').disabled = v <= 0;
+  };
+  
+  window.confirmarAtualizar = async function() {
+    if (!detalheAtual) return;
+    const v = valorParaNumero(document.getElementById('f-novo-valor').value);
+    if (v <= 0) return;
+    
+    const btn = document.getElementById('btn-atualizar');
+    btn.disabled = true;
+    btn.textContent = 'Atualizando...';
+    
+    await supabase.from('patrimonio').update({ 
+      valor_atual: v 
+    }).eq('id', detalheAtual.id);
+    
+    await darXP(20, 'valor_ativo_atualizado', 'Valor atualizado');
+    mostrarToast('+20 XP 📊');
+    
+    btn.textContent = 'Atualizar';
+    fecharModal('modal-atualizar');
+    fecharModal('modal-detalhe');
+    await carregarAtivos();
+  };
+  
+  async function darXP(xp, acao, descricao) {
+    await supabase.from('historico_xp').insert({
+      user_id: usuario.id, acao, xp_ganho: xp, descricao
+    });
+    const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).single();
+    await supabase.from('gamificacao').update({
+      xp_total: (g?.xp_total || 0) + xp,
+      ultima_atividade: new Date().toISOString().split('T')[0]
+    }).eq('user_id', usuario.id);
+  }
+  
+  function mostrarToast(texto) {
+    const t = document.getElementById('xp-toast');
+    t.textContent = texto;
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 2500);
+  }
+</script>
+
+</body>
+</html>
