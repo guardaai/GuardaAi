@@ -125,7 +125,6 @@
   
   .tatu-text strong { color: var(--text); }
   
-  /* PROGRESSO GERAL */
   .progresso-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -208,7 +207,6 @@
     transition: width 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
   }
   
-  /* MÓDULO */
   .modulo {
     margin-bottom: 24px;
   }
@@ -267,7 +265,6 @@
     background: var(--brand-soft);
   }
   
-  /* TRILHA - CAMINHO ZIG-ZAG */
   .trilha {
     position: relative;
     padding: 0;
@@ -403,7 +400,6 @@
     font-family: 'Space Grotesk', sans-serif;
   }
   
-  /* LINHA CONECTORA */
   .licao-conector {
     position: absolute;
     left: 30px;
@@ -418,7 +414,6 @@
     background: var(--brand);
   }
   
-  /* MODAL LEITURA */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -626,7 +621,6 @@
   
   .btn-ja-completa:active { transform: none; }
   
-  /* CONCLUSAO MODAL */
   .conclusao-overlay {
     position: fixed;
     inset: 0;
@@ -786,7 +780,6 @@
 
 </div>
 
-<!-- MODAL LEITURA -->
 <div class="modal-overlay" id="modal-leitura">
   <div class="modal-leitura">
     <div class="leitura-header">
@@ -810,11 +803,10 @@
   </div>
 </div>
 
-<!-- CONCLUSÃO -->
 <div class="conclusao-overlay" id="conclusao-overlay">
   <div class="conclusao-modal" id="conclusao-modal">
-    <div class="conclusao-emoji">🎉</div>
-    <div class="conclusao-titulo">Lição completa!</div>
+    <div class="conclusao-emoji" id="conclusao-emoji">🎉</div>
+    <div class="conclusao-titulo" id="conclusao-titulo">Lição completa!</div>
     <div class="conclusao-desc" id="conclusao-desc">Mais um passo na sua jornada.</div>
     <div class="conclusao-xp" id="conclusao-xp">+30 XP</div>
     <button class="btn-continuar" onclick="fecharConclusao()">Continuar trilha</button>
@@ -846,7 +838,7 @@
   
   let usuario, perfil;
   let conteudos = [];
-  let progresso = []; // ids dos conteúdos já concluídos
+  let progresso = [];
   let licaoAtual = null;
   
   (async () => {
@@ -864,7 +856,7 @@
     const [perfilRes, conteudosRes, progressoRes] = await Promise.all([
       supabase.from('perfis').select('*').eq('id', usuario.id).single(),
       supabase.from('conteudos_educacionais').select('*').eq('ativo', true).order('nivel_jornada').order('ordem'),
-      supabase.from('educacao_progresso').select('conteudo_id').eq('user_id', usuario.id)
+      supabase.from('educacao_progresso').select('conteudo_id').eq('user_id', usuario.id).eq('concluido', true)
     ]);
     
     perfil = perfilRes.data;
@@ -934,7 +926,6 @@
       return;
     }
     
-    // Agrupa por nível_jornada
     const porNivel = {};
     conteudos.forEach(c => {
       if (!porNivel[c.nivel_jornada]) porNivel[c.nivel_jornada] = [];
@@ -944,7 +935,6 @@
     const nivelUsuario = perfil?.nivel_jornada || 2;
     let primeiraNaoConcluida = null;
     
-    // Acha primeira não concluída
     for (const c of conteudos) {
       if (!progresso.includes(c.id) && c.nivel_jornada <= nivelUsuario) {
         primeiraNaoConcluida = c.id;
@@ -1017,7 +1007,6 @@
     }).join('');
   }
   
-  // ====== LEITURA ======
   window.abrirLicao = function(id) {
     const l = conteudos.find(c => c.id === id);
     if (!l) return;
@@ -1065,24 +1054,41 @@
     btn.disabled = true;
     btn.textContent = 'Salvando...';
     
-    const { error } = await supabase.from('educacao_progresso').insert({
-      user_id: usuario.id,
-      conteudo_id: licaoAtual.id,
-      concluido_em: new Date().toISOString()
-    });
+    // Verifica se já existe registro (concluido = false)
+    const { data: existente } = await supabase
+      .from('educacao_progresso')
+      .select('id')
+      .eq('user_id', usuario.id)
+      .eq('conteudo_id', licaoAtual.id)
+      .maybeSingle();
     
-    if (error) {
-      alert('Erro: ' + error.message);
+    let result;
+    if (existente) {
+      result = await supabase
+        .from('educacao_progresso')
+        .update({ concluido: true, data_conclusao: new Date().toISOString() })
+        .eq('id', existente.id);
+    } else {
+      result = await supabase
+        .from('educacao_progresso')
+        .insert({
+          user_id: usuario.id,
+          conteudo_id: licaoAtual.id,
+          concluido: true,
+          data_conclusao: new Date().toISOString()
+        });
+    }
+    
+    if (result.error) {
+      alert('Erro: ' + result.error.message);
       btn.disabled = false;
       btn.textContent = 'Marcar como concluída';
       return;
     }
     
-    // XP
     await darXP(licaoAtual.xp_recompensa, 'licao_concluida', 'Lição: ' + licaoAtual.titulo);
     progresso.push(licaoAtual.id);
     
-    // Mostra conclusão
     document.getElementById('conclusao-xp').textContent = '+' + licaoAtual.xp_recompensa + ' XP';
     
     const totalFeitas = progresso.length;
@@ -1154,13 +1160,11 @@
     }).eq('user_id', usuario.id);
   }
   
-  // MARKDOWN SIMPLES PRA HTML
   function markdownToHtml(md) {
     if (!md) return '<p>Conteúdo não disponível.</p>';
     
     let html = md;
     
-    // Tabelas (precisa ser primeiro)
     const tableRegex = /(\|.+\|\n)+/g;
     html = html.replace(tableRegex, (match) => {
       const lines = match.trim().split('\n');
@@ -1185,25 +1189,19 @@
       return table;
     });
     
-    // Headers
     html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
     html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
     html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
     
-    // Bold
     html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     
-    // Listas
     html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
     html = html.replace(/(<li>.*<\/li>\n?)+/g, (match) => '<ul>' + match + '</ul>');
     
-    // Numeradas
     html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
     
-    // Inline code
     html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
     
-    // Parágrafos (linhas em branco viram quebra)
     html = html.split('\n\n').map(p => {
       p = p.trim();
       if (!p) return '';
