@@ -373,7 +373,6 @@
     background: var(--brand-hover);
   }
   
-  /* MODAL CORRIGIDO */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -681,14 +680,6 @@
     margin-top: 8px;
   }
   
-  .btn-ia {
-    background: var(--ia);
-    color: white;
-    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
-  }
-  
-  .btn-ia:active { background: var(--ia-hover); transform: scale(0.985); }
-  
   .msg {
     padding: 12px;
     border-radius: 10px;
@@ -710,6 +701,12 @@
     background: var(--brand-soft);
     border: 1px solid rgba(0, 217, 126, 0.3);
     color: var(--brand);
+  }
+  
+  .msg-ia {
+    background: var(--ia-soft);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    color: var(--ia);
   }
   
   .xp-toast {
@@ -782,7 +779,6 @@
     line-height: 1.5;
   }
   
-  /* IA UPLOAD */
   .upload-area {
     background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-input) 100%);
     border: 2px dashed rgba(168, 85, 247, 0.4);
@@ -810,50 +806,9 @@
   
   .input-hidden { display: none; }
   
-  .preview-area {
-    border: 2px solid var(--ia);
-    border-radius: 14px;
-    overflow: hidden;
-    margin-bottom: 14px;
-    position: relative;
-    background: var(--bg-input);
-  }
-  
-  .preview-area img {
-    width: 100%;
-    max-height: 240px;
-    object-fit: contain;
-    display: block;
-  }
-  
-  .preview-remover {
-    position: absolute;
-    top: 8px; right: 8px;
-    width: 32px; height: 32px;
-    background: rgba(0,0,0,0.75);
-    border: none;
-    border-radius: 50%;
-    color: white;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
-  }
-  
-  .ia-badge {
-    position: absolute;
-    top: 8px; left: 8px;
-    background: var(--ia);
-    color: white;
-    padding: 4px 10px;
-    border-radius: 100px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-  }
-  
   .ia-analisando {
     text-align: center;
-    padding: 40px 20px;
+    padding: 60px 20px;
   }
   
   .ia-spinner {
@@ -863,39 +818,6 @@
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
     margin: 0 auto 14px;
-  }
-  
-  .ia-resultado-box {
-    background: var(--ia-soft);
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 14px;
-  }
-  
-  .ia-resultado-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--ia);
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  
-  .ia-resultado-linha {
-    display: flex;
-    justify-content: space-between;
-    padding: 4px 0;
-    font-size: 12px;
-  }
-  
-  .ia-resultado-label { color: var(--text-mute); }
-  .ia-resultado-valor {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    color: var(--text);
   }
   
   .hidden { display: none !important; }
@@ -929,7 +851,7 @@
     <div class="quick-btn ia" onclick="abrirModalIA()">
       <div class="quick-btn-icon">✨</div>
       <div class="quick-btn-label">Cadastrar por foto</div>
-      <div class="quick-btn-sub">IA lê print/fatura</div>
+      <div class="quick-btn-sub">IA preenche tudo</div>
     </div>
   </div>
   
@@ -953,8 +875,6 @@
     </div>
     <div class="modal-body">
       <div class="msg" id="msg-form"></div>
-      
-      <div id="ia-resultado-area"></div>
       
       <div class="secao-titulo" style="margin-top:0;">Tipo de conta</div>
       <div class="tipo-grid">
@@ -1023,6 +943,18 @@
             <input type="text" inputmode="decimal" id="f-limite" placeholder="0,00" oninput="formatarValor(this)">
           </div>
         </div>
+        <div id="fatura-aberta-section" class="hidden" style="margin-top:14px;">
+          <div class="info-box" style="background:rgba(255,184,0,0.1);border-color:rgba(255,184,0,0.3);color:var(--warning);">
+            ⚠️ <strong>Fatura aberta detectada pela IA</strong>. Depois de salvar essa conta, vou te ajudar a cadastrar a fatura como dívida em "Dívidas".
+          </div>
+          <div class="field">
+            <label>Valor da fatura aberta (informativo)</label>
+            <div class="valor-input-wrapper" style="margin-bottom:0;">
+              <span class="valor-prefix">R$</span>
+              <input type="text" inputmode="decimal" id="f-fatura" placeholder="0,00" oninput="formatarValor(this)">
+            </div>
+          </div>
+        </div>
         <div class="field-row">
           <div class="field">
             <label>Fechamento (dia)</label>
@@ -1056,7 +988,7 @@
       
       <div id="ia-vazio">
         <div class="info-box">
-          📸 Tire foto/print de uma dessas opções e a IA cadastra tudo automaticamente:
+          📸 Tire foto/print de uma dessas opções e a IA preenche tudo automaticamente:
         </div>
         
         <div class="upload-area" onclick="document.getElementById('input-ia').click()">
@@ -1074,28 +1006,14 @@
         </div>
       </div>
       
-      <div id="ia-preview-area" class="hidden">
-        <div class="preview-area">
-          <img id="ia-preview-img">
-          <div class="ia-badge">✨ IA</div>
-          <button class="preview-remover" onclick="removerPreviewIA()">✕</button>
-        </div>
-      </div>
-      
       <div id="ia-analisando-area" class="hidden ia-analisando">
         <div class="ia-spinner"></div>
         <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--ia);margin-bottom:4px;">🤖 IA lendo a imagem...</div>
         <div style="font-size:12px;color:var(--text-mute);">Extraindo banco, saldo, datas</div>
       </div>
       
-      <div id="ia-resultado-cad" class="hidden">
-        <div class="msg msg-success show">✅ <strong>Dados extraídos!</strong> Revise e confirme.</div>
-        <div id="ia-resultado-preview"></div>
-      </div>
-      
     </div>
     <div class="modal-footer">
-      <button class="btn btn-primary hidden" id="btn-confirmar-ia" onclick="confirmarCadastroIA()">Continuar e revisar</button>
     </div>
   </div>
 </div>
@@ -1198,7 +1116,7 @@
   let bancoSelecionado = null;
   let editandoId = null;
   let detalheAtual = null;
-  let dadosIA = null;
+  let veiodaIA = false;
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -1266,7 +1184,7 @@
     const ativas = contas.filter(c => c.ativa).length;
     
     if (contas.length === 0) {
-      el.innerHTML = 'Cadastre <strong>todas suas contas</strong>. Use o botão ✨ pra IA fazer por você!';
+      el.innerHTML = 'Cadastre <strong>todas suas contas</strong>. Use ✨ pra IA fazer por você!';
     } else if (ativas < 2) {
       el.innerHTML = `Você tem ${ativas} conta. <strong>Cadastre mais</strong> com IA via foto!`;
     } else if (!contas.some(c => c.tipo === 'cartao_credito')) {
@@ -1351,7 +1269,7 @@
   
   function renderCoresGrid() {
     document.getElementById('cores-grid').innerHTML = coresDisponiveis.map(c => `
-      <div class="cor-opcao ${c === corSelecionada ? 'active' : ''}" 
+      <div class="cor-opcao ${c.toLowerCase() === corSelecionada.toLowerCase() ? 'active' : ''}" 
            data-cor="${c}" 
            style="background:${c};" 
            onclick="selecionarCor('${c}')"></div>
@@ -1366,7 +1284,7 @@
     `).join('');
   }
   
-  window.trocarTipo = function(tipo) {
+  window.trocarTipo = function(tipo, manterEmoji) {
     tipoSelecionado = tipo;
     document.querySelectorAll('.tipo-opcao').forEach(t => t.classList.toggle('active', t.dataset.tipo === tipo));
     
@@ -1375,12 +1293,14 @@
     document.getElementById('saldo-inicial-section').classList.toggle('hidden', isCartao);
     document.getElementById('banco-section').classList.toggle('hidden', tipo === 'carteira' || tipo === 'outro');
     
-    if (tipo === 'cartao_credito') { emojiSelecionado = '💳'; }
-    else if (tipo === 'carteira') { emojiSelecionado = '💰'; }
-    else if (tipo === 'poupanca') { emojiSelecionado = '🐷'; }
-    else if (tipo === 'investimento') { emojiSelecionado = '📈'; }
-    else { emojiSelecionado = '🏦'; }
-    renderEmojisGrid();
+    if (!manterEmoji) {
+      if (tipo === 'cartao_credito') { emojiSelecionado = '💳'; }
+      else if (tipo === 'carteira') { emojiSelecionado = '💰'; }
+      else if (tipo === 'poupanca') { emojiSelecionado = '🐷'; }
+      else if (tipo === 'investimento') { emojiSelecionado = '📈'; }
+      else { emojiSelecionado = '🏦'; }
+      renderEmojisGrid();
+    }
   };
   
   window.selecionarBanco = function(i) {
@@ -1401,7 +1321,7 @@
   
   window.selecionarCor = function(c) {
     corSelecionada = c;
-    document.querySelectorAll('.cor-opcao').forEach(el => el.classList.toggle('active', el.dataset.cor === c));
+    document.querySelectorAll('.cor-opcao').forEach(el => el.classList.toggle('active', el.dataset.cor.toLowerCase() === c.toLowerCase()));
   };
   
   window.selecionarEmoji = function(e) {
@@ -1423,16 +1343,17 @@
   
   window.abrirModalNova = function() {
     editandoId = null;
-    dadosIA = null;
+    veiodaIA = false;
     document.getElementById('modal-form-titulo').textContent = 'Nova conta';
     document.getElementById('btn-salvar').textContent = 'Cadastrar conta';
     document.getElementById('f-nome').value = '';
     document.getElementById('f-saldo').value = '';
     document.getElementById('f-limite').value = '';
+    document.getElementById('f-fatura').value = '';
     document.getElementById('f-fechamento').value = '';
     document.getElementById('f-vencimento').value = '';
     document.getElementById('msg-form').className = 'msg';
-    document.getElementById('ia-resultado-area').innerHTML = '';
+    document.getElementById('fatura-aberta-section').classList.add('hidden');
     tipoSelecionado = 'conta_corrente';
     corSelecionada = '#00d97e';
     emojiSelecionado = '🏦';
@@ -1446,36 +1367,127 @@
   
   window.abrirModalIA = function() {
     document.getElementById('ia-vazio').classList.remove('hidden');
-    document.getElementById('ia-preview-area').classList.add('hidden');
     document.getElementById('ia-analisando-area').classList.add('hidden');
-    document.getElementById('ia-resultado-cad').classList.add('hidden');
-    document.getElementById('btn-confirmar-ia').classList.add('hidden');
     document.getElementById('input-ia').value = '';
-    dadosIA = null;
     document.getElementById('modal-ia').classList.add('show');
-  };
-  
-  window.removerPreviewIA = function() {
-    document.getElementById('ia-vazio').classList.remove('hidden');
-    document.getElementById('ia-preview-area').classList.add('hidden');
-    document.getElementById('input-ia').value = '';
   };
   
   window.fecharModal = function(id) {
     document.getElementById(id).classList.remove('show');
   };
   
+  /**
+   * Função chave: abre o modal de cadastro JÁ COM TODOS OS DADOS DA IA PREENCHIDOS.
+   * NÃO chama abrirModalNova() porque essa função LIMPA os campos.
+   */
+  function abrirFormularioComDadosIA(r) {
+    editandoId = null;
+    veiodaIA = true;
+    
+    // Reset visual
+    document.getElementById('modal-form-titulo').textContent = '✨ Conta detectada pela IA';
+    document.getElementById('btn-salvar').textContent = 'Salvar conta';
+    document.getElementById('msg-form').className = 'msg';
+    document.querySelectorAll('.banco-preset').forEach(el => el.classList.remove('active'));
+    
+    // 1. TIPO - sempre primeiro porque define o que mostrar
+    const tipo = r.tipo_conta || 'conta_corrente';
+    tipoSelecionado = tipo;
+    
+    // 2. EMOJI baseado no tipo
+    if (tipo === 'cartao_credito') emojiSelecionado = '💳';
+    else if (tipo === 'carteira') emojiSelecionado = '💰';
+    else if (tipo === 'poupanca') emojiSelecionado = '🐷';
+    else if (tipo === 'investimento') emojiSelecionado = '📈';
+    else emojiSelecionado = '🏦';
+    
+    // 3. BANCO - procura preset, se achar usa cor do preset
+    let bancoIdx = -1;
+    if (r.banco_detectado) {
+      bancoIdx = bancosPresets.findIndex(b => 
+        b.nome.toLowerCase() === r.banco_detectado.toLowerCase() ||
+        r.banco_detectado.toLowerCase().includes(b.nome.toLowerCase()) ||
+        b.nome.toLowerCase().includes(r.banco_detectado.toLowerCase())
+      );
+    }
+    
+    if (bancoIdx >= 0) {
+      const b = bancosPresets[bancoIdx];
+      bancoSelecionado = b.nome === 'Outro' ? null : b.nome;
+      corSelecionada = b.cor;
+    } else {
+      bancoSelecionado = r.banco_detectado || null;
+      // Se IA sugeriu cor, usa
+      if (r.cor_sugerida) {
+        corSelecionada = r.cor_sugerida;
+      } else {
+        corSelecionada = tipo === 'cartao_credito' ? '#820AD1' : '#00d97e';
+      }
+    }
+    
+    // 4. NOME (preenche INPUT)
+    document.getElementById('f-nome').value = r.nome_sugerido || r.banco_detectado || '';
+    
+    // 5. Limpa campos antes de preencher
+    document.getElementById('f-saldo').value = '';
+    document.getElementById('f-limite').value = '';
+    document.getElementById('f-fatura').value = '';
+    document.getElementById('f-fechamento').value = '';
+    document.getElementById('f-vencimento').value = '';
+    document.getElementById('fatura-aberta-section').classList.add('hidden');
+    
+    // 6. VALORES específicos por tipo
+    if (tipo === 'cartao_credito') {
+      if (r.limite_total != null) {
+        document.getElementById('f-limite').value = formatarMoeda(r.limite_total);
+      }
+      if (r.dia_fechamento) {
+        document.getElementById('f-fechamento').value = r.dia_fechamento;
+      }
+      if (r.dia_vencimento) {
+        document.getElementById('f-vencimento').value = r.dia_vencimento;
+      }
+      // Se detectou fatura aberta, mostra info adicional
+      if (r.tem_divida && r.valor_divida) {
+        document.getElementById('f-fatura').value = formatarMoeda(r.valor_divida);
+        document.getElementById('fatura-aberta-section').classList.remove('hidden');
+      }
+    } else {
+      if (r.saldo_atual != null) {
+        document.getElementById('f-saldo').value = formatarMoeda(r.saldo_atual);
+      }
+    }
+    
+    // 7. AGORA aplica visual: trocarTipo (com manterEmoji=true), bancos, cores, emojis
+    trocarTipo(tipo, true); // mantém emoji que setamos
+    
+    if (bancoIdx >= 0) {
+      document.querySelectorAll('.banco-preset').forEach((el, idx) => {
+        el.classList.toggle('active', idx === bancoIdx);
+      });
+    }
+    
+    renderCoresGrid();
+    renderEmojisGrid();
+    
+    // 8. Mensagem de boas vindas no topo
+    const conf = r.confianca || 'média';
+    const obs = r.observacao ? '<br><br>💡 ' + r.observacao : '';
+    document.getElementById('msg-form').className = 'msg msg-ia show';
+    document.getElementById('msg-form').innerHTML = `✨ <strong>IA preencheu tudo!</strong> Confiança: ${conf}. Revise e ajuste se algo estiver errado.${obs}`;
+    
+    // 9. ABRE o modal
+    document.getElementById('modal-form').classList.add('show');
+  }
+  
   window.processarIA = async function(e) {
     const file = e.target.files[0];
     if (!file) return;
     
     document.getElementById('ia-vazio').classList.add('hidden');
-    document.getElementById('ia-preview-area').classList.remove('hidden');
     document.getElementById('ia-analisando-area').classList.remove('hidden');
-    document.getElementById('ia-resultado-cad').classList.add('hidden');
     
     const base64 = await fileToBase64(file);
-    document.getElementById('ia-preview-img').src = base64;
     
     try {
       const resp = await fetch(IA_FUNCTION_URL, {
@@ -1493,17 +1505,20 @@
       });
       
       const data = await resp.json();
-      document.getElementById('ia-analisando-area').classList.add('hidden');
       
       if (data.resultado && !data.resultado.erro) {
-        dadosIA = data.resultado;
-        document.getElementById('ia-resultado-cad').classList.remove('hidden');
-        document.getElementById('btn-confirmar-ia').classList.remove('hidden');
-        document.getElementById('ia-resultado-preview').innerHTML = renderPreviewIA(data.resultado);
+        // FECHA modal IA e ABRE modal de cadastro JÁ PREENCHIDO
+        fecharModal('modal-ia');
+        // Pequeno delay pra animação fechar
+        setTimeout(() => {
+          abrirFormularioComDadosIA(data.resultado);
+        }, 200);
       } else if (data.resultado?.erro) {
+        document.getElementById('ia-analisando-area').classList.add('hidden');
         alert('⚠️ ' + data.resultado.erro);
         fecharModal('modal-ia');
       } else {
+        document.getElementById('ia-analisando-area').classList.add('hidden');
         alert('⚠️ IA não conseguiu processar. Cadastra manual.');
         fecharModal('modal-ia');
       }
@@ -1511,118 +1526,8 @@
       console.error('Erro IA:', err);
       document.getElementById('ia-analisando-area').classList.add('hidden');
       alert('⚠️ Erro: ' + err.message);
+      fecharModal('modal-ia');
     }
-  };
-  
-  function renderPreviewIA(r) {
-    let html = '<div class="ia-resultado-box">';
-    html += '<div class="ia-resultado-titulo">🤖 Dados detectados pela IA</div>';
-    
-    if (r.tipo_conta) {
-      html += `<div class="ia-resultado-linha"><span class="ia-resultado-label">Tipo:</span><span class="ia-resultado-valor">${tiposLabel[r.tipo_conta] || r.tipo_conta}</span></div>`;
-    }
-    if (r.banco_detectado) {
-      html += `<div class="ia-resultado-linha"><span class="ia-resultado-label">Banco:</span><span class="ia-resultado-valor">${r.banco_detectado}</span></div>`;
-    }
-    if (r.nome_sugerido) {
-      html += `<div class="ia-resultado-linha"><span class="ia-resultado-label">Nome:</span><span class="ia-resultado-valor">${r.nome_sugerido}</span></div>`;
-    }
-    if (r.saldo_atual !== null && r.saldo_atual !== undefined) {
-      html += `<div class="ia-resultado-linha"><span class="ia-resultado-label">Saldo:</span><span class="ia-resultado-valor">R$ ${formatarMoeda(r.saldo_atual)}</span></div>`;
-    }
-    if (r.limite_total) {
-      html += `<div class="ia-resultado-linha"><span class="ia-resultado-label">Limite total:</span><span class="ia-resultado-valor">R$ ${formatarMoeda(r.limite_total)}</span></div>`;
-    }
-    if (r.dia_fechamento) {
-      html += `<div class="ia-resultado-linha"><span class="ia-resultado-label">Fechamento:</span><span class="ia-resultado-valor">Dia ${r.dia_fechamento}</span></div>`;
-    }
-    if (r.dia_vencimento) {
-      html += `<div class="ia-resultado-linha"><span class="ia-resultado-label">Vencimento:</span><span class="ia-resultado-valor">Dia ${r.dia_vencimento}</span></div>`;
-    }
-    
-    html += '</div>';
-    
-    if (r.tem_divida && r.valor_divida) {
-      html += `
-        <div class="info-box" style="background:rgba(255,184,0,0.1);border-color:rgba(255,184,0,0.3);color:var(--warning);">
-          ⚠️ <strong>Fatura aberta detectada: R$ ${formatarMoeda(r.valor_divida)}</strong><br>
-          Depois de cadastrar a conta, você pode cadastrar essa fatura como dívida em "Dívidas".
-        </div>
-      `;
-    }
-    
-    if (r.observacao) {
-      html += `<div class="info-box">💡 ${r.observacao}</div>`;
-    }
-    
-    return html;
-  }
-  
-  window.confirmarCadastroIA = function() {
-    if (!dadosIA) return;
-    
-    fecharModal('modal-ia');
-    abrirModalNova();
-    
-    // Preenche formulário com dados da IA
-    setTimeout(() => {
-      const r = dadosIA;
-      
-      // Tipo
-      if (r.tipo_conta) {
-        trocarTipo(r.tipo_conta);
-      }
-      
-      // Banco - procura preset
-      if (r.banco_detectado) {
-        const idx = bancosPresets.findIndex(b => 
-          b.nome.toLowerCase() === r.banco_detectado.toLowerCase() ||
-          r.banco_detectado.toLowerCase().includes(b.nome.toLowerCase())
-        );
-        if (idx >= 0) {
-          selecionarBanco(idx);
-        } else {
-          bancoSelecionado = r.banco_detectado;
-        }
-      }
-      
-      // Nome
-      if (r.nome_sugerido) {
-        document.getElementById('f-nome').value = r.nome_sugerido;
-      }
-      
-      // Cor
-      if (r.cor_sugerida) {
-        const corHex = r.cor_sugerida.toUpperCase();
-        if (coresDisponiveis.includes(corHex) || coresDisponiveis.includes(corHex.toLowerCase())) {
-          selecionarCor(corHex.toLowerCase());
-        }
-      }
-      
-      // Valores específicos
-      if (r.tipo_conta === 'cartao_credito') {
-        if (r.limite_total) {
-          document.getElementById('f-limite').value = formatarMoeda(r.limite_total);
-        }
-        if (r.dia_fechamento) {
-          document.getElementById('f-fechamento').value = r.dia_fechamento;
-        }
-        if (r.dia_vencimento) {
-          document.getElementById('f-vencimento').value = r.dia_vencimento;
-        }
-      } else {
-        if (r.saldo_atual !== null && r.saldo_atual !== undefined) {
-          document.getElementById('f-saldo').value = formatarMoeda(r.saldo_atual);
-        }
-      }
-      
-      // Mostra resultado IA dentro do form
-      document.getElementById('ia-resultado-area').innerHTML = `
-        <div class="msg msg-success show">
-          ✨ <strong>Pré-preenchido pela IA</strong> com confiança ${r.confianca || 'média'}. Revise e ajuste se precisar.
-        </div>
-      `;
-    }, 100);
   };
   
   window.salvarConta = async function() {
@@ -1675,14 +1580,13 @@
     }
     
     if (!editandoId) {
-      // XP maior se foi pela IA
-      const xp = dadosIA ? 25 : 15;
-      const acao = dadosIA ? 'conta_via_ia' : 'conta_cadastrada';
+      const xp = veiodaIA ? 25 : 15;
+      const acao = veiodaIA ? 'conta_via_ia' : 'conta_cadastrada';
       await darXP(xp, acao, 'Conta cadastrada: ' + nome);
-      mostrarToast(`+${xp} XP ${dadosIA ? '✨ IA' : '🏦'}`);
+      mostrarToast(`+${xp} XP ${veiodaIA ? '✨ IA' : '🏦'}`);
     }
     
-    dadosIA = null;
+    veiodaIA = false;
     fecharModal('modal-form');
     await carregarContas();
     render();
@@ -1738,23 +1642,26 @@
   window.editarConta = function() {
     if (!detalheAtual) return;
     editandoId = detalheAtual.id;
-    dadosIA = null;
+    veiodaIA = false;
     
     document.getElementById('modal-form-titulo').textContent = 'Editar conta';
     document.getElementById('btn-salvar').textContent = 'Salvar';
+    document.getElementById('msg-form').className = 'msg';
+    document.getElementById('fatura-aberta-section').classList.add('hidden');
+    
     document.getElementById('f-nome').value = detalheAtual.nome;
     document.getElementById('f-saldo').value = formatarMoeda(detalheAtual.saldo_inicial || 0);
     document.getElementById('f-limite').value = detalheAtual.limite ? formatarMoeda(detalheAtual.limite) : '';
+    document.getElementById('f-fatura').value = '';
     document.getElementById('f-fechamento').value = detalheAtual.dia_fechamento || '';
     document.getElementById('f-vencimento').value = detalheAtual.dia_vencimento || '';
-    document.getElementById('ia-resultado-area').innerHTML = '';
     
     tipoSelecionado = detalheAtual.tipo;
     corSelecionada = detalheAtual.cor;
     emojiSelecionado = detalheAtual.icone;
     bancoSelecionado = detalheAtual.banco;
     
-    trocarTipo(detalheAtual.tipo);
+    trocarTipo(detalheAtual.tipo, true);
     renderCoresGrid();
     renderEmojisGrid();
     
