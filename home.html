@@ -42,7 +42,6 @@
   
   body { padding-bottom: 100px; }
   
-  /* ===== iOS INPUT FIX ===== */
   input, textarea, select {
     color: #fff !important;
     -webkit-text-fill-color: #fff !important;
@@ -59,7 +58,6 @@
     transition: background-color 5000s ease-in-out 0s;
   }
   
-  /* HEADER */
   .header {
     padding: 20px;
     background: var(--bg);
@@ -426,7 +424,6 @@
   
   .dividas-meta { color: var(--text-mute); font-size: 13px; }
   
-  /* RESERVA NA HOME */
   .reserva-home-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -462,7 +459,6 @@
     margin-bottom: 12px;
   }
   
-  /* PATRIMÔNIO NA HOME */
   .patrimonio-home-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -789,7 +785,6 @@
   
   @keyframes spin { to { transform: rotate(360deg); } }
   
-  /* ===== LEVEL UP MODAL ===== */
   .levelup-overlay {
     position: fixed;
     inset: 0;
@@ -924,7 +919,6 @@
   
   .levelup-btn:active { background: var(--brand-hover); transform: scale(0.97); }
   
-  /* CONFETE */
   .confete {
     position: absolute;
     width: 8px;
@@ -1012,7 +1006,7 @@
     <div class="empty-state" id="dividas-empty">
       <div class="empty-emoji">📋</div>
       <div class="empty-title">Vamos mapear tudo</div>
-      <div class="empty-desc">Cadastre cada dívida. Cartão, empréstimo, conta atrasada, pensão — tudo. Não dá pra resolver o que a gente não enxerga.</div>
+      <div class="empty-desc">Cadastre cada dívida. Cartão, empréstimo, conta atrasada, pensão — tudo.</div>
       <button class="btn-mini" onclick="irPara('dividas.html')">+ Cadastrar dívida</button>
     </div>
     
@@ -1025,7 +1019,6 @@
     </div>
   </div>
   
-  <!-- RESERVA (Nível 3+) -->
   <div class="section hidden" id="bloco-reserva">
     <div class="section-title">🛡️ Reserva de emergência</div>
     <div class="reserva-home-card" onclick="irPara('metas.html')">
@@ -1040,7 +1033,6 @@
     </div>
   </div>
   
-  <!-- PATRIMÔNIO (Nível 4+) -->
   <div class="section hidden" id="bloco-patrimonio">
     <div class="section-title">📈 Patrimônio investido</div>
     <div class="patrimonio-home-card" onclick="irPara('patrimonio.html')">
@@ -1088,12 +1080,12 @@
   <div class="section">
     <div class="section-title">Missão da semana</div>
     <div class="missao-card" id="missao-card">
-      <div class="missao-icon">🎯</div>
+      <div class="missao-icon" id="missao-icon">🎯</div>
       <div class="missao-info">
         <div class="missao-titulo" id="missao-titulo">Cadastre 5 dívidas</div>
         <div class="missao-meta" id="missao-meta">0 de 5 cadastradas</div>
       </div>
-      <div class="missao-xp">+100 XP</div>
+      <div class="missao-xp" id="missao-xp">+100 XP</div>
     </div>
   </div>
   
@@ -1142,7 +1134,6 @@
 
 <button class="fab" onclick="irPara('transacoes.html?nova=1')">+ Nova transação</button>
 
-<!-- LEVEL UP MODAL -->
 <div class="levelup-overlay" id="levelup-overlay">
   <div class="levelup-modal" id="levelup-modal">
     <div class="levelup-eyebrow">★ LEVEL UP ★</div>
@@ -1164,11 +1155,11 @@
   window.supabase = supabase;
   
   const niveisInfo = {
-    1: { emoji: '🎯', titulo: 'Diagnóstico', acao: 'Completar diagnóstico', acaoLink: 'diagnostico.html', acaoIcon: '🎯', xpBonus: 0 },
-    2: { emoji: '🚨', titulo: 'Resgate', acao: 'Cadastrar suas dívidas', acaoLink: 'dividas.html', acaoIcon: '🚨', xpBonus: 200 },
-    3: { emoji: '⚖️', titulo: 'Estabilização', acao: 'Montar reserva de emergência', acaoLink: 'metas.html', acaoIcon: '🛡️', xpBonus: 500 },
-    4: { emoji: '🏗️', titulo: 'Construção', acao: 'Fazer primeiro aporte', acaoLink: 'patrimonio.html', acaoIcon: '📈', xpBonus: 1000 },
-    5: { emoji: '🚀', titulo: 'Liberdade', acao: 'Otimizar portfólio', acaoLink: 'patrimonio.html', acaoIcon: '💎', xpBonus: 2000 }
+    1: { emoji: '🎯', titulo: 'Diagnóstico', xpBonus: 0 },
+    2: { emoji: '🚨', titulo: 'Resgate', xpBonus: 200 },
+    3: { emoji: '⚖️', titulo: 'Estabilização', xpBonus: 500 },
+    4: { emoji: '🏗️', titulo: 'Construção', xpBonus: 1000 },
+    5: { emoji: '🚀', titulo: 'Liberdade', xpBonus: 2000 }
   };
   
   const descricoesLevelUp = {
@@ -1186,13 +1177,6 @@
     { min: 25000, max: 999999, emoji: '👑', nome: 'Lenda' }
   ];
   
-  const tatuMensagens = {
-    2: 'Bora começar! Primeiro passo: <strong>cadastrar suas dívidas</strong> pra eu te ajudar a sair do vermelho.',
-    3: 'Sem dívidas, beleza! Agora bora <strong>montar sua reserva</strong> de emergência pra parar de cair de novo.',
-    4: 'Reserva feita! Hora de fazer o dinheiro <strong>trabalhar pra você</strong>. Bora aprender a investir?',
-    5: 'Você tá no topo! Vamos <strong>otimizar tudo</strong> e acelerar seu patrimônio.'
-  };
-  
   let usuario, perfil, gamif;
   
   (async () => {
@@ -1209,7 +1193,7 @@
       supabase.from('dividas').select('id, valor_atual, status').eq('user_id', usuario.id),
       supabase.from('transacoes').select('tipo, valor, data').eq('user_id', usuario.id).gte('data', primeiroDiaMes()),
       supabase.from('metas').select('*').eq('user_id', usuario.id),
-      supabase.from('patrimonio').select('valor_atual').eq('user_id', usuario.id).eq('ativo', true)
+      supabase.from('patrimonio').select('*').eq('user_id', usuario.id).eq('ativo', true)
     ]);
     
     perfil = perfilRes.data;
@@ -1224,7 +1208,6 @@
       return;
     }
     
-    // ===== DETECÇÃO AUTOMÁTICA DE NÍVEL =====
     const novoNivel = calcularNivel(dividas, metas, patrimonio);
     const nivelAtual = perfil.nivel_jornada || 1;
     
@@ -1245,17 +1228,14 @@
     const totalInvestido = patrimonio.reduce((acc, p) => acc + Number(p.valor_atual), 0);
     const renda = Number(perfil?.renda_mensal || 0);
     
-    // Nível 5: Liberdade
     if (renda > 0 && totalInvestido > renda * 10 && reservaCompleta && dividasAbertas.length === 0) {
       return 5;
     }
     
-    // Nível 4: Construção
     if (reservaCompleta && dividasAbertas.length === 0) {
       return 4;
     }
     
-    // Nível 3: Estabilização
     if (dividasAbertas.length === 0 && dividas.length > 0) {
       return 3;
     }
@@ -1345,6 +1325,122 @@
     return (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
   
+  // ===== AÇÃO PRINCIPAL CONTEXTUAL =====
+  function calcularAcaoPrincipal(nivel, dividas, metas, patrimonio) {
+    const dividasAbertas = dividas.filter(d => d.status !== 'quitada');
+    const reserva = metas.find(m => m.tipo === 'reserva_emergencia');
+    const reservaCompleta = reserva && Number(reserva.valor_atual) >= Number(reserva.valor_alvo);
+    const tiposPatrimonio = new Set(patrimonio.map(p => p.tipo)).size;
+    
+    if (nivel === 2) {
+      if (dividas.length === 0) {
+        return { titulo: 'Cadastrar suas dívidas', icon: '🚨', link: 'dividas.html' };
+      }
+      return { titulo: 'Quitar suas dívidas', icon: '🚨', link: 'dividas.html' };
+    }
+    
+    if (nivel === 3) {
+      if (!reserva) {
+        return { titulo: 'Configurar sua reserva', icon: '🛡️', link: 'metas.html' };
+      }
+      return { titulo: 'Continuar reserva', icon: '🛡️', link: 'metas.html' };
+    }
+    
+    if (nivel === 4) {
+      if (patrimonio.length === 0) {
+        return { titulo: 'Fazer primeiro aporte', icon: '📈', link: 'patrimonio.html' };
+      }
+      if (tiposPatrimonio < 3) {
+        return { titulo: 'Diversificar carteira', icon: '📊', link: 'patrimonio.html' };
+      }
+      return { titulo: 'Acompanhar patrimônio', icon: '📈', link: 'patrimonio.html' };
+    }
+    
+    if (nivel === 5) {
+      return { titulo: 'Otimizar portfólio', icon: '💎', link: 'patrimonio.html' };
+    }
+    
+    return { titulo: 'Continuar jornada', icon: '🎯', link: 'transacoes.html' };
+  }
+  
+  // ===== TATU CONTEXTUAL =====
+  function calcularTatuTexto(nivel, dividas, metas, patrimonio) {
+    const dividasAbertas = dividas.filter(d => d.status !== 'quitada');
+    const reserva = metas.find(m => m.tipo === 'reserva_emergencia');
+    const reservaCompleta = reserva && Number(reserva.valor_atual) >= Number(reserva.valor_alvo);
+    const tiposPatrimonio = new Set(patrimonio.map(p => p.tipo)).size;
+    
+    if (nivel === 2) {
+      if (dividas.length === 0) {
+        return 'Bora começar! Primeiro passo: <strong>cadastrar suas dívidas</strong> pra eu te ajudar a sair do vermelho.';
+      }
+      return `Você tem <strong>${dividasAbertas.length} dívidas</strong> em aberto. Bora quitar uma de cada vez.`;
+    }
+    
+    if (nivel === 3) {
+      if (!reserva) {
+        return 'Sem dívidas, beleza! Agora bora <strong>montar sua reserva</strong> de emergência.';
+      }
+      const pct = Math.min((Number(reserva.valor_atual)/Number(reserva.valor_alvo))*100, 100);
+      return `Sua reserva está <strong>${pct.toFixed(0)}% completa</strong>. Continue guardando!`;
+    }
+    
+    if (nivel === 4) {
+      if (patrimonio.length === 0) {
+        return 'Reserva feita! Hora de <strong>fazer o dinheiro trabalhar</strong> pra você. Cadastra seu primeiro investimento.';
+      }
+      if (patrimonio.length === 1) {
+        return `🎉 <strong>Primeiro aporte feito!</strong> Continue diversificando — não coloque todos os ovos na mesma cesta.`;
+      }
+      if (tiposPatrimonio < 3) {
+        return `Você tem <strong>${patrimonio.length} ativos</strong> em ${tiposPatrimonio} tipo${tiposPatrimonio > 1 ? 's' : ''}. Diversifique mais!`;
+      }
+      return `🏆 Carteira diversificada com <strong>${patrimonio.length} ativos</strong>. Excelente!`;
+    }
+    
+    if (nivel === 5) {
+      return 'Você tá no topo! Vamos <strong>otimizar tudo</strong> e acelerar seu patrimônio.';
+    }
+    
+    return 'Continue evoluindo na sua jornada financeira.';
+  }
+  
+  // ===== MISSÃO CONTEXTUAL =====
+  function calcularMissao(nivel, dividas, metas, patrimonio) {
+    const dividasAbertas = dividas.filter(d => d.status !== 'quitada');
+    const reserva = metas.find(m => m.tipo === 'reserva_emergencia');
+    const tiposPatrimonio = new Set(patrimonio.map(p => p.tipo)).size;
+    
+    if (nivel === 2) {
+      const cad = dividas.length;
+      return { icon: '📋', titulo: 'Cadastre 5 dívidas', meta: `${cad} de 5 cadastradas`, xp: '+100 XP' };
+    }
+    
+    if (nivel === 3) {
+      if (!reserva) {
+        return { icon: '🛡️', titulo: 'Configure sua reserva', meta: 'Defina meses e gasto', xp: '+50 XP' };
+      }
+      const pct = Math.min((Number(reserva.valor_atual)/Number(reserva.valor_alvo))*100, 100).toFixed(0);
+      return { icon: '🛡️', titulo: 'Complete sua reserva', meta: `${pct}% completa`, xp: '+1000 XP' };
+    }
+    
+    if (nivel === 4) {
+      if (patrimonio.length === 0) {
+        return { icon: '📈', titulo: 'Faça seu primeiro aporte', meta: 'Comece com qualquer valor', xp: '+200 XP' };
+      }
+      if (tiposPatrimonio < 3) {
+        return { icon: '🎯', titulo: 'Diversifique em 3 tipos', meta: `${tiposPatrimonio} de 3 tipos`, xp: '+300 XP' };
+      }
+      return { icon: '📊', titulo: 'Atualize valores dos ativos', meta: 'Mantenha tudo em dia', xp: '+20 XP' };
+    }
+    
+    if (nivel === 5) {
+      return { icon: '💎', titulo: 'Otimize sua carteira', meta: 'Reveja alocação', xp: '+500 XP' };
+    }
+    
+    return { icon: '🎯', titulo: 'Continue investindo', meta: 'Mês após mês', xp: '+50 XP' };
+  }
+  
   function renderizar(dividas, transacoes, metas, patrimonio) {
     const nome = perfil?.nome?.split(' ')[0] || 'parceiro';
     document.getElementById('greeting-hi').textContent = saudacao();
@@ -1360,9 +1456,9 @@
     document.getElementById('streak-num').textContent = streak;
     
     const nivel = perfil?.nivel_jornada || 1;
-    const info = niveisInfo[nivel];
-    document.getElementById('nivel-emoji').textContent = info.emoji;
-    document.getElementById('nivel-titulo').textContent = info.titulo;
+    const infoNivel = niveisInfo[nivel];
+    document.getElementById('nivel-emoji').textContent = infoNivel.emoji;
+    document.getElementById('nivel-titulo').textContent = infoNivel.titulo;
     
     const pontos = document.querySelectorAll('.nivel-pontos .ponto');
     pontos.forEach((p, idx) => {
@@ -1372,11 +1468,14 @@
       if (num === nivel) p.classList.add('atual');
     });
     
-    document.getElementById('tatu-text').innerHTML = tatuMensagens[nivel] || tatuMensagens[2];
+    // TATU CONTEXTUAL
+    document.getElementById('tatu-text').innerHTML = calcularTatuTexto(nivel, dividas, metas, patrimonio);
     
-    document.getElementById('acao-titulo').textContent = info.acao;
-    document.getElementById('acao-icon').textContent = info.acaoIcon;
-    window.acaoLinkAtual = info.acaoLink;
+    // AÇÃO PRINCIPAL CONTEXTUAL
+    const acao = calcularAcaoPrincipal(nivel, dividas, metas, patrimonio);
+    document.getElementById('acao-titulo').textContent = acao.titulo;
+    document.getElementById('acao-icon').textContent = acao.icon;
+    window.acaoLinkAtual = acao.link;
     
     // DÍVIDAS
     const dividasAbertas = dividas.filter(d => d.status !== 'quitada');
@@ -1386,7 +1485,7 @@
       document.getElementById('dividas-card').classList.remove('hidden');
       document.getElementById('dividas-valor').textContent = formatarMoeda(total);
       document.getElementById('dividas-qtd').textContent = dividasAbertas.length;
-    } else if (nivel !== 2) {
+    } else if (nivel >= 3) {
       document.getElementById('bloco-dividas').classList.add('hidden');
     }
     
@@ -1410,7 +1509,8 @@
       if (patrimonio.length === 0) {
         document.getElementById('patrimonio-meta').textContent = 'Cadastre seu primeiro investimento';
       } else {
-        document.getElementById('patrimonio-meta').textContent = 'Toque pra ver detalhes';
+        const tipos = new Set(patrimonio.map(p => p.tipo)).size;
+        document.getElementById('patrimonio-meta').textContent = `Em ${tipos} ${tipos === 1 ? 'tipo' : 'tipos'} • toque pra ver`;
       }
     }
     
@@ -1431,23 +1531,12 @@
       saldoEl.className = 'resumo-saldo-valor ' + (saldo >= 0 ? 'positivo' : 'negativo');
     }
     
-    // MISSÃO
-    if (nivel === 2) {
-      const cad = dividas.length;
-      document.getElementById('missao-titulo').textContent = 'Cadastre 5 dívidas';
-      document.getElementById('missao-meta').textContent = `${cad} de 5 cadastradas`;
-    } else if (nivel === 3) {
-      document.getElementById('missao-titulo').textContent = 'Complete sua reserva';
-      const r = metas.find(m => m.tipo === 'reserva_emergencia');
-      const pct = r ? Math.min((Number(r.valor_atual)/Number(r.valor_alvo))*100, 100).toFixed(0) : 0;
-      document.getElementById('missao-meta').textContent = `${pct}% completa`;
-    } else if (nivel === 4) {
-      document.getElementById('missao-titulo').textContent = 'Faça seu primeiro aporte';
-      document.getElementById('missao-meta').textContent = patrimonio.length > 0 ? `${patrimonio.length} ativos cadastrados` : 'Comece com qualquer valor';
-    } else {
-      document.getElementById('missao-titulo').textContent = 'Diversifique investimentos';
-      document.getElementById('missao-meta').textContent = 'Renda fixa, ações, FII';
-    }
+    // MISSÃO CONTEXTUAL
+    const missao = calcularMissao(nivel, dividas, metas, patrimonio);
+    document.getElementById('missao-icon').textContent = missao.icon;
+    document.getElementById('missao-titulo').textContent = missao.titulo;
+    document.getElementById('missao-meta').textContent = missao.meta;
+    document.getElementById('missao-xp').textContent = missao.xp;
   }
   
   window.acaoPrincipal = function() {
