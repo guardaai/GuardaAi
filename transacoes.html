@@ -321,9 +321,7 @@
   }
   
   /* LISTA */
-  .dia-grupo {
-    margin-bottom: 14px;
-  }
+  .dia-grupo { margin-bottom: 14px; }
   
   .dia-header {
     display: flex;
@@ -382,10 +380,7 @@
   .trans-icone.entrada { background: var(--brand-soft); }
   .trans-icone.saida { background: var(--danger-soft); }
   
-  .trans-info {
-    flex: 1;
-    min-width: 0;
-  }
+  .trans-info { flex: 1; min-width: 0; }
   
   .trans-descricao {
     font-family: 'Space Grotesk', sans-serif;
@@ -415,20 +410,9 @@
     letter-spacing: 0.05em;
   }
   
-  .trans-tag.recorrente {
-    background: var(--info-soft);
-    color: var(--info);
-  }
-  
-  .trans-tag.parcelado {
-    background: var(--warning-soft);
-    color: var(--warning);
-  }
-  
-  .trans-tag.futura {
-    background: var(--bg-elev);
-    color: var(--text-mute);
-  }
+  .trans-tag.recorrente { background: var(--info-soft); color: var(--info); }
+  .trans-tag.parcelado { background: var(--warning-soft); color: var(--warning); }
+  .trans-tag.futura { background: var(--bg-elev); color: var(--text-mute); }
   
   .trans-valor {
     font-family: 'Space Grotesk', sans-serif;
@@ -493,7 +477,7 @@
     background: var(--brand-hover);
   }
   
-  /* MODAL */
+  /* MODAL - botão fixo no rodapé */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -514,7 +498,8 @@
     border: 1px solid var(--border);
     border-radius: 24px 24px 0 0;
     max-height: 92vh;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
     animation: slideUp 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
   }
   
@@ -529,6 +514,7 @@
     background: var(--border-strong);
     border-radius: 100px;
     margin: 12px auto;
+    flex-shrink: 0;
   }
   
   .modal-header {
@@ -536,6 +522,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0;
   }
   
   .modal-title {
@@ -556,37 +543,19 @@
     font-size: 18px;
   }
   
-  .modal-body { padding: 0 24px 24px; }
-  
-  /* TABS NO MODAL */
-  .tipo-selector {
-    display: flex;
-    background: var(--bg-input);
-    border-radius: 12px;
-    padding: 4px;
-    margin-bottom: 18px;
-  }
-  
-  .tipo-btn {
+  .modal-body {
+    padding: 0 24px;
     flex: 1;
-    padding: 12px;
-    background: transparent;
-    border: none;
-    color: var(--text-mute);
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 8px;
-    cursor: pointer;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
-  .tipo-btn.active {
+  .modal-footer {
+    padding: 16px 24px 24px;
+    flex-shrink: 0;
     background: var(--bg-card);
-    color: var(--text);
+    border-top: 1px solid var(--border);
   }
-  
-  .tipo-btn.active[data-tipo="entrada"] { color: var(--brand); }
-  .tipo-btn.active[data-tipo="saida"] { color: var(--danger); }
   
   .field { margin-bottom: 14px; }
   
@@ -619,6 +588,35 @@
     grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
+  
+  .tipo-selector {
+    display: flex;
+    background: var(--bg-input);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 18px;
+  }
+  
+  .tipo-btn {
+    flex: 1;
+    padding: 12px;
+    background: transparent;
+    border: none;
+    color: var(--text-mute);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .tipo-btn.active {
+    background: var(--bg-card);
+    color: var(--text);
+  }
+  
+  .tipo-btn.active[data-tipo="entrada"] { color: var(--brand); }
+  .tipo-btn.active[data-tipo="saida"] { color: var(--danger); }
   
   .valor-input-wrapper {
     display: flex;
@@ -654,7 +652,6 @@
   .valor-input-wrapper input.entrada { color: var(--brand) !important; -webkit-text-fill-color: var(--brand) !important; }
   .valor-input-wrapper input.saida { color: var(--text) !important; -webkit-text-fill-color: var(--text) !important; }
   
-  /* TOGGLE RECORRÊNCIA/PARCELA */
   .opcoes-extras {
     background: var(--bg-input);
     border: 1px solid var(--border);
@@ -713,7 +710,6 @@
     font-weight: 600;
     cursor: pointer;
     font-family: 'Inter', sans-serif;
-    margin-top: 8px;
   }
   
   .btn-primary { background: var(--brand); color: #001a0e; }
@@ -729,12 +725,14 @@
     background: var(--bg-elev);
     color: var(--text);
     border: 1px solid var(--border);
+    margin-top: 8px;
   }
   
   .btn-danger {
     background: var(--danger-soft);
     color: var(--danger);
     border: 1px solid rgba(255, 71, 87, 0.3);
+    margin-top: 8px;
   }
   
   /* IA UPLOAD */
@@ -779,19 +777,6 @@
     max-height: 280px;
     object-fit: contain;
     display: block;
-  }
-  
-  .preview-remover {
-    position: absolute;
-    top: 8px; right: 8px;
-    width: 32px; height: 32px;
-    background: rgba(0,0,0,0.75);
-    border: none;
-    border-radius: 50%;
-    color: white;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
   }
   
   .ia-badge {
@@ -877,7 +862,6 @@
     margin: 40px auto;
   }
   
-  /* DETALHE */
   .detalhe-card {
     background: var(--bg-input);
     border-radius: 14px;
@@ -928,7 +912,6 @@
 
 <div class="container">
 
-  <!-- NAVEGAÇÃO MESES -->
   <div class="mes-nav">
     <button class="mes-btn" onclick="navegarMes(-1)">‹</button>
     <div class="mes-info" onclick="voltarHoje()">
@@ -1009,7 +992,6 @@
         </div>
       </div>
       
-      <!-- OPÇÕES EXTRAS: RECORRÊNCIA / PARCELAMENTO -->
       <div class="opcoes-extras">
         <div class="opcoes-tabs">
           <div class="opcao-tab active" data-opcao="unica" onclick="trocarOpcao('unica')">🔘 Única</div>
@@ -1017,7 +999,7 @@
           <div class="opcao-tab" data-opcao="parcelado" onclick="trocarOpcao('parcelado')">💳 Parcelada</div>
         </div>
         
-        <div class="opcao-conteudo" id="op-unica" data-conteudo="unica">
+        <div class="opcao-conteudo show" id="op-unica" data-conteudo="unica">
           <div class="info-box">
             ℹ️ Transação única - acontece só uma vez na data informada acima.
           </div>
@@ -1062,7 +1044,8 @@
           </div>
         </div>
       </div>
-      
+    </div>
+    <div class="modal-footer">
       <button class="btn btn-primary" id="btn-salvar" onclick="salvarTransacao()">Salvar</button>
     </div>
   </div>
@@ -1114,10 +1097,11 @@
             <select id="cf-categoria"></select>
           </div>
         </div>
-        
-        <button class="btn btn-primary" onclick="salvarCupom()">Confirmar e salvar</button>
       </div>
       
+    </div>
+    <div class="modal-footer" id="cupom-footer" style="display:none;">
+      <button class="btn btn-primary" onclick="salvarCupom()">Confirmar e salvar</button>
     </div>
   </div>
 </div>
@@ -1161,9 +1145,10 @@
         </div>
       </div>
       
+    </div>
+    <div class="modal-footer">
       <button class="btn btn-danger" id="btn-excluir" onclick="excluirTransacao()">Excluir</button>
       <button class="btn btn-danger hidden" id="btn-excluir-grupo" onclick="excluirGrupo()">Excluir TODAS</button>
-      
     </div>
   </div>
 </div>
@@ -1206,28 +1191,37 @@
   })();
   
   async function carregarCategorias() {
-    const { data } = await supabase
+    // Pega categorias padrão (user_id IS NULL) + categorias do user
+    const { data, error } = await supabase
       .from('categorias')
       .select('*')
-      .or(`user_id.eq.${usuario.id},sistema.eq.true`)
+      .eq('ativa', true)
+      .or(`user_id.is.null,user_id.eq.${usuario.id}`)
       .order('nome');
-    categorias = data || [];
     
-    const select = document.getElementById('f-categoria');
-    const selectCupom = document.getElementById('cf-categoria');
+    if (error) {
+      console.error('Erro categorias:', error);
+    }
+    categorias = data || [];
+    renderCategorias();
+  }
+  
+  function renderCategorias() {
+    // Filtra por tipo selecionado
+    const filtradas = categorias.filter(c => c.tipo === tipoSelecionado);
     
     const html = '<option value="">Selecione...</option>' + 
-      categorias.map(c => `<option value="${c.id}">${c.icone || '📌'} ${c.nome}</option>`).join('');
+      filtradas.map(c => `<option value="${c.id}">${c.icone || '📌'} ${c.nome}</option>`).join('');
     
-    select.innerHTML = html;
-    selectCupom.innerHTML = html;
+    document.getElementById('f-categoria').innerHTML = html;
+    document.getElementById('cf-categoria').innerHTML = html;
   }
   
   async function carregarTransacoes() {
     const inicioMes = new Date(mesAtual.getFullYear(), mesAtual.getMonth(), 1).toISOString().split('T')[0];
     const fimMes = new Date(mesAtual.getFullYear(), mesAtual.getMonth() + 1, 0).toISOString().split('T')[0];
     
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('transacoes')
       .select('*, categorias(nome, icone)')
       .eq('user_id', usuario.id)
@@ -1235,6 +1229,7 @@
       .lte('data', fimMes)
       .order('data', { ascending: false });
     
+    if (error) console.error('Erro transacoes:', error);
     transacoes = data || [];
   }
   
@@ -1315,7 +1310,6 @@
       return;
     }
     
-    // Agrupa por dia
     const porDia = {};
     filtradas.forEach(t => {
       if (!porDia[t.data]) porDia[t.data] = [];
@@ -1422,6 +1416,7 @@
     const input = document.getElementById('f-valor');
     input.classList.toggle('entrada', tipo === 'entrada');
     input.classList.toggle('saida', tipo === 'saida');
+    renderCategorias(); // re-renderiza pra filtrar pelo tipo
   };
   
   window.trocarOpcao = function(op) {
@@ -1436,12 +1431,13 @@
     document.getElementById('f-valor').value = '';
     document.getElementById('f-descricao').value = '';
     document.getElementById('f-data').valueAsDate = new Date();
-    document.getElementById('f-categoria').value = '';
     document.getElementById('f-num-parcelas').value = '6';
     document.getElementById('f-rec-meses').value = '12';
     trocarTipo('saida');
     trocarOpcao('unica');
     document.getElementById('msg-form').className = 'msg';
+    document.getElementById('btn-salvar').disabled = false;
+    document.getElementById('btn-salvar').textContent = 'Salvar';
     document.getElementById('modal-form').classList.add('show');
   };
   
@@ -1467,7 +1463,8 @@
     const valor = valorParaNumero(document.getElementById('f-valor').value);
     const descricao = document.getElementById('f-descricao').value.trim();
     const data = document.getElementById('f-data').value;
-    const categoria_id = document.getElementById('f-categoria').value || null;
+    const categoriaSelect = document.getElementById('f-categoria').value;
+    const categoria_id = categoriaSelect && categoriaSelect !== '' ? categoriaSelect : null;
     
     if (!valor || !descricao || !data) {
       document.getElementById('msg-form').className = 'msg show msg-error';
@@ -1528,6 +1525,7 @@
     const { error } = await supabase.from('transacoes').insert(transacoesInserir);
     
     if (error) {
+      console.error('Erro insert:', error);
       document.getElementById('msg-form').className = 'msg show msg-error';
       document.getElementById('msg-form').textContent = 'Erro: ' + error.message;
       btn.disabled = false;
@@ -1549,10 +1547,15 @@
     const file = e.target.files[0];
     if (!file) return;
     
+    // Cupom sempre é saída
+    tipoSelecionado = 'saida';
+    renderCategorias();
+    
     const base64 = await fileToBase64(file);
     document.getElementById('cupom-preview-img').src = base64;
     document.getElementById('cupom-analisando').classList.remove('hidden');
     document.getElementById('cupom-resultado').classList.add('hidden');
+    document.getElementById('cupom-footer').style.display = 'none';
     document.getElementById('modal-cupom').classList.add('show');
     
     try {
@@ -1576,13 +1579,21 @@
       if (data.resultado && !data.resultado.erro) {
         cupomDadosIA = data.resultado;
         document.getElementById('cupom-resultado').classList.remove('hidden');
+        document.getElementById('cupom-footer').style.display = 'block';
         document.getElementById('cf-valor').value = formatarMoeda(data.resultado.valor || 0);
         document.getElementById('cf-descricao').value = data.resultado.descricao || '';
         document.getElementById('cf-data').value = data.resultado.data || new Date().toISOString().split('T')[0];
         
-        // Tenta achar categoria sugerida
+        // Tenta achar categoria sugerida (procurando por palavra-chave)
         if (data.resultado.categoria_sugerida) {
-          const cat = categorias.find(c => c.nome.toLowerCase().includes(data.resultado.categoria_sugerida.toLowerCase()));
+          const sugestao = data.resultado.categoria_sugerida.toLowerCase();
+          const cat = categorias.find(c => 
+            c.tipo === 'saida' && (
+              c.nome.toLowerCase().includes(sugestao) || 
+              sugestao.includes(c.nome.toLowerCase()) ||
+              (c.palavras_chave && c.palavras_chave.some(p => sugestao.includes(p.toLowerCase())))
+            )
+          );
           if (cat) document.getElementById('cf-categoria').value = cat.id;
         }
       } else {
@@ -1603,7 +1614,8 @@
     const valor = valorParaNumero(document.getElementById('cf-valor').value);
     const descricao = document.getElementById('cf-descricao').value.trim();
     const data = document.getElementById('cf-data').value;
-    const categoria_id = document.getElementById('cf-categoria').value || null;
+    const catSelect = document.getElementById('cf-categoria').value;
+    const categoria_id = catSelect && catSelect !== '' ? catSelect : null;
     
     if (!valor || !descricao || !data) {
       alert('Preencha valor, descrição e data');
@@ -1632,8 +1644,7 @@
     if (!t) return;
     detalheAtual = t;
     
-    const valor = `R$ ${formatarMoeda(t.valor)}`;
-    document.getElementById('detalhe-valor-big').textContent = valor;
+    document.getElementById('detalhe-valor-big').textContent = `R$ ${formatarMoeda(t.valor)}`;
     document.getElementById('detalhe-valor-big').className = `detalhe-valor-big ${t.tipo}`;
     document.getElementById('detalhe-descricao').textContent = t.descricao;
     document.getElementById('detalhe-data').textContent = formatarDataCompleta(t.data);
@@ -1643,12 +1654,8 @@
     document.getElementById('linha-recorrencia').style.display = t.recorrente ? 'flex' : 'none';
     document.getElementById('linha-parcela').style.display = t.parcelado ? 'flex' : 'none';
     
-    if (t.recorrente) {
-      document.getElementById('detalhe-recorrencia').textContent = '🔄 Mensal';
-    }
-    if (t.parcelado) {
-      document.getElementById('detalhe-parcela').textContent = `💳 ${t.numero_parcela} de ${t.total_parcelas}`;
-    }
+    if (t.recorrente) document.getElementById('detalhe-recorrencia').textContent = '🔄 Mensal';
+    if (t.parcelado) document.getElementById('detalhe-parcela').textContent = `💳 ${t.numero_parcela} de ${t.total_parcelas}`;
     
     const btnGrupo = document.getElementById('btn-excluir-grupo');
     if (t.recorrente || t.parcelado) {
