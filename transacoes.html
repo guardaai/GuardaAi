@@ -28,6 +28,7 @@
     --info: #38bdf8;
     --info-soft: rgba(56, 189, 248, 0.1);
     --ia: #a855f7;
+    --ia-hover: #9333ea;
     --ia-soft: rgba(168, 85, 247, 0.1);
     --text: #ffffff;
     --text-mute: #a3a3a3;
@@ -526,7 +527,6 @@
   
   .modal-body { padding: 0 24px 24px; }
   
-  /* ANEXO IA - DESTAQUE */
   .anexo-area {
     background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-input) 100%);
     border: 2px dashed rgba(168, 85, 247, 0.4);
@@ -583,7 +583,6 @@
     font-weight: 600;
   }
   
-  /* ANALISANDO IA */
   .ia-analyzing {
     text-align: center;
     padding: 20px;
@@ -613,7 +612,6 @@
   
   @keyframes spin { to { transform: rotate(360deg); } }
   
-  /* PREVIEW */
   .anexo-preview-area {
     border-style: solid;
     border-color: var(--ia);
@@ -758,11 +756,6 @@
   
   .field input::placeholder { color: var(--text-faint); }
   
-  .field.ia-preenchido input {
-    border-color: var(--ia);
-    background: var(--ia-soft);
-  }
-  
   .field-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -900,6 +893,17 @@
     cursor: not-allowed;
     background: var(--bg-elev);
     color: var(--text-faint);
+  }
+  
+  .btn-ia {
+    background: var(--ia);
+    color: white;
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
+  }
+  
+  .btn-ia:active {
+    background: var(--ia-hover);
+    transform: scale(0.985);
   }
   
   .btn-secondary {
@@ -1296,23 +1300,23 @@
   let anexoFile = null;
   let anexoEhPdf = false;
   let iaProcessou = false;
+  let iaConfianca = null;
   let camposPreenchidosIA = new Set();
   
   const hojeRef = new Date();
   let mesAtual = { ano: hojeRef.getFullYear(), mes: hojeRef.getMonth() };
   
-  // Mapeia categoria sugerida da IA → nome real no banco
   const mapeamentoIA = {
-    'alimentacao': 'Alimentação',
-    'transporte': 'Transporte',
-    'moradia': 'Moradia',
-    'saude': 'Saúde',
-    'educacao': 'Educação',
-    'lazer': 'Lazer',
-    'vestuario': 'Vestuário',
-    'mercado': 'Mercado',
-    'delivery': 'Delivery',
-    'outros': 'Outros'
+    'alimentacao': ['alimentação','alimentacao','comida'],
+    'transporte': ['transporte','uber','99'],
+    'moradia': ['moradia','aluguel','casa'],
+    'saude': ['saúde','saude','farmacia','farmácia','remedio'],
+    'educacao': ['educação','educacao','escola','curso'],
+    'lazer': ['lazer','diversão','jogos'],
+    'vestuario': ['vestuário','vestuario','roupa','calçado'],
+    'mercado': ['mercado','supermercado','alimentação','restaurante'],
+    'delivery': ['delivery','ifood','restaurante'],
+    'outros': ['outros','outro']
   };
   
   (async () => {
@@ -1622,9 +1626,10 @@
   
   window.formatarValor = function(input) {
     let v = input.value.replace(/\D/g, '');
-    if (!v) { input.value = ''; return; }
+    if (!v) { input.value = ''; atualizarBotao(); return; }
     v = (parseInt(v) / 100).toFixed(2);
     input.value = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+    atualizarBotao();
   };
   
   function renderCategorias() {
@@ -1632,7 +1637,7 @@
     const cats = categorias.filter(c => c.tipo === tipoSelecionado);
     
     grid.innerHTML = cats.map(c => `
-      <div class="categoria-opt" data-id="${c.id}" onclick="selecionarCategoria('${c.id}')">
+      <div class="categoria-opt" data-id="${c.id}" data-nome="${c.nome.toLowerCase()}" onclick="selecionarCategoria('${c.id}')">
         <div class="categoria-opt-icon">${c.icone}</div>
         <div class="categoria-opt-label">${c.nome}</div>
       </div>
@@ -1643,6 +1648,7 @@
     document.querySelectorAll('.categoria-opt').forEach(o => o.classList.remove('selected', 'ia-selected'));
     document.querySelector(`.categoria-opt[data-id="${id}"]`)?.classList.add('selected');
     categoriaSelecionada = id;
+    atualizarBotao();
   };
   
   window.selecionarTipo = function(tipo) {
@@ -1651,12 +1657,12 @@
     document.querySelector(`.toggle-opt[data-tipo="${tipo}"]`)?.classList.add('active');
     categoriaSelecionada = null;
     
-    // Atualiza cor do valor
     const wrapper = document.getElementById('valor-wrapper');
     wrapper.classList.remove('entrada', 'saida');
     wrapper.classList.add(tipo);
     
     renderCategorias();
+    atualizarBotao();
   };
   
   window.selecionarLancamento = function(tipo) {
@@ -1667,7 +1673,45 @@
     document.getElementById('campo-unica').classList.toggle('hidden', tipo !== 'unica');
     document.getElementById('campo-parcelada').classList.toggle('hidden', tipo !== 'parcelada');
     document.getElementById('campo-recorrente').classList.toggle('hidden', tipo !== 'recorrente');
+    
+    atualizarBotao();
   };
+  
+  // ===== VALIDAÇÃO E BOTÃO =====
+  function atualizarBotao() {
+    const valor = valorParaNumero(document.getElementById('f-valor').value);
+    const desc = document.getElementById('f-descricao').value.trim();
+    
+    const btn = document.getElementById('btn-salvar');
+    
+    let extraOk = true;
+    if (lancamentoSelecionado === 'recorrente') {
+      const dia = parseInt(document.getElementById('f-dia-mes').value);
+      extraOk = dia >= 1 && dia <= 31;
+    } else if (lancamentoSelecionado === 'parcelada') {
+      const parcelas = parseInt(document.getElementById('f-parcelas').value);
+      const dataP = document.getElementById('f-data-parcela').value;
+      extraOk = parcelas >= 2 && parcelas <= 24 && dataP;
+    }
+    
+    const ok = valor > 0 && desc && categoriaSelecionada && extraOk;
+    btn.disabled = !ok;
+    
+    // Texto e estilo do botão
+    if (iaProcessou && ok) {
+      btn.textContent = '✨ Confirmar e cadastrar';
+      btn.className = 'btn btn-ia';
+    } else {
+      btn.textContent = editandoId ? 'Salvar alterações' : 'Cadastrar';
+      btn.className = 'btn btn-primary';
+    }
+  }
+  
+  // Listeners pros inputs atualizarem o botão
+  ['f-descricao', 'f-dia-mes', 'f-parcelas', 'f-data-parcela'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', atualizarBotao);
+  });
   
   window.trocarFiltro = function(f) {
     filtroAtual = f;
@@ -1683,10 +1727,10 @@
     anexoFile = null;
     anexoEhPdf = false;
     iaProcessou = false;
+    iaConfianca = null;
     camposPreenchidosIA.clear();
     
     document.getElementById('modal-form-titulo').textContent = 'Nova transação';
-    document.getElementById('btn-salvar').textContent = 'Cadastrar';
     document.getElementById('f-valor').value = '';
     document.getElementById('f-descricao').value = '';
     document.getElementById('f-data').value = new Date().toISOString().split('T')[0];
@@ -1701,6 +1745,7 @@
     removerAnexo();
     selecionarLancamento('unica');
     selecionarTipo('saida');
+    atualizarBotao();
     document.getElementById('modal-form').classList.add('show');
   };
   
@@ -1725,27 +1770,7 @@
     document.getElementById('input-galeria').value = '';
     document.getElementById('input-arquivo').value = '';
     
-    // Lê arquivo como base64
     const base64 = await fileToBase64(file);
-    
-    // Mostra preview
-    document.getElementById('anexo-analisando').classList.add('hidden');
-    document.getElementById('anexo-preview').classList.remove('hidden');
-    
-    if (anexoEhPdf) {
-      document.getElementById('preview-img').classList.add('hidden');
-      document.getElementById('preview-pdf').classList.remove('hidden');
-      document.getElementById('preview-pdf-nome').textContent = file.name;
-    } else {
-      document.getElementById('preview-pdf').classList.add('hidden');
-      const img = document.getElementById('preview-img');
-      img.classList.remove('hidden');
-      img.src = base64;
-    }
-    
-    // CHAMA A IA pra ler
-    document.getElementById('anexo-analisando').classList.remove('hidden');
-    document.getElementById('anexo-preview').classList.add('hidden');
     
     try {
       const resp = await fetch(IA_FUNCTION_URL, {
@@ -1768,6 +1793,18 @@
       document.getElementById('anexo-preview').classList.remove('hidden');
       document.getElementById('ia-badge').classList.remove('hidden');
       
+      // Mostra preview
+      if (anexoEhPdf) {
+        document.getElementById('preview-img').classList.add('hidden');
+        document.getElementById('preview-pdf').classList.remove('hidden');
+        document.getElementById('preview-pdf-nome').textContent = file.name;
+      } else {
+        document.getElementById('preview-pdf').classList.add('hidden');
+        const img = document.getElementById('preview-img');
+        img.classList.remove('hidden');
+        img.src = base64;
+      }
+      
       if (data.resultado && !data.resultado.erro) {
         iaProcessou = true;
         preencherComIA(data.resultado);
@@ -1782,9 +1819,23 @@
       console.error('Erro IA:', err);
       document.getElementById('anexo-analisando').classList.add('hidden');
       document.getElementById('anexo-preview').classList.remove('hidden');
+      
+      if (anexoEhPdf) {
+        document.getElementById('preview-img').classList.add('hidden');
+        document.getElementById('preview-pdf').classList.remove('hidden');
+        document.getElementById('preview-pdf-nome').textContent = file.name;
+      } else {
+        document.getElementById('preview-pdf').classList.add('hidden');
+        const img = document.getElementById('preview-img');
+        img.classList.remove('hidden');
+        img.src = base64;
+      }
+      
       document.getElementById('ia-resultado').classList.remove('hidden');
       document.getElementById('ia-resultado-texto').textContent = '⚠️ Erro ao chamar IA. Preencha manualmente.';
     }
+    
+    atualizarBotao();
   };
   
   function fileToBase64(file) {
@@ -1796,7 +1847,31 @@
     });
   }
   
+  function acharCategoriaPorIA(sugestaoIA) {
+    const sugestao = (sugestaoIA || '').toLowerCase().trim();
+    const cats = categorias.filter(c => c.tipo === 'saida');
+    
+    // 1. Match direto pelo nome
+    let cat = cats.find(c => c.nome.toLowerCase() === sugestao);
+    if (cat) return cat;
+    
+    // 2. Match por aliases conhecidos
+    const aliases = mapeamentoIA[sugestao] || [];
+    for (const alias of aliases) {
+      cat = cats.find(c => c.nome.toLowerCase().includes(alias) || alias.includes(c.nome.toLowerCase()));
+      if (cat) return cat;
+    }
+    
+    // 3. Match parcial
+    cat = cats.find(c => c.nome.toLowerCase().includes(sugestao) || sugestao.includes(c.nome.toLowerCase()));
+    if (cat) return cat;
+    
+    return null;
+  }
+  
   function preencherComIA(dados) {
+    iaConfianca = dados.confianca || 'media';
+    
     // VALOR
     if (dados.valor && dados.valor > 0) {
       document.getElementById('f-valor').value = Number(dados.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
@@ -1822,39 +1897,39 @@
       camposPreenchidosIA.add('pagamento');
     }
     
-    // CATEGORIA
+    // CATEGORIA - busca de verdade no banco
     if (dados.categoria_sugerida) {
-      const nomeCategoria = mapeamentoIA[dados.categoria_sugerida];
-      if (nomeCategoria) {
-        const cat = categorias.find(c => 
-          c.tipo === 'saida' && 
-          (c.nome.toLowerCase() === nomeCategoria.toLowerCase() ||
-           c.nome.toLowerCase().includes(dados.categoria_sugerida.toLowerCase()))
-        );
-        if (cat) {
-          categoriaSelecionada = cat.id;
-          setTimeout(() => {
-            const opt = document.querySelector(`.categoria-opt[data-id="${cat.id}"]`);
-            if (opt) {
-              opt.classList.add('ia-selected');
-            }
-          }, 100);
-        }
+      const cat = acharCategoriaPorIA(dados.categoria_sugerida);
+      if (cat) {
+        categoriaSelecionada = cat.id;
+        camposPreenchidosIA.add('categoria');
+        setTimeout(() => {
+          document.querySelectorAll('.categoria-opt').forEach(o => o.classList.remove('selected', 'ia-selected'));
+          const opt = document.querySelector(`.categoria-opt[data-id="${cat.id}"]`);
+          if (opt) {
+            opt.classList.add('ia-selected');
+            opt.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }, 100);
       }
     }
     
     // Feedback visual
     document.getElementById('ia-resultado').classList.remove('hidden');
     const camposCount = camposPreenchidosIA.size;
-    const conf = dados.confianca || 'media';
-    const emoji = conf === 'alta' ? '✨' : (conf === 'media' ? '✅' : '⚠️');
-    document.getElementById('ia-resultado-texto').textContent = `${emoji} IA preencheu ${camposCount} campo${camposCount > 1 ? 's' : ''} (confiança ${conf}). Confira antes de salvar.`;
+    const emoji = iaConfianca === 'alta' ? '✨' : (iaConfianca === 'media' ? '✅' : '⚠️');
+    document.getElementById('ia-resultado-texto').textContent = 
+      `${emoji} IA preencheu ${camposCount} campo${camposCount > 1 ? 's' : ''} (confiança ${iaConfianca}). ${iaConfianca === 'alta' ? 'Tudo pronto pra confirmar!' : 'Confira antes de salvar.'}`;
+    
+    // Atualiza botão (DEVE habilitar se tudo OK)
+    setTimeout(atualizarBotao, 200);
   }
   
   window.removerAnexo = function() {
     anexoFile = null;
     anexoEhPdf = false;
     iaProcessou = false;
+    iaConfianca = null;
     camposPreenchidosIA.clear();
     document.getElementById('input-camera').value = '';
     document.getElementById('input-galeria').value = '';
@@ -1868,343 +1943,11 @@
     document.getElementById('preview-pdf').classList.add('hidden');
     document.getElementById('ia-resultado').classList.add('hidden');
     document.getElementById('valor-wrapper').classList.remove('ia-preenchido');
+    atualizarBotao();
   };
   
   async function uploadAnexo() {
     if (!anexoFile) return null;
     
     const ext = anexoFile.name.split('.').pop() || 'jpg';
-    const path = `${usuario.id}/${Date.now()}.${ext}`;
-    
-    const { error } = await supabase.storage
-      .from('comprovantes')
-      .upload(path, anexoFile);
-    
-    if (error) {
-      console.error('Erro upload:', error);
-      return null;
-    }
-    
-    const { data } = supabase.storage.from('comprovantes').getPublicUrl(path);
-    return data.publicUrl;
-  }
-  
-  window.salvarTransacao = async function() {
-    const valor = valorParaNumero(document.getElementById('f-valor').value);
-    const descricao = document.getElementById('f-descricao').value.trim();
-    
-    if (!valor || !descricao || !categoriaSelecionada) {
-      document.getElementById('msg-form').className = 'msg show msg-error';
-      document.getElementById('msg-form').textContent = 'Preencha valor, descrição e categoria';
-      return;
-    }
-    
-    const btn = document.getElementById('btn-salvar');
-    btn.disabled = true;
-    btn.textContent = 'Salvando...';
-    
-    let anexoUrl = null;
-    if (anexoFile) {
-      btn.textContent = anexoEhPdf ? 'Subindo PDF...' : 'Subindo foto...';
-      anexoUrl = await uploadAnexo();
-    }
-    
-    let result;
-    
-    if (editandoId) {
-      const data = document.getElementById('f-data').value;
-      const pagamento = document.getElementById('f-pagamento').value || null;
-      const upd = {
-        tipo: tipoSelecionado,
-        categoria_id: categoriaSelecionada,
-        valor, descricao, data,
-        forma_pagamento: pagamento,
-        atualizado_em: new Date().toISOString()
-      };
-      if (anexoUrl) upd.foto_url = anexoUrl;
-      result = await supabase.from('transacoes').update(upd).eq('id', editandoId);
-    } else if (lancamentoSelecionado === 'recorrente') {
-      const dia = parseInt(document.getElementById('f-dia-mes').value);
-      if (!dia || dia < 1 || dia > 31) {
-        document.getElementById('msg-form').className = 'msg show msg-error';
-        document.getElementById('msg-form').textContent = 'Coloca um dia válido (1-31)';
-        btn.disabled = false;
-        btn.textContent = 'Cadastrar';
-        return;
-      }
-      result = await supabase.from('transacoes_recorrentes').insert({
-        user_id: usuario.id,
-        tipo: tipoSelecionado,
-        categoria_id: categoriaSelecionada,
-        valor, descricao,
-        dia_mes: dia,
-        ativa: true
-      });
-    } else if (lancamentoSelecionado === 'parcelada') {
-      const parcelas = parseInt(document.getElementById('f-parcelas').value);
-      const dataInicial = document.getElementById('f-data-parcela').value;
-      const pagamento = document.getElementById('f-pagamento-parc').value;
-      
-      if (!parcelas || parcelas < 2 || !dataInicial) {
-        document.getElementById('msg-form').className = 'msg show msg-error';
-        document.getElementById('msg-form').textContent = 'Preencha número de parcelas e data inicial';
-        btn.disabled = false;
-        btn.textContent = 'Cadastrar';
-        return;
-      }
-      
-      const compraId = crypto.randomUUID();
-      const valorParcela = +(valor / parcelas).toFixed(2);
-      
-      const inserts = [];
-      const [ano, mes, dia] = dataInicial.split('-').map(Number);
-      
-      for (let i = 0; i < parcelas; i++) {
-        const dataParcela = new Date(ano, mes - 1 + i, dia);
-        const ultimoDiaMes = new Date(dataParcela.getFullYear(), dataParcela.getMonth() + 1, 0).getDate();
-        if (dia > ultimoDiaMes) dataParcela.setDate(ultimoDiaMes);
-        
-        inserts.push({
-          user_id: usuario.id,
-          tipo: tipoSelecionado,
-          categoria_id: categoriaSelecionada,
-          valor: valorParcela,
-          descricao: `${descricao} (${i+1}/${parcelas})`,
-          data: dataParcela.toISOString().split('T')[0],
-          forma_pagamento: pagamento,
-          origem: iaProcessou ? 'foto_ia' : 'manual',
-          compra_id: compraId,
-          parcela_numero: i + 1,
-          parcela_total: parcelas,
-          foto_url: i === 0 ? anexoUrl : null
-        });
-      }
-      
-      result = await supabase.from('transacoes').insert(inserts);
-    } else {
-      const data = document.getElementById('f-data').value;
-      const pagamento = document.getElementById('f-pagamento').value || null;
-      
-      result = await supabase.from('transacoes').insert({
-        user_id: usuario.id,
-        tipo: tipoSelecionado,
-        categoria_id: categoriaSelecionada,
-        valor, descricao, data,
-        forma_pagamento: pagamento,
-        origem: iaProcessou ? 'foto_ia' : (anexoUrl ? 'foto' : 'manual'),
-        foto_url: anexoUrl
-      });
-    }
-    
-    if (result.error) {
-      document.getElementById('msg-form').className = 'msg show msg-error';
-      document.getElementById('msg-form').textContent = 'Erro: ' + result.error.message;
-      btn.disabled = false;
-      btn.textContent = editandoId ? 'Salvar alterações' : 'Cadastrar';
-      return;
-    }
-    
-    if (!editandoId) {
-      const xpGanho = iaProcessou ? 15 : (anexoFile ? 10 : 5);
-      const labelXp = iaProcessou ? '+15 XP ✨ IA' : (anexoFile ? '+10 XP 📸' : '+5 XP 💰');
-      await darXP(xpGanho, 'transacao_cadastrada', 'Transação cadastrada' + (iaProcessou ? ' (com IA)' : ''));
-      mostrarToast(labelXp);
-    }
-    
-    fecharModal('modal-form');
-    await carregarDados();
-  };
-  
-  async function darXP(xp, acao, descricao) {
-    await supabase.from('historico_xp').insert({
-      user_id: usuario.id, acao, xp_ganho: xp, descricao
-    });
-    const { data: g } = await supabase.from('gamificacao').select('xp_total, total_transacoes').eq('user_id', usuario.id).single();
-    await supabase.from('gamificacao').update({
-      xp_total: (g?.xp_total || 0) + xp,
-      total_transacoes: (g?.total_transacoes || 0) + 1,
-      ultima_atividade: new Date().toISOString().split('T')[0]
-    }).eq('user_id', usuario.id);
-  }
-  
-  function mostrarToast(texto) {
-    const t = document.getElementById('xp-toast');
-    t.textContent = texto;
-    t.style.display = 'block';
-    setTimeout(() => { t.style.display = 'none'; }, 2500);
-  }
-  
-  window.abrirDetalhe = function(id, ehProjetada) {
-    let t;
-    if (ehProjetada) {
-      const proj = projetadasDoMes();
-      t = proj.find(x => x.id === id);
-      detalheTipo = 'projetada';
-    } else {
-      t = transacoes.find(x => x.id === id);
-      detalheTipo = 'real';
-    }
-    if (!t) return;
-    detalheAtual = t;
-    
-    const cat = categorias.find(c => c.id === t.categoria_id);
-    const sinal = t.tipo === 'entrada' ? '+' : '−';
-    
-    document.getElementById('detalhe-titulo').textContent = t.descricao || cat?.nome || 'Transação';
-    document.getElementById('detalhe-valor-big').textContent = sinal + ' R$ ' + formatarMoeda(t.valor);
-    document.getElementById('detalhe-valor-big').className = 'detalhe-valor-big ' + t.tipo;
-    
-    let tipoLabel = t.tipo === 'entrada' ? '+ Entrada' : '− Saída';
-    if (ehProjetada) tipoLabel += ' (previsto)';
-    if (t.origem === 'foto_ia') tipoLabel += ' ✨';
-    document.getElementById('detalhe-tipo').textContent = tipoLabel;
-    
-    document.getElementById('detalhe-categoria').textContent = cat ? `${cat.icone} ${cat.nome}` : '—';
-    document.getElementById('detalhe-data').textContent = formatarData(t.data);
-    document.getElementById('linha-data').style.display = 'flex';
-    document.getElementById('linha-dia-mes').style.display = 'none';
-    document.getElementById('linha-pagamento').style.display = ehProjetada ? 'none' : 'flex';
-    
-    const pagtos = {pix:'Pix',debito:'Débito',credito:'Crédito',dinheiro:'Dinheiro',boleto:'Boleto',transferencia:'Transferência',financiamento:'Financiamento'};
-    document.getElementById('detalhe-pagamento').textContent = pagtos[t.forma_pagamento] || '—';
-    
-    if (t.parcela_numero && t.parcela_total) {
-      document.getElementById('linha-parcela').style.display = 'flex';
-      document.getElementById('detalhe-parcela').textContent = `${t.parcela_numero} de ${t.parcela_total}`;
-    } else {
-      document.getElementById('linha-parcela').style.display = 'none';
-    }
-    
-    const imgEl = document.getElementById('detalhe-anexo-img');
-    const pdfEl = document.getElementById('detalhe-anexo-pdf');
-    imgEl.classList.add('hidden');
-    pdfEl.classList.add('hidden');
-    
-    if (t.foto_url) {
-      if (t.foto_url.toLowerCase().endsWith('.pdf')) {
-        pdfEl.classList.remove('hidden');
-        pdfEl.href = t.foto_url;
-      } else {
-        imgEl.classList.remove('hidden');
-        imgEl.src = t.foto_url;
-      }
-    }
-    
-    document.getElementById('btn-confirmar-projetada').classList.toggle('hidden', !ehProjetada);
-    document.getElementById('btn-editar').classList.toggle('hidden', ehProjetada);
-    document.getElementById('btn-excluir').classList.toggle('hidden', ehProjetada);
-    
-    document.getElementById('modal-detalhe').classList.add('show');
-  };
-  
-  window.abrirDetalheRecorrente = function(id) {
-    const r = recorrentes.find(x => x.id === id);
-    if (!r) return;
-    detalheAtual = r;
-    detalheTipo = 'recorrente';
-    
-    const cat = categorias.find(c => c.id === r.categoria_id);
-    const sinal = r.tipo === 'entrada' ? '+' : '−';
-    
-    document.getElementById('detalhe-titulo').textContent = '🔁 ' + r.descricao;
-    document.getElementById('detalhe-valor-big').textContent = sinal + ' R$ ' + formatarMoeda(r.valor);
-    document.getElementById('detalhe-valor-big').className = 'detalhe-valor-big ' + r.tipo;
-    document.getElementById('detalhe-tipo').textContent = (r.tipo === 'entrada' ? '+ Entrada' : '− Saída') + ' recorrente';
-    document.getElementById('detalhe-categoria').textContent = cat ? `${cat.icone} ${cat.nome}` : '—';
-    document.getElementById('linha-data').style.display = 'none';
-    document.getElementById('linha-pagamento').style.display = 'none';
-    document.getElementById('linha-parcela').style.display = 'none';
-    document.getElementById('linha-dia-mes').style.display = 'flex';
-    document.getElementById('detalhe-dia-mes').textContent = 'Dia ' + r.dia_mes;
-    document.getElementById('detalhe-anexo-img').classList.add('hidden');
-    document.getElementById('detalhe-anexo-pdf').classList.add('hidden');
-    
-    document.getElementById('btn-confirmar-projetada').classList.add('hidden');
-    document.getElementById('btn-editar').classList.remove('hidden');
-    document.getElementById('btn-excluir').classList.remove('hidden');
-    
-    document.getElementById('modal-detalhe').classList.add('show');
-  };
-  
-  window.confirmarProjetada = async function() {
-    if (!detalheAtual) return;
-    const t = detalheAtual;
-    
-    const { error } = await supabase.from('transacoes').insert({
-      user_id: usuario.id,
-      tipo: t.tipo,
-      categoria_id: t.categoria_id,
-      valor: t.valor,
-      descricao: t.descricao,
-      data: t.data,
-      origem: 'recorrente'
-    });
-    
-    if (error) {
-      alert('Erro: ' + error.message);
-      return;
-    }
-    
-    await darXP(5, 'transacao_confirmada', 'Recorrente confirmada');
-    mostrarToast('+5 XP ✓');
-    
-    fecharModal('modal-detalhe');
-    await carregarDados();
-  };
-  
-  window.editarTransacao = function() {
-    if (!detalheAtual) return;
-    const t = detalheAtual;
-    
-    editandoId = t.id;
-    tipoSelecionado = t.tipo;
-    categoriaSelecionada = t.categoria_id;
-    
-    document.getElementById('modal-form-titulo').textContent = 'Editar';
-    document.getElementById('btn-salvar').textContent = 'Salvar alterações';
-    document.getElementById('f-valor').value = formatarMoeda(t.valor);
-    document.getElementById('f-descricao').value = t.descricao || '';
-    
-    if (detalheTipo === 'recorrente') {
-      lancamentoSelecionado = 'recorrente';
-      selecionarLancamento('recorrente');
-      document.getElementById('f-dia-mes').value = t.dia_mes;
-    } else {
-      lancamentoSelecionado = 'unica';
-      selecionarLancamento('unica');
-      document.getElementById('f-data').value = t.data;
-      document.getElementById('f-pagamento').value = t.forma_pagamento || '';
-    }
-    
-    selecionarTipo(t.tipo);
-    setTimeout(() => selecionarCategoria(t.categoria_id), 50);
-    
-    fecharModal('modal-detalhe');
-    document.getElementById('modal-form').classList.add('show');
-  };
-  
-  window.excluirTransacao = async function() {
-    if (!detalheAtual) return;
-    
-    if (detalheTipo === 'real' && detalheAtual.compra_id) {
-      const r = confirm(`Esta é parcela ${detalheAtual.parcela_numero}/${detalheAtual.parcela_total}. Excluir TODAS as parcelas? Cancele se quiser excluir só essa.`);
-      if (r) {
-        await supabase.from('transacoes').delete().eq('compra_id', detalheAtual.compra_id);
-      } else {
-        const r2 = confirm('Excluir só essa parcela?');
-        if (!r2) return;
-        await supabase.from('transacoes').delete().eq('id', detalheAtual.id);
-      }
-    } else {
-      if (!confirm('Excluir essa transação? Não pode ser desfeito.')) return;
-      const tabela = detalheTipo === 'recorrente' ? 'transacoes_recorrentes' : 'transacoes';
-      await supabase.from(tabela).delete().eq('id', detalheAtual.id);
-    }
-    
-    fecharModal('modal-detalhe');
-    await carregarDados();
-  };
-</script>
-
-</body>
-</html>
+    const path = `${usuario.id}/
