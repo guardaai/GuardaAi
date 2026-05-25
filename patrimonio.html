@@ -44,7 +44,6 @@
   
   body { padding-bottom: 100px; }
   
-  /* iOS INPUT FIX */
   input, textarea, select {
     color: #fff !important;
     -webkit-text-fill-color: #fff !important;
@@ -604,10 +603,8 @@
   .btn-primary { background: var(--brand); color: #001a0e; }
   .btn-primary:active { background: var(--brand-hover); transform: scale(0.985); }
   .btn-primary:disabled {
-    opacity: 0.4;
+    opacity: 0.5;
     cursor: not-allowed;
-    background: var(--bg-elev);
-    color: var(--text-faint);
   }
   
   .btn-secondary {
@@ -763,12 +760,12 @@
       
       <div class="field">
         <label>Nome ou descrição</label>
-        <input type="text" id="f-nome" placeholder="Ex: CDB Banco Inter, Tesouro Selic 2029, MXRF11...">
+        <input type="text" id="f-nome" placeholder="Ex: CDB Banco Inter, MXRF11, Ademicon...">
       </div>
       
       <div class="field">
         <label>Instituição <span style="color:var(--text-faint)">(opcional)</span></label>
-        <input type="text" id="f-instituicao" placeholder="Ex: Banco Inter, XP, Nubank...">
+        <input type="text" id="f-instituicao" placeholder="Ex: Banco Inter, XP, Nubank, Consórcio...">
       </div>
       
       <div class="field-row">
@@ -790,7 +787,7 @@
         <textarea id="f-observacoes" placeholder="Notas sobre esse ativo, vencimento, estratégia..."></textarea>
       </div>
       
-      <div class="info-box" id="info-tipo" style="display:none;"></div>
+      <div class="info-box" id="info-tipo"></div>
       
       <button class="btn btn-primary" id="btn-salvar" onclick="salvarAtivo()">Cadastrar ativo</button>
     </div>
@@ -861,10 +858,10 @@
       
       <div class="valor-input-wrapper">
         <span class="valor-prefix">R$</span>
-        <input type="text" inputmode="decimal" id="f-novo-valor" placeholder="0,00" oninput="formatarValor(this); validarAtualizar()">
+        <input type="text" inputmode="decimal" id="f-novo-valor" placeholder="0,00" oninput="formatarValor(this)">
       </div>
       
-      <button class="btn btn-primary" id="btn-atualizar" onclick="confirmarAtualizar()" disabled style="margin-top:14px;">Atualizar</button>
+      <button class="btn btn-primary" id="btn-atualizar" onclick="confirmarAtualizar()" style="margin-top:14px;">Atualizar</button>
     </div>
   </div>
 </div>
@@ -880,13 +877,15 @@
   
   const tiposAtivo = {
     'renda_fixa': { nome: 'Renda Fixa', desc: 'CDB, LCI, LCA', icone: '🏦', cor: '#00d97e' },
-    'tesouro': { nome: 'Tesouro Direto', desc: 'Selic, IPCA, Prefixado', icone: '🏛️', cor: '#38bdf8' },
-    'fii': { nome: 'Fundos Imobiliários', desc: 'MXRF11, KNRI11...', icone: '🏢', cor: '#a855f7' },
-    'acao': { nome: 'Ações', desc: 'PETR4, ITUB4...', icone: '📈', cor: '#ffb800' },
-    'cripto': { nome: 'Criptomoedas', desc: 'BTC, ETH...', icone: '₿', cor: '#f97316' },
-    'imovel': { nome: 'Imóvel', desc: 'Casa, apartamento, terreno', icone: '🏠', cor: '#ec4899' },
+    'tesouro': { nome: 'Tesouro Direto', desc: 'Selic, IPCA', icone: '🏛️', cor: '#38bdf8' },
+    'fii': { nome: 'Fundos Imobiliários', desc: 'MXRF11, KNRI11', icone: '🏢', cor: '#a855f7' },
+    'acao': { nome: 'Ações', desc: 'PETR4, ITUB4', icone: '📈', cor: '#ffb800' },
+    'cripto': { nome: 'Criptomoedas', desc: 'BTC, ETH', icone: '₿', cor: '#f97316' },
+    'consorcio': { nome: 'Consórcio', desc: 'Ademicon, Embracon', icone: '🎟️', cor: '#06b6d4' },
+    'previdencia': { nome: 'Previdência', desc: 'PGBL, VGBL', icone: '🛡️', cor: '#84cc16' },
+    'imovel': { nome: 'Imóvel', desc: 'Casa, apto, terreno', icone: '🏠', cor: '#ec4899' },
     'veiculo': { nome: 'Veículo', desc: 'Carro, moto', icone: '🚗', cor: '#14b8a6' },
-    'outro': { nome: 'Outro', desc: 'Empresa, ouro, etc.', icone: '💎', cor: '#8b5cf6' }
+    'outro': { nome: 'Outro', desc: 'Empresa, ouro, etc', icone: '💎', cor: '#8b5cf6' }
   };
   
   const dicasTipo = {
@@ -895,6 +894,8 @@
     'fii': '🏢 FIIs pagam dividendos mensais. Bom pra renda passiva.',
     'acao': '📈 Ações têm maior volatilidade. Estude antes de comprar.',
     'cripto': '₿ Volatilidade alta. Recomenda-se até 5-10% da carteira.',
+    'consorcio': '🎟️ Consórcio é uma carta de crédito. Considere o valor pago, não o valor da carta.',
+    'previdencia': '🛡️ Previdência privada (PGBL/VGBL) é boa pra longo prazo e benefícios fiscais.',
     'imovel': '🏠 Imóveis trazem segurança patrimonial mas baixa liquidez.',
     'veiculo': '🚗 Veículos desvalorizam com o tempo. Mas é parte do seu patrimônio.',
     'outro': '💎 Para empresas, ouro, NFTs ou qualquer outro tipo de bem.'
@@ -902,7 +903,7 @@
   
   let usuario;
   let ativos = [];
-  let tipoSelecionado = null;
+  let tipoSelecionado = 'renda_fixa'; // pré-seleciona
   let detalheAtual = null;
   let editandoId = null;
   
@@ -958,7 +959,7 @@
         <div class="empty">
           <div class="empty-emoji">📈</div>
           <div class="empty-title">Comece a investir</div>
-          <div class="empty-desc">Cadastre seu primeiro investimento — pode ser CDB do banco, Tesouro Direto, ações, FII, imóvel, qualquer coisa.</div>
+          <div class="empty-desc">Cadastre seu primeiro investimento — pode ser CDB, Tesouro, ações, FII, consórcio, imóvel, qualquer coisa.</div>
         </div>
       `;
       return;
@@ -1032,7 +1033,7 @@
   
   function setupTipoPicker() {
     document.getElementById('tipo-grid').innerHTML = Object.entries(tiposAtivo).map(([k, v]) => `
-      <div class="tipo-opt" data-tipo="${k}" onclick="selecionarTipo('${k}')">
+      <div class="tipo-opt ${k === tipoSelecionado ? 'selected' : ''}" data-tipo="${k}" onclick="selecionarTipo('${k}')">
         <div class="tipo-opt-icon">${v.icone}</div>
         <div class="tipo-opt-info">
           <div class="tipo-opt-nome">${v.nome}</div>
@@ -1040,15 +1041,15 @@
         </div>
       </div>
     `).join('');
+    
+    // Aplica dica inicial
+    document.getElementById('info-tipo').textContent = dicasTipo[tipoSelecionado] || '';
   }
   
   window.selecionarTipo = function(t) {
     tipoSelecionado = t;
     document.querySelectorAll('.tipo-opt').forEach(o => o.classList.toggle('selected', o.dataset.tipo === t));
-    
-    const info = document.getElementById('info-tipo');
-    info.style.display = 'block';
-    info.textContent = dicasTipo[t] || '';
+    document.getElementById('info-tipo').textContent = dicasTipo[t] || '';
   };
   
   function formatarMoeda(v) {
@@ -1068,12 +1069,9 @@
   };
   
   window.formatarPct = function(input) {
-    // Permite só números e vírgula
     let v = input.value.replace(/[^0-9,]/g, '');
-    // Permite só uma vírgula
     const parts = v.split(',');
     if (parts.length > 2) v = parts[0] + ',' + parts.slice(1).join('');
-    // Limita casas decimais
     if (parts[1] && parts[1].length > 2) {
       v = parts[0] + ',' + parts[1].substring(0, 2);
     }
@@ -1093,7 +1091,7 @@
   
   window.abrirModalNovo = function() {
     editandoId = null;
-    tipoSelecionado = null;
+    tipoSelecionado = 'renda_fixa';
     document.getElementById('modal-titulo').textContent = 'Novo ativo';
     document.getElementById('btn-salvar').textContent = 'Cadastrar ativo';
     document.getElementById('f-valor').value = '';
@@ -1103,8 +1101,7 @@
     document.getElementById('f-data-aquisicao').value = '';
     document.getElementById('f-observacoes').value = '';
     document.getElementById('msg-form').className = 'msg';
-    document.getElementById('info-tipo').style.display = 'none';
-    document.querySelectorAll('.tipo-opt').forEach(o => o.classList.remove('selected'));
+    setupTipoPicker();
     document.getElementById('modal-form').classList.add('show');
   };
   
@@ -1113,6 +1110,7 @@
   };
   
   window.salvarAtivo = async function() {
+    const msgEl = document.getElementById('msg-form');
     const valor = valorParaNumero(document.getElementById('f-valor').value);
     const nome = document.getElementById('f-nome').value.trim();
     const instituicao = document.getElementById('f-instituicao').value.trim() || null;
@@ -1120,15 +1118,23 @@
     const dataAquisicao = document.getElementById('f-data-aquisicao').value || null;
     const observacoes = document.getElementById('f-observacoes').value.trim() || null;
     
+    msgEl.className = 'msg';
+    
     if (!tipoSelecionado) {
-      document.getElementById('msg-form').className = 'msg show msg-error';
-      document.getElementById('msg-form').textContent = 'Escolha um tipo de ativo';
+      msgEl.className = 'msg show msg-error';
+      msgEl.textContent = 'Escolha um tipo de ativo';
       return;
     }
     
-    if (!nome || valor <= 0) {
-      document.getElementById('msg-form').className = 'msg show msg-error';
-      document.getElementById('msg-form').textContent = 'Preencha nome e valor';
+    if (!nome) {
+      msgEl.className = 'msg show msg-error';
+      msgEl.textContent = 'Preencha o nome do ativo';
+      return;
+    }
+    
+    if (valor <= 0) {
+      msgEl.className = 'msg show msg-error';
+      msgEl.textContent = 'Coloca o valor do ativo';
       return;
     }
     
@@ -1161,8 +1167,8 @@
     }
     
     if (result.error) {
-      document.getElementById('msg-form').className = 'msg show msg-error';
-      document.getElementById('msg-form').textContent = 'Erro: ' + result.error.message;
+      msgEl.className = 'msg show msg-error';
+      msgEl.textContent = 'Erro: ' + result.error.message;
       btn.disabled = false;
       btn.textContent = editandoId ? 'Salvar alterações' : 'Cadastrar ativo';
       return;
@@ -1174,6 +1180,9 @@
       await darXP(xp, ehPrimeiro ? 'primeiro_aporte' : 'novo_ativo', 'Ativo cadastrado: ' + nome);
       mostrarToast(msg);
     }
+    
+    btn.disabled = false;
+    btn.textContent = editandoId ? 'Salvar alterações' : 'Cadastrar ativo';
     
     fecharModal('modal-form');
     await carregarAtivos();
@@ -1240,7 +1249,7 @@
     document.getElementById('f-observacoes').value = a.observacoes || '';
     document.getElementById('msg-form').className = 'msg';
     
-    setTimeout(() => selecionarTipo(a.tipo), 50);
+    setupTipoPicker();
     
     fecharModal('modal-detalhe');
     document.getElementById('modal-form').classList.add('show');
@@ -1260,19 +1269,18 @@
     document.getElementById('f-novo-valor').value = formatarMoeda(detalheAtual.valor_atual);
     document.getElementById('msg-atualizar').className = 'msg';
     document.getElementById('info-atualizar').innerHTML = `Qual o valor atual de <strong>${detalheAtual.nome}</strong>?`;
-    document.getElementById('btn-atualizar').disabled = false;
     document.getElementById('modal-atualizar').classList.add('show');
-  };
-  
-  window.validarAtualizar = function() {
-    const v = valorParaNumero(document.getElementById('f-novo-valor').value);
-    document.getElementById('btn-atualizar').disabled = v <= 0;
   };
   
   window.confirmarAtualizar = async function() {
     if (!detalheAtual) return;
     const v = valorParaNumero(document.getElementById('f-novo-valor').value);
-    if (v <= 0) return;
+    
+    if (v <= 0) {
+      document.getElementById('msg-atualizar').className = 'msg show msg-error';
+      document.getElementById('msg-atualizar').textContent = 'Coloca um valor maior que zero';
+      return;
+    }
     
     const btn = document.getElementById('btn-atualizar');
     btn.disabled = true;
@@ -1286,6 +1294,7 @@
     await darXP(20, 'valor_ativo_atualizado', 'Valor atualizado');
     mostrarToast('+20 XP 📊');
     
+    btn.disabled = false;
     btn.textContent = 'Atualizar';
     fecharModal('modal-atualizar');
     fecharModal('modal-detalhe');
