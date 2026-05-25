@@ -117,7 +117,6 @@
     padding: 20px;
   }
   
-  /* TATU */
   .tatu-bubble {
     display: flex;
     gap: 12px;
@@ -140,7 +139,6 @@
   
   .tatu-text strong { color: var(--text); }
   
-  /* PATRIMÔNIO TOTAL */
   .total-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -205,7 +203,6 @@
     font-weight: 600;
   }
   
-  /* DISTRIBUIÇÃO POR TIPO */
   .dist-bar {
     display: flex;
     height: 8px;
@@ -253,7 +250,6 @@
     font-weight: 600;
   }
   
-  /* SEÇÃO */
   .section { margin-bottom: 16px; }
   
   .section-title {
@@ -267,7 +263,6 @@
     padding: 0 4px;
   }
   
-  /* ATIVO */
   .ativo-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -333,7 +328,6 @@
     white-space: nowrap;
   }
   
-  /* EMPTY */
   .empty {
     background: var(--bg-card);
     border: 1px dashed var(--border-strong);
@@ -359,7 +353,6 @@
     margin: 0 auto;
   }
   
-  /* FAB */
   .fab {
     position: fixed;
     bottom: 24px;
@@ -385,7 +378,6 @@
     background: var(--brand-hover);
   }
   
-  /* MODAL */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -450,7 +442,6 @@
   
   .modal-body { padding: 0 24px 24px; }
   
-  /* TIPO PICKER */
   .tipo-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -492,7 +483,6 @@
     text-overflow: ellipsis;
   }
   
-  /* FIELD */
   .field { margin-bottom: 14px; }
   
   .field label {
@@ -503,7 +493,7 @@
     font-weight: 500;
   }
   
-  .field input, .field select {
+  .field input, .field select, .field textarea {
     width: 100%;
     background: var(--bg-input);
     border: 1px solid var(--border);
@@ -514,17 +504,48 @@
     font-family: 'Inter', sans-serif;
   }
   
-  .field input:focus, .field select:focus {
+  .field textarea {
+    resize: vertical;
+    min-height: 70px;
+  }
+  
+  .field input:focus, .field select:focus, .field textarea:focus {
     outline: none;
     border-color: var(--brand);
   }
   
-  .field input::placeholder { color: var(--text-faint); }
+  .field input::placeholder, .field textarea::placeholder { color: var(--text-faint); }
   
   .field-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
+  }
+  
+  .input-suffix-wrapper {
+    display: flex;
+    align-items: center;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  
+  .input-suffix-wrapper:focus-within { border-color: var(--brand); }
+  
+  .input-suffix-wrapper input {
+    background: transparent;
+    border: none;
+    flex: 1;
+    padding: 0;
+    font-size: 16px;
+  }
+  
+  .input-suffix-text {
+    color: var(--text-mute);
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 8px;
   }
   
   .valor-input-wrapper {
@@ -611,17 +632,19 @@
   .detalhe-linha {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     padding: 8px 0;
     border-bottom: 1px solid var(--border);
+    gap: 12px;
   }
   
   .detalhe-linha:last-child { border-bottom: none; }
-  .detalhe-label { font-size: 13px; color: var(--text-mute); }
+  .detalhe-label { font-size: 13px; color: var(--text-mute); flex-shrink: 0; }
   .detalhe-valor {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 14px;
     font-weight: 600;
+    text-align: right;
   }
   
   .detalhe-valor-big {
@@ -731,7 +754,7 @@
       </div>
       
       <div class="field">
-        <label>Quanto investiu? (valor total)</label>
+        <label>Quanto vale hoje?</label>
         <div class="valor-input-wrapper">
           <span class="valor-prefix">R$</span>
           <input type="text" inputmode="decimal" id="f-valor" placeholder="0,00" oninput="formatarValor(this)">
@@ -750,13 +773,21 @@
       
       <div class="field-row">
         <div class="field">
-          <label>Rendimento <span style="color:var(--text-faint)">(opcional)</span></label>
-          <input type="text" id="f-rendimento" placeholder="Ex: 110% CDI, IPCA+5%">
+          <label>Rendimento mensal <span style="color:var(--text-faint)">(%)</span></label>
+          <div class="input-suffix-wrapper">
+            <input type="text" inputmode="decimal" id="f-rendimento" placeholder="Ex: 1,2" oninput="formatarPct(this)">
+            <span class="input-suffix-text">%</span>
+          </div>
         </div>
         <div class="field">
-          <label>Vencimento <span style="color:var(--text-faint)">(opcional)</span></label>
-          <input type="date" id="f-vencimento">
+          <label>Adquirido em <span style="color:var(--text-faint)">(opcional)</span></label>
+          <input type="date" id="f-data-aquisicao">
         </div>
+      </div>
+      
+      <div class="field">
+        <label>Observações <span style="color:var(--text-faint)">(opcional)</span></label>
+        <textarea id="f-observacoes" placeholder="Notas sobre esse ativo, vencimento, estratégia..."></textarea>
       </div>
       
       <div class="info-box" id="info-tipo" style="display:none;"></div>
@@ -788,12 +819,16 @@
           <div class="detalhe-valor" id="detalhe-instituicao">—</div>
         </div>
         <div class="detalhe-linha" id="linha-rendimento">
-          <div class="detalhe-label">Rendimento</div>
+          <div class="detalhe-label">Rendimento/mês</div>
           <div class="detalhe-valor" id="detalhe-rendimento">—</div>
         </div>
-        <div class="detalhe-linha" id="linha-vencimento">
-          <div class="detalhe-label">Vencimento</div>
-          <div class="detalhe-valor" id="detalhe-vencimento">—</div>
+        <div class="detalhe-linha" id="linha-aquisicao">
+          <div class="detalhe-label">Adquirido em</div>
+          <div class="detalhe-valor" id="detalhe-aquisicao">—</div>
+        </div>
+        <div class="detalhe-linha" id="linha-observacoes">
+          <div class="detalhe-label">Observações</div>
+          <div class="detalhe-valor" id="detalhe-observacoes" style="text-align:right; max-width:60%; font-weight:500; font-family:'Inter',sans-serif;">—</div>
         </div>
         <div class="detalhe-linha">
           <div class="detalhe-label">Cadastrado em</div>
@@ -844,10 +879,10 @@
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
   
   const tiposAtivo = {
-    'renda_fixa': { nome: 'Renda Fixa', desc: 'CDB, LCI, LCA, Tesouro', icone: '🏦', cor: '#00d97e' },
+    'renda_fixa': { nome: 'Renda Fixa', desc: 'CDB, LCI, LCA', icone: '🏦', cor: '#00d97e' },
     'tesouro': { nome: 'Tesouro Direto', desc: 'Selic, IPCA, Prefixado', icone: '🏛️', cor: '#38bdf8' },
     'fii': { nome: 'Fundos Imobiliários', desc: 'MXRF11, KNRI11...', icone: '🏢', cor: '#a855f7' },
-    'acao': { nome: 'Ações', desc: 'PETR4, ITUB4, BBAS3...', icone: '📈', cor: '#ffb800' },
+    'acao': { nome: 'Ações', desc: 'PETR4, ITUB4...', icone: '📈', cor: '#ffb800' },
     'cripto': { nome: 'Criptomoedas', desc: 'BTC, ETH...', icone: '₿', cor: '#f97316' },
     'imovel': { nome: 'Imóvel', desc: 'Casa, apartamento, terreno', icone: '🏠', cor: '#ec4899' },
     'veiculo': { nome: 'Veículo', desc: 'Carro, moto', icone: '🚗', cor: '#14b8a6' },
@@ -884,12 +919,14 @@
   })();
   
   async function carregarAtivos() {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('patrimonio')
       .select('*')
       .eq('user_id', usuario.id)
       .eq('ativo', true)
       .order('valor_atual', { ascending: false });
+    
+    if (error) console.error('Erro carregar:', error);
     
     ativos = data || [];
     renderTudo();
@@ -904,15 +941,12 @@
     const el = document.getElementById('tatu-text');
     if (ativos.length === 0) {
       el.innerHTML = 'Hora de fazer o dinheiro <strong>trabalhar pra você</strong>. Cadastre seus investimentos pra acompanhar.';
+    } else if (ativos.length === 1) {
+      el.innerHTML = `🎉 <strong>Primeiro aporte feito!</strong> Continue diversificando.`;
+    } else if (ativos.length < 5) {
+      el.innerHTML = `💪 <strong>${ativos.length} ativos</strong> cadastrados. Diversificar é o segredo.`;
     } else {
-      const total = ativos.reduce((acc, a) => acc + Number(a.valor_atual), 0);
-      if (ativos.length === 1) {
-        el.innerHTML = `🎉 <strong>Primeiro aporte feito!</strong> Continue diversificando.`;
-      } else if (ativos.length < 5) {
-        el.innerHTML = `💪 <strong>${ativos.length} ativos</strong> cadastrados. Diversificar é o segredo.`;
-      } else {
-        el.innerHTML = `🏆 Portfólio <strong>diversificado</strong> com ${ativos.length} ativos. Excelente!`;
-      }
+      el.innerHTML = `🏆 Portfólio <strong>diversificado</strong> com ${ativos.length} ativos. Excelente!`;
     }
   }
   
@@ -932,7 +966,6 @@
     
     const total = ativos.reduce((acc, a) => acc + Number(a.valor_atual), 0);
     
-    // Agrupa por tipo
     const porTipo = {};
     ativos.forEach(a => {
       const t = a.tipo || 'outro';
@@ -941,17 +974,14 @@
       porTipo[t].qtd++;
     });
     
-    // Ordena tipos por valor
     const tiposOrdenados = Object.keys(porTipo).sort((a, b) => porTipo[b].total - porTipo[a].total);
     
-    // Barra de distribuição
     const distBar = tiposOrdenados.map(t => {
       const pct = (porTipo[t].total / total) * 100;
       const cor = tiposAtivo[t]?.cor || '#8b5cf6';
       return `<div class="dist-bar-seg" style="width:${pct}%;background:${cor};"></div>`;
     }).join('');
     
-    // Legenda
     const legenda = tiposOrdenados.map(t => {
       const pct = ((porTipo[t].total / total) * 100).toFixed(1);
       const info = tiposAtivo[t] || tiposAtivo.outro;
@@ -964,7 +994,6 @@
       `;
     }).join('');
     
-    // Lista de ativos
     const listaAtivos = ativos.map(a => {
       const info = tiposAtivo[a.tipo] || tiposAtivo.outro;
       return `
@@ -1038,9 +1067,28 @@
     input.value = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   };
   
+  window.formatarPct = function(input) {
+    // Permite só números e vírgula
+    let v = input.value.replace(/[^0-9,]/g, '');
+    // Permite só uma vírgula
+    const parts = v.split(',');
+    if (parts.length > 2) v = parts[0] + ',' + parts.slice(1).join('');
+    // Limita casas decimais
+    if (parts[1] && parts[1].length > 2) {
+      v = parts[0] + ',' + parts[1].substring(0, 2);
+    }
+    input.value = v;
+  };
+  
   function valorParaNumero(str) {
     if (!str) return 0;
     return Number(str.replace(/\./g, '').replace(',', '.')) || 0;
+  }
+  
+  function pctParaNumero(str) {
+    if (!str) return null;
+    const n = Number(str.replace(',', '.'));
+    return isNaN(n) ? null : n;
   }
   
   window.abrirModalNovo = function() {
@@ -1052,7 +1100,8 @@
     document.getElementById('f-nome').value = '';
     document.getElementById('f-instituicao').value = '';
     document.getElementById('f-rendimento').value = '';
-    document.getElementById('f-vencimento').value = '';
+    document.getElementById('f-data-aquisicao').value = '';
+    document.getElementById('f-observacoes').value = '';
     document.getElementById('msg-form').className = 'msg';
     document.getElementById('info-tipo').style.display = 'none';
     document.querySelectorAll('.tipo-opt').forEach(o => o.classList.remove('selected'));
@@ -1067,8 +1116,9 @@
     const valor = valorParaNumero(document.getElementById('f-valor').value);
     const nome = document.getElementById('f-nome').value.trim();
     const instituicao = document.getElementById('f-instituicao').value.trim() || null;
-    const rendimento = document.getElementById('f-rendimento').value.trim() || null;
-    const vencimento = document.getElementById('f-vencimento').value || null;
+    const rendimento = pctParaNumero(document.getElementById('f-rendimento').value);
+    const dataAquisicao = document.getElementById('f-data-aquisicao').value || null;
+    const observacoes = document.getElementById('f-observacoes').value.trim() || null;
     
     if (!tipoSelecionado) {
       document.getElementById('msg-form').className = 'msg show msg-error';
@@ -1090,10 +1140,10 @@
       tipo: tipoSelecionado,
       nome,
       instituicao,
-      valor_investido: valor,
       valor_atual: valor,
-      rendimento_esperado: rendimento,
-      vencimento,
+      rendimento_mensal: rendimento,
+      data_aquisicao: dataAquisicao,
+      observacoes,
       ativo: true
     };
     
@@ -1101,6 +1151,7 @@
     let ehPrimeiro = ativos.length === 0;
     
     if (editandoId) {
+      payload.atualizado_em = new Date().toISOString();
       result = await supabase.from('patrimonio').update(payload).eq('id', editandoId);
     } else {
       result = await supabase.from('patrimonio').insert({
@@ -1146,18 +1197,25 @@
       document.getElementById('linha-instituicao').style.display = 'none';
     }
     
-    if (a.rendimento_esperado) {
+    if (a.rendimento_mensal !== null && a.rendimento_mensal !== undefined) {
       document.getElementById('linha-rendimento').style.display = 'flex';
-      document.getElementById('detalhe-rendimento').textContent = a.rendimento_esperado;
+      document.getElementById('detalhe-rendimento').textContent = Number(a.rendimento_mensal).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
     } else {
       document.getElementById('linha-rendimento').style.display = 'none';
     }
     
-    if (a.vencimento) {
-      document.getElementById('linha-vencimento').style.display = 'flex';
-      document.getElementById('detalhe-vencimento').textContent = formatarData(a.vencimento);
+    if (a.data_aquisicao) {
+      document.getElementById('linha-aquisicao').style.display = 'flex';
+      document.getElementById('detalhe-aquisicao').textContent = formatarData(a.data_aquisicao);
     } else {
-      document.getElementById('linha-vencimento').style.display = 'none';
+      document.getElementById('linha-aquisicao').style.display = 'none';
+    }
+    
+    if (a.observacoes) {
+      document.getElementById('linha-observacoes').style.display = 'flex';
+      document.getElementById('detalhe-observacoes').textContent = a.observacoes;
+    } else {
+      document.getElementById('linha-observacoes').style.display = 'none';
     }
     
     document.getElementById('detalhe-criado').textContent = formatarData(a.criado_em);
@@ -1177,8 +1235,9 @@
     document.getElementById('f-valor').value = formatarMoeda(a.valor_atual);
     document.getElementById('f-nome').value = a.nome;
     document.getElementById('f-instituicao').value = a.instituicao || '';
-    document.getElementById('f-rendimento').value = a.rendimento_esperado || '';
-    document.getElementById('f-vencimento').value = a.vencimento || '';
+    document.getElementById('f-rendimento').value = a.rendimento_mensal != null ? String(a.rendimento_mensal).replace('.', ',') : '';
+    document.getElementById('f-data-aquisicao').value = a.data_aquisicao || '';
+    document.getElementById('f-observacoes').value = a.observacoes || '';
     document.getElementById('msg-form').className = 'msg';
     
     setTimeout(() => selecionarTipo(a.tipo), 50);
@@ -1220,7 +1279,8 @@
     btn.textContent = 'Atualizando...';
     
     await supabase.from('patrimonio').update({ 
-      valor_atual: v 
+      valor_atual: v,
+      atualizado_em: new Date().toISOString()
     }).eq('id', detalheAtual.id);
     
     await darXP(20, 'valor_ativo_atualizado', 'Valor atualizado');
