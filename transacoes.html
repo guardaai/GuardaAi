@@ -42,7 +42,6 @@
   
   body { padding-bottom: 100px; }
   
-  /* HEADER */
   .header {
     padding: 16px 20px;
     background: var(--bg);
@@ -99,14 +98,12 @@
     border-right: none;
   }
   
-  /* CONTAINER */
   .container {
     max-width: 480px;
     margin: 0 auto;
     padding: 20px;
   }
   
-  /* NAVEGAÇÃO DE MÊS */
   .nav-mes {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -165,7 +162,6 @@
   .nav-mes-tag.futuro { color: var(--info); }
   .nav-mes-tag.passado { color: var(--text-mute); }
   
-  /* RESUMO */
   .resumo {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -174,9 +170,7 @@
     margin-bottom: 14px;
   }
   
-  .resumo-saldo {
-    margin-bottom: 14px;
-  }
+  .resumo-saldo { margin-bottom: 14px; }
   
   .resumo-saldo-label {
     font-size: 12px;
@@ -237,7 +231,6 @@
   .resumo-item-valor.entrada { color: var(--brand); }
   .resumo-item-valor.saida { color: var(--danger); }
   
-  /* TABS */
   .tabs {
     display: flex;
     gap: 4px;
@@ -267,7 +260,6 @@
     color: var(--text);
   }
   
-  /* GRUPO DATA */
   .grupo-data { margin-bottom: 16px; }
   
   .grupo-label {
@@ -283,7 +275,6 @@
     justify-content: space-between;
   }
   
-  /* TRANSAÇÃO */
   .transacao {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -339,10 +330,7 @@
     padding: 2px;
   }
   
-  .transacao-info {
-    flex: 1;
-    min-width: 0;
-  }
+  .transacao-info { flex: 1; min-width: 0; }
   
   .transacao-desc {
     font-family: 'Space Grotesk', sans-serif;
@@ -394,7 +382,6 @@
   .transacao-valor.entrada { color: var(--brand); }
   .transacao-valor.saida { color: var(--danger); }
   
-  /* RECORRENTE LIST */
   .transacao-recorrente {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -421,7 +408,6 @@
     letter-spacing: 0.05em;
   }
   
-  /* EMPTY */
   .empty {
     background: var(--bg-card);
     border: 1px dashed var(--border-strong);
@@ -447,7 +433,6 @@
     margin: 0 auto;
   }
   
-  /* FAB */
   .fab {
     position: fixed;
     bottom: 24px;
@@ -473,7 +458,6 @@
     background: var(--brand-hover);
   }
   
-  /* MODAL */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -541,59 +525,102 @@
   
   .modal-body { padding: 0 24px 24px; }
   
-  /* FOTO NOTINHA */
-  .foto-area {
+  /* ===== ANEXO (foto/PDF) — MELHORADO ===== */
+  .anexo-area {
     background: var(--bg-input);
     border: 2px dashed var(--border-strong);
     border-radius: 14px;
-    padding: 20px;
+    padding: 16px;
     margin-bottom: 16px;
-    text-align: center;
-    cursor: pointer;
     transition: all 0.2s;
-    position: relative;
   }
   
-  .foto-area:active { transform: scale(0.99); border-color: var(--brand); }
+  .anexo-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    text-align: center;
+  }
   
-  .foto-area.com-foto {
-    padding: 0;
+  .anexo-btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .anexo-btn {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    color: var(--text);
+  }
+  
+  .anexo-btn:active { transform: scale(0.97); border-color: var(--brand); }
+  
+  .anexo-btn-icon {
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+  
+  .anexo-btn-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  
+  .anexo-hint {
+    font-size: 11px;
+    color: var(--text-faint);
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  /* PREVIEW */
+  .anexo-preview-area {
     border-style: solid;
     border-color: var(--brand);
+    padding: 0;
+    position: relative;
     overflow: hidden;
   }
   
-  .foto-area-icon {
-    font-size: 28px;
-    margin-bottom: 6px;
-  }
-  
-  .foto-area-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 2px;
-  }
-  
-  .foto-area-desc {
-    font-size: 11px;
-    color: var(--text-mute);
-  }
-  
-  .foto-preview {
+  .anexo-preview-img {
     width: 100%;
     max-height: 240px;
     object-fit: contain;
     display: block;
   }
   
-  .foto-remover {
+  .anexo-preview-pdf {
+    padding: 24px;
+    text-align: center;
+    background: var(--bg-elev);
+  }
+  
+  .anexo-preview-pdf-icon { font-size: 44px; margin-bottom: 8px; }
+  .anexo-preview-pdf-nome {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    word-break: break-all;
+  }
+  
+  .anexo-remover {
     position: absolute;
     top: 8px;
     right: 8px;
-    width: 30px;
-    height: 30px;
-    background: rgba(0,0,0,0.7);
+    width: 32px;
+    height: 32px;
+    background: rgba(0,0,0,0.75);
     border: none;
     border-radius: 50%;
     color: white;
@@ -602,9 +629,10 @@
     align-items: center;
     justify-content: center;
     font-size: 16px;
+    z-index: 5;
   }
   
-  .foto-input { display: none; }
+  .anexo-input { display: none; }
   
   /* TOGGLE TIPO */
   .toggle-tipo {
@@ -633,7 +661,6 @@
   .toggle-opt.active.entrada { background: var(--brand-soft); color: var(--brand); }
   .toggle-opt.active.saida { background: var(--danger-soft); color: var(--danger); }
   
-  /* TOGGLE TIPO LANÇAMENTO */
   .tipo-lancamento {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -654,7 +681,6 @@
     font-size: 12px;
     font-weight: 600;
     color: var(--text-mute);
-    transition: all 0.2s;
   }
   
   .tipo-lancamento-opt.active {
@@ -662,7 +688,6 @@
     color: var(--text);
   }
   
-  /* FIELD */
   .field { margin-bottom: 14px; }
   
   .field label {
@@ -697,7 +722,6 @@
     gap: 10px;
   }
   
-  /* VALOR */
   .valor-input-wrapper {
     display: flex;
     align-items: center;
@@ -729,7 +753,6 @@
     padding: 0;
   }
   
-  /* CATEGORIA */
   .categoria-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -765,7 +788,6 @@
   }
   .categoria-opt.selected .categoria-opt-label { color: var(--text); }
   
-  /* INFO BOX */
   .info-box {
     background: var(--info-soft);
     border: 1px solid rgba(56, 189, 248, 0.3);
@@ -777,7 +799,6 @@
     line-height: 1.5;
   }
   
-  /* BTN */
   .btn {
     width: 100%;
     padding: 16px;
@@ -818,7 +839,6 @@
     border: 1px solid rgba(56, 189, 248, 0.3);
   }
   
-  /* DETALHE */
   .detalhe-grid {
     background: var(--bg-input);
     border-radius: 12px;
@@ -855,16 +875,29 @@
   .detalhe-valor-big.entrada { color: var(--brand); }
   .detalhe-valor-big.saida { color: var(--danger); }
   
-  .detalhe-foto {
+  .detalhe-anexo {
     width: 100%;
     max-height: 240px;
     object-fit: contain;
     border-radius: 12px;
     margin-bottom: 16px;
     background: var(--bg-input);
+    display: block;
   }
   
-  /* MSG */
+  .detalhe-anexo-pdf {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    text-align: center;
+    cursor: pointer;
+    display: block;
+    color: var(--text);
+    text-decoration: none;
+  }
+  
   .msg {
     padding: 12px;
     border-radius: 10px;
@@ -882,7 +915,6 @@
     color: #ff6b78;
   }
   
-  /* XP TOAST */
   .xp-toast {
     position: fixed;
     top: 80px;
@@ -906,7 +938,6 @@
     100% { transform: translateX(-50%) translateY(0); opacity: 1; }
   }
   
-  /* LOADER */
   .loader-circle {
     width: 32px;
     height: 32px;
@@ -932,7 +963,6 @@
 
 <div class="container">
 
-  <!-- NAVEGAÇÃO MÊS -->
   <div class="nav-mes">
     <button class="nav-btn" onclick="mudarMes(-1)">‹</button>
     <div class="nav-mes-atual" onclick="voltarHoje()">
@@ -942,7 +972,6 @@
     <button class="nav-btn" onclick="mudarMes(1)">›</button>
   </div>
   
-  <!-- RESUMO -->
   <div class="resumo">
     <div class="resumo-saldo">
       <div class="resumo-saldo-label" id="saldo-label">Saldo do mês</div>
@@ -960,7 +989,6 @@
     </div>
   </div>
   
-  <!-- TABS -->
   <div class="tabs">
     <button class="tab active" data-filtro="tudo" onclick="trocarFiltro('tudo')">Tudo</button>
     <button class="tab" data-filtro="entradas" onclick="trocarFiltro('entradas')">Entradas</button>
@@ -976,8 +1004,10 @@
 
 <button class="fab" onclick="abrirModalNova()">+ Nova transação</button>
 
-<!-- INPUT FILE escondido -->
-<input type="file" id="foto-input" class="foto-input" accept="image/*" capture="environment" onchange="processarFoto(event)">
+<!-- INPUTS DE ARQUIVO -->
+<input type="file" id="input-camera" class="anexo-input" accept="image/*" capture="environment" onchange="processarAnexo(event)">
+<input type="file" id="input-galeria" class="anexo-input" accept="image/*" onchange="processarAnexo(event)">
+<input type="file" id="input-arquivo" class="anexo-input" accept="image/*,application/pdf" onchange="processarAnexo(event)">
 
 <!-- MODAL FORM -->
 <div class="modal-overlay" id="modal-form">
@@ -990,42 +1020,52 @@
     <div class="modal-body">
       <div class="msg" id="msg-form"></div>
       
-      <!-- FOTO DA NOTINHA -->
-      <div class="foto-area" id="foto-area" onclick="document.getElementById('foto-input').click()">
-        <div id="foto-placeholder">
-          <div class="foto-area-icon">📸</div>
-          <div class="foto-area-titulo">Foto da notinha ou recibo</div>
-          <div class="foto-area-desc">Opcional · Em breve a IA vai ler pra você</div>
+      <!-- ANEXO -->
+      <div class="anexo-area" id="anexo-area">
+        <div id="anexo-vazio">
+          <div class="anexo-titulo">📎 Anexar comprovante</div>
+          <div class="anexo-btns">
+            <div class="anexo-btn" onclick="document.getElementById('input-camera').click()">
+              <div class="anexo-btn-icon">📷</div>
+              <div class="anexo-btn-label">Tirar foto</div>
+            </div>
+            <div class="anexo-btn" onclick="document.getElementById('input-arquivo').click()">
+              <div class="anexo-btn-icon">🖼️</div>
+              <div class="anexo-btn-label">Galeria / PDF</div>
+            </div>
+          </div>
+          <div class="anexo-hint">Opcional · IA vai ler em breve 🤖</div>
         </div>
-        <img id="foto-preview" class="foto-preview hidden">
-        <button id="foto-remover" class="foto-remover hidden" onclick="event.stopPropagation(); removerFoto()">✕</button>
+        <div id="anexo-preview" class="hidden">
+          <img id="preview-img" class="anexo-preview-img hidden">
+          <div id="preview-pdf" class="anexo-preview-pdf hidden">
+            <div class="anexo-preview-pdf-icon">📄</div>
+            <div class="anexo-preview-pdf-nome" id="preview-pdf-nome">arquivo.pdf</div>
+          </div>
+          <button class="anexo-remover" onclick="removerAnexo()">✕</button>
+        </div>
       </div>
       
-      <!-- ENTRADA / SAÍDA -->
       <div class="toggle-tipo">
         <div class="toggle-opt saida active" data-tipo="saida" onclick="selecionarTipo('saida')">− Saída</div>
         <div class="toggle-opt entrada" data-tipo="entrada" onclick="selecionarTipo('entrada')">+ Entrada</div>
       </div>
       
-      <!-- VALOR -->
       <div class="valor-input-wrapper">
         <span class="valor-prefix">R$</span>
         <input type="text" inputmode="decimal" id="f-valor" placeholder="0,00" oninput="formatarValor(this)">
       </div>
       
-      <!-- DESCRIÇÃO -->
       <div class="field" style="margin-top:14px;">
         <label>Descrição</label>
         <input type="text" id="f-descricao" placeholder="Ex: Mercado, salário, Smart TV...">
       </div>
       
-      <!-- CATEGORIA -->
       <div class="field">
         <label>Categoria</label>
         <div class="categoria-grid" id="categoria-grid"></div>
       </div>
       
-      <!-- TIPO DE LANÇAMENTO -->
       <div class="field">
         <label>Tipo de lançamento</label>
         <div class="tipo-lancamento">
@@ -1035,7 +1075,6 @@
         </div>
       </div>
       
-      <!-- ÚNICA: Data + Pagamento -->
       <div id="campo-unica">
         <div class="field-row">
           <div class="field">
@@ -1057,11 +1096,8 @@
         </div>
       </div>
       
-      <!-- PARCELADA -->
       <div id="campo-parcelada" class="hidden">
-        <div class="info-box">
-          💳 Sistema gera as parcelas automaticamente nos próximos meses
-        </div>
+        <div class="info-box">💳 Sistema gera as parcelas automaticamente nos próximos meses</div>
         <div class="field-row">
           <div class="field">
             <label>Nº de parcelas</label>
@@ -1082,11 +1118,8 @@
         </div>
       </div>
       
-      <!-- RECORRENTE -->
       <div id="campo-recorrente" class="hidden">
-        <div class="info-box">
-          🔁 Vai aparecer todo mês no dia escolhido. Aluguel, pensão, plano de saúde, Netflix.
-        </div>
+        <div class="info-box">🔁 Vai aparecer todo mês no dia escolhido. Aluguel, pensão, plano de saúde, Netflix.</div>
         <div class="field">
           <label>Dia do mês que vence</label>
           <input type="number" id="f-dia-mes" min="1" max="31" placeholder="Ex: 10">
@@ -1108,7 +1141,11 @@
     </div>
     <div class="modal-body">
       
-      <img id="detalhe-foto" class="detalhe-foto hidden">
+      <img id="detalhe-anexo-img" class="detalhe-anexo hidden">
+      <a id="detalhe-anexo-pdf" class="detalhe-anexo-pdf hidden" target="_blank">
+        <div style="font-size:36px;margin-bottom:6px;">📄</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;">Ver comprovante PDF</div>
+      </a>
       
       <div class="detalhe-valor-big" id="detalhe-valor-big">R$ 0,00</div>
       
@@ -1166,16 +1203,14 @@
   let lancamentoSelecionado = 'unica';
   let filtroAtual = 'tudo';
   let detalheAtual = null;
-  let detalheTipo = null; // 'real' | 'projetada' | 'recorrente'
+  let detalheTipo = null;
   let editandoId = null;
-  let fotoFile = null;
-  let fotoUrl = null;
+  let anexoFile = null;
+  let anexoEhPdf = false;
   
-  // Mês visualizado (ano, mês 0-11)
   const hojeRef = new Date();
   let mesAtual = { ano: hojeRef.getFullYear(), mes: hojeRef.getMonth() };
   
-  // INIT
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
@@ -1219,8 +1254,6 @@
     renderLista();
   }
   
-  /* ===== NAVEGAÇÃO MÊS ===== */
-  
   window.mudarMes = function(delta) {
     const novoMes = mesAtual.mes + delta;
     const novaData = new Date(mesAtual.ano, novoMes, 1);
@@ -1257,8 +1290,6 @@
     }
   }
   
-  /* ===== LÓGICA DO MÊS ===== */
-  
   function rangeMes() {
     const inicio = new Date(mesAtual.ano, mesAtual.mes, 1);
     const fim = new Date(mesAtual.ano, mesAtual.mes + 1, 0);
@@ -1284,24 +1315,20 @@
     return transacoes.filter(t => t.data >= inicio && t.data <= fim);
   }
   
-  // Gera transações PROJETADAS pra um mês (recorrentes + parcelas futuras)
   function projetadasDoMes() {
     if (!mesEhFuturo() && !mesEhAtual()) return [];
     
-    const { diasNoMes, inicio } = rangeMes();
-    const hoje = new Date().toISOString().split('T')[0];
+    const { diasNoMes, inicio, fim } = rangeMes();
     const projetadas = [];
     
-    // 1. RECORRENTES — gera 1 por mês visualizado
     recorrentes.forEach(r => {
       const dia = Math.min(r.dia_mes, diasNoMes);
       const dataProj = new Date(mesAtual.ano, mesAtual.mes, dia).toISOString().split('T')[0];
       
-      // Se data já passou e tá no mês atual, vê se já tem transação real desse recorrente nesse mês
       const jaPago = transacoes.some(t => 
         t.descricao === r.descricao &&
         t.data >= inicio && 
-        t.data <= rangeMes().fim &&
+        t.data <= fim &&
         Number(t.valor) === Number(r.valor)
       );
       
@@ -1324,7 +1351,6 @@
   }
   
   function renderResumo() {
-    const { inicio, fim } = rangeMes();
     const reais = transacoesDoMes();
     const projetadas = projetadasDoMes();
     
@@ -1341,8 +1367,6 @@
     saldoEl.textContent = 'R$ ' + formatarMoeda(saldo);
     saldoEl.className = 'resumo-saldo-valor ' + (saldo >= 0 ? 'positivo' : 'negativo');
   }
-  
-  /* ===== LISTA ===== */
   
   function renderLista() {
     const lista = document.getElementById('lista');
@@ -1370,7 +1394,6 @@
       return;
     }
     
-    // Agrupa por data
     const grupos = {};
     todas.forEach(t => {
       if (!grupos[t.data]) grupos[t.data] = [];
@@ -1412,10 +1435,8 @@
     if (ehParcela) tags.push(`<span class="transacao-meta-tag parcela">${t.parcela_numero}/${t.parcela_total}</span>`);
     if (pagto && !ehProjetada) tags.push(`<span class="transacao-meta-tag">${pagto}</span>`);
     
-    const idAttr = ehProjetada ? t.id : t.id;
-    
     return `
-      <div class="transacao ${ehProjetada ? 'projetada' : ''}" onclick="abrirDetalhe('${idAttr}', ${ehProjetada ? 'true' : 'false'})">
+      <div class="transacao ${ehProjetada ? 'projetada' : ''}" onclick="abrirDetalhe('${t.id}', ${ehProjetada ? 'true' : 'false'})">
         <div class="transacao-icon ${iconClass}">${icone}</div>
         <div class="transacao-info">
           <div class="transacao-desc">${t.descricao || cat?.nome || '—'}</div>
@@ -1464,8 +1485,6 @@
     }).join('');
   }
   
-  /* ===== HELPERS ===== */
-  
   function formatarMoeda(v) {
     return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
@@ -1502,8 +1521,6 @@
     input.value = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
     validarForm();
   };
-  
-  /* ===== CATEGORIAS ===== */
   
   function renderCategorias() {
     const grid = document.getElementById('categoria-grid');
@@ -1567,23 +1584,19 @@
     document.getElementById(id).addEventListener('input', validarForm);
   });
   
-  /* ===== TABS ===== */
-  
   window.trocarFiltro = function(f) {
     filtroAtual = f;
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.filtro === f));
     renderLista();
   };
   
-  /* ===== MODAL ===== */
-  
   window.abrirModalNova = function() {
     editandoId = null;
     tipoSelecionado = 'saida';
     categoriaSelecionada = null;
     lancamentoSelecionado = 'unica';
-    fotoFile = null;
-    fotoUrl = null;
+    anexoFile = null;
+    anexoEhPdf = false;
     
     document.getElementById('modal-form-titulo').textContent = 'Nova transação';
     document.getElementById('btn-salvar').textContent = 'Cadastrar';
@@ -1597,7 +1610,7 @@
     document.getElementById('f-parcelas').value = '';
     document.getElementById('msg-form').className = 'msg';
     
-    removerFoto();
+    removerAnexo();
     selecionarLancamento('unica');
     selecionarTipo('saida');
     document.getElementById('modal-form').classList.add('show');
@@ -1607,49 +1620,63 @@
     document.getElementById(id).classList.remove('show');
   };
   
-  /* ===== FOTO ===== */
-  
-  window.processarFoto = async function(e) {
+  // ===== ANEXO (foto/PDF) =====
+  window.processarAnexo = function(e) {
     const file = e.target.files[0];
     if (!file) return;
     
-    fotoFile = file;
+    anexoFile = file;
+    anexoEhPdf = file.type === 'application/pdf';
     
-    // Preview
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      document.getElementById('foto-preview').src = ev.target.result;
-      document.getElementById('foto-preview').classList.remove('hidden');
-      document.getElementById('foto-placeholder').classList.add('hidden');
-      document.getElementById('foto-remover').classList.remove('hidden');
-      document.getElementById('foto-area').classList.add('com-foto');
-    };
-    reader.readAsDataURL(file);
+    document.getElementById('anexo-vazio').classList.add('hidden');
+    document.getElementById('anexo-preview').classList.remove('hidden');
+    document.getElementById('anexo-area').classList.add('anexo-preview-area');
+    
+    if (anexoEhPdf) {
+      document.getElementById('preview-img').classList.add('hidden');
+      document.getElementById('preview-pdf').classList.remove('hidden');
+      document.getElementById('preview-pdf-nome').textContent = file.name;
+    } else {
+      document.getElementById('preview-pdf').classList.add('hidden');
+      const img = document.getElementById('preview-img');
+      img.classList.remove('hidden');
+      const reader = new FileReader();
+      reader.onload = (ev) => { img.src = ev.target.result; };
+      reader.readAsDataURL(file);
+    }
+    
+    // Limpa os 3 inputs pra poder selecionar de novo o mesmo
+    document.getElementById('input-camera').value = '';
+    document.getElementById('input-galeria').value = '';
+    document.getElementById('input-arquivo').value = '';
     
     // FUTURO: Aqui vai chamar Claude API pra ler a notinha
-    // const dadosIA = await analisarFotoComIA(file);
+    // const dadosIA = await analisarAnexoComIA(file);
     // preencherCamposComIA(dadosIA);
   };
   
-  window.removerFoto = function() {
-    fotoFile = null;
-    fotoUrl = null;
-    document.getElementById('foto-input').value = '';
-    document.getElementById('foto-preview').classList.add('hidden');
-    document.getElementById('foto-placeholder').classList.remove('hidden');
-    document.getElementById('foto-remover').classList.add('hidden');
-    document.getElementById('foto-area').classList.remove('com-foto');
+  window.removerAnexo = function() {
+    anexoFile = null;
+    anexoEhPdf = false;
+    document.getElementById('input-camera').value = '';
+    document.getElementById('input-galeria').value = '';
+    document.getElementById('input-arquivo').value = '';
+    document.getElementById('anexo-vazio').classList.remove('hidden');
+    document.getElementById('anexo-preview').classList.add('hidden');
+    document.getElementById('anexo-area').classList.remove('anexo-preview-area');
+    document.getElementById('preview-img').classList.add('hidden');
+    document.getElementById('preview-pdf').classList.add('hidden');
   };
   
-  async function uploadFoto() {
-    if (!fotoFile) return null;
+  async function uploadAnexo() {
+    if (!anexoFile) return null;
     
-    const ext = fotoFile.name.split('.').pop() || 'jpg';
+    const ext = anexoFile.name.split('.').pop() || 'jpg';
     const path = `${usuario.id}/${Date.now()}.${ext}`;
     
     const { error } = await supabase.storage
       .from('comprovantes')
-      .upload(path, fotoFile);
+      .upload(path, anexoFile);
     
     if (error) {
       console.error('Erro upload:', error);
@@ -1659,8 +1686,6 @@
     const { data } = supabase.storage.from('comprovantes').getPublicUrl(path);
     return data.publicUrl;
   }
-  
-  /* ===== SALVAR ===== */
   
   window.salvarTransacao = async function() {
     const valor = valorParaNumero(document.getElementById('f-valor').value);
@@ -1672,27 +1697,26 @@
     btn.disabled = true;
     btn.textContent = 'Salvando...';
     
-    // Upload foto se tiver
-    let fotoUrlFinal = null;
-    if (fotoFile) {
-      btn.textContent = 'Subindo foto...';
-      fotoUrlFinal = await uploadFoto();
+    let anexoUrl = null;
+    if (anexoFile) {
+      btn.textContent = anexoEhPdf ? 'Subindo PDF...' : 'Subindo foto...';
+      anexoUrl = await uploadAnexo();
     }
     
     let result;
     
     if (editandoId) {
-      // EDIÇÃO
       const data = document.getElementById('f-data').value;
       const pagamento = document.getElementById('f-pagamento').value || null;
-      result = await supabase.from('transacoes').update({
+      const upd = {
         tipo: tipoSelecionado,
         categoria_id: categoriaSelecionada,
         valor, descricao, data,
         forma_pagamento: pagamento,
-        foto_url: fotoUrlFinal || undefined,
         atualizado_em: new Date().toISOString()
-      }).eq('id', editandoId);
+      };
+      if (anexoUrl) upd.foto_url = anexoUrl;
+      result = await supabase.from('transacoes').update(upd).eq('id', editandoId);
     } else if (lancamentoSelecionado === 'recorrente') {
       const dia = parseInt(document.getElementById('f-dia-mes').value);
       result = await supabase.from('transacoes_recorrentes').insert({
@@ -1731,13 +1755,12 @@
           compra_id: compraId,
           parcela_numero: i + 1,
           parcela_total: parcelas,
-          foto_url: i === 0 ? fotoUrlFinal : null
+          foto_url: i === 0 ? anexoUrl : null
         });
       }
       
       result = await supabase.from('transacoes').insert(inserts);
     } else {
-      // ÚNICA
       const data = document.getElementById('f-data').value;
       const pagamento = document.getElementById('f-pagamento').value || null;
       
@@ -1747,8 +1770,8 @@
         categoria_id: categoriaSelecionada,
         valor, descricao, data,
         forma_pagamento: pagamento,
-        origem: fotoUrlFinal ? 'foto' : 'manual',
-        foto_url: fotoUrlFinal
+        origem: anexoUrl ? 'foto' : 'manual',
+        foto_url: anexoUrl
       });
     }
     
@@ -1761,8 +1784,8 @@
     }
     
     if (!editandoId) {
-      const xpGanho = fotoFile ? 10 : 5;
-      const labelXp = fotoFile ? '+10 XP 📸' : '+5 XP 💰';
+      const xpGanho = anexoFile ? 10 : 5;
+      const labelXp = anexoFile ? (anexoEhPdf ? '+10 XP 📄' : '+10 XP 📸') : '+5 XP 💰';
       await darXP(xpGanho, 'transacao_cadastrada', 'Transação cadastrada');
       mostrarToast(labelXp);
     }
@@ -1790,12 +1813,9 @@
     setTimeout(() => { t.style.display = 'none'; }, 2500);
   }
   
-  /* ===== DETALHE ===== */
-  
   window.abrirDetalhe = function(id, ehProjetada) {
     let t;
     if (ehProjetada) {
-      // Recupera da lista de projetadas
       const proj = projetadasDoMes();
       t = proj.find(x => x.id === id);
       detalheTipo = 'projetada';
@@ -1826,7 +1846,6 @@
     const pagtos = {pix:'Pix',debito:'Débito',credito:'Crédito',dinheiro:'Dinheiro',boleto:'Boleto',transferencia:'Transferência',financiamento:'Financiamento'};
     document.getElementById('detalhe-pagamento').textContent = pagtos[t.forma_pagamento] || '—';
     
-    // Parcela
     if (t.parcela_numero && t.parcela_total) {
       document.getElementById('linha-parcela').style.display = 'flex';
       document.getElementById('detalhe-parcela').textContent = `${t.parcela_numero} de ${t.parcela_total}`;
@@ -1834,16 +1853,22 @@
       document.getElementById('linha-parcela').style.display = 'none';
     }
     
-    // Foto
+    // Anexo
+    const imgEl = document.getElementById('detalhe-anexo-img');
+    const pdfEl = document.getElementById('detalhe-anexo-pdf');
+    imgEl.classList.add('hidden');
+    pdfEl.classList.add('hidden');
+    
     if (t.foto_url) {
-      const img = document.getElementById('detalhe-foto');
-      img.src = t.foto_url;
-      img.classList.remove('hidden');
-    } else {
-      document.getElementById('detalhe-foto').classList.add('hidden');
+      if (t.foto_url.toLowerCase().endsWith('.pdf')) {
+        pdfEl.classList.remove('hidden');
+        pdfEl.href = t.foto_url;
+      } else {
+        imgEl.classList.remove('hidden');
+        imgEl.src = t.foto_url;
+      }
     }
     
-    // Botões
     document.getElementById('btn-confirmar-projetada').classList.toggle('hidden', !ehProjetada);
     document.getElementById('btn-editar').classList.toggle('hidden', ehProjetada);
     document.getElementById('btn-excluir').classList.toggle('hidden', ehProjetada);
@@ -1870,7 +1895,8 @@
     document.getElementById('linha-parcela').style.display = 'none';
     document.getElementById('linha-dia-mes').style.display = 'flex';
     document.getElementById('detalhe-dia-mes').textContent = 'Dia ' + r.dia_mes;
-    document.getElementById('detalhe-foto').classList.add('hidden');
+    document.getElementById('detalhe-anexo-img').classList.add('hidden');
+    document.getElementById('detalhe-anexo-pdf').classList.add('hidden');
     
     document.getElementById('btn-confirmar-projetada').classList.add('hidden');
     document.getElementById('btn-editar').classList.remove('hidden');
@@ -1879,7 +1905,6 @@
     document.getElementById('modal-detalhe').classList.add('show');
   };
   
-  // Confirmar uma transação projetada (vira real)
   window.confirmarProjetada = async function() {
     if (!detalheAtual) return;
     const t = detalheAtual;
@@ -1940,9 +1965,8 @@
   window.excluirTransacao = async function() {
     if (!detalheAtual) return;
     
-    // Se é parcela, pergunta se quer excluir todas
     if (detalheTipo === 'real' && detalheAtual.compra_id) {
-      const r = confirm(`Esta é parcela ${detalheAtual.parcela_numero}/${detalheAtual.parcela_total}. Excluir TODAS as parcelas dessa compra? Cancele se quiser excluir só essa.`);
+      const r = confirm(`Esta é parcela ${detalheAtual.parcela_numero}/${detalheAtual.parcela_total}. Excluir TODAS as parcelas? Cancele se quiser excluir só essa.`);
       if (r) {
         await supabase.from('transacoes').delete().eq('compra_id', detalheAtual.compra_id);
       } else {
