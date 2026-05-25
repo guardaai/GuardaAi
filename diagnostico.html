@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0a0a">
+<title>diagnóstico • guardaí</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
+  
+  :root {
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --bg-elev: #1c1c1c;
+    --bg-input: #181818;
+    --border: #252525;
+    --border-strong: #353535;
+    --brand: #00d97e;
+    --brand-hover: #00ba6b;
+    --brand-soft: rgba(0, 217, 126, 0.1);
+    --danger: #ff4757;
+    --warning: #ffb800;
+    --text: #ffffff;
+    --text-mute: #a3a3a3;
+    --text-faint: #525252;
+  }
+  
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* TOPO - BARRA PROGRESSO */
+  .topbar {
+    padding: 20px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  
+  .back-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  
+  .back-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  
+  .progress-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--bg-card);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background: var(--brand);
+    border-radius: 100px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  
+  .progress-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    color: var(--text-mute);
+    font-weight: 600;
+    min-width: 30px;
+    text-align: right;
+  }
+  
+  /* CONTAINER */
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    width: 100%;
+    flex: 1;
+    padding: 28px 20px 100px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* STEPS */
+  .step { display: none; animation: fadeIn 0.4s ease; }
+  .step.active { display: block; }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* MASCOTE */
+  .mascote-bubble {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    align-items: flex-start;
+  }
+  
+  .mascote-icon {
+    font-size: 36px;
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mascote-text {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 16px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-mute);
+    position: relative;
+  }
+  
+  .mascote-text::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 18px;
+    width: 12px;
+    height: 12px;
+    background: var(--bg-card);
+    border-left: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    transform: rotate(45deg);
+  }
+  
+  /* TÍTULOS */
+  .eyebrow {
+    color: var(--brand);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  
+  .question {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  
+  .question span { color: var(--brand); }
+  
+  .helper {
+    color: var(--text-mute);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 28px;
+  }
+  
+  /* INPUT VALOR */
+  .valor-input-wrapper {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: border 0.2s;
+  }
+  
+  .valor-input-wrapper:focus-within {
+    border-color: var(--brand);
+  }
+  
+  .valor-prefix {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--text-mute);
+  }
+  
+  .valor-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    outline: none;
+    width: 100%;
+    min-width: 0;
+  }
+  
+  .valor-input::placeholder {
+    color: var(--text-faint);
+  }
+  
+  /* OPÇÕES (SIM/NÃO) */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  
+  .option-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  
+  .option-card:active {
+    transform: scale(0.97);
+  }
+  
+  .option-card.selected {
+    background: var(--brand-soft);
+    border-color: var(--brand);
+  }
+  
+  .option-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  
+  .option-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  /* CARDS OBJETIVO */
+  .objetivo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  
+  .objetivo-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  
+  .objetivo-card:active { transform: scale(0.98); }
+  
+  .objetivo-card.selected {
+    background: var(--brand-soft);
+    border-color: var(--brand);
+  }
+  
+  .objetivo-emoji {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  
+  .objetivo-info {
+    flex: 1;
+  }
+  
+  .objetivo-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  
+  .objetivo-desc {
+    font-size: 13px;
+    color: var(--text-mute);
+  }
+  
+  /* BOTÃO */
+  .btn {
+    width: 100%;
+    padding: 17px;
+    border-radius: 14px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Inter', sans-serif;
+    margin-top: 20px;
+    letter-spacing: -0.01em;
+  }
+  
+  .btn-primary {
+    background: var(--brand);
+    color: #001a0e;
+  }
+  
+  .btn-primary:active { background: var(--brand-hover); transform: scale(0.985); }
+  
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--bg-card);
+    color: var(--text-faint);
+  }
+  
+  /* RESULTADO - NÍVEL */
+  .nivel-reveal {
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  .nivel-badge {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--brand);
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 0 60px rgba(0, 217, 126, 0.3);
+  }
+  
+  @keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  
+  .nivel-eyebrow {
+    color: var(--brand);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  
+  .nivel-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-mute);
+    margin-bottom: 6px;
+  }
+  
+  .nivel-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+  
+  .nivel-desc {
+    font-size: 15px;
+    color: var(--text-mute);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    max-width: 360px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .nivel-jornada {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .jornada-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  
+  .jornada-pontos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .ponto {
+    flex: 1;
+    text-align: center;
+    position: relative;
+  }
+  
+  .ponto-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    margin: 0 auto 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-faint);
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  
+  .ponto.atual .ponto-circle {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: #001a0e;
+    box-shadow: 0 0 20px rgba(0, 217, 126, 0.5);
+  }
+  
+  .ponto.passou .ponto-circle {
+    background: var(--brand-soft);
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+  
+  .ponto-label {
+    font-size: 9px;
+    color: var(--text-faint);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .ponto.atual .ponto-label { color: var(--brand); }
+  
+  /* LOADER */
+  .loader {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(0,26,14,0.2);
+    border-radius: 50%;
+    border-top-color: #001a0e;
+    animation: spin 0.7s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  
+  @keyframes spin { to { transform: rotate(360deg); } }
+  
+  /* OVERLAY LOADING */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .overlay.show { display: flex; }
+  
+  .overlay-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border);
+    border-radius: 50%;
+    border-top-color: var(--brand);
+    animation: spin 0.8s linear infinite;
+  }
+  
+  .overlay-text {
+    color: var(--text-mute);
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="progress-row">
+    <button class="back-btn" id="back-btn" onclick="voltarStep()" disabled>‹</button>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="progress-text" id="progress-text">1/6</div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- STEP 1: BOAS-VINDAS -->
+<div class="step active" id="step-1">
+  <div class="mascote-bubble">
+    <div class="mascote-icon">🦔</div>
+    <div class="mascote-text">
+      E aí, <strong id="nome-saudacao">parceiro</strong>! Sou o Tatu, seu copiloto financeiro. Vamos te conhecer em 6 perguntas rápidas pra montar sua jornada do jeito certo.
+    </div>
+  </div>
+  
+  <div class="eyebrow">— Diagnóstico inicial</div>
+  <div class="question">Vamos começar?</div>
+  <div class="helper">Sem julgamento, sem complicação. Responde com sinceridade — é só pra você e pra mim.</div>
+  
+  <button class="btn btn-primary" onclick="proximoStep()">Bora começar</button>
+</div>
+
+<!-- STEP 2: RENDA -->
+<div class="step" id="step-2">
+  <div class="eyebrow">— Pergunta 1 de 5</div>
+  <div class="question">Quanto você <span>ganha por mês</span>?</div>
+  <div class="helper">Considere sua renda média (salário fixo + variável). Não precisa ser exato.</div>
+  
+  <div class="valor-input-wrapper">
+    <span class="valor-prefix">R$</span>
+    <input type="text" inputmode="numeric" class="valor-input" id="renda-input" placeholder="0" oninput="formatarRenda(this)">
+  </div>
+  
+  <button class="btn btn-primary" id="btn-step2" onclick="salvarRenda()" disabled>Continuar</button>
+</div>
+
+<!-- STEP 3: DÍVIDAS -->
+<div class="step" id="step-3">
+  <div class="eyebrow">— Pergunta 2 de 5</div>
+  <div class="question">Você tem <span>dívidas em aberto</span>?</div>
+  <div class="helper">Cartão estourado, empréstimo, conta atrasada, nome no Serasa — qualquer uma conta.</div>
+  
+  <div class="options-grid">
+    <div class="option-card" data-valor="sim" onclick="selecionarOpcao(this, 'tem_divida')">
+      <div class="option-icon">😰</div>
+      <div class="option-label">Tenho sim</div>
+    </div>
+    <div class="option-card" data-valor="nao" onclick="selecionarOpcao(this, 'tem_divida')">
+      <div class="option-icon">😎</div>
+      <div class="option-label">Tô limpo</div>
+    </div>
+  </div>
+  
+  <button class="btn btn-primary" id="btn-step3" onclick="proximoStep()" disabled>Continuar</button>
+</div>
+
+<!-- STEP 4: RESERVA -->
+<div class="step" id="step-4">
+  <div class="eyebrow">— Pergunta 3 de 5</div>
+  <div class="question">Tem uma <span>reserva guardada</span>?</div>
+  <div class="helper">Pelo menos 1 mês das suas despesas guardado pra emergência.</div>
+  
+  <div class="options-grid">
+    <div class="option-card" data-valor="sim" onclick="selecionarOpcao(this, 'tem_reserva')">
+      <div class="option-icon">🛡️</div>
+      <div class="option-label">Tenho</div>
+    </div>
+    <div class="option-card" data-valor="nao" onclick="selecionarOpcao(this, 'tem_reserva')">
+      <div class="option-icon">🙅</div>
+      <div class="option-label">Ainda não</div>
+    </div>
+  </div>
+  
+  <button class="btn btn-primary" id="btn-step4" onclick="proximoStep()" disabled>Continuar</button>
+</div>
+
+<!-- STEP 5: INVESTE -->
+<div class="step" id="step-5">
+  <div class="eyebrow">— Pergunta 4 de 5</div>
+  <div class="question">Você já <span>investe</span>?</div>
+  <div class="helper">Tesouro Direto, CDB, ações, FII, cripto — qualquer coisa além da poupança.</div>
+  
+  <div class="options-grid">
+    <div class="option-card" data-valor="sim" onclick="selecionarOpcao(this, 'investe')">
+      <div class="option-icon">📈</div>
+      <div class="option-label">Sim, invisto</div>
+    </div>
+    <div class="option-card" data-valor="nao" onclick="selecionarOpcao(this, 'investe')">
+      <div class="option-icon">🤷</div>
+      <div class="option-label">Ainda não</div>
+    </div>
+  </div>
+  
+  <button class="btn btn-primary" id="btn-step5" onclick="proximoStep()" disabled>Continuar</button>
+</div>
+
+<!-- STEP 6: OBJETIVO -->
+<div class="step" id="step-6">
+  <div class="eyebrow">— Última pergunta</div>
+  <div class="question">Qual seu <span>foco agora</span>?</div>
+  <div class="helper">O que você mais quer resolver primeiro?</div>
+  
+  <div class="objetivo-list">
+    <div class="objetivo-card" data-valor="sair_dividas" onclick="selecionarObjetivo(this)">
+      <div class="objetivo-emoji">🚨</div>
+      <div class="objetivo-info">
+        <div class="objetivo-titulo">Sair das dívidas</div>
+        <div class="objetivo-desc">Quitar tudo e limpar o nome</div>
+      </div>
+    </div>
+    <div class="objetivo-card" data-valor="criar_reserva" onclick="selecionarObjetivo(this)">
+      <div class="objetivo-emoji">🛡️</div>
+      <div class="objetivo-info">
+        <div class="objetivo-titulo">Criar minha reserva</div>
+        <div class="objetivo-desc">Parar de viver no aperto</div>
+      </div>
+    </div>
+    <div class="objetivo-card" data-valor="investir" onclick="selecionarObjetivo(this)">
+      <div class="objetivo-emoji">📈</div>
+      <div class="objetivo-info">
+        <div class="objetivo-titulo">Começar a investir</div>
+        <div class="objetivo-desc">Fazer o dinheiro trabalhar</div>
+      </div>
+    </div>
+    <div class="objetivo-card" data-valor="liberdade" onclick="selecionarObjetivo(this)">
+      <div class="objetivo-emoji">🚀</div>
+      <div class="objetivo-info">
+        <div class="objetivo-titulo">Liberdade financeira</div>
+        <div class="objetivo-desc">Otimizar e crescer patrimônio</div>
+      </div>
+    </div>
+  </div>
+  
+  <button class="btn btn-primary" id="btn-step6" onclick="finalizar()" disabled>Ver meu diagnóstico</button>
+</div>
+
+<!-- STEP 7: REVELAÇÃO -->
+<div class="step" id="step-7">
+  <div class="nivel-reveal">
+    <div class="nivel-badge" id="nivel-badge">🎯</div>
+    <div class="nivel-eyebrow">Seu nível atual</div>
+    <div class="nivel-num" id="nivel-num">Nível 2 de 5</div>
+    <div class="nivel-titulo" id="nivel-titulo">Resgate</div>
+    <div class="nivel-desc" id="nivel-desc">Vamos te tirar do vermelho primeiro. Investir antes de quitar dívida é furada. Começamos pelo mais importante.</div>
+    
+    <div class="nivel-jornada">
+      <div class="jornada-titulo">Sua jornada</div>
+      <div class="jornada-pontos" id="jornada-pontos">
+        <div class="ponto"><div class="ponto-circle">1</div><div class="ponto-label">Diag.</div></div>
+        <div class="ponto"><div class="ponto-circle">2</div><div class="ponto-label">Resgate</div></div>
+        <div class="ponto"><div class="ponto-circle">3</div><div class="ponto-label">Estab.</div></div>
+        <div class="ponto"><div class="ponto-circle">4</div><div class="ponto-label">Cresc.</div></div>
+        <div class="ponto"><div class="ponto-circle">5</div><div class="ponto-label">Liberd.</div></div>
+      </div>
+    </div>
+    
+    <button class="btn btn-primary" onclick="entrarNoApp()">Bora começar minha jornada</button>
+  </div>
+</div>
+
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="overlay-spinner"></div>
+  <div class="overlay-text">Preparando sua jornada...</div>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+  
+  const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  window.supabase = supabase;
+  
+  // ===== AUTH CHECK =====
+  let usuario = null;
+  let perfil = null;
+  
+  (async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      window.location.href = 'index.html?v=1';
+      return;
+    }
+    usuario = session.user;
+    
+    // Busca perfil
+    const { data: p } = await supabase
+      .from('perfis')
+      .select('*')
+      .eq('id', usuario.id)
+      .single();
+    
+    perfil = p;
+    
+    // Se já completou diagnóstico, manda pra home
+    if (perfil?.onboarding_completo) {
+      window.location.href = 'home.html?v=1';
+      return;
+    }
+    
+    // Saudação personalizada
+    const nome = perfil?.nome || usuario.user_metadata?.nome || 'parceiro';
+    document.getElementById('nome-saudacao').textContent = nome.split(' ')[0];
+  })();
+  
+  // ===== ESTADO =====
+  let stepAtual = 1;
+  const totalSteps = 6;
+  const respostas = {
+    renda: 0,
+    tem_divida: null,
+    tem_reserva: null,
+    investe: null,
+    objetivo: null
+  };
+  
+  // ===== NAVEGAÇÃO =====
+  window.proximoStep = function() {
+    if (stepAtual >= 7) return;
+    
+    document.getElementById(`step-${stepAtual}`).classList.remove('active');
+    stepAtual++;
+    document.getElementById(`step-${stepAtual}`).classList.add('active');
+    
+    atualizarProgresso();
+    window.scrollTo(0, 0);
+  };
+  
+  window.voltarStep = function() {
+    if (stepAtual <= 1) return;
+    
+    document.getElementById(`step-${stepAtual}`).classList.remove('active');
+    stepAtual--;
+    document.getElementById(`step-${stepAtual}`).classList.add('active');
+    
+    atualizarProgresso();
+    window.scrollTo(0, 0);
+  };
+  
+  function atualizarProgresso() {
+    const pct = ((stepAtual - 1) / totalSteps) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = `${Math.min(stepAtual, totalSteps)}/${totalSteps}`;
+    document.getElementById('back-btn').disabled = stepAtual <= 1 || stepAtual >= 7;
+  }
+  
+  // ===== STEP 2: RENDA =====
+  window.formatarRenda = function(input) {
+    let v = input.value.replace(/\D/g, '');
+    if (!v) { input.value = ''; document.getElementById('btn-step2').disabled = true; return; }
+    
+    v = parseInt(v);
+    input.value = v.toLocaleString('pt-BR');
+    document.getElementById('btn-step2').disabled = v < 100;
+  };
+  
+  window.salvarRenda = function() {
+    const v = document.getElementById('renda-input').value.replace(/\D/g, '');
+    respostas.renda = parseInt(v) || 0;
+    proximoStep();
+  };
+  
+  // ===== STEPS 3-5: OPÇÕES =====
+  window.selecionarOpcao = function(card, campo) {
+    const parent = card.parentElement;
+    parent.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    
+    respostas[campo] = card.dataset.valor === 'sim';
+    
+    // Habilita botão
+    const btn = document.getElementById(`btn-step${stepAtual}`);
+    if (btn) btn.disabled = false;
+  };
+  
+  // ===== STEP 6: OBJETIVO =====
+  window.selecionarObjetivo = function(card) {
+    document.querySelectorAll('.objetivo-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    respostas.objetivo = card.dataset.valor;
+    document.getElementById('btn-step6').disabled = false;
+  };
+  
+  // ===== LÓGICA DO NÍVEL =====
+  function calcularNivel() {
+    // Regras de classificação
+    if (respostas.tem_divida) return 2; // RESGATE
+    if (!respostas.tem_reserva) return 3; // ESTABILIZAÇÃO
+    if (!respostas.investe) return 4; // CONSTRUÇÃO
+    return 5; // LIBERDADE
+  }
+  
+  const niveis = {
+    2: {
+      emoji: '🚨',
+      titulo: 'Resgate',
+      desc: 'Vamos te tirar do vermelho primeiro. Investir antes de quitar dívida é furada. Começamos pelo mais importante.'
+    },
+    3: {
+      emoji: '⚖️',
+      titulo: 'Estabilização',
+      desc: 'Sem dívidas, mas ainda no aperto. Bora montar sua reserva de emergência pra parar de cair de novo.'
+    },
+    4: {
+      emoji: '🏗️',
+      titulo: 'Construção',
+      desc: 'Reserva feita, dívidas zeradas. Agora é hora de fazer o dinheiro trabalhar pra você.'
+    },
+    5: {
+      emoji: '🚀',
+      titulo: 'Liberdade',
+      desc: 'Você já tá no topo do jogo. Vamos otimizar tudo e acelerar seu crescimento patrimonial.'
+    }
+  };
+  
+  // ===== FINALIZAR =====
+  window.finalizar = async function() {
+    document.getElementById('overlay').classList.add('show');
+    
+    const nivel = calcularNivel();
+    const info = niveis[nivel];
+    
+    // Salva no Supabase
+    const { error } = await supabase
+      .from('perfis')
+      .update({
+        renda_mensal: respostas.renda,
+        nivel_jornada: nivel,
+        objetivo_principal: respostas.objetivo,
+        data_diagnostico: new Date().toISOString(),
+        onboarding_completo: true,
+        atualizado_em: new Date().toISOString()
+      })
+      .eq('id', usuario.id);
+    
+    if (error) {
+      console.error(error);
+      alert('Erro ao salvar: ' + error.message);
+      document.getElementById('overlay').classList.remove('show');
+      return;
+    }
+    
+    // Dá XP de boas-vindas (50 XP)
+    await supabase.from('historico_xp').insert({
+      user_id: usuario.id,
+      acao: 'diagnostico_completo',
+      xp_ganho: 50,
+      descricao: 'Diagnóstico inicial concluído'
+    });
+    
+    await supabase
+      .from('gamificacao')
+      .update({ 
+        xp_total: 50,
+        ultima_atividade: new Date().toISOString().split('T')[0],
+        streak_atual: 1
+      })
+      .eq('user_id', usuario.id);
+    
+    // Atualiza tela de revelação
+    document.getElementById('nivel-badge').textContent = info.emoji;
+    document.getElementById('nivel-num').textContent = `Nível ${nivel} de 5`;
+    document.getElementById('nivel-titulo').textContent = info.titulo;
+    document.getElementById('nivel-desc').textContent = info.desc;
+    
+    // Marca o ponto atual e os passados
+    const pontos = document.querySelectorAll('.ponto');
+    pontos.forEach((p, idx) => {
+      const num = idx + 1;
+      p.classList.remove('atual', 'passou');
+      if (num < nivel) p.classList.add('passou');
+      if (num === nivel) p.classList.add('atual');
+    });
+    
+    // Esconde overlay, mostra revelação
+    setTimeout(() => {
+      document.getElementById('overlay').classList.remove('show');
+      document.getElementById('step-6').classList.remove('active');
+      document.getElementById('step-7').classList.add('active');
+      stepAtual = 7;
+      atualizarProgresso();
+      document.getElementById('progress-fill').style.width = '100%';
+      document.getElementById('progress-text').textContent = '✓';
+      window.scrollTo(0, 0);
+    }, 800);
+  };
+  
+  window.entrarNoApp = function() {
+    window.location.href = 'home.html?v=1';
+  };
+</script>
+
+</body>
+</html>
