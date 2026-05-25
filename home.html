@@ -27,6 +27,9 @@
     --warning-soft: rgba(255, 184, 0, 0.1);
     --info: #38bdf8;
     --info-soft: rgba(56, 189, 248, 0.1);
+    --ia: #a855f7;
+    --ia-hover: #9333ea;
+    --ia-soft: rgba(168, 85, 247, 0.1);
     --text: #ffffff;
     --text-mute: #a3a3a3;
     --text-faint: #525252;
@@ -40,181 +43,101 @@
     overflow-x: hidden;
   }
   
-  body { padding-bottom: 100px; }
+  body { padding-bottom: 30px; }
   
   input, textarea, select {
     color: #fff !important;
     -webkit-text-fill-color: #fff !important;
     caret-color: var(--brand);
   }
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  input:-webkit-autofill:active,
-  textarea:-webkit-autofill {
+  input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px var(--bg-input) inset !important;
     -webkit-text-fill-color: #fff !important;
-    caret-color: var(--brand);
-    transition: background-color 5000s ease-in-out 0s;
   }
   
-  .header {
-    padding: 20px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
+  /* TOP BAR */
+  .topbar {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     position: sticky;
     top: 0;
+    background: var(--bg);
     z-index: 50;
-    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
   }
   
-  .header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .brand {
+  .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
-    cursor: pointer;
+    gap: 8px;
   }
   
-  .brand-mark {
-    width: 32px;
-    height: 32px;
+  .logo-mark {
+    width: 32px; height: 32px;
     background: var(--brand);
     border-radius: 9px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
   }
   
-  .brand-mark::before {
+  .logo-mark::before {
     content: '';
-    width: 12px;
-    height: 12px;
-    border: 2.5px solid var(--bg);
-    border-radius: 3px;
-    border-top: none;
-    border-right: none;
+    width: 12px; height: 12px;
+    border: 2px solid var(--bg);
+    border-radius: 4px;
+    border-top: none; border-right: none;
   }
   
-  .brand-name {
+  .logo-text {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 19px;
+    font-size: 20px;
     font-weight: 700;
     letter-spacing: -0.02em;
   }
   
-  .header-actions {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-  
-  .streak-badge {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 6px 10px;
-    font-size: 13px;
-    font-weight: 600;
-    font-family: 'Space Grotesk', sans-serif;
-  }
-  
-  .icon-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
+  .menu-btn {
+    width: 38px; height: 38px;
+    border-radius: 12px;
     background: var(--bg-card);
     border: 1px solid var(--border);
     color: var(--text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 20px;
   }
   
   .container {
     max-width: 480px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 0 20px;
   }
   
-  .greeting { margin-bottom: 24px; }
-  
-  .greeting-hi {
-    color: var(--text-mute);
-    font-size: 14px;
-    margin-bottom: 4px;
+  /* SAUDAÇÃO */
+  .saudacao {
+    padding: 20px 0 14px;
   }
   
-  .greeting-name {
+  .saudacao-titulo {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 24px;
     font-weight: 700;
     letter-spacing: -0.02em;
-  }
-  
-  .xp-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 18px;
-    margin-bottom: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .xp-info { flex: 1; }
-  
-  .xp-level {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 12px;
-    color: var(--text-mute);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
     margin-bottom: 4px;
   }
   
-  .xp-points {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  
-  .xp-points span {
+  .saudacao-sub {
+    font-size: 13px;
     color: var(--text-mute);
-    font-size: 14px;
-    font-weight: 500;
   }
   
-  .xp-rank {
-    width: 56px;
-    height: 56px;
-    background: var(--brand-soft);
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-  }
-  
+  /* NÍVEL ATUAL */
   .nivel-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 18px;
+    border-radius: 20px;
     padding: 20px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     position: relative;
     overflow: hidden;
   }
@@ -222,7 +145,7 @@
   .nivel-card::before {
     content: '';
     position: absolute;
-    top: -50%;
+    top: -40%;
     right: -20%;
     width: 200px;
     height: 200px;
@@ -232,488 +155,76 @@
   
   .nivel-header {
     display: flex;
-    align-items: center;
-    gap: 12px;
+    justify-content: space-between;
+    align-items: flex-start;
     margin-bottom: 14px;
     position: relative;
+  }
+  
+  .nivel-emoji-titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
   
   .nivel-emoji {
-    width: 48px;
-    height: 48px;
-    background: var(--brand);
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    flex-shrink: 0;
+    font-size: 32px;
   }
   
-  .nivel-info { flex: 1; }
-  
-  .nivel-label {
+  .nivel-num {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 11px;
-    color: var(--brand);
+    color: var(--text-mute);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 2px;
   }
   
-  .nivel-titulo {
+  .nivel-nome {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
   }
   
-  .nivel-pontos {
+  .nivel-xp-badge {
+    background: var(--brand-soft);
+    color: var(--brand);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 100px;
+    flex-shrink: 0;
+  }
+  
+  .nivel-progresso-label {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 4px;
+    font-size: 11px;
+    color: var(--text-mute);
+    margin-bottom: 6px;
     position: relative;
   }
   
-  .ponto { flex: 1; text-align: center; }
-  
-  .ponto-circle {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
+  .nivel-progresso-bar {
     background: var(--bg-elev);
-    border: 1px solid var(--border);
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-faint);
-    font-family: 'Space Grotesk', sans-serif;
-  }
-  
-  .ponto.atual .ponto-circle {
-    background: var(--brand);
-    border-color: var(--brand);
-    color: #001a0e;
-    box-shadow: 0 0 16px rgba(0, 217, 126, 0.4);
-  }
-  
-  .ponto.passou .ponto-circle {
-    background: var(--brand-soft);
-    border-color: var(--brand);
-    color: var(--brand);
-  }
-  
-  .section { margin-bottom: 16px; }
-  
-  .section-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 12px;
-    color: var(--text-mute);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 10px;
-    padding: 0 4px;
-  }
-  
-  .card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 18px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .card:active { transform: scale(0.99); }
-  
-  .acao-card {
-    background: var(--brand);
-    color: #001a0e;
-    border: none;
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  
-  .acao-card:active { transform: scale(0.99); background: var(--brand-hover); }
-  
-  .acao-icon {
-    width: 44px;
-    height: 44px;
-    background: rgba(0, 26, 14, 0.15);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
-  }
-  
-  .acao-info { flex: 1; }
-  
-  .acao-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    opacity: 0.7;
-    margin-bottom: 2px;
-  }
-  
-  .acao-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 17px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-  
-  .acao-seta { font-size: 22px; opacity: 0.6; }
-  
-  .dividas-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    cursor: pointer;
-  }
-  
-  .dividas-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-  }
-  
-  .dividas-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-mute);
-    font-size: 13px;
-    font-weight: 500;
-  }
-  
-  .dividas-label::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background: var(--danger);
-    border-radius: 50%;
-  }
-  
-  .dividas-valor {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--danger);
-    letter-spacing: -0.02em;
-    margin-bottom: 4px;
-  }
-  
-  .dividas-meta { color: var(--text-mute); font-size: 13px; }
-  
-  .reserva-home-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 18px;
-    cursor: pointer;
-  }
-  
-  .reserva-home-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-  }
-  
-  .reserva-home-label {
-    color: var(--text-mute);
-    font-size: 13px;
-  }
-  
-  .reserva-home-pct {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--brand);
-  }
-  
-  .reserva-home-valor {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--brand);
-    margin-bottom: 12px;
-  }
-  
-  .patrimonio-home-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 18px;
-    cursor: pointer;
-  }
-  
-  .patrimonio-home-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  
-  .patrimonio-home-label {
-    color: var(--text-mute);
-    font-size: 13px;
-  }
-  
-  .patrimonio-home-tag {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--brand);
-    background: var(--brand-soft);
-    padding: 4px 8px;
-    border-radius: 8px;
-  }
-  
-  .patrimonio-home-valor {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--brand);
-    margin-bottom: 4px;
-  }
-  
-  .patrimonio-home-meta {
-    color: var(--text-mute);
-    font-size: 12px;
-  }
-  
-  .progress-mini {
-    background: var(--bg-elev);
-    height: 6px;
+    height: 8px;
     border-radius: 100px;
     overflow: hidden;
+    position: relative;
   }
   
-  .progress-mini-fill {
+  .nivel-progresso-fill {
     height: 100%;
     background: var(--brand);
     border-radius: 100px;
-    transition: width 0.6s;
+    transition: width 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
   }
   
-  .resumo-mes {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-  }
-  
-  .resumo-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-  }
-  
-  .resumo-mes-label { font-size: 13px; color: var(--text-mute); }
-  
-  .resumo-mes-mes {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-  }
-  
-  .resumo-saldo { margin-bottom: 16px; }
-  
-  .resumo-saldo-label {
-    font-size: 12px;
-    color: var(--text-mute);
-    margin-bottom: 4px;
-  }
-  
-  .resumo-saldo-valor {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  
-  .resumo-saldo-valor.positivo { color: var(--brand); }
-  .resumo-saldo-valor.negativo { color: var(--danger); }
-  
-  .resumo-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  
-  .resumo-item {
-    background: var(--bg-elev);
-    border-radius: 12px;
-    padding: 12px;
-  }
-  
-  .resumo-item-label {
-    font-size: 11px;
-    color: var(--text-mute);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 4px;
-    font-weight: 500;
-  }
-  
-  .resumo-item-valor {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-  
-  .resumo-item-valor.entrada { color: var(--brand); }
-  .resumo-item-valor.saida { color: var(--danger); }
-  
-  .empty-state {
-    background: var(--bg-card);
-    border: 1px dashed var(--border-strong);
-    border-radius: 16px;
-    padding: 28px 20px;
-    text-align: center;
-  }
-  
-  .empty-emoji { font-size: 40px; margin-bottom: 10px; }
-  
-  .empty-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-  
-  .empty-desc {
-    font-size: 13px;
-    color: var(--text-mute);
-    margin-bottom: 14px;
-    line-height: 1.5;
-  }
-  
-  .btn-mini {
-    display: inline-block;
-    padding: 9px 16px;
-    background: var(--brand);
-    color: #001a0e;
-    border: none;
-    border-radius: 10px;
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  
-  .btn-mini:active { transform: scale(0.97); }
-  
-  .missao-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 18px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  
-  .missao-icon {
-    width: 44px;
-    height: 44px;
-    background: var(--warning-soft);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
-  }
-  
-  .missao-info { flex: 1; }
-  
-  .missao-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 2px;
-  }
-  
-  .missao-meta { font-size: 12px; color: var(--text-mute); }
-  
-  .missao-xp {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--warning);
-    background: var(--warning-soft);
-    padding: 4px 8px;
-    border-radius: 8px;
-  }
-  
-  .atalhos-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  
-  .atalho {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    transition: all 0.15s;
-  }
-  
-  .atalho:active { transform: scale(0.98); }
-  
-  .atalho-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    background: var(--bg-elev);
-  }
-  
-  .atalho-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-  }
-  
-  .atalho-desc {
-    font-size: 11px;
-    color: var(--text-mute);
-    line-height: 1.4;
-  }
-  
-  .tatu-bubble {
+  /* TATU FALA */
+  .tatu-card {
     display: flex;
     gap: 12px;
     align-items: flex-start;
@@ -721,28 +232,222 @@
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 14px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
   
   .tatu-emoji { font-size: 28px; flex-shrink: 0; }
   
-  .tatu-text {
+  .tatu-texto {
     flex: 1;
     font-size: 13px;
     line-height: 1.5;
     color: var(--text-mute);
   }
   
-  .tatu-text strong { color: var(--text); }
+  .tatu-texto strong { color: var(--text); }
   
-  .fab {
-    position: fixed;
-    bottom: 24px;
-    right: 50%;
-    transform: translateX(50%);
-    z-index: 90;
-    width: calc(100% - 40px);
-    max-width: 440px;
+  /* INSIGHTS IA */
+  .insights-card {
+    background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .insights-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    gap: 10px;
+  }
+  
+  .insights-titulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ia);
+  }
+  
+  .insights-refresh-btn {
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    color: var(--ia);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .insights-refresh-btn:active { background: rgba(168, 85, 247, 0.25); }
+  .insights-refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  
+  .insights-conteudo {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  
+  .insights-conteudo h1, .insights-conteudo h2, .insights-conteudo h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text);
+    font-weight: 700;
+    margin: 14px 0 6px;
+  }
+  
+  .insights-conteudo h2 {
+    font-size: 13px;
+    color: var(--ia);
+  }
+  
+  .insights-conteudo h2:first-child { margin-top: 0; }
+  
+  .insights-conteudo p { margin-bottom: 8px; }
+  .insights-conteudo strong { color: var(--text); font-weight: 600; }
+  .insights-conteudo ul { margin: 6px 0 8px 20px; }
+  .insights-conteudo li { margin-bottom: 4px; line-height: 1.5; }
+  
+  .insights-loading {
+    text-align: center;
+    padding: 24px 12px;
+  }
+  
+  .insights-spinner {
+    width: 36px; height: 36px;
+    border: 3px solid var(--ia-soft);
+    border-top-color: var(--ia);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 10px;
+  }
+  
+  .insights-loading-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: var(--ia);
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+  
+  .insights-loading-sub {
+    font-size: 11px;
+    color: var(--text-mute);
+  }
+  
+  .insights-vazio {
+    text-align: center;
+    padding: 20px 12px;
+  }
+  
+  .insights-vazio-emoji { font-size: 32px; margin-bottom: 8px; }
+  
+  .insights-vazio-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    color: var(--ia);
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  
+  .insights-vazio-sub {
+    font-size: 12px;
+    color: var(--text-mute);
+    line-height: 1.5;
+    margin-bottom: 12px;
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .insights-cta {
+    background: var(--ia);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .insights-cta:active { background: var(--ia-hover); transform: scale(0.97); }
+  
+  .insights-footer {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(168, 85, 247, 0.2);
+    font-size: 10px;
+    color: var(--text-faint);
+    text-align: center;
+  }
+  
+  @keyframes spin { to { transform: rotate(360deg); } }
+  
+  /* STATS GRID */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  
+  .stat-card:active { transform: scale(0.98); }
+  
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .stat-valor {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  
+  .stat-valor.brand { color: var(--brand); }
+  .stat-valor.danger { color: var(--danger); }
+  .stat-valor.warning { color: var(--warning); }
+  
+  .stat-sub {
+    font-size: 11px;
+    color: var(--text-mute);
+    margin-top: 2px;
+  }
+  
+  /* AÇÃO PRINCIPAL */
+  .acao-principal {
+    width: 100%;
     background: var(--brand);
     color: #001a0e;
     border: none;
@@ -752,39 +457,167 @@
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 8px 24px rgba(0, 217, 126, 0.3);
+    margin-bottom: 14px;
+    box-shadow: 0 8px 24px rgba(0, 217, 126, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
   }
   
-  .fab:active {
-    transform: translateX(50%) scale(0.97);
+  .acao-principal:active {
     background: var(--brand-hover);
+    transform: scale(0.985);
   }
   
-  .loader-full {
+  /* MENU CARDS */
+  .menu-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    color: var(--text-mute);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 18px 0 10px;
+    padding: 0 4px;
+  }
+  
+  .menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .menu-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: left;
+    color: var(--text);
+    text-decoration: none;
+    display: block;
+  }
+  
+  .menu-card:active { transform: scale(0.98); }
+  
+  .menu-card-emoji { font-size: 26px; margin-bottom: 8px; }
+  
+  .menu-card-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  
+  .menu-card-sub {
+    font-size: 11px;
+    color: var(--text-mute);
+    line-height: 1.3;
+  }
+  
+  /* MISSÃO SEMANAL */
+  .missao-card {
+    background: var(--bg-card);
+    border: 1px solid var(--warning-soft);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  
+  .missao-icone {
+    width: 44px; height: 44px;
+    background: var(--warning-soft);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  
+  .missao-info { flex: 1; }
+  
+  .missao-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  
+  .missao-sub {
+    font-size: 11px;
+    color: var(--text-mute);
+    line-height: 1.4;
+  }
+  
+  /* DRAWER MENU */
+  .drawer-overlay {
     position: fixed;
     inset: 0;
-    background: var(--bg);
+    background: rgba(0,0,0,0.6);
+    z-index: 200;
+    display: none;
+    backdrop-filter: blur(4px);
+  }
+  
+  .drawer-overlay.show { display: block; }
+  
+  .drawer {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 80%;
+    max-width: 320px;
+    background: var(--bg-card);
+    border-left: 1px solid var(--border);
+    padding: 24px 20px;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .drawer-overlay.show .drawer {
+    transform: translateX(0);
+  }
+  
+  .drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .drawer-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  
+  .drawer-item {
     display: flex;
     align-items: center;
-    justify-content: center;
-    z-index: 100;
+    gap: 12px;
+    padding: 14px 0;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
   }
   
-  .loader-circle {
-    width: 32px;
-    height: 32px;
-    border: 3px solid var(--border);
-    border-radius: 50%;
-    border-top-color: var(--brand);
-    animation: spin 0.8s linear infinite;
+  .drawer-item:active { opacity: 0.6; }
+  
+  .drawer-item-emoji { font-size: 20px; }
+  .drawer-item-label {
+    font-size: 14px;
+    font-weight: 500;
   }
   
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .drawer-item.danger { color: var(--danger); }
   
+  /* LEVEL UP CELEBRATION */
   .levelup-overlay {
     position: fixed;
     inset: 0;
@@ -805,105 +638,60 @@
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 24px;
-    padding: 36px 24px;
+    padding: 40px 24px;
     text-align: center;
-    position: relative;
-    overflow: hidden;
-    animation: levelupIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   
-  @keyframes levelupIn {
+  @keyframes bounceIn {
     0% { transform: scale(0.6); opacity: 0; }
     100% { transform: scale(1); opacity: 1; }
   }
   
-  .levelup-modal::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 0%, var(--brand-soft) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  
-  .levelup-eyebrow {
-    color: var(--brand);
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
+  .levelup-emoji {
+    font-size: 80px;
     margin-bottom: 14px;
-    position: relative;
-    animation: pulse-eye 1.5s ease-in-out infinite;
+    animation: bounce-emoji 1.5s ease-in-out infinite;
   }
   
-  @keyframes pulse-eye {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-  
-  .levelup-badge {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: var(--brand);
-    margin: 0 auto 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 60px;
-    position: relative;
-    box-shadow: 0 0 80px rgba(0, 217, 126, 0.5);
-    animation: badgeBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  
-  @keyframes badgeBounce {
-    0% { transform: scale(0); }
-    50% { transform: scale(1.15); }
-    100% { transform: scale(1); }
+  @keyframes bounce-emoji {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
   }
   
   .levelup-titulo {
     font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    color: var(--warning);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 6px;
+  }
+  
+  .levelup-nivel {
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 32px;
     font-weight: 700;
-    letter-spacing: -0.02em;
     margin-bottom: 8px;
-    position: relative;
+    letter-spacing: -0.02em;
   }
   
-  .levelup-de-para {
+  .levelup-nome {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    color: var(--text-mute);
-    margin-bottom: 20px;
-    position: relative;
+    font-size: 20px;
+    color: var(--brand);
+    margin-bottom: 18px;
   }
-  
-  .levelup-de-para strong { color: var(--brand); }
   
   .levelup-desc {
-    font-size: 14px;
     color: var(--text-mute);
-    line-height: 1.6;
-    margin-bottom: 22px;
-    position: relative;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 24px;
   }
   
-  .levelup-xp {
-    background: var(--brand-soft);
-    border: 1px solid rgba(0,217,126,0.3);
-    border-radius: 14px;
-    padding: 12px;
-    margin-bottom: 22px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    color: var(--brand);
-    font-size: 16px;
-    position: relative;
-  }
-  
-  .levelup-btn {
+  .btn-continuar {
     width: 100%;
     background: var(--brand);
     color: #001a0e;
@@ -914,10 +702,9 @@
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    position: relative;
   }
   
-  .levelup-btn:active { background: var(--brand-hover); transform: scale(0.97); }
+  .btn-continuar:active { background: var(--brand-hover); transform: scale(0.97); }
   
   .confete {
     position: absolute;
@@ -932,217 +719,88 @@
     100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
   }
   
+  .loader-circle {
+    width: 32px; height: 32px;
+    border: 3px solid var(--border);
+    border-radius: 50%;
+    border-top-color: var(--brand);
+    animation: spin 0.8s linear infinite;
+    margin: 60px auto;
+  }
+  
   .hidden { display: none !important; }
 </style>
 </head>
 <body>
 
-<div class="loader-full" id="loader">
-  <div class="loader-circle"></div>
-</div>
-
-<div class="header">
-  <div class="header-row">
-    <div class="brand" onclick="window.location.reload()">
-      <div class="brand-mark"></div>
-      <div class="brand-name">guardaí</div>
-    </div>
-    <div class="header-actions">
-      <div class="streak-badge" id="streak-badge">🔥 <span id="streak-num">0</span></div>
-      <button class="icon-btn" onclick="sair()">⏻</button>
-    </div>
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-mark"></div>
+    <div class="logo-text">guardaí</div>
   </div>
+  <button class="menu-btn" onclick="abrirDrawer()">☰</button>
 </div>
 
 <div class="container">
 
-  <div class="greeting">
-    <div class="greeting-hi" id="greeting-hi">Bom dia,</div>
-    <div class="greeting-name" id="greeting-name">parceiro 👋</div>
+  <div class="saudacao">
+    <div class="saudacao-titulo" id="saudacao-titulo">Olá!</div>
+    <div class="saudacao-sub" id="saudacao-sub">Bem-vindo de volta ao GuardaAí</div>
   </div>
   
-  <div class="xp-card">
-    <div class="xp-info">
-      <div class="xp-level" id="xp-rank-name">Iniciante</div>
-      <div class="xp-points"><span id="xp-num">0</span> <span>XP</span></div>
-    </div>
-    <div class="xp-rank" id="xp-rank-emoji">🌱</div>
-  </div>
-  
-  <div class="nivel-card">
-    <div class="nivel-header">
-      <div class="nivel-emoji" id="nivel-emoji">🎯</div>
-      <div class="nivel-info">
-        <div class="nivel-label">Sua jornada</div>
-        <div class="nivel-titulo" id="nivel-titulo">Diagnóstico</div>
-      </div>
-    </div>
-    <div class="nivel-pontos" id="nivel-pontos">
-      <div class="ponto"><div class="ponto-circle">1</div></div>
-      <div class="ponto"><div class="ponto-circle">2</div></div>
-      <div class="ponto"><div class="ponto-circle">3</div></div>
-      <div class="ponto"><div class="ponto-circle">4</div></div>
-      <div class="ponto"><div class="ponto-circle">5</div></div>
-    </div>
-  </div>
-  
-  <div class="tatu-bubble">
-    <div class="tatu-emoji">🦔</div>
-    <div class="tatu-text" id="tatu-text">Bora começar! Primeiro passo: <strong>cadastrar suas dívidas</strong>.</div>
-  </div>
-  
-  <button class="acao-card" id="acao-card" onclick="acaoPrincipal()">
-    <div class="acao-icon" id="acao-icon">🚨</div>
-    <div class="acao-info">
-      <div class="acao-label">Próximo passo</div>
-      <div class="acao-titulo" id="acao-titulo">Cadastrar suas dívidas</div>
-    </div>
-    <div class="acao-seta">›</div>
-  </button>
-  
-  <div class="section" id="bloco-dividas">
-    <div class="section-title">Dívidas em aberto</div>
-    
-    <div class="empty-state" id="dividas-empty">
-      <div class="empty-emoji">📋</div>
-      <div class="empty-title">Vamos mapear tudo</div>
-      <div class="empty-desc">Cadastre cada dívida. Cartão, empréstimo, conta atrasada, pensão — tudo.</div>
-      <button class="btn-mini" onclick="irPara('dividas.html')">+ Cadastrar dívida</button>
-    </div>
-    
-    <div class="dividas-card hidden" id="dividas-card" onclick="irPara('dividas.html')">
-      <div class="dividas-header">
-        <div class="dividas-label">Total devendo</div>
-      </div>
-      <div class="dividas-valor">R$ <span id="dividas-valor">0,00</span></div>
-      <div class="dividas-meta"><span id="dividas-qtd">0</span> dívidas em aberto</div>
-    </div>
-  </div>
-  
-  <div class="section hidden" id="bloco-reserva">
-    <div class="section-title">🛡️ Reserva de emergência</div>
-    <div class="reserva-home-card" onclick="irPara('metas.html')">
-      <div class="reserva-home-header">
-        <div class="reserva-home-label">Progresso da sua segurança</div>
-        <div class="reserva-home-pct" id="reserva-pct">0%</div>
-      </div>
-      <div class="reserva-home-valor">R$ <span id="reserva-valor">0,00</span></div>
-      <div class="progress-mini">
-        <div class="progress-mini-fill" id="reserva-progress" style="width:0%;"></div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="section hidden" id="bloco-patrimonio">
-    <div class="section-title">📈 Patrimônio investido</div>
-    <div class="patrimonio-home-card" onclick="irPara('patrimonio.html')">
-      <div class="patrimonio-home-header">
-        <div class="patrimonio-home-label">Total investido</div>
-        <div class="patrimonio-home-tag" id="patrimonio-qtd">0 ativos</div>
-      </div>
-      <div class="patrimonio-home-valor">R$ <span id="patrimonio-valor">0,00</span></div>
-      <div class="patrimonio-home-meta" id="patrimonio-meta">Comece a fazer o dinheiro trabalhar</div>
-    </div>
-  </div>
-  
-  <div class="section">
-    <div class="section-title">Este mês</div>
-    
-    <div class="empty-state" id="resumo-empty">
-      <div class="empty-emoji">📊</div>
-      <div class="empty-title">Sem registros ainda</div>
-      <div class="empty-desc">Comece a registrar seus gastos pra eu te mostrar onde seu dinheiro está indo.</div>
-      <button class="btn-mini" onclick="irPara('transacoes.html')">+ Primeira transação</button>
-    </div>
-    
-    <div class="resumo-mes hidden" id="resumo-card">
-      <div class="resumo-header">
-        <div class="resumo-mes-label">Saldo do mês</div>
-        <div class="resumo-mes-mes" id="resumo-mes-nome">Maio</div>
-      </div>
-      <div class="resumo-saldo">
-        <div class="resumo-saldo-label">Sobrou até agora</div>
-        <div class="resumo-saldo-valor positivo" id="resumo-saldo">R$ 0,00</div>
-      </div>
-      <div class="resumo-grid">
-        <div class="resumo-item">
-          <div class="resumo-item-label">Entrou</div>
-          <div class="resumo-item-valor entrada" id="resumo-entrou">R$ 0,00</div>
-        </div>
-        <div class="resumo-item">
-          <div class="resumo-item-label">Saiu</div>
-          <div class="resumo-item-valor saida" id="resumo-saiu">R$ 0,00</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="section">
-    <div class="section-title">Missão da semana</div>
-    <div class="missao-card" id="missao-card">
-      <div class="missao-icon" id="missao-icon">🎯</div>
-      <div class="missao-info">
-        <div class="missao-titulo" id="missao-titulo">Cadastre 5 dívidas</div>
-        <div class="missao-meta" id="missao-meta">0 de 5 cadastradas</div>
-      </div>
-      <div class="missao-xp" id="missao-xp">+100 XP</div>
-    </div>
-  </div>
-  
-  <div class="section">
-    <div class="section-title">Acesso rápido</div>
-    <div class="atalhos-grid">
-      <div class="atalho" onclick="irPara('transacoes.html')">
-        <div class="atalho-icon">💸</div>
-        <div>
-          <div class="atalho-titulo">Transações</div>
-          <div class="atalho-desc">Entradas e saídas</div>
-        </div>
-      </div>
-      <div class="atalho" onclick="irPara('dividas.html')">
-        <div class="atalho-icon">📋</div>
-        <div>
-          <div class="atalho-titulo">Dívidas</div>
-          <div class="atalho-desc">Negociar e quitar</div>
-        </div>
-      </div>
-      <div class="atalho" onclick="irPara('metas.html')">
-        <div class="atalho-icon">🎯</div>
-        <div>
-          <div class="atalho-titulo">Metas</div>
-          <div class="atalho-desc">Reserva e objetivos</div>
-        </div>
-      </div>
-      <div class="atalho" onclick="irPara('patrimonio.html')">
-        <div class="atalho-icon">📈</div>
-        <div>
-          <div class="atalho-titulo">Patrimônio</div>
-          <div class="atalho-desc">Investimentos</div>
-        </div>
-      </div>
-      <div class="atalho" onclick="irPara('educacao.html')">
-        <div class="atalho-icon">📚</div>
-        <div>
-          <div class="atalho-titulo">Aprender</div>
-          <div class="atalho-desc">Trilha financeira</div>
-        </div>
-      </div>
-    </div>
+  <div id="conteudo">
+    <div class="loader-circle"></div>
   </div>
 
 </div>
 
-<button class="fab" onclick="irPara('transacoes.html?nova=1')">+ Nova transação</button>
+<!-- DRAWER MENU -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="fecharDrawer(event)">
+  <div class="drawer" onclick="event.stopPropagation()">
+    <div class="drawer-header">
+      <div class="drawer-titulo">Menu</div>
+      <button class="menu-btn" onclick="fecharDrawer()">✕</button>
+    </div>
+    <a href="home.html?v=1" class="drawer-item">
+      <div class="drawer-item-emoji">🏠</div>
+      <div class="drawer-item-label">Início</div>
+    </a>
+    <a href="transacoes.html?v=1" class="drawer-item">
+      <div class="drawer-item-emoji">💸</div>
+      <div class="drawer-item-label">Transações</div>
+    </a>
+    <a href="dividas.html?v=1" class="drawer-item">
+      <div class="drawer-item-emoji">💳</div>
+      <div class="drawer-item-label">Dívidas</div>
+    </a>
+    <a href="metas.html?v=1" class="drawer-item">
+      <div class="drawer-item-emoji">🎯</div>
+      <div class="drawer-item-label">Metas</div>
+    </a>
+    <a href="patrimonio.html?v=1" class="drawer-item">
+      <div class="drawer-item-emoji">💎</div>
+      <div class="drawer-item-label">Patrimônio</div>
+    </a>
+    <a href="educacao.html?v=1" class="drawer-item">
+      <div class="drawer-item-emoji">📚</div>
+      <div class="drawer-item-label">Aprender</div>
+    </a>
+    <div class="drawer-item danger" onclick="sair()">
+      <div class="drawer-item-emoji">🚪</div>
+      <div class="drawer-item-label">Sair</div>
+    </div>
+  </div>
+</div>
 
+<!-- LEVEL UP MODAL -->
 <div class="levelup-overlay" id="levelup-overlay">
   <div class="levelup-modal" id="levelup-modal">
-    <div class="levelup-eyebrow">★ LEVEL UP ★</div>
-    <div class="levelup-badge" id="levelup-badge">🚀</div>
-    <div class="levelup-titulo" id="levelup-titulo">Construção</div>
-    <div class="levelup-de-para" id="levelup-de-para">Você saiu de <strong>Resgate</strong> pra <strong>Construção</strong></div>
-    <div class="levelup-desc" id="levelup-desc">Você dominou essa fase. Agora é hora de fazer o dinheiro trabalhar pra você.</div>
-    <div class="levelup-xp">🎉 +1000 XP de bônus</div>
-    <button class="levelup-btn" onclick="fecharLevelUp()">Bora pro próximo passo</button>
+    <div class="levelup-emoji" id="levelup-emoji">🎉</div>
+    <div class="levelup-titulo">LEVEL UP!</div>
+    <div class="levelup-nivel" id="levelup-nivel">Nível 2</div>
+    <div class="levelup-nome" id="levelup-nome">Resgate</div>
+    <div class="levelup-desc" id="levelup-desc">Você desbloqueou uma nova fase da sua jornada!</div>
+    <button class="btn-continuar" onclick="fecharLevelUp()">Continuar jornada</button>
   </div>
 </div>
 
@@ -1151,33 +809,21 @@
   
   const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+  const IA_FUNCTION_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-  window.supabase = supabase;
   
   const niveisInfo = {
-    1: { emoji: '🎯', titulo: 'Diagnóstico', xpBonus: 0 },
-    2: { emoji: '🚨', titulo: 'Resgate', xpBonus: 200 },
-    3: { emoji: '⚖️', titulo: 'Estabilização', xpBonus: 500 },
-    4: { emoji: '🏗️', titulo: 'Construção', xpBonus: 1000 },
-    5: { emoji: '🚀', titulo: 'Liberdade', xpBonus: 2000 }
+    1: { emoji: '🎯', nome: 'Diagnóstico', xp_max: 100, desc: 'Vamos descobrir onde você está.' },
+    2: { emoji: '🚨', nome: 'Resgate', xp_max: 1000, desc: 'Foco em quitar as dívidas.' },
+    3: { emoji: '⚖️', nome: 'Estabilização', xp_max: 3000, desc: 'Construir reserva de emergência.' },
+    4: { emoji: '🏗️', nome: 'Construção', xp_max: 8000, desc: 'Multiplicar patrimônio.' },
+    5: { emoji: '🚀', nome: 'Liberdade', xp_max: 999999, desc: 'Independência financeira alcançada!' }
   };
   
-  const descricoesLevelUp = {
-    3: 'Você zerou suas dívidas! Agora é hora de criar sua reserva pra parar de viver no aperto.',
-    4: 'Reserva blindada! Hora de fazer o dinheiro trabalhar pra você. Bora investir.',
-    5: 'Você tá no topo do jogo! Vamos otimizar seu patrimônio e acelerar seu crescimento.'
-  };
-  
-  const ranksInfo = [
-    { min: 0, max: 499, emoji: '🌱', nome: 'Iniciante' },
-    { min: 500, max: 1999, emoji: '🌿', nome: 'Aprendiz' },
-    { min: 2000, max: 4999, emoji: '🌳', nome: 'Disciplinado' },
-    { min: 5000, max: 9999, emoji: '💪', nome: 'Estrategista' },
-    { min: 10000, max: 24999, emoji: '🏆', nome: 'Mestre' },
-    { min: 25000, max: 999999, emoji: '👑', nome: 'Lenda' }
-  ];
-  
-  let usuario, perfil, gamif;
+  let usuario, perfil, gamificacao;
+  let dividas = [], transacoes = [], metas = [], patrimonio = [];
+  let mesAtual = new Date();
+  let insightsCache = null;
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -1187,101 +833,558 @@
     }
     usuario = session.user;
     
-    const [perfilRes, gamifRes, dividasRes, transacoesRes, metasRes, patrimonioRes] = await Promise.all([
+    await carregarTudo();
+    render();
+    checarLevelUp();
+    carregarInsights();
+  })();
+  
+  async function carregarTudo() {
+    const inicioMes = new Date(mesAtual.getFullYear(), mesAtual.getMonth(), 1).toISOString().split('T')[0];
+    const fimMes = new Date(mesAtual.getFullYear(), mesAtual.getMonth() + 1, 0).toISOString().split('T')[0];
+    
+    const [perfilRes, gamRes, dividasRes, transRes, metasRes, patRes] = await Promise.all([
       supabase.from('perfis').select('*').eq('id', usuario.id).single(),
       supabase.from('gamificacao').select('*').eq('user_id', usuario.id).single(),
-      supabase.from('dividas').select('id, valor_atual, status').eq('user_id', usuario.id),
-      supabase.from('transacoes').select('tipo, valor, data').eq('user_id', usuario.id).gte('data', primeiroDiaMes()),
-      supabase.from('metas').select('*').eq('user_id', usuario.id),
+      supabase.from('dividas').select('*').eq('user_id', usuario.id),
+      supabase.from('transacoes').select('*, categorias(nome, icone)').eq('user_id', usuario.id).gte('data', inicioMes).lte('data', fimMes),
+      supabase.from('metas').select('*').eq('user_id', usuario.id).neq('status', 'cancelada'),
       supabase.from('patrimonio').select('*').eq('user_id', usuario.id).eq('ativo', true)
     ]);
     
     perfil = perfilRes.data;
-    gamif = gamifRes.data;
-    const dividas = dividasRes.data || [];
-    const transacoes = transacoesRes.data || [];
-    const metas = metasRes.data || [];
-    const patrimonio = patrimonioRes.data || [];
+    gamificacao = gamRes.data || { xp_total: 0 };
+    dividas = dividasRes.data || [];
+    transacoes = transRes.data || [];
+    metas = metasRes.data || [];
+    patrimonio = patRes.data || [];
+  }
+  
+  function render() {
+    renderSaudacao();
     
-    if (!perfil?.onboarding_completo) {
-      window.location.href = 'diagnostico.html?v=1';
+    const nivel = perfil?.nivel_jornada || 1;
+    const info = niveisInfo[nivel];
+    
+    document.getElementById('conteudo').innerHTML = `
+      ${renderNivelCard(nivel, info)}
+      ${renderTatuCard(nivel)}
+      <div id="insights-area"></div>
+      ${renderStats(nivel)}
+      ${renderAcaoPrincipal(nivel)}
+      ${renderMissao(nivel)}
+      ${renderMenuCards(nivel)}
+    `;
+    
+    renderInsightsArea();
+  }
+  
+  function renderSaudacao() {
+    const hora = new Date().getHours();
+    let saudacao = 'Olá';
+    if (hora < 12) saudacao = 'Bom dia';
+    else if (hora < 18) saudacao = 'Boa tarde';
+    else saudacao = 'Boa noite';
+    
+    const nome = perfil?.nome?.split(' ')[0] || '';
+    document.getElementById('saudacao-titulo').textContent = `${saudacao}${nome ? ', ' + nome : ''}!`;
+    
+    const total = gamificacao?.xp_total || 0;
+    const streak = gamificacao?.streak_dias || 0;
+    let sub = `${total.toLocaleString('pt-BR')} XP`;
+    if (streak > 1) sub += ` • 🔥 ${streak} dias seguidos`;
+    document.getElementById('saudacao-sub').textContent = sub;
+  }
+  
+  function renderNivelCard(nivel, info) {
+    const xp = gamificacao?.xp_total || 0;
+    const xpAnterior = nivel > 1 ? niveisInfo[nivel - 1].xp_max : 0;
+    const xpNecessario = info.xp_max - xpAnterior;
+    const xpAtual = Math.max(0, xp - xpAnterior);
+    const pct = Math.min(100, (xpAtual / xpNecessario) * 100);
+    
+    return `
+      <div class="nivel-card">
+        <div class="nivel-header">
+          <div class="nivel-emoji-titulo">
+            <div class="nivel-emoji">${info.emoji}</div>
+            <div>
+              <div class="nivel-num">Nível ${nivel}</div>
+              <div class="nivel-nome">${info.nome}</div>
+            </div>
+          </div>
+          <div class="nivel-xp-badge">${xpAtual.toLocaleString('pt-BR')} XP</div>
+        </div>
+        ${nivel < 5 ? `
+          <div class="nivel-progresso-label">
+            <span>Próximo: ${niveisInfo[nivel + 1].nome}</span>
+            <span>${xpAtual} / ${xpNecessario}</span>
+          </div>
+          <div class="nivel-progresso-bar">
+            <div class="nivel-progresso-fill" style="width:${pct}%;"></div>
+          </div>
+        ` : `
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--brand);text-align:center;padding:8px 0;">
+            🏆 NÍVEL MÁXIMO ATINGIDO
+          </div>
+        `}
+      </div>
+    `;
+  }
+  
+  function renderTatuCard(nivel) {
+    let texto = '';
+    
+    if (nivel === 1) {
+      texto = '🦔 Vamos fazer seu <strong>diagnóstico financeiro</strong> pra começar a jornada!';
+    } else if (nivel === 2) {
+      const ativas = dividas.filter(d => d.status !== 'quitada');
+      const quitadas = dividas.filter(d => d.status === 'quitada').length;
+      const totalDivida = ativas.reduce((a, d) => a + Number(d.valor_atual || d.valor_original), 0);
+      
+      if (ativas.length === 0 && dividas.length === 0) {
+        texto = '🦔 Cadastre suas dívidas pra eu te ajudar a quitar com IA!';
+      } else if (ativas.length === 0) {
+        texto = '🦔 <strong>TUDO QUITADO!</strong> Você venceu o Resgate! 🏆';
+      } else if (quitadas > 0) {
+        texto = `🦔 Você já quitou <strong>${quitadas}</strong>. Faltam <strong>${ativas.length}</strong>. Não pare agora!`;
+      } else {
+        texto = `🦔 <strong>R$ ${formatarMoeda(totalDivida)}</strong> em dívidas. Use a IA pra negociar — descontos de 30-70% são comuns.`;
+      }
+    } else if (nivel === 3) {
+      texto = '🦔 Hora de <strong>construir reserva de emergência</strong>! Meta: 6 meses de gastos parados.';
+    } else if (nivel === 4) {
+      texto = '🦔 Hora de <strong>multiplicar patrimônio</strong>! Diversificação é a chave.';
+    } else {
+      texto = '🦔 <strong>LIBERDADE FINANCEIRA!</strong> Você é uma inspiração. 🚀';
+    }
+    
+    return `
+      <div class="tatu-card">
+        <div class="tatu-emoji">🦔</div>
+        <div class="tatu-texto">${texto}</div>
+      </div>
+    `;
+  }
+  
+  function renderStats(nivel) {
+    const entrada = transacoes.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
+    const saida = transacoes.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
+    const saldo = entrada - saida;
+    
+    let cards = `
+      <div class="stat-card" onclick="window.location.href='transacoes.html?v=1'">
+        <div class="stat-label">Entradas do mês</div>
+        <div class="stat-valor brand">R$ ${formatarMoeda(entrada)}</div>
+      </div>
+      <div class="stat-card" onclick="window.location.href='transacoes.html?v=1'">
+        <div class="stat-label">Saídas do mês</div>
+        <div class="stat-valor danger">R$ ${formatarMoeda(saida)}</div>
+      </div>
+    `;
+    
+    if (nivel >= 2) {
+      const ativas = dividas.filter(d => d.status !== 'quitada');
+      const totalDivida = ativas.reduce((a, d) => a + Number(d.valor_atual || d.valor_original), 0);
+      cards += `
+        <div class="stat-card" onclick="window.location.href='dividas.html?v=1'">
+          <div class="stat-label">Dívidas ativas</div>
+          <div class="stat-valor warning">R$ ${formatarMoeda(totalDivida)}</div>
+          <div class="stat-sub">${ativas.length} em aberto</div>
+        </div>
+      `;
+    }
+    
+    if (nivel >= 3) {
+      const reserva = metas.find(m => m.tipo === 'reserva_emergencia');
+      const valorReserva = reserva ? Number(reserva.valor_atual || 0) : 0;
+      const valorAlvo = reserva ? Number(reserva.valor_objetivo || 0) : 0;
+      const pctReserva = valorAlvo > 0 ? Math.min(100, (valorReserva / valorAlvo) * 100) : 0;
+      cards += `
+        <div class="stat-card" onclick="window.location.href='metas.html?v=1'">
+          <div class="stat-label">Reserva emergência</div>
+          <div class="stat-valor brand">${pctReserva.toFixed(0)}%</div>
+          <div class="stat-sub">R$ ${formatarMoeda(valorReserva)}</div>
+        </div>
+      `;
+    }
+    
+    if (nivel >= 4) {
+      const totalPat = patrimonio.reduce((a, p) => a + Number(p.valor_atual || 0), 0);
+      cards += `
+        <div class="stat-card" onclick="window.location.href='patrimonio.html?v=1'">
+          <div class="stat-label">Patrimônio</div>
+          <div class="stat-valor brand">R$ ${formatarMoeda(totalPat)}</div>
+          <div class="stat-sub">${patrimonio.length} ativos</div>
+        </div>
+      `;
+    }
+    
+    return `<div class="stats-grid">${cards}</div>`;
+  }
+  
+  function renderAcaoPrincipal(nivel) {
+    let label = '', acao = '';
+    
+    if (nivel === 1) {
+      label = '🎯 Fazer Diagnóstico';
+      acao = "window.location.href='diagnostico.html?v=1'";
+    } else if (nivel === 2) {
+      const ativas = dividas.filter(d => d.status !== 'quitada');
+      if (ativas.length === 0) {
+        label = '+ Cadastrar dívidas';
+      } else {
+        label = '✨ Quitar próxima dívida';
+      }
+      acao = "window.location.href='dividas.html?v=1'";
+    } else if (nivel === 3) {
+      label = '🎯 Configurar reserva';
+      acao = "window.location.href='metas.html?v=1'";
+    } else if (nivel === 4) {
+      const totalPat = patrimonio.reduce((a, p) => a + Number(p.valor_atual || 0), 0);
+      if (totalPat === 0) {
+        label = '💎 Fazer primeiro aporte';
+      } else {
+        label = '📊 Diversificar carteira';
+      }
+      acao = "window.location.href='patrimonio.html?v=1'";
+    } else {
+      label = '🚀 Ver patrimônio';
+      acao = "window.location.href='patrimonio.html?v=1'";
+    }
+    
+    return `<button class="acao-principal" onclick="${acao}">${label}</button>`;
+  }
+  
+  function renderMissao(nivel) {
+    let titulo = '', sub = '', emoji = '🎯';
+    
+    if (nivel === 2) {
+      const ativas = dividas.filter(d => d.status !== 'quitada');
+      if (ativas.length > 0) {
+        titulo = 'Missão da semana';
+        sub = `Quitar pelo menos 1 dívida das ${ativas.length} ativas`;
+        emoji = '🎯';
+      } else {
+        return '';
+      }
+    } else if (nivel === 3) {
+      titulo = 'Missão da semana';
+      sub = 'Guardar pelo menos R$ 100 na reserva';
+      emoji = '🐷';
+    } else if (nivel === 4) {
+      titulo = 'Missão da semana';
+      sub = 'Estudar 2 lições de investimento';
+      emoji = '📚';
+    } else {
+      return '';
+    }
+    
+    return `
+      <div class="missao-card">
+        <div class="missao-icone">${emoji}</div>
+        <div class="missao-info">
+          <div class="missao-titulo">${titulo}</div>
+          <div class="missao-sub">${sub}</div>
+        </div>
+      </div>
+    `;
+  }
+  
+  function renderMenuCards(nivel) {
+    return `
+      <div class="menu-titulo">Menu rápido</div>
+      <div class="menu-grid">
+        <a href="transacoes.html?v=1" class="menu-card">
+          <div class="menu-card-emoji">💸</div>
+          <div class="menu-card-titulo">Transações</div>
+          <div class="menu-card-sub">Gastos e receitas</div>
+        </a>
+        <a href="dividas.html?v=1" class="menu-card">
+          <div class="menu-card-emoji">💳</div>
+          <div class="menu-card-titulo">Dívidas</div>
+          <div class="menu-card-sub">Negociar com IA</div>
+        </a>
+        <a href="metas.html?v=1" class="menu-card">
+          <div class="menu-card-emoji">🎯</div>
+          <div class="menu-card-titulo">Metas</div>
+          <div class="menu-card-sub">Reserva e objetivos</div>
+        </a>
+        <a href="patrimonio.html?v=1" class="menu-card">
+          <div class="menu-card-emoji">💎</div>
+          <div class="menu-card-titulo">Patrimônio</div>
+          <div class="menu-card-sub">Investimentos</div>
+        </a>
+        <a href="educacao.html?v=1" class="menu-card" style="grid-column: span 2;">
+          <div class="menu-card-emoji">📚</div>
+          <div class="menu-card-titulo">Aprender</div>
+          <div class="menu-card-sub">Trilha de educação financeira</div>
+        </a>
+      </div>
+    `;
+  }
+  
+  // ===== INSIGHTS IA =====
+  function renderInsightsArea() {
+    const area = document.getElementById('insights-area');
+    if (!area) return;
+    
+    const totalTrans = transacoes.length;
+    
+    if (totalTrans < 3) {
+      area.innerHTML = `
+        <div class="insights-card">
+          <div class="insights-header">
+            <div class="insights-titulo">✨ Insights da IA</div>
+          </div>
+          <div class="insights-vazio">
+            <div class="insights-vazio-emoji">📸</div>
+            <div class="insights-vazio-titulo">Cadastre mais transações</div>
+            <div class="insights-vazio-sub">Quando você tiver pelo menos 3 transações no mês, a IA analisa seus gastos e gera insights personalizados.</div>
+            <button class="insights-cta" onclick="window.location.href='transacoes.html?v=1'">
+              ✨ Cadastrar via foto
+            </button>
+          </div>
+        </div>
+      `;
       return;
     }
     
-    const novoNivel = calcularNivel(dividas, metas, patrimonio);
-    const nivelAtual = perfil.nivel_jornada || 1;
+    // Verifica cache (24h)
+    const cacheKey = `insights_${usuario.id}_${mesAtual.getFullYear()}_${mesAtual.getMonth()}`;
+    const cached = localStorage.getItem(cacheKey);
     
-    if (novoNivel > nivelAtual) {
-      await aplicarSubidaNivel(nivelAtual, novoNivel);
-      perfil.nivel_jornada = novoNivel;
-      mostrarLevelUp(nivelAtual, novoNivel);
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        const idade = (Date.now() - parsed.timestamp) / (1000 * 60 * 60);
+        if (idade < 24) {
+          mostrarInsights(parsed.texto, true);
+          return;
+        }
+      } catch (e) {}
     }
     
-    renderizar(dividas, transacoes, metas, patrimonio);
-    document.getElementById('loader').classList.add('hidden');
-  })();
-  
-  function calcularNivel(dividas, metas, patrimonio) {
-    const dividasAbertas = dividas.filter(d => d.status !== 'quitada');
-    const reserva = metas.find(m => m.tipo === 'reserva_emergencia');
-    const reservaCompleta = reserva && Number(reserva.valor_atual) >= Number(reserva.valor_alvo);
-    const totalInvestido = patrimonio.reduce((acc, p) => acc + Number(p.valor_atual), 0);
-    const renda = Number(perfil?.renda_mensal || 0);
-    
-    if (renda > 0 && totalInvestido > renda * 10 && reservaCompleta && dividasAbertas.length === 0) {
-      return 5;
-    }
-    
-    if (reservaCompleta && dividasAbertas.length === 0) {
-      return 4;
-    }
-    
-    if (dividasAbertas.length === 0 && dividas.length > 0) {
-      return 3;
-    }
-    
-    return Math.max(perfil?.nivel_jornada || 2, 2);
+    // Não tem cache válido — gera novo
+    area.innerHTML = `
+      <div class="insights-card">
+        <div class="insights-header">
+          <div class="insights-titulo">✨ Insights da IA</div>
+        </div>
+        <div class="insights-loading">
+          <div class="insights-spinner"></div>
+          <div class="insights-loading-text">🤖 Tatu analisando seus gastos...</div>
+          <div class="insights-loading-sub">Lendo ${totalTrans} transações do mês</div>
+        </div>
+      </div>
+    `;
   }
   
-  async function aplicarSubidaNivel(de, para) {
-    const xpBonus = niveisInfo[para].xpBonus;
+  function mostrarInsights(texto, cacheado) {
+    const area = document.getElementById('insights-area');
+    if (!area) return;
     
-    await supabase.from('perfis').update({
-      nivel_jornada: para,
-      atualizado_em: new Date().toISOString()
-    }).eq('id', usuario.id);
+    area.innerHTML = `
+      <div class="insights-card">
+        <div class="insights-header">
+          <div class="insights-titulo">✨ Insights da IA</div>
+          <button class="insights-refresh-btn" onclick="forcarNovoInsight()" id="btn-refresh-insights">
+            🔄 Atualizar
+          </button>
+        </div>
+        <div class="insights-conteudo">${markdownToHtml(texto)}</div>
+        ${cacheado ? '<div class="insights-footer">Insights atualizados há menos de 24h</div>' : ''}
+      </div>
+    `;
+  }
+  
+  async function carregarInsights() {
+    if (transacoes.length < 3) return;
     
-    if (xpBonus > 0) {
-      await supabase.from('historico_xp').insert({
-        user_id: usuario.id,
-        acao: 'level_up',
-        xp_ganho: xpBonus,
-        descricao: `Subiu para nível ${para} (${niveisInfo[para].titulo})`
+    const cacheKey = `insights_${usuario.id}_${mesAtual.getFullYear()}_${mesAtual.getMonth()}`;
+    const cached = localStorage.getItem(cacheKey);
+    
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        const idade = (Date.now() - parsed.timestamp) / (1000 * 60 * 60);
+        if (idade < 24) return; // Já mostrado no render
+      } catch (e) {}
+    }
+    
+    await gerarInsightsIA();
+  }
+  
+  async function gerarInsightsIA() {
+    if (transacoes.length < 3) return;
+    
+    // Prepara contexto resumido
+    const entrada = transacoes.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
+    const saida = transacoes.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
+    const saldo = entrada - saida;
+    
+    // Agrupa por categoria
+    const porCategoria = {};
+    transacoes.filter(t => t.tipo === 'saida').forEach(t => {
+      const cat = t.categorias?.nome || 'Outros';
+      if (!porCategoria[cat]) porCategoria[cat] = 0;
+      porCategoria[cat] += Number(t.valor);
+    });
+    
+    const topCategorias = Object.entries(porCategoria)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([nome, valor]) => `${nome}: R$ ${formatarMoeda(valor)}`)
+      .join(', ');
+    
+    // Busca mês anterior pra comparação
+    const inicioMesAnt = new Date(mesAtual.getFullYear(), mesAtual.getMonth() - 1, 1).toISOString().split('T')[0];
+    const fimMesAnt = new Date(mesAtual.getFullYear(), mesAtual.getMonth(), 0).toISOString().split('T')[0];
+    
+    const { data: transAnt } = await supabase
+      .from('transacoes')
+      .select('valor, tipo, categorias(nome)')
+      .eq('user_id', usuario.id)
+      .gte('data', inicioMesAnt)
+      .lte('data', fimMesAnt);
+    
+    let contextoAnterior = '';
+    if (transAnt && transAnt.length > 0) {
+      const entradaAnt = transAnt.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
+      const saidaAnt = transAnt.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
+      contextoAnterior = `\nMês anterior: entrou R$ ${formatarMoeda(entradaAnt)}, saiu R$ ${formatarMoeda(saidaAnt)}`;
+    }
+    
+    const nomeMes = mesAtual.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    const ativas = dividas.filter(d => d.status !== 'quitada').length;
+    
+    const contexto = `Mês: ${nomeMes}
+Total de transações: ${transacoes.length}
+Entradas: R$ ${formatarMoeda(entrada)}
+Saídas: R$ ${formatarMoeda(saida)}
+Saldo: R$ ${formatarMoeda(saldo)}
+Top categorias de gasto: ${topCategorias}
+Dívidas ativas: ${ativas}
+Nível na jornada: ${perfil?.nivel_jornada || 1}${contextoAnterior}`;
+    
+    try {
+      const resp = await fetch(IA_FUNCTION_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_KEY
+        },
+        body: JSON.stringify({
+          tipo: 'insights',
+          mensagem: 'Analisa esses dados e me dá insights sobre meu mês.',
+          contexto,
+          max_tokens: 800
+        })
       });
       
-      const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).single();
-      await supabase.from('gamificacao').update({
-        xp_total: (g?.xp_total || 0) + xpBonus
-      }).eq('user_id', usuario.id);
+      const data = await resp.json();
       
-      if (gamif) gamif.xp_total = (gamif.xp_total || 0) + xpBonus;
+      if (data.resposta) {
+        // Salva no cache
+        const cacheKey = `insights_${usuario.id}_${mesAtual.getFullYear()}_${mesAtual.getMonth()}`;
+        localStorage.setItem(cacheKey, JSON.stringify({
+          texto: data.resposta,
+          timestamp: Date.now()
+        }));
+        
+        mostrarInsights(data.resposta, false);
+        
+        // Dá XP só na primeira vez do mês
+        const xpKey = `insights_xp_${usuario.id}_${mesAtual.getFullYear()}_${mesAtual.getMonth()}`;
+        if (!localStorage.getItem(xpKey)) {
+          localStorage.setItem(xpKey, 'true');
+          await darXP(15, 'insights_lido', 'Insights do mês lidos');
+        }
+      } else {
+        const area = document.getElementById('insights-area');
+        if (area) area.innerHTML = '';
+      }
+    } catch (err) {
+      console.error('Erro insights:', err);
+      const area = document.getElementById('insights-area');
+      if (area) area.innerHTML = '';
     }
   }
   
-  function mostrarLevelUp(de, para) {
-    const info = niveisInfo[para];
-    const deInfo = niveisInfo[de];
+  window.forcarNovoInsight = async function() {
+    const btn = document.getElementById('btn-refresh-insights');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = '⏳ Gerando...';
+    }
     
-    document.getElementById('levelup-badge').textContent = info.emoji;
-    document.getElementById('levelup-titulo').textContent = 'Nível ' + para + ' • ' + info.titulo;
-    document.getElementById('levelup-de-para').innerHTML = `Você saiu de <strong>${deInfo.titulo}</strong> pra <strong>${info.titulo}</strong>`;
-    document.getElementById('levelup-desc').textContent = descricoesLevelUp[para] || 'Você evoluiu na sua jornada financeira.';
-    document.querySelector('.levelup-xp').textContent = `🎉 +${info.xpBonus} XP de bônus`;
+    const cacheKey = `insights_${usuario.id}_${mesAtual.getFullYear()}_${mesAtual.getMonth()}`;
+    localStorage.removeItem(cacheKey);
     
+    const area = document.getElementById('insights-area');
+    if (area) {
+      area.innerHTML = `
+        <div class="insights-card">
+          <div class="insights-header">
+            <div class="insights-titulo">✨ Insights da IA</div>
+          </div>
+          <div class="insights-loading">
+            <div class="insights-spinner"></div>
+            <div class="insights-loading-text">🤖 Atualizando análise...</div>
+          </div>
+        </div>
+      `;
+    }
+    
+    await gerarInsightsIA();
+  };
+  
+  function markdownToHtml(md) {
+    if (!md) return '';
+    let html = md;
+    html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+    html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+    html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+    html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+    html = html.replace(/(<li>.*<\/li>\n?)+/g, (match) => '<ul>' + match + '</ul>');
+    html = html.split('\n\n').map(p => {
+      p = p.trim();
+      if (!p) return '';
+      if (p.startsWith('<h') || p.startsWith('<ul') || p.startsWith('<ol')) return p;
+      return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
+    }).join('\n');
+    return html;
+  }
+  
+  // ===== LEVEL UP =====
+  function checarLevelUp() {
+    const ultimo = localStorage.getItem(`lastNivel_${usuario.id}`);
+    const atual = perfil?.nivel_jornada || 1;
+    
+    if (ultimo && parseInt(ultimo) < atual) {
+      mostrarLevelUp(atual);
+    }
+    
+    localStorage.setItem(`lastNivel_${usuario.id}`, atual.toString());
+  }
+  
+  function mostrarLevelUp(nivel) {
+    const info = niveisInfo[nivel];
+    document.getElementById('levelup-emoji').textContent = info.emoji;
+    document.getElementById('levelup-nivel').textContent = 'Nível ' + nivel;
+    document.getElementById('levelup-nome').textContent = info.nome;
+    document.getElementById('levelup-desc').textContent = info.desc;
     document.getElementById('levelup-overlay').classList.add('show');
-    
     setTimeout(criarConfete, 200);
   }
+  
+  window.fecharLevelUp = function() {
+    document.getElementById('levelup-overlay').classList.remove('show');
+    document.querySelectorAll('.confete').forEach(c => c.remove());
+  };
   
   function criarConfete() {
     const cores = ['#00d97e', '#ffb800', '#38bdf8', '#a855f7', '#ec4899'];
@@ -1300,258 +1403,36 @@
     }
   }
   
-  window.fecharLevelUp = function() {
-    document.getElementById('levelup-overlay').classList.remove('show');
+  // ===== DRAWER =====
+  window.abrirDrawer = function() {
+    document.getElementById('drawer-overlay').classList.add('show');
   };
   
-  function primeiroDiaMes() {
-    const h = new Date();
-    return new Date(h.getFullYear(), h.getMonth(), 1).toISOString().split('T')[0];
-  }
-  
-  function nomeMes() {
-    const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-    return meses[new Date().getMonth()];
-  }
-  
-  function saudacao() {
-    const h = new Date().getHours();
-    if (h < 12) return 'Bom dia,';
-    if (h < 18) return 'Boa tarde,';
-    return 'Boa noite,';
-  }
-  
-  function formatarMoeda(v) {
-    return (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-  
-  // ===== AÇÃO PRINCIPAL CONTEXTUAL =====
-  function calcularAcaoPrincipal(nivel, dividas, metas, patrimonio) {
-    const dividasAbertas = dividas.filter(d => d.status !== 'quitada');
-    const reserva = metas.find(m => m.tipo === 'reserva_emergencia');
-    const reservaCompleta = reserva && Number(reserva.valor_atual) >= Number(reserva.valor_alvo);
-    const tiposPatrimonio = new Set(patrimonio.map(p => p.tipo)).size;
-    
-    if (nivel === 2) {
-      if (dividas.length === 0) {
-        return { titulo: 'Cadastrar suas dívidas', icon: '🚨', link: 'dividas.html' };
-      }
-      return { titulo: 'Quitar suas dívidas', icon: '🚨', link: 'dividas.html' };
-    }
-    
-    if (nivel === 3) {
-      if (!reserva) {
-        return { titulo: 'Configurar sua reserva', icon: '🛡️', link: 'metas.html' };
-      }
-      return { titulo: 'Continuar reserva', icon: '🛡️', link: 'metas.html' };
-    }
-    
-    if (nivel === 4) {
-      if (patrimonio.length === 0) {
-        return { titulo: 'Fazer primeiro aporte', icon: '📈', link: 'patrimonio.html' };
-      }
-      if (tiposPatrimonio < 3) {
-        return { titulo: 'Diversificar carteira', icon: '📊', link: 'patrimonio.html' };
-      }
-      return { titulo: 'Acompanhar patrimônio', icon: '📈', link: 'patrimonio.html' };
-    }
-    
-    if (nivel === 5) {
-      return { titulo: 'Otimizar portfólio', icon: '💎', link: 'patrimonio.html' };
-    }
-    
-    return { titulo: 'Continuar jornada', icon: '🎯', link: 'transacoes.html' };
-  }
-  
-  // ===== TATU CONTEXTUAL =====
-  function calcularTatuTexto(nivel, dividas, metas, patrimonio) {
-    const dividasAbertas = dividas.filter(d => d.status !== 'quitada');
-    const reserva = metas.find(m => m.tipo === 'reserva_emergencia');
-    const reservaCompleta = reserva && Number(reserva.valor_atual) >= Number(reserva.valor_alvo);
-    const tiposPatrimonio = new Set(patrimonio.map(p => p.tipo)).size;
-    
-    if (nivel === 2) {
-      if (dividas.length === 0) {
-        return 'Bora começar! Primeiro passo: <strong>cadastrar suas dívidas</strong> pra eu te ajudar a sair do vermelho.';
-      }
-      return `Você tem <strong>${dividasAbertas.length} dívidas</strong> em aberto. Bora quitar uma de cada vez.`;
-    }
-    
-    if (nivel === 3) {
-      if (!reserva) {
-        return 'Sem dívidas, beleza! Agora bora <strong>montar sua reserva</strong> de emergência.';
-      }
-      const pct = Math.min((Number(reserva.valor_atual)/Number(reserva.valor_alvo))*100, 100);
-      return `Sua reserva está <strong>${pct.toFixed(0)}% completa</strong>. Continue guardando!`;
-    }
-    
-    if (nivel === 4) {
-      if (patrimonio.length === 0) {
-        return 'Reserva feita! Hora de <strong>fazer o dinheiro trabalhar</strong> pra você. Cadastra seu primeiro investimento.';
-      }
-      if (patrimonio.length === 1) {
-        return `🎉 <strong>Primeiro aporte feito!</strong> Continue diversificando — não coloque todos os ovos na mesma cesta.`;
-      }
-      if (tiposPatrimonio < 3) {
-        return `Você tem <strong>${patrimonio.length} ativos</strong> em ${tiposPatrimonio} tipo${tiposPatrimonio > 1 ? 's' : ''}. Diversifique mais!`;
-      }
-      return `🏆 Carteira diversificada com <strong>${patrimonio.length} ativos</strong>. Excelente!`;
-    }
-    
-    if (nivel === 5) {
-      return 'Você tá no topo! Vamos <strong>otimizar tudo</strong> e acelerar seu patrimônio.';
-    }
-    
-    return 'Continue evoluindo na sua jornada financeira.';
-  }
-  
-  // ===== MISSÃO CONTEXTUAL =====
-  function calcularMissao(nivel, dividas, metas, patrimonio) {
-    const dividasAbertas = dividas.filter(d => d.status !== 'quitada');
-    const reserva = metas.find(m => m.tipo === 'reserva_emergencia');
-    const tiposPatrimonio = new Set(patrimonio.map(p => p.tipo)).size;
-    
-    if (nivel === 2) {
-      const cad = dividas.length;
-      return { icon: '📋', titulo: 'Cadastre 5 dívidas', meta: `${cad} de 5 cadastradas`, xp: '+100 XP' };
-    }
-    
-    if (nivel === 3) {
-      if (!reserva) {
-        return { icon: '🛡️', titulo: 'Configure sua reserva', meta: 'Defina meses e gasto', xp: '+50 XP' };
-      }
-      const pct = Math.min((Number(reserva.valor_atual)/Number(reserva.valor_alvo))*100, 100).toFixed(0);
-      return { icon: '🛡️', titulo: 'Complete sua reserva', meta: `${pct}% completa`, xp: '+1000 XP' };
-    }
-    
-    if (nivel === 4) {
-      if (patrimonio.length === 0) {
-        return { icon: '📈', titulo: 'Faça seu primeiro aporte', meta: 'Comece com qualquer valor', xp: '+200 XP' };
-      }
-      if (tiposPatrimonio < 3) {
-        return { icon: '🎯', titulo: 'Diversifique em 3 tipos', meta: `${tiposPatrimonio} de 3 tipos`, xp: '+300 XP' };
-      }
-      return { icon: '📊', titulo: 'Atualize valores dos ativos', meta: 'Mantenha tudo em dia', xp: '+20 XP' };
-    }
-    
-    if (nivel === 5) {
-      return { icon: '💎', titulo: 'Otimize sua carteira', meta: 'Reveja alocação', xp: '+500 XP' };
-    }
-    
-    return { icon: '🎯', titulo: 'Continue investindo', meta: 'Mês após mês', xp: '+50 XP' };
-  }
-  
-  function renderizar(dividas, transacoes, metas, patrimonio) {
-    const nome = perfil?.nome?.split(' ')[0] || 'parceiro';
-    document.getElementById('greeting-hi').textContent = saudacao();
-    document.getElementById('greeting-name').textContent = nome + ' 👋';
-    
-    const xp = gamif?.xp_total || 0;
-    const rank = ranksInfo.find(r => xp >= r.min && xp <= r.max) || ranksInfo[0];
-    document.getElementById('xp-num').textContent = xp.toLocaleString('pt-BR');
-    document.getElementById('xp-rank-name').textContent = rank.nome;
-    document.getElementById('xp-rank-emoji').textContent = rank.emoji;
-    
-    const streak = gamif?.streak_atual || 0;
-    document.getElementById('streak-num').textContent = streak;
-    
-    const nivel = perfil?.nivel_jornada || 1;
-    const infoNivel = niveisInfo[nivel];
-    document.getElementById('nivel-emoji').textContent = infoNivel.emoji;
-    document.getElementById('nivel-titulo').textContent = infoNivel.titulo;
-    
-    const pontos = document.querySelectorAll('.nivel-pontos .ponto');
-    pontos.forEach((p, idx) => {
-      const num = idx + 1;
-      p.classList.remove('atual', 'passou');
-      if (num < nivel) p.classList.add('passou');
-      if (num === nivel) p.classList.add('atual');
-    });
-    
-    // TATU CONTEXTUAL
-    document.getElementById('tatu-text').innerHTML = calcularTatuTexto(nivel, dividas, metas, patrimonio);
-    
-    // AÇÃO PRINCIPAL CONTEXTUAL
-    const acao = calcularAcaoPrincipal(nivel, dividas, metas, patrimonio);
-    document.getElementById('acao-titulo').textContent = acao.titulo;
-    document.getElementById('acao-icon').textContent = acao.icon;
-    window.acaoLinkAtual = acao.link;
-    
-    // DÍVIDAS
-    const dividasAbertas = dividas.filter(d => d.status !== 'quitada');
-    if (dividasAbertas.length > 0) {
-      const total = dividasAbertas.reduce((acc, d) => acc + Number(d.valor_atual || 0), 0);
-      document.getElementById('dividas-empty').classList.add('hidden');
-      document.getElementById('dividas-card').classList.remove('hidden');
-      document.getElementById('dividas-valor').textContent = formatarMoeda(total);
-      document.getElementById('dividas-qtd').textContent = dividasAbertas.length;
-    } else if (nivel >= 3) {
-      document.getElementById('bloco-dividas').classList.add('hidden');
-    }
-    
-    // RESERVA (Nível 3+)
-    const reserva = metas.find(m => m.tipo === 'reserva_emergencia');
-    if (nivel >= 3 && reserva) {
-      document.getElementById('bloco-reserva').classList.remove('hidden');
-      const pct = Math.min((Number(reserva.valor_atual) / Number(reserva.valor_alvo)) * 100, 100);
-      document.getElementById('reserva-pct').textContent = pct.toFixed(0) + '%';
-      document.getElementById('reserva-valor').textContent = formatarMoeda(reserva.valor_atual) + ' de ' + formatarMoeda(reserva.valor_alvo);
-      document.getElementById('reserva-progress').style.width = pct + '%';
-    }
-    
-    // PATRIMÔNIO (Nível 4+)
-    if (nivel >= 4) {
-      document.getElementById('bloco-patrimonio').classList.remove('hidden');
-      const totalInvest = patrimonio.reduce((acc, p) => acc + Number(p.valor_atual || 0), 0);
-      document.getElementById('patrimonio-valor').textContent = formatarMoeda(totalInvest);
-      document.getElementById('patrimonio-qtd').textContent = patrimonio.length + (patrimonio.length === 1 ? ' ativo' : ' ativos');
-      
-      if (patrimonio.length === 0) {
-        document.getElementById('patrimonio-meta').textContent = 'Cadastre seu primeiro investimento';
-      } else {
-        const tipos = new Set(patrimonio.map(p => p.tipo)).size;
-        document.getElementById('patrimonio-meta').textContent = `Em ${tipos} ${tipos === 1 ? 'tipo' : 'tipos'} • toque pra ver`;
-      }
-    }
-    
-    // RESUMO MÊS
-    document.getElementById('resumo-mes-nome').textContent = nomeMes();
-    if (transacoes.length > 0) {
-      const entrada = transacoes.filter(t => t.tipo === 'entrada').reduce((acc, t) => acc + Number(t.valor), 0);
-      const saida = transacoes.filter(t => t.tipo === 'saida').reduce((acc, t) => acc + Number(t.valor), 0);
-      const saldo = entrada - saida;
-      
-      document.getElementById('resumo-empty').classList.add('hidden');
-      document.getElementById('resumo-card').classList.remove('hidden');
-      document.getElementById('resumo-entrou').textContent = 'R$ ' + formatarMoeda(entrada);
-      document.getElementById('resumo-saiu').textContent = 'R$ ' + formatarMoeda(saida);
-      
-      const saldoEl = document.getElementById('resumo-saldo');
-      saldoEl.textContent = 'R$ ' + formatarMoeda(saldo);
-      saldoEl.className = 'resumo-saldo-valor ' + (saldo >= 0 ? 'positivo' : 'negativo');
-    }
-    
-    // MISSÃO CONTEXTUAL
-    const missao = calcularMissao(nivel, dividas, metas, patrimonio);
-    document.getElementById('missao-icon').textContent = missao.icon;
-    document.getElementById('missao-titulo').textContent = missao.titulo;
-    document.getElementById('missao-meta').textContent = missao.meta;
-    document.getElementById('missao-xp').textContent = missao.xp;
-  }
-  
-  window.acaoPrincipal = function() {
-    window.location.href = window.acaoLinkAtual + '?v=1';
-  };
-  
-  window.irPara = function(pagina) {
-    window.location.href = pagina + (pagina.includes('?') ? '&' : '?') + 'v=1';
+  window.fecharDrawer = function(e) {
+    if (e && e.target.closest('.drawer')) return;
+    document.getElementById('drawer-overlay').classList.remove('show');
   };
   
   window.sair = async function() {
-    if (!confirm('Quer sair da sua conta?')) return;
+    if (!confirm('Sair da conta?')) return;
     await supabase.auth.signOut();
     window.location.href = 'index.html?v=1';
   };
+  
+  function formatarMoeda(v) {
+    return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  
+  async function darXP(xp, acao, descricao) {
+    await supabase.from('historico_xp').insert({
+      user_id: usuario.id, acao, xp_ganho: xp, descricao
+    });
+    const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).single();
+    await supabase.from('gamificacao').update({
+      xp_total: (g?.xp_total || 0) + xp,
+      ultima_atividade: new Date().toISOString().split('T')[0]
+    }).eq('user_id', usuario.id);
+  }
 </script>
 
 </body>
