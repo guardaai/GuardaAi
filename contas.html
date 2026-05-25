@@ -725,6 +725,8 @@
     box-shadow: 0 8px 32px rgba(0, 217, 126, 0.4);
     display: none;
     animation: toastIn 0.4s cubic-bezier(0.34, 1.5, 0.64, 1);
+    max-width: 90%;
+    text-align: center;
   }
   
   @keyframes toastIn {
@@ -945,10 +947,10 @@
         </div>
         <div id="fatura-aberta-section" class="hidden" style="margin-top:14px;">
           <div class="info-box" style="background:rgba(255,184,0,0.1);border-color:rgba(255,184,0,0.3);color:var(--warning);">
-            ⚠️ <strong>Fatura aberta detectada pela IA</strong>. Depois de salvar essa conta, vou te ajudar a cadastrar a fatura como dívida em "Dívidas".
+            ⚠️ <strong>Fatura aberta detectada!</strong> Quando salvar essa conta, <strong>vou cadastrar essa fatura como dívida automaticamente</strong> pra você acompanhar.
           </div>
           <div class="field">
-            <label>Valor da fatura aberta (informativo)</label>
+            <label>Valor da fatura</label>
             <div class="valor-input-wrapper" style="margin-bottom:0;">
               <span class="valor-prefix">R$</span>
               <input type="text" inputmode="decimal" id="f-fatura" placeholder="0,00" oninput="formatarValor(this)">
@@ -1376,32 +1378,24 @@
     document.getElementById(id).classList.remove('show');
   };
   
-  /**
-   * Função chave: abre o modal de cadastro JÁ COM TODOS OS DADOS DA IA PREENCHIDOS.
-   * NÃO chama abrirModalNova() porque essa função LIMPA os campos.
-   */
   function abrirFormularioComDadosIA(r) {
     editandoId = null;
     veiodaIA = true;
     
-    // Reset visual
     document.getElementById('modal-form-titulo').textContent = '✨ Conta detectada pela IA';
-    document.getElementById('btn-salvar').textContent = 'Salvar conta';
+    document.getElementById('btn-salvar').textContent = (r.tem_divida && r.valor_divida) ? 'Salvar conta + fatura' : 'Salvar conta';
     document.getElementById('msg-form').className = 'msg';
     document.querySelectorAll('.banco-preset').forEach(el => el.classList.remove('active'));
     
-    // 1. TIPO - sempre primeiro porque define o que mostrar
     const tipo = r.tipo_conta || 'conta_corrente';
     tipoSelecionado = tipo;
     
-    // 2. EMOJI baseado no tipo
     if (tipo === 'cartao_credito') emojiSelecionado = '💳';
     else if (tipo === 'carteira') emojiSelecionado = '💰';
     else if (tipo === 'poupanca') emojiSelecionado = '🐷';
     else if (tipo === 'investimento') emojiSelecionado = '📈';
     else emojiSelecionado = '🏦';
     
-    // 3. BANCO - procura preset, se achar usa cor do preset
     let bancoIdx = -1;
     if (r.banco_detectado) {
       bancoIdx = bancosPresets.findIndex(b => 
@@ -1417,7 +1411,6 @@
       corSelecionada = b.cor;
     } else {
       bancoSelecionado = r.banco_detectado || null;
-      // Se IA sugeriu cor, usa
       if (r.cor_sugerida) {
         corSelecionada = r.cor_sugerida;
       } else {
@@ -1425,10 +1418,7 @@
       }
     }
     
-    // 4. NOME (preenche INPUT)
     document.getElementById('f-nome').value = r.nome_sugerido || r.banco_detectado || '';
-    
-    // 5. Limpa campos antes de preencher
     document.getElementById('f-saldo').value = '';
     document.getElementById('f-limite').value = '';
     document.getElementById('f-fatura').value = '';
@@ -1436,7 +1426,6 @@
     document.getElementById('f-vencimento').value = '';
     document.getElementById('fatura-aberta-section').classList.add('hidden');
     
-    // 6. VALORES específicos por tipo
     if (tipo === 'cartao_credito') {
       if (r.limite_total != null) {
         document.getElementById('f-limite').value = formatarMoeda(r.limite_total);
@@ -1447,7 +1436,6 @@
       if (r.dia_vencimento) {
         document.getElementById('f-vencimento').value = r.dia_vencimento;
       }
-      // Se detectou fatura aberta, mostra info adicional
       if (r.tem_divida && r.valor_divida) {
         document.getElementById('f-fatura').value = formatarMoeda(r.valor_divida);
         document.getElementById('fatura-aberta-section').classList.remove('hidden');
@@ -1458,8 +1446,7 @@
       }
     }
     
-    // 7. AGORA aplica visual: trocarTipo (com manterEmoji=true), bancos, cores, emojis
-    trocarTipo(tipo, true); // mantém emoji que setamos
+    trocarTipo(tipo, true);
     
     if (bancoIdx >= 0) {
       document.querySelectorAll('.banco-preset').forEach((el, idx) => {
@@ -1470,13 +1457,20 @@
     renderCoresGrid();
     renderEmojisGrid();
     
-    // 8. Mensagem de boas vindas no topo
     const conf = r.confianca || 'média';
-    const obs = r.observacao ? '<br><br>💡 ' + r.observacao : '';
-    document.getElementById('msg-form').className = 'msg msg-ia show';
-    document.getElementById('msg-form').innerHTML = `✨ <strong>IA preencheu tudo!</strong> Confiança: ${conf}. Revise e ajuste se algo estiver errado.${obs}`;
+    let msgTexto = `✨ <strong>IA preencheu tudo!</strong> Confiança: ${conf}. Revise e ajuste se algo estiver errado.`;
     
-    // 9. ABRE o modal
+    if (r.tem_divida && r.valor_divida) {
+      msgTexto += `<br><br>💳 <strong>Fatura de R$ ${formatarMoeda(r.valor_divida)} detectada</strong>. Ao salvar, vou cadastrar como dívida automaticamente!`;
+    }
+    
+    if (r.observacao) {
+      msgTexto += '<br><br>💡 ' + r.observacao;
+    }
+    
+    document.getElementById('msg-form').className = 'msg msg-ia show';
+    document.getElementById('msg-form').innerHTML = msgTexto;
+    
     document.getElementById('modal-form').classList.add('show');
   }
   
@@ -1507,9 +1501,7 @@
       const data = await resp.json();
       
       if (data.resultado && !data.resultado.erro) {
-        // FECHA modal IA e ABRE modal de cadastro JÁ PREENCHIDO
         fecharModal('modal-ia');
-        // Pequeno delay pra animação fechar
         setTimeout(() => {
           abrirFormularioComDadosIA(data.resultado);
         }, 200);
@@ -1530,6 +1522,28 @@
     }
   };
   
+  /**
+   * Calcula próxima data de vencimento da fatura baseado no dia.
+   * Se hoje é dia X e venc é dia Y:
+   *   - Se Y > hoje (ainda não venceu esse mês): venc desse mês
+   *   - Senão (já passou): venc do próximo mês
+   */
+  function calcularProximoVencimento(diaVencimento) {
+    if (!diaVencimento) return null;
+    const hoje = new Date();
+    const ano = hoje.getFullYear();
+    const mes = hoje.getMonth();
+    const diaHoje = hoje.getDate();
+    
+    let dataVenc;
+    if (diaVencimento > diaHoje) {
+      dataVenc = new Date(ano, mes, diaVencimento);
+    } else {
+      dataVenc = new Date(ano, mes + 1, diaVencimento);
+    }
+    return dataVenc.toISOString().split('T')[0];
+  }
+  
   window.salvarConta = async function() {
     const nome = document.getElementById('f-nome').value.trim();
     
@@ -1544,6 +1558,7 @@
     const limite = isCartao ? valorParaNumero(document.getElementById('f-limite').value) : null;
     const fechamento = isCartao ? (parseInt(document.getElementById('f-fechamento').value) || null) : null;
     const vencimento = isCartao ? (parseInt(document.getElementById('f-vencimento').value) || null) : null;
+    const valorFatura = isCartao ? valorParaNumero(document.getElementById('f-fatura').value) : 0;
     
     const btn = document.getElementById('btn-salvar');
     btn.disabled = true;
@@ -1562,13 +1577,17 @@
       atualizado_em: new Date().toISOString()
     };
     
+    let contaId;
     let result;
+    
     if (editandoId) {
       result = await supabase.from('contas').update(dados).eq('id', editandoId);
+      contaId = editandoId;
     } else {
       if (contas.length === 0 && !isCartao) dados.padrao = true;
       dados.user_id = usuario.id;
-      result = await supabase.from('contas').insert(dados);
+      result = await supabase.from('contas').insert(dados).select().single();
+      contaId = result.data?.id;
     }
     
     if (result.error) {
@@ -1579,11 +1598,56 @@
       return;
     }
     
+    // 💳 SE FOR CARTÃO COM FATURA, CADASTRA A DÍVIDA AUTOMATICAMENTE
+    let dividaCadastrada = false;
+    if (!editandoId && isCartao && valorFatura > 0) {
+      const dataVencimentoFatura = calcularProximoVencimento(vencimento) || new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0];
+      
+      const dadosDivida = {
+        user_id: usuario.id,
+        credor: bancoSelecionado || nome,
+        tipo: 'cartao',
+        descricao: `Fatura do cartão ${nome}`,
+        valor_original: valorFatura,
+        valor_atual: valorFatura,
+        data_vencimento: dataVencimentoFatura,
+        data_inicio: new Date().toISOString().split('T')[0],
+        status: 'ativa',
+        prioridade: 1,
+        conta_id: contaId,
+        observacoes: 'Cadastrada automaticamente via IA ao adicionar a conta'
+      };
+      
+      const { error: errDiv } = await supabase.from('dividas').insert(dadosDivida);
+      if (!errDiv) {
+        dividaCadastrada = true;
+      } else {
+        console.error('Erro ao cadastrar dívida:', errDiv);
+      }
+    }
+    
     if (!editandoId) {
-      const xp = veiodaIA ? 25 : 15;
-      const acao = veiodaIA ? 'conta_via_ia' : 'conta_cadastrada';
-      await darXP(xp, acao, 'Conta cadastrada: ' + nome);
-      mostrarToast(`+${xp} XP ${veiodaIA ? '✨ IA' : '🏦'}`);
+      let xp = veiodaIA ? 25 : 15;
+      let textoXP = veiodaIA ? '+25 XP ✨ IA' : '+15 XP 🏦';
+      
+      if (dividaCadastrada) {
+        xp += 15;
+        textoXP = '+40 XP ✨ Conta + Fatura!';
+        await darXP(15, 'fatura_via_ia', 'Fatura cadastrada via IA: ' + nome);
+      }
+      
+      await darXP(veiodaIA ? 25 : 15, veiodaIA ? 'conta_via_ia' : 'conta_cadastrada', 'Conta cadastrada: ' + nome);
+      mostrarToast(textoXP);
+      
+      // Se cadastrou dívida, mostra alert depois do toast
+      if (dividaCadastrada) {
+        setTimeout(() => {
+          if (confirm('✅ Conta + fatura cadastradas com sucesso!\n\nQuer ver a fatura cadastrada em Dívidas agora?')) {
+            window.location.href = 'dividas.html?v=1';
+            return;
+          }
+        }, 2500);
+      }
     }
     
     veiodaIA = false;
