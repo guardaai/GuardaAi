@@ -828,6 +828,10 @@
       <div class="drawer-item-emoji">💸</div>
       <div class="drawer-item-label">Transações</div>
     </a>
+    <a href="contas.html?v=1" class="drawer-item">
+      <div class="drawer-item-emoji">🏦</div>
+      <div class="drawer-item-label">Contas e Bancos</div>
+    </a>
     <a href="dividas.html?v=1" class="drawer-item">
       <div class="drawer-item-emoji">💳</div>
       <div class="drawer-item-label">Dívidas</div>
@@ -1151,6 +1155,11 @@
     return `
       <div class="menu-titulo">Menu rápido</div>
       <div class="menu-grid">
+        <a href="contas.html?v=1" class="menu-card" style="background:linear-gradient(135deg, rgba(56,189,248,0.08) 0%, var(--bg-card) 100%);border-color:rgba(56,189,248,0.25);">
+          <div class="menu-card-emoji">🏦</div>
+          <div class="menu-card-titulo">Contas</div>
+          <div class="menu-card-sub">Bancos e cartões</div>
+        </a>
         <a href="transacoes.html?v=1" class="menu-card">
           <div class="menu-card-emoji">💸</div>
           <div class="menu-card-titulo">Transações</div>
@@ -1181,10 +1190,10 @@
           <div class="menu-card-titulo" style="color:var(--ia);">Chat IA</div>
           <div class="menu-card-sub">Pergunte ao Tatu</div>
         </a>
-        <a href="educacao.html?v=1" class="menu-card" style="grid-column: span 2;">
+        <a href="educacao.html?v=1" class="menu-card">
           <div class="menu-card-emoji">📚</div>
           <div class="menu-card-titulo">Aprender</div>
-          <div class="menu-card-sub">Trilha de educação financeira</div>
+          <div class="menu-card-sub">Educação financeira</div>
         </a>
       </div>
     `;
