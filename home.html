@@ -95,10 +95,7 @@
     letter-spacing: -0.02em;
   }
   
-  .topbar-actions {
-    display: flex;
-    gap: 8px;
-  }
+  .topbar-actions { display: flex; gap: 8px; }
   
   .chat-btn {
     width: 38px; height: 38px;
@@ -141,9 +138,7 @@
     padding: 0 20px;
   }
   
-  .saudacao {
-    padding: 20px 0 14px;
-  }
+  .saudacao { padding: 20px 0 14px; }
   
   .saudacao-titulo {
     font-family: 'Space Grotesk', sans-serif;
@@ -825,6 +820,10 @@
       <div class="drawer-item-emoji">💬</div>
       <div class="drawer-item-label">Chat com Tatu</div>
     </a>
+    <a href="dashboard.html?v=1" class="drawer-item">
+      <div class="drawer-item-emoji">📊</div>
+      <div class="drawer-item-label">Dashboard</div>
+    </a>
     <a href="transacoes.html?v=1" class="drawer-item">
       <div class="drawer-item-emoji">💸</div>
       <div class="drawer-item-label">Transações</div>
@@ -1100,11 +1099,7 @@
       acao = "window.location.href='diagnostico.html?v=1'";
     } else if (nivel === 2) {
       const ativas = dividas.filter(d => d.status !== 'quitada');
-      if (ativas.length === 0) {
-        label = '+ Cadastrar dívidas';
-      } else {
-        label = '✨ Quitar próxima dívida';
-      }
+      label = ativas.length === 0 ? '+ Cadastrar dívidas' : '✨ Quitar próxima dívida';
       acao = "window.location.href='dividas.html?v=1'";
     } else if (nivel === 3) {
       label = '🎯 Configurar reserva';
@@ -1130,9 +1125,7 @@
         titulo = 'Missão da semana';
         sub = `Quitar pelo menos 1 dívida das ${ativas.length} ativas`;
         emoji = '🎯';
-      } else {
-        return '';
-      }
+      } else { return ''; }
     } else if (nivel === 3) {
       titulo = 'Missão da semana';
       sub = 'Guardar pelo menos R$ 100 na reserva';
@@ -1141,9 +1134,7 @@
       titulo = 'Missão da semana';
       sub = 'Estudar 2 lições de investimento';
       emoji = '📚';
-    } else {
-      return '';
-    }
+    } else { return ''; }
     
     return `
       <div class="missao-card">
@@ -1165,6 +1156,11 @@
           <div class="menu-card-titulo">Transações</div>
           <div class="menu-card-sub">Gastos e receitas</div>
         </a>
+        <a href="dashboard.html?v=1" class="menu-card">
+          <div class="menu-card-emoji">📊</div>
+          <div class="menu-card-titulo">Dashboard</div>
+          <div class="menu-card-sub">Gráficos e análises</div>
+        </a>
         <a href="dividas.html?v=1" class="menu-card">
           <div class="menu-card-emoji">💳</div>
           <div class="menu-card-titulo">Dívidas</div>
@@ -1185,16 +1181,15 @@
           <div class="menu-card-titulo" style="color:var(--ia);">Chat IA</div>
           <div class="menu-card-sub">Pergunte ao Tatu</div>
         </a>
-        <a href="educacao.html?v=1" class="menu-card">
+        <a href="educacao.html?v=1" class="menu-card" style="grid-column: span 2;">
           <div class="menu-card-emoji">📚</div>
           <div class="menu-card-titulo">Aprender</div>
-          <div class="menu-card-sub">Trilha de educação</div>
+          <div class="menu-card-sub">Trilha de educação financeira</div>
         </a>
       </div>
     `;
   }
   
-  // ===== INSIGHTS IA =====
   function renderInsightsArea() {
     const area = document.getElementById('insights-area');
     if (!area) return;
