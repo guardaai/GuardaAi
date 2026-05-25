@@ -906,6 +906,14 @@
     transform: scale(0.985);
   }
   
+  .btn-ia:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--bg-elev);
+    color: var(--text-faint);
+    box-shadow: none;
+  }
+  
   .btn-secondary {
     background: var(--bg-elev);
     color: var(--text);
@@ -1314,7 +1322,7 @@
     'educacao': ['educação','educacao','escola','curso'],
     'lazer': ['lazer','diversão','jogos'],
     'vestuario': ['vestuário','vestuario','roupa','calçado'],
-    'mercado': ['mercado','supermercado','alimentação','restaurante'],
+    'mercado': ['mercado','supermercado','alimentação'],
     'delivery': ['delivery','ifood','restaurante'],
     'outros': ['outros','outro']
   };
@@ -1331,6 +1339,12 @@
     
     await Promise.all([carregarCategorias(), carregarDados()]);
     renderCategorias();
+    
+    // Listeners depois que tudo carregou
+    ['f-descricao', 'f-dia-mes', 'f-parcelas', 'f-data-parcela'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', atualizarBotao);
+    });
     
     if (new URLSearchParams(window.location.search).get('nova') === '1') {
       abrirModalNova();
@@ -1697,8 +1711,7 @@
     const ok = valor > 0 && desc && categoriaSelecionada && extraOk;
     btn.disabled = !ok;
     
-    // Texto e estilo do botão
-    if (iaProcessou && ok) {
+    if (iaProcessou && !editandoId) {
       btn.textContent = '✨ Confirmar e cadastrar';
       btn.className = 'btn btn-ia';
     } else {
@@ -1706,12 +1719,6 @@
       btn.className = 'btn btn-primary';
     }
   }
-  
-  // Listeners pros inputs atualizarem o botão
-  ['f-descricao', 'f-dia-mes', 'f-parcelas', 'f-data-parcela'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('input', atualizarBotao);
-  });
   
   window.trocarFiltro = function(f) {
     filtroAtual = f;
@@ -1793,7 +1800,6 @@
       document.getElementById('anexo-preview').classList.remove('hidden');
       document.getElementById('ia-badge').classList.remove('hidden');
       
-      // Mostra preview
       if (anexoEhPdf) {
         document.getElementById('preview-img').classList.add('hidden');
         document.getElementById('preview-pdf').classList.remove('hidden');
@@ -1851,18 +1857,15 @@
     const sugestao = (sugestaoIA || '').toLowerCase().trim();
     const cats = categorias.filter(c => c.tipo === 'saida');
     
-    // 1. Match direto pelo nome
     let cat = cats.find(c => c.nome.toLowerCase() === sugestao);
     if (cat) return cat;
     
-    // 2. Match por aliases conhecidos
     const aliases = mapeamentoIA[sugestao] || [];
     for (const alias of aliases) {
       cat = cats.find(c => c.nome.toLowerCase().includes(alias) || alias.includes(c.nome.toLowerCase()));
       if (cat) return cat;
     }
     
-    // 3. Match parcial
     cat = cats.find(c => c.nome.toLowerCase().includes(sugestao) || sugestao.includes(c.nome.toLowerCase()));
     if (cat) return cat;
     
@@ -1872,32 +1875,27 @@
   function preencherComIA(dados) {
     iaConfianca = dados.confianca || 'media';
     
-    // VALOR
     if (dados.valor && dados.valor > 0) {
       document.getElementById('f-valor').value = Number(dados.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
       document.getElementById('valor-wrapper').classList.add('ia-preenchido');
       camposPreenchidosIA.add('valor');
     }
     
-    // DESCRIÇÃO
     if (dados.descricao) {
       document.getElementById('f-descricao').value = dados.descricao;
       camposPreenchidosIA.add('descricao');
     }
     
-    // DATA
     if (dados.data) {
       document.getElementById('f-data').value = dados.data;
       camposPreenchidosIA.add('data');
     }
     
-    // FORMA PAGAMENTO
     if (dados.forma_pagamento) {
       document.getElementById('f-pagamento').value = dados.forma_pagamento;
       camposPreenchidosIA.add('pagamento');
     }
     
-    // CATEGORIA - busca de verdade no banco
     if (dados.categoria_sugerida) {
       const cat = acharCategoriaPorIA(dados.categoria_sugerida);
       if (cat) {
@@ -1914,14 +1912,12 @@
       }
     }
     
-    // Feedback visual
     document.getElementById('ia-resultado').classList.remove('hidden');
     const camposCount = camposPreenchidosIA.size;
     const emoji = iaConfianca === 'alta' ? '✨' : (iaConfianca === 'media' ? '✅' : '⚠️');
     document.getElementById('ia-resultado-texto').textContent = 
       `${emoji} IA preencheu ${camposCount} campo${camposCount > 1 ? 's' : ''} (confiança ${iaConfianca}). ${iaConfianca === 'alta' ? 'Tudo pronto pra confirmar!' : 'Confira antes de salvar.'}`;
     
-    // Atualiza botão (DEVE habilitar se tudo OK)
     setTimeout(atualizarBotao, 200);
   }
   
@@ -1950,4 +1946,334 @@
     if (!anexoFile) return null;
     
     const ext = anexoFile.name.split('.').pop() || 'jpg';
-    const path = `${usuario.id}/
+    const path = `${usuario.id}/${Date.now()}.${ext}`;
+    
+    const { error } = await supabase.storage
+      .from('comprovantes')
+      .upload(path, anexoFile);
+    
+    if (error) {
+      console.error('Erro upload:', error);
+      return null;
+    }
+    
+    const { data } = supabase.storage.from('comprovantes').getPublicUrl(path);
+    return data.publicUrl;
+  }
+  
+  window.salvarTransacao = async function() {
+    const valor = valorParaNumero(document.getElementById('f-valor').value);
+    const descricao = document.getElementById('f-descricao').value.trim();
+    
+    if (!valor || !descricao || !categoriaSelecionada) {
+      document.getElementById('msg-form').className = 'msg show msg-error';
+      document.getElementById('msg-form').textContent = 'Preencha valor, descrição e categoria';
+      return;
+    }
+    
+    const btn = document.getElementById('btn-salvar');
+    btn.disabled = true;
+    btn.textContent = 'Salvando...';
+    
+    let anexoUrl = null;
+    if (anexoFile) {
+      btn.textContent = anexoEhPdf ? 'Subindo PDF...' : 'Subindo foto...';
+      anexoUrl = await uploadAnexo();
+    }
+    
+    let result;
+    
+    if (editandoId) {
+      const data = document.getElementById('f-data').value;
+      const pagamento = document.getElementById('f-pagamento').value || null;
+      const upd = {
+        tipo: tipoSelecionado,
+        categoria_id: categoriaSelecionada,
+        valor, descricao, data,
+        forma_pagamento: pagamento,
+        atualizado_em: new Date().toISOString()
+      };
+      if (anexoUrl) upd.foto_url = anexoUrl;
+      result = await supabase.from('transacoes').update(upd).eq('id', editandoId);
+    } else if (lancamentoSelecionado === 'recorrente') {
+      const dia = parseInt(document.getElementById('f-dia-mes').value);
+      if (!dia || dia < 1 || dia > 31) {
+        document.getElementById('msg-form').className = 'msg show msg-error';
+        document.getElementById('msg-form').textContent = 'Coloca um dia válido (1-31)';
+        atualizarBotao();
+        return;
+      }
+      result = await supabase.from('transacoes_recorrentes').insert({
+        user_id: usuario.id,
+        tipo: tipoSelecionado,
+        categoria_id: categoriaSelecionada,
+        valor, descricao,
+        dia_mes: dia,
+        ativa: true
+      });
+    } else if (lancamentoSelecionado === 'parcelada') {
+      const parcelas = parseInt(document.getElementById('f-parcelas').value);
+      const dataInicial = document.getElementById('f-data-parcela').value;
+      const pagamento = document.getElementById('f-pagamento-parc').value;
+      
+      if (!parcelas || parcelas < 2 || !dataInicial) {
+        document.getElementById('msg-form').className = 'msg show msg-error';
+        document.getElementById('msg-form').textContent = 'Preencha número de parcelas e data inicial';
+        atualizarBotao();
+        return;
+      }
+      
+      const compraId = crypto.randomUUID();
+      const valorParcela = +(valor / parcelas).toFixed(2);
+      
+      const inserts = [];
+      const [ano, mes, dia] = dataInicial.split('-').map(Number);
+      
+      for (let i = 0; i < parcelas; i++) {
+        const dataParcela = new Date(ano, mes - 1 + i, dia);
+        const ultimoDiaMes = new Date(dataParcela.getFullYear(), dataParcela.getMonth() + 1, 0).getDate();
+        if (dia > ultimoDiaMes) dataParcela.setDate(ultimoDiaMes);
+        
+        inserts.push({
+          user_id: usuario.id,
+          tipo: tipoSelecionado,
+          categoria_id: categoriaSelecionada,
+          valor: valorParcela,
+          descricao: `${descricao} (${i+1}/${parcelas})`,
+          data: dataParcela.toISOString().split('T')[0],
+          forma_pagamento: pagamento,
+          origem: iaProcessou ? 'foto_ia' : 'manual',
+          compra_id: compraId,
+          parcela_numero: i + 1,
+          parcela_total: parcelas,
+          foto_url: i === 0 ? anexoUrl : null
+        });
+      }
+      
+      result = await supabase.from('transacoes').insert(inserts);
+    } else {
+      const data = document.getElementById('f-data').value;
+      const pagamento = document.getElementById('f-pagamento').value || null;
+      
+      result = await supabase.from('transacoes').insert({
+        user_id: usuario.id,
+        tipo: tipoSelecionado,
+        categoria_id: categoriaSelecionada,
+        valor, descricao, data,
+        forma_pagamento: pagamento,
+        origem: iaProcessou ? 'foto_ia' : (anexoUrl ? 'foto' : 'manual'),
+        foto_url: anexoUrl
+      });
+    }
+    
+    if (result.error) {
+      document.getElementById('msg-form').className = 'msg show msg-error';
+      document.getElementById('msg-form').textContent = 'Erro: ' + result.error.message;
+      atualizarBotao();
+      return;
+    }
+    
+    if (!editandoId) {
+      const xpGanho = iaProcessou ? 15 : (anexoFile ? 10 : 5);
+      const labelXp = iaProcessou ? '+15 XP ✨ IA' : (anexoFile ? '+10 XP 📸' : '+5 XP 💰');
+      await darXP(xpGanho, 'transacao_cadastrada', 'Transação cadastrada' + (iaProcessou ? ' (com IA)' : ''));
+      mostrarToast(labelXp);
+    }
+    
+    fecharModal('modal-form');
+    await carregarDados();
+  };
+  
+  async function darXP(xp, acao, descricao) {
+    await supabase.from('historico_xp').insert({
+      user_id: usuario.id, acao, xp_ganho: xp, descricao
+    });
+    const { data: g } = await supabase.from('gamificacao').select('xp_total, total_transacoes').eq('user_id', usuario.id).single();
+    await supabase.from('gamificacao').update({
+      xp_total: (g?.xp_total || 0) + xp,
+      total_transacoes: (g?.total_transacoes || 0) + 1,
+      ultima_atividade: new Date().toISOString().split('T')[0]
+    }).eq('user_id', usuario.id);
+  }
+  
+  function mostrarToast(texto) {
+    const t = document.getElementById('xp-toast');
+    t.textContent = texto;
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 2500);
+  }
+  
+  window.abrirDetalhe = function(id, ehProjetada) {
+    let t;
+    if (ehProjetada) {
+      const proj = projetadasDoMes();
+      t = proj.find(x => x.id === id);
+      detalheTipo = 'projetada';
+    } else {
+      t = transacoes.find(x => x.id === id);
+      detalheTipo = 'real';
+    }
+    if (!t) return;
+    detalheAtual = t;
+    
+    const cat = categorias.find(c => c.id === t.categoria_id);
+    const sinal = t.tipo === 'entrada' ? '+' : '−';
+    
+    document.getElementById('detalhe-titulo').textContent = t.descricao || cat?.nome || 'Transação';
+    document.getElementById('detalhe-valor-big').textContent = sinal + ' R$ ' + formatarMoeda(t.valor);
+    document.getElementById('detalhe-valor-big').className = 'detalhe-valor-big ' + t.tipo;
+    
+    let tipoLabel = t.tipo === 'entrada' ? '+ Entrada' : '− Saída';
+    if (ehProjetada) tipoLabel += ' (previsto)';
+    if (t.origem === 'foto_ia') tipoLabel += ' ✨';
+    document.getElementById('detalhe-tipo').textContent = tipoLabel;
+    
+    document.getElementById('detalhe-categoria').textContent = cat ? `${cat.icone} ${cat.nome}` : '—';
+    document.getElementById('detalhe-data').textContent = formatarData(t.data);
+    document.getElementById('linha-data').style.display = 'flex';
+    document.getElementById('linha-dia-mes').style.display = 'none';
+    document.getElementById('linha-pagamento').style.display = ehProjetada ? 'none' : 'flex';
+    
+    const pagtos = {pix:'Pix',debito:'Débito',credito:'Crédito',dinheiro:'Dinheiro',boleto:'Boleto',transferencia:'Transferência',financiamento:'Financiamento'};
+    document.getElementById('detalhe-pagamento').textContent = pagtos[t.forma_pagamento] || '—';
+    
+    if (t.parcela_numero && t.parcela_total) {
+      document.getElementById('linha-parcela').style.display = 'flex';
+      document.getElementById('detalhe-parcela').textContent = `${t.parcela_numero} de ${t.parcela_total}`;
+    } else {
+      document.getElementById('linha-parcela').style.display = 'none';
+    }
+    
+    const imgEl = document.getElementById('detalhe-anexo-img');
+    const pdfEl = document.getElementById('detalhe-anexo-pdf');
+    imgEl.classList.add('hidden');
+    pdfEl.classList.add('hidden');
+    
+    if (t.foto_url) {
+      if (t.foto_url.toLowerCase().endsWith('.pdf')) {
+        pdfEl.classList.remove('hidden');
+        pdfEl.href = t.foto_url;
+      } else {
+        imgEl.classList.remove('hidden');
+        imgEl.src = t.foto_url;
+      }
+    }
+    
+    document.getElementById('btn-confirmar-projetada').classList.toggle('hidden', !ehProjetada);
+    document.getElementById('btn-editar').classList.toggle('hidden', ehProjetada);
+    document.getElementById('btn-excluir').classList.toggle('hidden', ehProjetada);
+    
+    document.getElementById('modal-detalhe').classList.add('show');
+  };
+  
+  window.abrirDetalheRecorrente = function(id) {
+    const r = recorrentes.find(x => x.id === id);
+    if (!r) return;
+    detalheAtual = r;
+    detalheTipo = 'recorrente';
+    
+    const cat = categorias.find(c => c.id === r.categoria_id);
+    const sinal = r.tipo === 'entrada' ? '+' : '−';
+    
+    document.getElementById('detalhe-titulo').textContent = '🔁 ' + r.descricao;
+    document.getElementById('detalhe-valor-big').textContent = sinal + ' R$ ' + formatarMoeda(r.valor);
+    document.getElementById('detalhe-valor-big').className = 'detalhe-valor-big ' + r.tipo;
+    document.getElementById('detalhe-tipo').textContent = (r.tipo === 'entrada' ? '+ Entrada' : '− Saída') + ' recorrente';
+    document.getElementById('detalhe-categoria').textContent = cat ? `${cat.icone} ${cat.nome}` : '—';
+    document.getElementById('linha-data').style.display = 'none';
+    document.getElementById('linha-pagamento').style.display = 'none';
+    document.getElementById('linha-parcela').style.display = 'none';
+    document.getElementById('linha-dia-mes').style.display = 'flex';
+    document.getElementById('detalhe-dia-mes').textContent = 'Dia ' + r.dia_mes;
+    document.getElementById('detalhe-anexo-img').classList.add('hidden');
+    document.getElementById('detalhe-anexo-pdf').classList.add('hidden');
+    
+    document.getElementById('btn-confirmar-projetada').classList.add('hidden');
+    document.getElementById('btn-editar').classList.remove('hidden');
+    document.getElementById('btn-excluir').classList.remove('hidden');
+    
+    document.getElementById('modal-detalhe').classList.add('show');
+  };
+  
+  window.confirmarProjetada = async function() {
+    if (!detalheAtual) return;
+    const t = detalheAtual;
+    
+    const { error } = await supabase.from('transacoes').insert({
+      user_id: usuario.id,
+      tipo: t.tipo,
+      categoria_id: t.categoria_id,
+      valor: t.valor,
+      descricao: t.descricao,
+      data: t.data,
+      origem: 'recorrente'
+    });
+    
+    if (error) {
+      alert('Erro: ' + error.message);
+      return;
+    }
+    
+    await darXP(5, 'transacao_confirmada', 'Recorrente confirmada');
+    mostrarToast('+5 XP ✓');
+    
+    fecharModal('modal-detalhe');
+    await carregarDados();
+  };
+  
+  window.editarTransacao = function() {
+    if (!detalheAtual) return;
+    const t = detalheAtual;
+    
+    editandoId = t.id;
+    tipoSelecionado = t.tipo;
+    categoriaSelecionada = t.categoria_id;
+    iaProcessou = false;
+    
+    document.getElementById('modal-form-titulo').textContent = 'Editar';
+    document.getElementById('f-valor').value = formatarMoeda(t.valor);
+    document.getElementById('f-descricao').value = t.descricao || '';
+    
+    if (detalheTipo === 'recorrente') {
+      lancamentoSelecionado = 'recorrente';
+      selecionarLancamento('recorrente');
+      document.getElementById('f-dia-mes').value = t.dia_mes;
+    } else {
+      lancamentoSelecionado = 'unica';
+      selecionarLancamento('unica');
+      document.getElementById('f-data').value = t.data;
+      document.getElementById('f-pagamento').value = t.forma_pagamento || '';
+    }
+    
+    selecionarTipo(t.tipo);
+    setTimeout(() => selecionarCategoria(t.categoria_id), 50);
+    
+    fecharModal('modal-detalhe');
+    document.getElementById('modal-form').classList.add('show');
+  };
+  
+  window.excluirTransacao = async function() {
+    if (!detalheAtual) return;
+    
+    if (detalheTipo === 'real' && detalheAtual.compra_id) {
+      const r = confirm(`Esta é parcela ${detalheAtual.parcela_numero}/${detalheAtual.parcela_total}. Excluir TODAS as parcelas? Cancele se quiser excluir só essa.`);
+      if (r) {
+        await supabase.from('transacoes').delete().eq('compra_id', detalheAtual.compra_id);
+      } else {
+        const r2 = confirm('Excluir só essa parcela?');
+        if (!r2) return;
+        await supabase.from('transacoes').delete().eq('id', detalheAtual.id);
+      }
+    } else {
+      if (!confirm('Excluir essa transação? Não pode ser desfeito.')) return;
+      const tabela = detalheTipo === 'recorrente' ? 'transacoes_recorrentes' : 'transacoes';
+      await supabase.from(tabela).delete().eq('id', detalheAtual.id);
+    }
+    
+    fecharModal('modal-detalhe');
+    await carregarDados();
+  };
+</script>
+
+</body>
+</html>
