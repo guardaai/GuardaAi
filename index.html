@@ -3,103 +3,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0d0d0d">
-<title>GuardaAí - Entrar</title>
+<meta name="theme-color" content="#0a0a0a">
+<title>guardaí</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
   
   :root {
-    --bg: #0d0d0d;
-    --bg-card: #1a1a1a;
-    --bg-input: #242424;
-    --border: #2d2d2d;
-    --verde: #1e7a35;
-    --verde-hover: #2aab47;
-    --azul: #0891b2;
-    --dourado: #c9973c;
-    --vermelho: #c0392b;
-    --texto: #f5f1e8;
-    --texto-suave: #999;
-    --texto-fraco: #666;
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --bg-elev: #1c1c1c;
+    --bg-input: #181818;
+    --border: #252525;
+    --border-strong: #353535;
+    --brand: #00d97e;
+    --brand-hover: #00ba6b;
+    --brand-soft: rgba(0, 217, 126, 0.1);
+    --danger: #ff4757;
+    --warning: #ffb800;
+    --text: #ffffff;
+    --text-mute: #a3a3a3;
+    --text-faint: #525252;
   }
   
   html, body {
     background: var(--bg);
-    color: var(--texto);
-    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
+    font-feature-settings: 'cv11', 'ss01';
   }
   
   body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    padding: 20px;
+    padding: 24px 20px;
   }
   
-  /* HEADER */
-  .header {
-    text-align: center;
-    padding: 40px 0 30px;
+  /* ===== LOGO ===== */
+  .brand-area {
+    padding: 32px 0 48px;
   }
   
-  .logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 48px;
-    color: var(--verde);
-    letter-spacing: 3px;
-    line-height: 1;
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     cursor: pointer;
   }
   
-  .logo-badge {
-    display: inline-block;
-    background: var(--verde);
-    color: var(--bg);
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 6px;
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    background: var(--brand);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  
+  .brand-mark::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border: 2.5px solid var(--bg);
     border-radius: 4px;
-    margin-left: 6px;
-    vertical-align: super;
+    border-top: none;
+    border-right: none;
   }
   
-  .tagline {
-    color: var(--texto-suave);
-    font-size: 14px;
-    margin-top: 8px;
+  .brand-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
   }
   
-  .mascote {
-    font-size: 60px;
-    margin: 20px 0;
-    display: block;
-    text-align: center;
+  /* ===== HERO ===== */
+  .hero {
+    margin: 24px 0 36px;
   }
   
-  /* CONTAINER */
+  .hero-eyebrow {
+    color: var(--brand);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+  }
+  
+  .hero-title span {
+    color: var(--brand);
+  }
+  
+  .hero-subtitle {
+    color: var(--text-mute);
+    font-size: 15px;
+    line-height: 1.5;
+    max-width: 320px;
+  }
+  
+  /* ===== CONTAINER ===== */
   .container {
-    max-width: 420px;
+    max-width: 440px;
     margin: 0 auto;
     width: 100%;
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
   }
   
-  /* TABS */
+  /* ===== TABS ===== */
   .tabs {
     display: flex;
+    gap: 4px;
     background: var(--bg-card);
-    border-radius: 12px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
     padding: 4px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
   
   .tab {
@@ -108,245 +145,255 @@
     text-align: center;
     background: transparent;
     border: none;
-    color: var(--texto-suave);
+    color: var(--text-mute);
+    font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-weight: 600;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.2s;
   }
   
   .tab.active {
-    background: var(--verde);
-    color: var(--texto);
+    background: var(--bg-elev);
+    color: var(--text);
   }
   
-  /* FORM */
-  .form {
+  /* ===== FORM ===== */
+  .form-card {
     background: var(--bg-card);
-    border-radius: 16px;
-    padding: 24px;
     border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 24px;
   }
   
-  .form-titulo {
-    font-size: 20px;
-    font-weight: 700;
+  .form-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
     margin-bottom: 6px;
   }
   
-  .form-subtitulo {
-    color: var(--texto-suave);
-    font-size: 13px;
-    margin-bottom: 20px;
+  .form-subtitle {
+    color: var(--text-mute);
+    font-size: 14px;
+    margin-bottom: 24px;
   }
   
-  .campo {
-    margin-bottom: 14px;
+  .field {
+    margin-bottom: 16px;
   }
   
-  .campo label {
+  .field label {
     display: block;
     font-size: 12px;
-    color: var(--texto-suave);
-    margin-bottom: 6px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    color: var(--text-mute);
+    margin-bottom: 8px;
+    font-weight: 500;
   }
   
-  .campo input {
+  .field input {
     width: 100%;
     background: var(--bg-input);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    color: var(--texto);
+    border-radius: 12px;
+    padding: 16px;
+    color: var(--text);
     font-size: 16px;
     font-family: 'Inter', sans-serif;
-    transition: border 0.2s;
+    transition: all 0.2s;
   }
   
-  .campo input:focus {
+  .field input:focus {
     outline: none;
-    border-color: var(--verde);
+    border-color: var(--brand);
+    background: var(--bg-elev);
   }
   
-  .campo input::placeholder {
-    color: var(--texto-fraco);
+  .field input::placeholder {
+    color: var(--text-faint);
   }
   
-  /* BOTÕES */
+  /* ===== BUTTON ===== */
   .btn {
     width: 100%;
-    padding: 16px;
-    border-radius: 10px;
+    padding: 17px;
+    border-radius: 12px;
     border: none;
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.15s;
     font-family: 'Inter', sans-serif;
-    margin-top: 8px;
+    margin-top: 12px;
+    letter-spacing: -0.01em;
   }
   
-  .btn-verde {
-    background: var(--verde);
-    color: var(--texto);
+  .btn-primary {
+    background: var(--brand);
+    color: #001a0e;
   }
   
-  .btn-verde:active {
-    background: var(--verde-hover);
-    transform: scale(0.98);
+  .btn-primary:active {
+    background: var(--brand-hover);
+    transform: scale(0.985);
   }
   
   .btn:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
   }
   
-  /* MENSAGENS */
+  /* ===== MSG ===== */
   .msg {
     padding: 12px 14px;
     border-radius: 10px;
     font-size: 13px;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     display: none;
+    font-weight: 500;
   }
   
   .msg.show { display: block; }
   
-  .msg-erro {
-    background: rgba(192, 57, 43, 0.15);
-    border: 1px solid var(--vermelho);
-    color: #e74c3c;
+  .msg-error {
+    background: rgba(255, 71, 87, 0.1);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    color: #ff6b78;
   }
   
-  .msg-sucesso {
-    background: rgba(30, 122, 53, 0.15);
-    border: 1px solid var(--verde);
-    color: var(--verde-hover);
+  .msg-success {
+    background: var(--brand-soft);
+    border: 1px solid rgba(0, 217, 126, 0.3);
+    color: var(--brand);
   }
   
-  .msg-info {
-    background: rgba(8, 145, 178, 0.15);
-    border: 1px solid var(--azul);
-    color: #38bdf8;
-  }
-  
-  /* RODAPÉ */
-  .rodape {
+  /* ===== FOOTER ===== */
+  .footer {
     text-align: center;
-    color: var(--texto-fraco);
+    color: var(--text-faint);
     font-size: 11px;
-    padding: 30px 0 10px;
+    padding: 32px 0 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: 0.05em;
   }
   
-  /* LOADING */
-  .loading {
+  .footer-version {
     display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255,255,255,0.3);
+    padding: 3px 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-left: 6px;
+    color: var(--text-mute);
+  }
+  
+  /* ===== LOADING ===== */
+  .loader {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(0,26,14,0.2);
     border-radius: 50%;
-    border-top-color: white;
-    animation: spin 0.8s linear infinite;
+    border-top-color: #001a0e;
+    animation: spin 0.7s linear infinite;
     margin-right: 8px;
     vertical-align: middle;
   }
   
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
+  @keyframes spin { to { transform: rotate(360deg); } }
   
-  /* TIPO ESPECÍFICO DE TELA */
-  .tela { display: none; }
-  .tela.ativa { display: block; }
+  .screen { display: none; }
+  .screen.active { display: block; }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="logo" onclick="window.location.reload()">
-    GUARDAAÍ<span class="logo-badge">v1.0</span>
+<div class="brand-area">
+  <div class="brand" onclick="window.location.reload()">
+    <div class="brand-mark"></div>
+    <div class="brand-name">guardaí</div>
   </div>
-  <div class="tagline">Seu copiloto financeiro</div>
-  <span class="mascote">🦔</span>
 </div>
 
 <div class="container">
   
-  <div class="tabs">
-    <button class="tab active" id="tab-entrar" onclick="trocarTab('entrar')">Entrar</button>
-    <button class="tab" id="tab-cadastrar" onclick="trocarTab('cadastrar')">Cadastrar</button>
+  <div class="hero">
+    <div class="hero-eyebrow">— seu copiloto financeiro</div>
+    <div class="hero-title">Do caos<br>à <span>liberdade.</span></div>
+    <div class="hero-subtitle">Um passo de cada vez. Com inteligência de verdade pra te tirar do vermelho.</div>
   </div>
   
-  <!-- TELA ENTRAR -->
-  <div class="tela ativa" id="tela-entrar">
-    <div class="form">
-      <div class="form-titulo">Bem-vindo de volta!</div>
-      <div class="form-subtitulo">Vamos continuar sua jornada</div>
+  <div class="tabs">
+    <button class="tab active" id="tab-entrar" onclick="trocarTab('entrar')">Entrar</button>
+    <button class="tab" id="tab-cadastrar" onclick="trocarTab('cadastrar')">Criar conta</button>
+  </div>
+  
+  <!-- ENTRAR -->
+  <div class="screen active" id="screen-entrar">
+    <div class="form-card">
+      <div class="form-title">Bem-vindo de volta</div>
+      <div class="form-subtitle">Continue sua jornada</div>
       
       <div class="msg" id="msg-entrar"></div>
       
-      <div class="campo">
+      <div class="field">
         <label>E-mail</label>
         <input type="email" id="email-entrar" placeholder="seu@email.com" autocomplete="email">
       </div>
       
-      <div class="campo">
+      <div class="field">
         <label>Senha</label>
-        <input type="password" id="senha-entrar" placeholder="Sua senha" autocomplete="current-password">
+        <input type="password" id="senha-entrar" placeholder="••••••••" autocomplete="current-password">
       </div>
       
-      <button class="btn btn-verde" id="btn-entrar" onclick="entrar()">Entrar</button>
+      <button class="btn btn-primary" id="btn-entrar" onclick="entrar()">Entrar</button>
     </div>
   </div>
   
-  <!-- TELA CADASTRAR -->
-  <div class="tela" id="tela-cadastrar">
-    <div class="form">
-      <div class="form-titulo">Começar agora</div>
-      <div class="form-subtitulo">Em 1 minuto você tá no jogo</div>
+  <!-- CADASTRAR -->
+  <div class="screen" id="screen-cadastrar">
+    <div class="form-card">
+      <div class="form-title">Comece grátis</div>
+      <div class="form-subtitle">Sua jornada começa em 1 minuto</div>
       
       <div class="msg" id="msg-cadastrar"></div>
       
-      <div class="campo">
-        <label>Como vou te chamar?</label>
-        <input type="text" id="nome-cadastrar" placeholder="Seu primeiro nome" autocomplete="given-name">
+      <div class="field">
+        <label>Primeiro nome</label>
+        <input type="text" id="nome-cadastrar" placeholder="Como vou te chamar?" autocomplete="given-name">
       </div>
       
-      <div class="campo">
+      <div class="field">
         <label>E-mail</label>
         <input type="email" id="email-cadastrar" placeholder="seu@email.com" autocomplete="email">
       </div>
       
-      <div class="campo">
+      <div class="field">
         <label>Crie uma senha</label>
         <input type="password" id="senha-cadastrar" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
       </div>
       
-      <button class="btn btn-verde" id="btn-cadastrar" onclick="cadastrar()">Criar conta grátis</button>
+      <button class="btn btn-primary" id="btn-cadastrar" onclick="cadastrar()">Criar minha conta</button>
     </div>
   </div>
   
 </div>
 
-<div class="rodape">
-  Feito com 💚 no Brasil • v1.0
+<div class="footer">
+  feito no brasil <span class="footer-version">v1.0</span>
 </div>
 
 <script type="module">
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
   
-  // ===== CONFIG SUPABASE =====
   const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
   
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
   window.supabase = supabase;
   
-  // ===== VERIFICA SE JÁ ESTÁ LOGADO =====
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (session) {
@@ -354,107 +401,90 @@
     }
   })();
   
-  // ===== FUNÇÕES =====
   window.trocarTab = function(tab) {
     document.getElementById('tab-entrar').classList.toggle('active', tab === 'entrar');
     document.getElementById('tab-cadastrar').classList.toggle('active', tab === 'cadastrar');
-    document.getElementById('tela-entrar').classList.toggle('ativa', tab === 'entrar');
-    document.getElementById('tela-cadastrar').classList.toggle('ativa', tab === 'cadastrar');
+    document.getElementById('screen-entrar').classList.toggle('active', tab === 'entrar');
+    document.getElementById('screen-cadastrar').classList.toggle('active', tab === 'cadastrar');
   };
   
-  function mostrarMsg(id, tipo, texto) {
+  function showMsg(id, tipo, texto) {
     const el = document.getElementById(id);
     el.className = `msg show msg-${tipo}`;
     el.textContent = texto;
   }
   
-  function esconderMsg(id) {
-    const el = document.getElementById(id);
-    el.className = 'msg';
+  function hideMsg(id) {
+    document.getElementById(id).className = 'msg';
   }
   
   window.entrar = async function() {
-    esconderMsg('msg-entrar');
-    
+    hideMsg('msg-entrar');
     const email = document.getElementById('email-entrar').value.trim();
     const senha = document.getElementById('senha-entrar').value;
     
     if (!email || !senha) {
-      mostrarMsg('msg-entrar', 'erro', 'Preenche e-mail e senha');
+      showMsg('msg-entrar', 'error', 'Preenche e-mail e senha');
       return;
     }
     
     const btn = document.getElementById('btn-entrar');
     btn.disabled = true;
-    btn.innerHTML = '<span class="loading"></span>Entrando...';
+    btn.innerHTML = '<span class="loader"></span>Entrando...';
     
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password: senha
-    });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
     
     if (error) {
-      mostrarMsg('msg-entrar', 'erro', traduzirErro(error.message));
+      showMsg('msg-entrar', 'error', traduzirErro(error.message));
       btn.disabled = false;
       btn.textContent = 'Entrar';
       return;
     }
     
-    mostrarMsg('msg-entrar', 'sucesso', 'Boa! Redirecionando...');
-    setTimeout(() => {
-      window.location.href = 'home.html?v=1';
-    }, 600);
+    showMsg('msg-entrar', 'success', 'Redirecionando...');
+    setTimeout(() => window.location.href = 'home.html?v=1', 500);
   };
   
   window.cadastrar = async function() {
-    esconderMsg('msg-cadastrar');
-    
+    hideMsg('msg-cadastrar');
     const nome = document.getElementById('nome-cadastrar').value.trim();
     const email = document.getElementById('email-cadastrar').value.trim();
     const senha = document.getElementById('senha-cadastrar').value;
     
     if (!nome || !email || !senha) {
-      mostrarMsg('msg-cadastrar', 'erro', 'Preenche todos os campos');
+      showMsg('msg-cadastrar', 'error', 'Preenche todos os campos');
       return;
     }
-    
     if (senha.length < 6) {
-      mostrarMsg('msg-cadastrar', 'erro', 'Senha precisa ter no mínimo 6 caracteres');
+      showMsg('msg-cadastrar', 'error', 'Senha precisa ter no mínimo 6 caracteres');
       return;
     }
     
     const btn = document.getElementById('btn-cadastrar');
     btn.disabled = true;
-    btn.innerHTML = '<span class="loading"></span>Criando conta...';
+    btn.innerHTML = '<span class="loader"></span>Criando...';
     
     const { data, error } = await supabase.auth.signUp({
-      email,
-      password: senha,
-      options: {
-        data: { nome }
-      }
+      email, password: senha, options: { data: { nome } }
     });
     
     if (error) {
-      mostrarMsg('msg-cadastrar', 'erro', traduzirErro(error.message));
+      showMsg('msg-cadastrar', 'error', traduzirErro(error.message));
       btn.disabled = false;
-      btn.textContent = 'Criar conta grátis';
+      btn.textContent = 'Criar minha conta';
       return;
     }
     
-    mostrarMsg('msg-cadastrar', 'sucesso', `Bem-vindo, ${nome}! 🦔 Preparando sua jornada...`);
-    setTimeout(() => {
-      window.location.href = 'diagnostico.html?v=1';
-    }, 1200);
+    showMsg('msg-cadastrar', 'success', `Boa, ${nome}! Preparando tudo...`);
+    setTimeout(() => window.location.href = 'diagnostico.html?v=1', 1000);
   };
   
   function traduzirErro(msg) {
     const m = msg.toLowerCase();
     if (m.includes('invalid login')) return 'E-mail ou senha incorretos';
-    if (m.includes('already registered') || m.includes('already been registered')) return 'Esse e-mail já tem conta. Tente entrar.';
-    if (m.includes('password')) return 'Problema com a senha. Mínimo 6 caracteres.';
+    if (m.includes('already registered') || m.includes('already been registered')) return 'Esse e-mail já tem conta';
+    if (m.includes('password')) return 'Problema com a senha (mín. 6 caracteres)';
     if (m.includes('email')) return 'E-mail inválido';
-    if (m.includes('network')) return 'Sem conexão. Verifica sua internet.';
     return msg;
   }
 </script>
