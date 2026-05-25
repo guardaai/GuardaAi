@@ -25,6 +25,11 @@
     --danger-soft: rgba(255, 71, 87, 0.1);
     --warning: #ffb800;
     --warning-soft: rgba(255, 184, 0, 0.1);
+    --info: #38bdf8;
+    --info-soft: rgba(56, 189, 248, 0.1);
+    --ia: #a855f7;
+    --ia-hover: #9333ea;
+    --ia-soft: rgba(168, 85, 247, 0.1);
     --text: #ffffff;
     --text-mute: #a3a3a3;
     --text-faint: #525252;
@@ -40,7 +45,17 @@
   
   body { padding-bottom: 100px; }
   
-  /* ===== HEADER ===== */
+  input, textarea, select {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    caret-color: var(--brand);
+  }
+  input:-webkit-autofill,
+  textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-input) inset !important;
+    -webkit-text-fill-color: #fff !important;
+  }
+  
   .header {
     padding: 16px 20px;
     background: var(--bg);
@@ -54,15 +69,12 @@
   }
   
   .back-btn {
-    width: 36px;
-    height: 36px;
+    width: 36px; height: 36px;
     border-radius: 10px;
     background: var(--bg-card);
     border: 1px solid var(--border);
     color: var(--text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     font-size: 18px;
     flex-shrink: 0;
@@ -76,63 +88,72 @@
     flex: 1;
   }
   
-  .header-brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-  }
-  
   .brand-mark-mini {
-    width: 28px;
-    height: 28px;
+    width: 28px; height: 28px;
     background: var(--brand);
     border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
   }
   
   .brand-mark-mini::before {
     content: '';
-    width: 10px;
-    height: 10px;
+    width: 10px; height: 10px;
     border: 2px solid var(--bg);
     border-radius: 3px;
-    border-top: none;
-    border-right: none;
+    border-top: none; border-right: none;
   }
   
-  /* ===== CONTAINER ===== */
   .container {
     max-width: 480px;
     margin: 0 auto;
     padding: 20px;
   }
   
-  /* ===== TOTAL CARD ===== */
-  .total-card {
+  .tatu-bubble {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 18px;
+  }
+  
+  .tatu-emoji { font-size: 28px; flex-shrink: 0; }
+  
+  .tatu-text {
+    flex: 1;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-mute);
+  }
+  
+  .tatu-text strong { color: var(--text); }
+  
+  .resumo {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 18px;
-    padding: 22px;
+    padding: 20px;
     margin-bottom: 16px;
     position: relative;
     overflow: hidden;
   }
   
-  .total-card::before {
+  .resumo::before {
     content: '';
     position: absolute;
     top: -40%;
-    right: -10%;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, var(--danger-soft) 0%, transparent 70%);
+    right: -20%;
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(255,71,87,0.12) 0%, transparent 70%);
     pointer-events: none;
   }
   
-  .total-label {
+  .resumo-label {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 11px;
     color: var(--text-mute);
@@ -140,62 +161,61 @@
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
     position: relative;
   }
   
-  .total-label::before {
-    content: '';
-    width: 8px;
-    height: 8px;
-    background: var(--danger);
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-  
-  .total-valor {
+  .resumo-valor {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 36px;
     font-weight: 700;
+    letter-spacing: -0.02em;
     color: var(--danger);
-    letter-spacing: -0.03em;
-    margin-bottom: 6px;
+    margin-bottom: 14px;
     position: relative;
   }
   
-  .total-valor span {
-    font-size: 18px;
+  .resumo-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    position: relative;
+  }
+  
+  .resumo-stat {
+    background: var(--bg-elev);
+    border-radius: 12px;
+    padding: 12px;
+  }
+  
+  .resumo-stat-label {
+    font-size: 11px;
     color: var(--text-mute);
+    margin-bottom: 4px;
     font-weight: 500;
   }
   
-  .total-meta {
-    color: var(--text-mute);
-    font-size: 13px;
-    position: relative;
+  .resumo-stat-valor {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
   }
   
-  /* ===== TABS ===== */
-  .tabs {
+  .resumo-stat-valor.warning { color: var(--warning); }
+  .resumo-stat-valor.brand { color: var(--brand); }
+  
+  .filtros {
     display: flex;
-    gap: 4px;
+    gap: 6px;
+    margin-bottom: 14px;
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 4px;
-    margin-bottom: 16px;
   }
   
-  .tab {
+  .filtro {
     flex: 1;
-    padding: 10px 8px;
+    padding: 10px;
     text-align: center;
     background: transparent;
     border: none;
@@ -205,61 +225,53 @@
     font-weight: 600;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.2s;
   }
   
-  .tab.active {
+  .filtro.active {
     background: var(--bg-elev);
     color: var(--text);
   }
   
-  /* ===== DIVIDA CARD ===== */
   .divida {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px;
+    border-radius: 14px;
+    padding: 14px;
     margin-bottom: 10px;
     cursor: pointer;
     transition: all 0.15s;
+    position: relative;
   }
   
   .divida:active { transform: scale(0.99); }
   
-  .divida-top {
+  .divida.quitada {
+    opacity: 0.6;
+  }
+  
+  .divida-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 12px;
     gap: 12px;
+    margin-bottom: 8px;
   }
   
-  .divida-info {
-    flex: 1;
-    min-width: 0;
-  }
-  
-  .divida-tipo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    color: var(--text-mute);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+  .divida-info { flex: 1; min-width: 0; }
   
   .divida-credor {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 17px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 2px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  
+  .divida-tipo {
+    font-size: 12px;
+    color: var(--text-mute);
   }
   
   .divida-valor {
@@ -267,73 +279,61 @@
     font-size: 18px;
     font-weight: 700;
     color: var(--danger);
-    letter-spacing: -0.01em;
-    white-space: nowrap;
     text-align: right;
+    white-space: nowrap;
   }
   
-  .divida-bottom {
+  .divida.quitada .divida-valor { color: var(--brand); }
+  
+  .divida-tags {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
   }
   
-  .divida-vencimento {
-    font-size: 12px;
-    color: var(--text-mute);
-  }
-  
-  .divida-status {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
+  .divida-tag {
+    font-size: 10px;
     font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 100px;
+    padding: 3px 8px;
+    border-radius: 6px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
   
-  .status-em_aberto {
+  .divida-tag.atraso {
     background: var(--danger-soft);
     color: var(--danger);
   }
   
-  .status-negociando {
+  .divida-tag.juros {
     background: var(--warning-soft);
     color: var(--warning);
   }
   
-  .status-acordo_fechado {
+  .divida-tag.quitada {
     background: var(--brand-soft);
     color: var(--brand);
   }
   
-  .status-quitada {
-    background: var(--bg-elev);
-    color: var(--text-mute);
+  .divida-tag.parcelas {
+    background: var(--info-soft);
+    color: var(--info);
   }
   
-  .divida-atraso {
-    color: var(--danger);
-    font-weight: 600;
-  }
-  
-  /* ===== EMPTY ===== */
   .empty {
     background: var(--bg-card);
     border: 1px dashed var(--border-strong);
     border-radius: 16px;
-    padding: 36px 20px;
+    padding: 40px 20px;
     text-align: center;
   }
   
-  .empty-emoji { font-size: 44px; margin-bottom: 10px; }
+  .empty-emoji { font-size: 50px; margin-bottom: 12px; }
   
   .empty-title {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 600;
     margin-bottom: 6px;
   }
@@ -346,12 +346,11 @@
     margin: 0 auto;
   }
   
-  /* ===== FAB ===== */
   .fab {
     position: fixed;
     bottom: 24px;
-    right: 50%;
-    transform: translateX(50%);
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 90;
     width: calc(100% - 40px);
     max-width: 440px;
@@ -368,11 +367,10 @@
   }
   
   .fab:active {
-    transform: translateX(50%) scale(0.97);
+    transform: translateX(-50%) scale(0.97);
     background: var(--brand-hover);
   }
   
-  /* ===== MODAL ===== */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -425,26 +423,19 @@
   }
   
   .modal-close {
-    width: 32px;
-    height: 32px;
+    width: 32px; height: 32px;
     border-radius: 10px;
     background: var(--bg-elev);
     border: 1px solid var(--border);
     color: var(--text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     font-size: 18px;
   }
   
-  .modal-body {
-    padding: 0 24px 24px;
-  }
+  .modal-body { padding: 0 24px 24px; }
   
-  .field {
-    margin-bottom: 14px;
-  }
+  .field { margin-bottom: 14px; }
   
   .field label {
     display: block;
@@ -452,11 +443,6 @@
     color: var(--text-mute);
     margin-bottom: 6px;
     font-weight: 500;
-  }
-  
-  .field label .opt {
-    color: var(--text-faint);
-    font-weight: 400;
   }
   
   .field input, .field select, .field textarea {
@@ -468,16 +454,11 @@
     color: var(--text);
     font-size: 16px;
     font-family: 'Inter', sans-serif;
-    transition: border 0.2s;
   }
   
-  .field input:focus, .field select:focus, .field textarea:focus {
+  .field input:focus, .field select:focus {
     outline: none;
     border-color: var(--brand);
-  }
-  
-  .field input::placeholder, .field textarea::placeholder {
-    color: var(--text-faint);
   }
   
   .field-row {
@@ -491,20 +472,19 @@
     align-items: center;
     background: var(--bg-input);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 0 14px;
-    transition: border 0.2s;
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
   }
   
-  .valor-input-wrapper:focus-within {
-    border-color: var(--brand);
-  }
+  .valor-input-wrapper:focus-within { border-color: var(--danger); }
   
   .valor-prefix {
     color: var(--text-mute);
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: 600;
+    margin-right: 8px;
   }
   
   .valor-input-wrapper input {
@@ -513,52 +493,24 @@
     flex: 1;
     text-align: right;
     font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    padding: 14px 0;
+    font-weight: 700;
+    font-size: 24px;
+    padding: 0;
+    color: var(--danger) !important;
+    -webkit-text-fill-color: var(--danger) !important;
   }
   
-  .valor-input-wrapper input:focus { border: none; }
-  
-  /* TIPO GRID */
-  .tipo-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 4px;
-  }
-  
-  .tipo-opt {
-    background: var(--bg-input);
-    border: 1px solid var(--border);
+  .info-box {
+    background: var(--info-soft);
+    border: 1px solid rgba(56, 189, 248, 0.3);
     border-radius: 12px;
-    padding: 12px 6px;
-    cursor: pointer;
-    transition: all 0.15s;
-    text-align: center;
+    padding: 12px;
+    margin-bottom: 14px;
+    font-size: 12px;
+    color: var(--info);
+    line-height: 1.5;
   }
   
-  .tipo-opt.selected {
-    background: var(--brand-soft);
-    border-color: var(--brand);
-  }
-  
-  .tipo-opt-icon {
-    font-size: 22px;
-    margin-bottom: 4px;
-  }
-  
-  .tipo-opt-label {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--text-mute);
-    line-height: 1.2;
-  }
-  
-  .tipo-opt.selected .tipo-opt-label {
-    color: var(--text);
-  }
-  
-  /* BTN */
   .btn {
     width: 100%;
     padding: 16px;
@@ -567,14 +519,18 @@
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.15s;
     font-family: 'Inter', sans-serif;
     margin-top: 8px;
   }
   
   .btn-primary { background: var(--brand); color: #001a0e; }
   .btn-primary:active { background: var(--brand-hover); transform: scale(0.985); }
-  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--bg-elev);
+    color: var(--text-faint);
+  }
   
   .btn-secondary {
     background: var(--bg-elev);
@@ -588,16 +544,29 @@
     border: 1px solid rgba(255, 71, 87, 0.3);
   }
   
-  .btn-success {
-    background: var(--brand-soft);
-    color: var(--brand);
-    border: 1px solid rgba(0, 217, 126, 0.3);
+  .btn-ia {
+    background: var(--ia);
+    color: white;
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
   
-  /* DETALHES */
-  .detalhe-grid {
+  .btn-ia:active { background: var(--ia-hover); transform: scale(0.985); }
+  
+  .btn-ia:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: var(--bg-elev);
+    color: var(--text-faint);
+    box-shadow: none;
+  }
+  
+  .detalhe-card {
     background: var(--bg-input);
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 16px;
     margin-bottom: 16px;
   }
@@ -611,12 +580,7 @@
   }
   
   .detalhe-linha:last-child { border-bottom: none; }
-  
-  .detalhe-label {
-    font-size: 13px;
-    color: var(--text-mute);
-  }
-  
+  .detalhe-label { font-size: 13px; color: var(--text-mute); }
   .detalhe-valor {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 14px;
@@ -624,7 +588,87 @@
     text-align: right;
   }
   
-  /* MSG */
+  .detalhe-valor-big {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    margin: 8px 0 16px;
+    letter-spacing: -0.02em;
+    color: var(--danger);
+  }
+  
+  /* ===== NEGOCIADOR IA ===== */
+  .ia-card {
+    background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-input) 100%);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .ia-card-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ia);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .ia-card-subtitulo {
+    font-size: 12px;
+    color: var(--text-mute);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  
+  .ia-analisando {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  
+  .ia-spinner {
+    width: 48px; height: 48px;
+    border: 3px solid var(--ia-soft);
+    border-top-color: var(--ia);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 14px;
+  }
+  
+  @keyframes spin { to { transform: rotate(360deg); } }
+  
+  .ia-resposta {
+    background: var(--bg-input);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  .ia-resposta h1, .ia-resposta h2, .ia-resposta h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--ia);
+    margin: 12px 0 6px;
+    font-weight: 700;
+  }
+  
+  .ia-resposta h1 { font-size: 17px; }
+  .ia-resposta h2 { font-size: 15px; }
+  .ia-resposta h3 { font-size: 14px; color: var(--text); }
+  
+  .ia-resposta p { margin-bottom: 10px; }
+  .ia-resposta strong { color: var(--ia); font-weight: 600; }
+  .ia-resposta ul, .ia-resposta ol {
+    margin: 8px 0 12px 20px;
+  }
+  .ia-resposta li { margin-bottom: 4px; line-height: 1.6; }
+  
   .msg {
     padding: 12px;
     border-radius: 10px;
@@ -642,13 +686,6 @@
     color: #ff6b78;
   }
   
-  .msg-success {
-    background: var(--brand-soft);
-    border: 1px solid rgba(0, 217, 126, 0.3);
-    color: var(--brand);
-  }
-  
-  /* XP TOAST */
   .xp-toast {
     position: fixed;
     top: 80px;
@@ -672,18 +709,14 @@
     100% { transform: translateX(-50%) translateY(0); opacity: 1; }
   }
   
-  /* LOADER */
   .loader-circle {
-    width: 32px;
-    height: 32px;
+    width: 32px; height: 32px;
     border: 3px solid var(--border);
     border-radius: 50%;
     border-top-color: var(--brand);
     animation: spin 0.8s linear infinite;
     margin: 40px auto;
   }
-  
-  @keyframes spin { to { transform: rotate(360deg); } }
   
   .hidden { display: none !important; }
 </style>
@@ -693,38 +726,35 @@
 <div class="header">
   <button class="back-btn" onclick="window.location.href='home.html?v=1'">‹</button>
   <div class="header-title">Dívidas</div>
-  <div class="header-brand" onclick="window.location.href='home.html?v=1'">
-    <div class="brand-mark-mini"></div>
-  </div>
+  <div class="brand-mark-mini" onclick="window.location.href='home.html?v=1'"></div>
 </div>
 
 <div class="container">
 
-  <!-- TOTAL -->
-  <div class="total-card">
-    <div class="total-label">Total devendo</div>
-    <div class="total-valor">R$ <span id="total-valor">0,00</span></div>
-    <div class="total-meta"><span id="total-qtd">0</span> dívidas em aberto</div>
+  <div class="tatu-bubble" id="tatu-bubble">
+    <div class="tatu-emoji">🦔</div>
+    <div class="tatu-text" id="tatu-text">
+      Toda dívida tem solução. <strong>Vamos uma por uma</strong>, no seu ritmo.
+    </div>
   </div>
   
-  <!-- TABS -->
-  <div class="tabs">
-    <button class="tab active" data-filtro="abertas" onclick="trocarFiltro('abertas')">Em aberto</button>
-    <button class="tab" data-filtro="negociando" onclick="trocarFiltro('negociando')">Negociando</button>
-    <button class="tab" data-filtro="quitadas" onclick="trocarFiltro('quitadas')">Quitadas</button>
+  <div id="resumo-area"></div>
+  
+  <div class="filtros">
+    <button class="filtro active" data-f="ativas" onclick="trocarFiltro('ativas')">Ativas</button>
+    <button class="filtro" data-f="quitadas" onclick="trocarFiltro('quitadas')">Quitadas</button>
+    <button class="filtro" data-f="todas" onclick="trocarFiltro('todas')">Todas</button>
   </div>
   
-  <!-- LISTA -->
-  <div id="lista-dividas">
+  <div id="lista">
     <div class="loader-circle"></div>
   </div>
 
 </div>
 
-<!-- FAB -->
 <button class="fab" onclick="abrirModalNova()">+ Cadastrar dívida</button>
 
-<!-- MODAL NOVA / EDITAR -->
+<!-- MODAL FORMULÁRIO -->
 <div class="modal-overlay" id="modal-form">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -736,55 +766,45 @@
       <div class="msg" id="msg-form"></div>
       
       <div class="field">
+        <label>Credor (quem você deve)</label>
+        <input type="text" id="f-credor" placeholder="Ex: Cartão Nubank, Casas Bahia, João">
+      </div>
+      
+      <div class="field">
         <label>Tipo de dívida</label>
-        <div class="tipo-grid" id="tipo-grid">
-          <div class="tipo-opt" data-tipo="cartao"><div class="tipo-opt-icon">💳</div><div class="tipo-opt-label">Cartão</div></div>
-          <div class="tipo-opt" data-tipo="emprestimo"><div class="tipo-opt-icon">🏦</div><div class="tipo-opt-label">Empréstimo</div></div>
-          <div class="tipo-opt" data-tipo="financiamento"><div class="tipo-opt-icon">🏠</div><div class="tipo-opt-label">Financ.</div></div>
-          <div class="tipo-opt" data-tipo="conta_atrasada"><div class="tipo-opt-icon">📋</div><div class="tipo-opt-label">Conta</div></div>
-          <div class="tipo-opt" data-tipo="pensao_alimenticia"><div class="tipo-opt-icon">👨‍👧</div><div class="tipo-opt-label">Pensão</div></div>
-          <div class="tipo-opt" data-tipo="imposto"><div class="tipo-opt-icon">📑</div><div class="tipo-opt-label">Imposto</div></div>
-          <div class="tipo-opt" data-tipo="boleto"><div class="tipo-opt-icon">🧾</div><div class="tipo-opt-label">Boleto</div></div>
-          <div class="tipo-opt" data-tipo="cheque_especial"><div class="tipo-opt-icon">💸</div><div class="tipo-opt-label">Ch. Esp.</div></div>
-          <div class="tipo-opt" data-tipo="outro"><div class="tipo-opt-icon">❓</div><div class="tipo-opt-label">Outro</div></div>
-        </div>
+        <select id="f-tipo">
+          <option value="cartao">Cartão de Crédito</option>
+          <option value="emprestimo">Empréstimo</option>
+          <option value="financiamento">Financiamento</option>
+          <option value="loja">Loja / Crediário</option>
+          <option value="boleto">Boleto Atrasado</option>
+          <option value="pessoa">Pessoa Física</option>
+          <option value="outro">Outro</option>
+        </select>
       </div>
       
-      <div class="field">
-        <label>Quem você deve? <span class="opt">(credor)</span></label>
-        <input type="text" id="f-credor" placeholder="Ex: Banco Bradesco, Itaú Cartão...">
-      </div>
-      
-      <div class="field">
-        <label>Valor atual da dívida</label>
-        <div class="valor-input-wrapper">
-          <span class="valor-prefix">R$</span>
-          <input type="text" inputmode="decimal" id="f-valor" placeholder="0,00" oninput="formatarValor(this)">
-        </div>
+      <div class="valor-input-wrapper">
+        <span class="valor-prefix">R$</span>
+        <input type="text" inputmode="decimal" id="f-valor" placeholder="0,00" oninput="formatarValor(this)">
       </div>
       
       <div class="field-row">
         <div class="field">
-          <label>Vencimento <span class="opt">(opcional)</span></label>
+          <label>Vencimento original</label>
           <input type="date" id="f-vencimento">
         </div>
         <div class="field">
-          <label>Juros ao mês % <span class="opt">(opcional)</span></label>
-          <input type="text" inputmode="decimal" id="f-juros" placeholder="0,00">
+          <label>Juros mensal (%)</label>
+          <input type="number" id="f-juros" placeholder="Ex: 12" step="0.1" min="0">
         </div>
       </div>
       
       <div class="field">
-        <label>Telefone do credor <span class="opt">(pra negociar depois)</span></label>
-        <input type="tel" id="f-telefone" placeholder="(00) 00000-0000">
+        <label>Observação (opcional)</label>
+        <input type="text" id="f-obs" placeholder="Ex: tentei negociar 50% desconto">
       </div>
       
-      <div class="field">
-        <label>Observações <span class="opt">(opcional)</span></label>
-        <textarea id="f-obs" rows="2" placeholder="Detalhes que você lembrar..."></textarea>
-      </div>
-      
-      <button class="btn btn-primary" id="btn-salvar" onclick="salvarDivida()">Cadastrar dívida</button>
+      <button class="btn btn-primary" id="btn-salvar" onclick="salvarDivida()">Cadastrar</button>
     </div>
   </div>
 </div>
@@ -799,80 +819,90 @@
     </div>
     <div class="modal-body">
       
-      <div class="total-card" style="margin-bottom: 16px;">
-        <div class="total-label" id="detalhe-tipo-label">CARTÃO DE CRÉDITO</div>
-        <div class="total-valor">R$ <span id="detalhe-valor">0,00</span></div>
-        <div class="total-meta" id="detalhe-credor">—</div>
-      </div>
+      <div class="detalhe-valor-big" id="detalhe-valor-big">R$ 0,00</div>
       
-      <div class="detalhe-grid">
+      <div class="detalhe-card">
         <div class="detalhe-linha">
-          <div class="detalhe-label">Status</div>
-          <div class="detalhe-valor"><span class="divida-status" id="detalhe-status">Em aberto</span></div>
+          <div class="detalhe-label">Credor</div>
+          <div class="detalhe-valor" id="detalhe-credor">—</div>
         </div>
-        <div class="detalhe-linha" id="linha-vencimento">
+        <div class="detalhe-linha">
+          <div class="detalhe-label">Tipo</div>
+          <div class="detalhe-valor" id="detalhe-tipo">—</div>
+        </div>
+        <div class="detalhe-linha">
           <div class="detalhe-label">Vencimento</div>
           <div class="detalhe-valor" id="detalhe-vencimento">—</div>
         </div>
-        <div class="detalhe-linha" id="linha-juros">
+        <div class="detalhe-linha" id="linha-atraso">
+          <div class="detalhe-label">Atraso</div>
+          <div class="detalhe-valor" id="detalhe-atraso" style="color:var(--danger);">—</div>
+        </div>
+        <div class="detalhe-linha">
           <div class="detalhe-label">Juros mensal</div>
           <div class="detalhe-valor" id="detalhe-juros">—</div>
         </div>
-        <div class="detalhe-linha" id="linha-telefone">
-          <div class="detalhe-label">Contato</div>
-          <div class="detalhe-valor" id="detalhe-telefone">—</div>
-        </div>
-        <div class="detalhe-linha" id="linha-obs" style="flex-direction:column;align-items:flex-start;gap:4px;">
-          <div class="detalhe-label">Observações</div>
-          <div class="detalhe-valor" id="detalhe-obs" style="text-align:left;font-weight:400;color:var(--text-mute);">—</div>
+        <div class="detalhe-linha" id="linha-obs" style="display:none;">
+          <div class="detalhe-label">Observação</div>
+          <div class="detalhe-valor" id="detalhe-obs" style="font-size:12px;text-align:right;max-width:60%;">—</div>
         </div>
       </div>
       
-      <button class="btn btn-success" id="btn-quitar" onclick="marcarQuitada()">✓ Marcar como quitada</button>
-      <button class="btn btn-secondary" onclick="editarDivida()">Editar dívida</button>
-      <button class="btn btn-danger" onclick="excluirDivida()">Excluir</button>
+      <!-- NEGOCIADOR IA -->
+      <div class="ia-card" id="ia-card">
+        <div class="ia-card-titulo">✨ Negociador IA</div>
+        <div class="ia-card-subtitulo">A IA cria um script personalizado pra você ligar pro credor e conseguir desconto. <strong>+20 XP ao usar.</strong></div>
+        <button class="btn btn-ia" id="btn-pedir-ia" onclick="pedirAjudaIA()">
+          <span>🤝</span> Pedir ajuda da IA
+        </button>
+      </div>
+      
+      <div class="ia-analisando hidden" id="ia-analisando">
+        <div class="ia-spinner"></div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--ia);margin-bottom:4px;">🤖 IA preparando estratégia...</div>
+        <div style="font-size:12px;color:var(--text-mute);">Analisando dívida e gerando script</div>
+      </div>
+      
+      <div class="ia-resposta hidden" id="ia-resposta-area">
+        <div id="ia-resposta-texto"></div>
+        <button class="btn btn-secondary" id="btn-copiar-script" onclick="copiarScript()" style="margin-top:14px;">📋 Copiar script</button>
+      </div>
+      
+      <button class="btn btn-primary" id="btn-quitar" onclick="abrirQuitar()">✓ Marcar como quitada</button>
+      <button class="btn btn-secondary" id="btn-editar" onclick="editarDivida()">Editar</button>
+      <button class="btn btn-danger" id="btn-excluir" onclick="excluirDivida()">Excluir</button>
       
     </div>
   </div>
 </div>
 
-<!-- XP TOAST -->
-<div class="xp-toast" id="xp-toast">+50 XP 🎉</div>
+<div class="xp-toast" id="xp-toast">+5 XP</div>
 
 <script type="module">
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
   
   const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+  const IA_FUNCTION_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-  window.supabase = supabase;
   
-  const tiposLabels = {
-    cartao: 'Cartão de crédito',
-    emprestimo: 'Empréstimo',
-    financiamento: 'Financiamento',
-    conta_atrasada: 'Conta atrasada',
-    pensao_alimenticia: 'Pensão alimentícia',
-    imposto: 'Imposto',
-    boleto: 'Boleto',
-    cheque_especial: 'Cheque especial',
-    outro: 'Outro'
-  };
-  
-  const tiposIcones = {
-    cartao: '💳', emprestimo: '🏦', financiamento: '🏠',
-    conta_atrasada: '📋', pensao_alimenticia: '👨‍👧',
-    imposto: '📑', boleto: '🧾', cheque_especial: '💸', outro: '❓'
+  const tiposLabel = {
+    'cartao': 'Cartão de Crédito',
+    'emprestimo': 'Empréstimo',
+    'financiamento': 'Financiamento',
+    'loja': 'Loja / Crediário',
+    'boleto': 'Boleto Atrasado',
+    'pessoa': 'Pessoa Física',
+    'outro': 'Outro'
   };
   
   let usuario;
-  let tipoSelecionado = null;
-  let dividaEditando = null;
-  let dividaDetalheAtual = null;
-  let filtroAtual = 'abertas';
-  let todasDividas = [];
+  let dividas = [];
+  let detalheAtual = null;
+  let filtroAtual = 'ativas';
+  let editandoId = null;
+  let scriptIA = '';
   
-  // INIT
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
@@ -880,163 +910,162 @@
       return;
     }
     usuario = session.user;
+    
     await carregarDividas();
-    setupTipoGrid();
+    
+    if (new URLSearchParams(window.location.search).get('nova') === '1') {
+      abrirModalNova();
+    }
   })();
   
-  function setupTipoGrid() {
-    document.querySelectorAll('.tipo-opt').forEach(opt => {
-      opt.addEventListener('click', () => {
-        document.querySelectorAll('.tipo-opt').forEach(o => o.classList.remove('selected'));
-        opt.classList.add('selected');
-        tipoSelecionado = opt.dataset.tipo;
-        validarForm();
-      });
-    });
+  async function carregarDividas() {
+    const { data } = await supabase
+      .from('dividas')
+      .select('*')
+      .eq('user_id', usuario.id)
+      .order('quitada', { ascending: true })
+      .order('valor_original', { ascending: false });
+    dividas = data || [];
+    renderTudo();
+  }
+  
+  function renderTudo() {
+    renderTatu();
+    renderResumo();
+    renderLista();
+  }
+  
+  function renderTatu() {
+    const ativas = dividas.filter(d => !d.quitada);
+    const quitadas = dividas.filter(d => d.quitada);
+    const total = ativas.reduce((a, d) => a + Number(d.valor_atual || d.valor_original), 0);
+    const el = document.getElementById('tatu-text');
+    
+    if (dividas.length === 0) {
+      el.innerHTML = 'Sem dívidas cadastradas. <strong>Cadastre as suas</strong> pra eu te ajudar a quitar!';
+    } else if (ativas.length === 0) {
+      el.innerHTML = '🏆 <strong>TUDO QUITADO!</strong> Você venceu o Resgate. Hora de construir reserva.';
+    } else if (quitadas.length > 0) {
+      el.innerHTML = `Você já quitou <strong>${quitadas.length}</strong> ${quitadas.length === 1 ? 'dívida' : 'dívidas'}. Faltam ${ativas.length}. <strong>Não para agora!</strong>`;
+    } else if (total > 10000) {
+      el.innerHTML = 'Dívida alta? <strong>Use o Negociador IA</strong> em cada uma — descontos de 30-70% são comuns.';
+    } else {
+      el.innerHTML = 'Toda dívida tem solução. <strong>Vamos uma por uma</strong>, no seu ritmo.';
+    }
+  }
+  
+  function renderResumo() {
+    const ativas = dividas.filter(d => !d.quitada);
+    const total = ativas.reduce((a, d) => a + Number(d.valor_atual || d.valor_original), 0);
+    const quitadas = dividas.filter(d => d.quitada).length;
+    const ativasCount = ativas.length;
+    
+    document.getElementById('resumo-area').innerHTML = `
+      <div class="resumo">
+        <div class="resumo-label">Total em dívidas</div>
+        <div class="resumo-valor">R$ ${formatarMoeda(total)}</div>
+        <div class="resumo-stats">
+          <div class="resumo-stat">
+            <div class="resumo-stat-label">Ativas</div>
+            <div class="resumo-stat-valor warning">${ativasCount}</div>
+          </div>
+          <div class="resumo-stat">
+            <div class="resumo-stat-label">Quitadas</div>
+            <div class="resumo-stat-valor brand">${quitadas}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  
+  function renderLista() {
+    let lista = document.getElementById('lista');
+    let filtradas = dividas;
+    
+    if (filtroAtual === 'ativas') filtradas = dividas.filter(d => !d.quitada);
+    else if (filtroAtual === 'quitadas') filtradas = dividas.filter(d => d.quitada);
+    
+    if (filtradas.length === 0) {
+      lista.innerHTML = `
+        <div class="empty">
+          <div class="empty-emoji">${filtroAtual === 'quitadas' ? '🏆' : '🎉'}</div>
+          <div class="empty-title">${filtroAtual === 'quitadas' ? 'Nenhuma quitada ainda' : 'Sem dívidas ativas'}</div>
+          <div class="empty-desc">${filtroAtual === 'quitadas' ? 'Quando quitar uma dívida, ela aparece aqui pra celebrar!' : 'Cadastre dívidas pra eu te ajudar a quitar com a IA.'}</div>
+        </div>
+      `;
+      return;
+    }
+    
+    lista.innerHTML = filtradas.map(d => dividaHTML(d)).join('');
+  }
+  
+  function diasAtraso(vencimento) {
+    if (!vencimento) return 0;
+    const v = new Date(vencimento + 'T00:00:00');
+    const h = new Date();
+    h.setHours(0,0,0,0);
+    return Math.floor((h - v) / (1000 * 60 * 60 * 24));
+  }
+  
+  function dividaHTML(d) {
+    const valor = d.valor_atual || d.valor_original;
+    const atraso = diasAtraso(d.vencimento_original);
+    const tags = [];
+    
+    if (d.quitada) {
+      tags.push('<span class="divida-tag quitada">✓ QUITADA</span>');
+    } else {
+      if (atraso > 0) tags.push(`<span class="divida-tag atraso">${atraso} dias atrasada</span>`);
+      if (d.juros_mensal && Number(d.juros_mensal) > 0) tags.push(`<span class="divida-tag juros">${d.juros_mensal}% a.m.</span>`);
+    }
+    
+    return `
+      <div class="divida ${d.quitada ? 'quitada' : ''}" onclick="abrirDetalhe('${d.id}')">
+        <div class="divida-header">
+          <div class="divida-info">
+            <div class="divida-credor">${d.credor}</div>
+            <div class="divida-tipo">${tiposLabel[d.tipo] || 'Dívida'}</div>
+          </div>
+          <div class="divida-valor">R$ ${formatarMoeda(valor)}</div>
+        </div>
+        <div class="divida-tags">${tags.join('')}</div>
+      </div>
+    `;
   }
   
   function formatarMoeda(v) {
     return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
   
-  function formatarData(d) {
-    if (!d) return '—';
-    return new Date(d + 'T00:00:00').toLocaleDateString('pt-BR');
-  }
-  
-  function diasAtraso(d) {
-    if (!d) return null;
-    const venc = new Date(d + 'T00:00:00');
-    const hoje = new Date(); hoje.setHours(0,0,0,0);
-    const diff = Math.floor((hoje - venc) / (1000 * 60 * 60 * 24));
-    return diff;
-  }
-  
-  window.formatarValor = function(input) {
-    let v = input.value.replace(/\D/g, '');
-    if (!v) { input.value = ''; validarForm(); return; }
-    v = (parseInt(v) / 100).toFixed(2);
-    input.value = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-    validarForm();
-  };
-  
   function valorParaNumero(str) {
     if (!str) return 0;
     return Number(str.replace(/\./g, '').replace(',', '.')) || 0;
   }
   
-  function validarForm() {
-    const credor = document.getElementById('f-credor').value.trim();
-    const valor = valorParaNumero(document.getElementById('f-valor').value);
-    const btn = document.getElementById('btn-salvar');
-    btn.disabled = !tipoSelecionado || !credor || valor <= 0;
-  }
-  
-  document.getElementById('f-credor').addEventListener('input', validarForm);
-  
-  // CARREGAR
-  async function carregarDividas() {
-    const { data, error } = await supabase
-      .from('dividas')
-      .select('*')
-      .eq('user_id', usuario.id)
-      .order('criado_em', { ascending: false });
-    
-    if (error) {
-      console.error(error);
-      document.getElementById('lista-dividas').innerHTML = '<div class="empty"><div class="empty-emoji">⚠️</div><div class="empty-title">Erro ao carregar</div></div>';
-      return;
-    }
-    
-    todasDividas = data || [];
-    renderizar();
-  }
-  
-  function renderizar() {
-    // Total devendo (em aberto + negociando + acordo)
-    const emAberto = todasDividas.filter(d => d.status !== 'quitada');
-    const total = emAberto.reduce((acc, d) => acc + Number(d.valor_atual), 0);
-    document.getElementById('total-valor').textContent = formatarMoeda(total);
-    document.getElementById('total-qtd').textContent = emAberto.length;
-    
-    // Filtro
-    let filtradas;
-    if (filtroAtual === 'abertas') {
-      filtradas = todasDividas.filter(d => d.status === 'em_aberto' || d.status === 'atrasada' || d.status === 'acordo_fechado');
-    } else if (filtroAtual === 'negociando') {
-      filtradas = todasDividas.filter(d => d.status === 'negociando');
-    } else {
-      filtradas = todasDividas.filter(d => d.status === 'quitada');
-    }
-    
-    const lista = document.getElementById('lista-dividas');
-    
-    if (filtradas.length === 0) {
-      const msgs = {
-        abertas: { e: '📋', t: 'Nada em aberto', d: 'Toque em + Cadastrar dívida pra começar a mapear tudo que você deve.' },
-        negociando: { e: '🤝', t: 'Nenhuma em negociação', d: 'Quando você começar a negociar uma dívida, ela aparece aqui.' },
-        quitadas: { e: '🎉', t: 'Nenhuma quitada ainda', d: 'Suas conquistas vão aparecer aqui. Bora começar!' }
-      };
-      const m = msgs[filtroAtual];
-      lista.innerHTML = `<div class="empty"><div class="empty-emoji">${m.e}</div><div class="empty-title">${m.t}</div><div class="empty-desc">${m.d}</div></div>`;
-      return;
-    }
-    
-    lista.innerHTML = filtradas.map(d => {
-      const atraso = diasAtraso(d.data_vencimento);
-      const venc = d.data_vencimento ? formatarData(d.data_vencimento) : 'Sem vencimento';
-      let vencTexto = venc;
-      if (atraso !== null && atraso > 0 && d.status !== 'quitada') {
-        vencTexto = `<span class="divida-atraso">Atrasada ${atraso} ${atraso === 1 ? 'dia' : 'dias'}</span>`;
-      }
-      
-      const statusLabel = {
-        em_aberto: 'Em aberto',
-        atrasada: 'Atrasada',
-        negociando: 'Negociando',
-        acordo_fechado: 'Acordo',
-        quitada: 'Quitada'
-      }[d.status] || d.status;
-      
-      return `
-        <div class="divida" onclick="abrirDetalhe('${d.id}')">
-          <div class="divida-top">
-            <div class="divida-info">
-              <div class="divida-tipo">${tiposIcones[d.tipo] || '❓'} ${tiposLabels[d.tipo] || d.tipo}</div>
-              <div class="divida-credor">${d.credor}</div>
-            </div>
-            <div class="divida-valor">R$ ${formatarMoeda(d.valor_atual)}</div>
-          </div>
-          <div class="divida-bottom">
-            <div class="divida-vencimento">${vencTexto}</div>
-            <div class="divida-status status-${d.status}">${statusLabel}</div>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
+  window.formatarValor = function(input) {
+    let v = input.value.replace(/\D/g, '');
+    if (!v) { input.value = ''; return; }
+    v = (parseInt(v) / 100).toFixed(2);
+    input.value = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  };
   
   window.trocarFiltro = function(f) {
     filtroAtual = f;
-    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.filtro === f));
-    renderizar();
+    document.querySelectorAll('.filtro').forEach(b => b.classList.toggle('active', b.dataset.f === f));
+    renderLista();
   };
   
-  // MODAL
   window.abrirModalNova = function() {
-    dividaEditando = null;
-    tipoSelecionado = null;
+    editandoId = null;
     document.getElementById('modal-form-titulo').textContent = 'Nova dívida';
-    document.getElementById('btn-salvar').textContent = 'Cadastrar dívida';
+    document.getElementById('btn-salvar').textContent = 'Cadastrar';
     document.getElementById('f-credor').value = '';
+    document.getElementById('f-tipo').value = 'cartao';
     document.getElementById('f-valor').value = '';
     document.getElementById('f-vencimento').value = '';
     document.getElementById('f-juros').value = '';
-    document.getElementById('f-telefone').value = '';
     document.getElementById('f-obs').value = '';
-    document.querySelectorAll('.tipo-opt').forEach(o => o.classList.remove('selected'));
     document.getElementById('msg-form').className = 'msg';
-    validarForm();
     document.getElementById('modal-form').classList.add('show');
   };
   
@@ -1044,81 +1073,305 @@
     document.getElementById(id).classList.remove('show');
   };
   
-  // SALVAR
   window.salvarDivida = async function() {
     const credor = document.getElementById('f-credor').value.trim();
+    const tipo = document.getElementById('f-tipo').value;
     const valor = valorParaNumero(document.getElementById('f-valor').value);
     const vencimento = document.getElementById('f-vencimento').value || null;
-    const juros = valorParaNumero(document.getElementById('f-juros').value) || null;
-    const telefone = document.getElementById('f-telefone').value.trim() || null;
+    const juros = parseFloat(document.getElementById('f-juros').value) || 0;
     const obs = document.getElementById('f-obs').value.trim() || null;
     
-    if (!tipoSelecionado || !credor || valor <= 0) return;
+    if (!credor || !valor) {
+      document.getElementById('msg-form').className = 'msg show msg-error';
+      document.getElementById('msg-form').textContent = 'Preencha credor e valor';
+      return;
+    }
     
     const btn = document.getElementById('btn-salvar');
     btn.disabled = true;
     btn.textContent = 'Salvando...';
     
-    let status = 'em_aberto';
-    if (vencimento && diasAtraso(vencimento) > 0) status = 'atrasada';
-    
-    const payload = {
-      user_id: usuario.id,
-      tipo: tipoSelecionado,
-      credor,
-      valor_original: valor,
-      valor_atual: valor,
-      juros_mensal: juros,
-      data_vencimento: vencimento,
-      telefone_credor: telefone,
-      observacoes: obs,
-      status
-    };
-    
     let result;
-    if (dividaEditando) {
-      result = await supabase.from('dividas').update(payload).eq('id', dividaEditando);
+    if (editandoId) {
+      result = await supabase.from('dividas').update({
+        credor, tipo,
+        valor_original: valor,
+        valor_atual: valor,
+        vencimento_original: vencimento,
+        juros_mensal: juros,
+        observacoes: obs,
+        atualizado_em: new Date().toISOString()
+      }).eq('id', editandoId);
     } else {
-      result = await supabase.from('dividas').insert(payload);
+      result = await supabase.from('dividas').insert({
+        user_id: usuario.id,
+        credor, tipo,
+        valor_original: valor,
+        valor_atual: valor,
+        vencimento_original: vencimento,
+        juros_mensal: juros,
+        observacoes: obs,
+        quitada: false
+      });
     }
     
     if (result.error) {
       document.getElementById('msg-form').className = 'msg show msg-error';
       document.getElementById('msg-form').textContent = 'Erro: ' + result.error.message;
       btn.disabled = false;
-      btn.textContent = dividaEditando ? 'Salvar alterações' : 'Cadastrar dívida';
+      btn.textContent = editandoId ? 'Salvar' : 'Cadastrar';
       return;
     }
     
-    // XP por cadastrar (não por editar)
-    if (!dividaEditando) {
-      await darXP(50, 'divida_cadastrada', 'Dívida cadastrada');
-      mostrarToast('+50 XP 🎯');
+    if (!editandoId) {
+      await darXP(10, 'divida_cadastrada', 'Dívida cadastrada: ' + credor);
+      mostrarToast('+10 XP 💪');
     }
     
     fecharModal('modal-form');
     await carregarDividas();
   };
   
-  // XP
+  window.abrirDetalhe = function(id) {
+    const d = dividas.find(x => x.id === id);
+    if (!d) return;
+    detalheAtual = d;
+    scriptIA = '';
+    
+    const valor = d.valor_atual || d.valor_original;
+    const atraso = diasAtraso(d.vencimento_original);
+    
+    document.getElementById('detalhe-titulo').textContent = d.credor;
+    document.getElementById('detalhe-valor-big').textContent = 'R$ ' + formatarMoeda(valor);
+    document.getElementById('detalhe-credor').textContent = d.credor;
+    document.getElementById('detalhe-tipo').textContent = tiposLabel[d.tipo] || '—';
+    document.getElementById('detalhe-vencimento').textContent = d.vencimento_original ? formatarData(d.vencimento_original) : '—';
+    document.getElementById('detalhe-atraso').textContent = atraso > 0 ? `${atraso} dias` : 'em dia';
+    document.getElementById('detalhe-atraso').style.color = atraso > 0 ? 'var(--danger)' : 'var(--brand)';
+    document.getElementById('detalhe-juros').textContent = d.juros_mensal ? `${d.juros_mensal}% a.m.` : '—';
+    
+    if (d.observacoes) {
+      document.getElementById('linha-obs').style.display = 'flex';
+      document.getElementById('detalhe-obs').textContent = d.observacoes;
+    } else {
+      document.getElementById('linha-obs').style.display = 'none';
+    }
+    
+    // Reset IA
+    document.getElementById('ia-card').classList.remove('hidden');
+    document.getElementById('ia-analisando').classList.add('hidden');
+    document.getElementById('ia-resposta-area').classList.add('hidden');
+    document.getElementById('btn-pedir-ia').disabled = false;
+    
+    if (d.quitada) {
+      document.getElementById('btn-quitar').classList.add('hidden');
+      document.getElementById('ia-card').classList.add('hidden');
+    } else {
+      document.getElementById('btn-quitar').classList.remove('hidden');
+    }
+    
+    document.getElementById('modal-detalhe').classList.add('show');
+  };
+  
+  // ====== NEGOCIADOR IA ======
+  window.pedirAjudaIA = async function() {
+    if (!detalheAtual) return;
+    
+    const btn = document.getElementById('btn-pedir-ia');
+    btn.disabled = true;
+    
+    document.getElementById('ia-card').classList.add('hidden');
+    document.getElementById('ia-analisando').classList.remove('hidden');
+    document.getElementById('ia-resposta-area').classList.add('hidden');
+    
+    const d = detalheAtual;
+    const valor = d.valor_atual || d.valor_original;
+    const atraso = diasAtraso(d.vencimento_original);
+    
+    const mensagem = `Quero negociar essa dívida e preciso de uma estratégia completa:
+
+**Credor:** ${d.credor}
+**Tipo:** ${tiposLabel[d.tipo] || 'dívida'}
+**Valor:** R$ ${formatarMoeda(valor)}
+**Vencimento original:** ${d.vencimento_original ? formatarData(d.vencimento_original) : 'não informado'}
+**Atraso:** ${atraso > 0 ? atraso + ' dias' : 'em dia ainda'}
+**Juros mensal:** ${d.juros_mensal ? d.juros_mensal + '%' : 'não informado'}
+${d.observacoes ? '**Observação:** ' + d.observacoes : ''}
+
+Me dá:
+1. **Script direto pra ligar/falar com o credor** (frases prontas pra eu copiar)
+2. **% de desconto realista** pra eu pedir baseado no atraso/tipo
+3. **Frases mágicas** que funcionam e armadilhas pra evitar
+4. **Próximos passos** se eles disserem não
+
+Quero algo que eu possa usar AGORA, sem floreio.`;
+    
+    try {
+      const resp = await fetch(IA_FUNCTION_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_KEY
+        },
+        body: JSON.stringify({
+          tipo: 'negociar_divida',
+          mensagem,
+          max_tokens: 1500
+        })
+      });
+      
+      const data = await resp.json();
+      
+      document.getElementById('ia-analisando').classList.add('hidden');
+      
+      if (data.resposta) {
+        scriptIA = data.resposta;
+        document.getElementById('ia-resposta-texto').innerHTML = markdownToHtml(data.resposta);
+        document.getElementById('ia-resposta-area').classList.remove('hidden');
+        
+        await darXP(20, 'ia_negociador_usado', 'Pediu ajuda da IA pra negociar: ' + d.credor);
+        mostrarToast('+20 XP ✨ IA');
+      } else {
+        document.getElementById('ia-card').classList.remove('hidden');
+        alert('⚠️ IA não conseguiu responder. Tenta de novo em alguns segundos.');
+        btn.disabled = false;
+      }
+    } catch (err) {
+      console.error('Erro IA:', err);
+      document.getElementById('ia-analisando').classList.add('hidden');
+      document.getElementById('ia-card').classList.remove('hidden');
+      alert('⚠️ Erro ao chamar IA: ' + err.message);
+      btn.disabled = false;
+    }
+  };
+  
+  window.copiarScript = function() {
+    if (!scriptIA) return;
+    
+    // Limpa markdown pra copiar texto puro
+    const textoPuro = scriptIA
+      .replace(/\*\*(.+?)\*\*/g, '$1')
+      .replace(/^#+ /gm, '')
+      .replace(/^- /gm, '• ')
+      .replace(/```[\s\S]*?```/g, '');
+    
+    // IMPORTANTE: SÍNCRONO pra iOS
+    navigator.clipboard.writeText(textoPuro);
+    
+    const btn = document.getElementById('btn-copiar-script');
+    const txt = btn.textContent;
+    btn.textContent = '✓ Copiado!';
+    btn.style.background = 'var(--brand-soft)';
+    btn.style.color = 'var(--brand)';
+    setTimeout(() => {
+      btn.textContent = txt;
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 2000);
+  };
+  
+  function markdownToHtml(md) {
+    if (!md) return '';
+    let html = md;
+    
+    html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+    html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+    html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    
+    // Listas
+    html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+    html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+    html = html.replace(/(<li>.*<\/li>\n?)+/g, (match) => '<ul>' + match + '</ul>');
+    
+    // Parágrafos
+    html = html.split('\n\n').map(p => {
+      p = p.trim();
+      if (!p) return '';
+      if (p.startsWith('<h') || p.startsWith('<ul') || p.startsWith('<ol')) return p;
+      return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
+    }).join('\n');
+    
+    return html;
+  }
+  
+  window.abrirQuitar = async function() {
+    if (!detalheAtual) return;
+    if (!confirm(`Marcar "${detalheAtual.credor}" como QUITADA? Vai te dar XP de conquista! 🏆`)) return;
+    
+    const { error } = await supabase.from('dividas').update({
+      quitada: true,
+      data_quitacao: new Date().toISOString().split('T')[0],
+      atualizado_em: new Date().toISOString()
+    }).eq('id', detalheAtual.id);
+    
+    if (error) {
+      alert('Erro: ' + error.message);
+      return;
+    }
+    
+    await darXP(100, 'divida_quitada', 'Dívida quitada: ' + detalheAtual.credor);
+    mostrarToast('+100 XP 🏆 QUITADA!');
+    
+    fecharModal('modal-detalhe');
+    await carregarDividas();
+    
+    // Verifica se quitou TODAS pra subir nível
+    setTimeout(async () => {
+      const ativas = dividas.filter(d => !d.quitada);
+      if (ativas.length === 0 && dividas.length > 0) {
+        const { data: p } = await supabase.from('perfis').select('nivel_jornada').eq('id', usuario.id).single();
+        if (p && p.nivel_jornada < 3) {
+          await supabase.from('perfis').update({ nivel_jornada: 3 }).eq('id', usuario.id);
+          await darXP(500, 'level_up', 'Subiu pro Nível 3 - Estabilização');
+          alert('🎉 PARABÉNS! Você subiu pro NÍVEL 3 - ESTABILIZAÇÃO! +500 XP BÔNUS!');
+          window.location.href = 'home.html?v=1';
+        }
+      }
+    }, 800);
+  };
+  
+  window.editarDivida = function() {
+    if (!detalheAtual) return;
+    editandoId = detalheAtual.id;
+    
+    document.getElementById('modal-form-titulo').textContent = 'Editar dívida';
+    document.getElementById('btn-salvar').textContent = 'Salvar';
+    document.getElementById('f-credor').value = detalheAtual.credor;
+    document.getElementById('f-tipo').value = detalheAtual.tipo || 'cartao';
+    document.getElementById('f-valor').value = formatarMoeda(detalheAtual.valor_atual || detalheAtual.valor_original);
+    document.getElementById('f-vencimento').value = detalheAtual.vencimento_original || '';
+    document.getElementById('f-juros').value = detalheAtual.juros_mensal || '';
+    document.getElementById('f-obs').value = detalheAtual.observacoes || '';
+    
+    fecharModal('modal-detalhe');
+    document.getElementById('modal-form').classList.add('show');
+  };
+  
+  window.excluirDivida = async function() {
+    if (!detalheAtual) return;
+    if (!confirm(`Excluir "${detalheAtual.credor}"? Não pode ser desfeito.`)) return;
+    
+    await supabase.from('dividas').delete().eq('id', detalheAtual.id);
+    fecharModal('modal-detalhe');
+    await carregarDividas();
+  };
+  
+  function formatarData(d) {
+    if (!d) return '—';
+    return new Date(d + 'T00:00:00').toLocaleDateString('pt-BR');
+  }
+  
   async function darXP(xp, acao, descricao) {
     await supabase.from('historico_xp').insert({
-      user_id: usuario.id,
-      acao,
-      xp_ganho: xp,
-      descricao
+      user_id: usuario.id, acao, xp_ganho: xp, descricao
     });
-    
-    // Busca XP atual
     const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).single();
-    const novoXp = (g?.xp_total || 0) + xp;
-    
-    await supabase.from('gamificacao')
-      .update({ 
-        xp_total: novoXp,
-        ultima_atividade: new Date().toISOString().split('T')[0]
-      })
-      .eq('user_id', usuario.id);
+    await supabase.from('gamificacao').update({
+      xp_total: (g?.xp_total || 0) + xp,
+      ultima_atividade: new Date().toISOString().split('T')[0]
+    }).eq('user_id', usuario.id);
   }
   
   function mostrarToast(texto) {
@@ -1127,111 +1380,6 @@
     t.style.display = 'block';
     setTimeout(() => { t.style.display = 'none'; }, 2500);
   }
-  
-  // DETALHE
-  window.abrirDetalhe = function(id) {
-    const d = todasDividas.find(x => x.id === id);
-    if (!d) return;
-    
-    dividaDetalheAtual = d;
-    
-    document.getElementById('detalhe-titulo').textContent = d.credor;
-    document.getElementById('detalhe-tipo-label').textContent = (tiposIcones[d.tipo] || '❓') + ' ' + (tiposLabels[d.tipo] || d.tipo).toUpperCase();
-    document.getElementById('detalhe-valor').textContent = formatarMoeda(d.valor_atual);
-    document.getElementById('detalhe-credor').textContent = d.credor;
-    
-    const statusLabel = {
-      em_aberto: 'Em aberto', atrasada: 'Atrasada', negociando: 'Negociando',
-      acordo_fechado: 'Acordo fechado', quitada: 'Quitada'
-    }[d.status] || d.status;
-    const statusEl = document.getElementById('detalhe-status');
-    statusEl.textContent = statusLabel;
-    statusEl.className = 'divida-status status-' + d.status;
-    
-    document.getElementById('detalhe-vencimento').textContent = d.data_vencimento ? formatarData(d.data_vencimento) : '—';
-    document.getElementById('detalhe-juros').textContent = d.juros_mensal ? d.juros_mensal + '% ao mês' : '—';
-    document.getElementById('detalhe-telefone').textContent = d.telefone_credor || '—';
-    document.getElementById('detalhe-obs').textContent = d.observacoes || '—';
-    
-    // Esconde botão quitar se já tá quitada
-    document.getElementById('btn-quitar').style.display = d.status === 'quitada' ? 'none' : 'block';
-    
-    document.getElementById('modal-detalhe').classList.add('show');
-  };
-  
-  window.marcarQuitada = async function() {
-    if (!dividaDetalheAtual) return;
-    if (!confirm(`Marcar a dívida de ${dividaDetalheAtual.credor} como quitada? 🎉`)) return;
-    
-    const { error } = await supabase.from('dividas')
-      .update({ status: 'quitada', atualizado_em: new Date().toISOString() })
-      .eq('id', dividaDetalheAtual.id);
-    
-    if (error) {
-      alert('Erro: ' + error.message);
-      return;
-    }
-    
-    // Registra pagamento
-    await supabase.from('pagamentos_divida').insert({
-      divida_id: dividaDetalheAtual.id,
-      user_id: usuario.id,
-      data_pagamento: new Date().toISOString().split('T')[0],
-      valor_pago: dividaDetalheAtual.valor_atual
-    });
-    
-    // Atualiza estatística
-    const { data: g } = await supabase.from('gamificacao').select('total_dividas_quitadas').eq('user_id', usuario.id).single();
-    await supabase.from('gamificacao')
-      .update({ total_dividas_quitadas: (g?.total_dividas_quitadas || 0) + 1 })
-      .eq('user_id', usuario.id);
-    
-    await darXP(500, 'divida_quitada', `Quitou dívida: ${dividaDetalheAtual.credor}`);
-    mostrarToast('🎉 +500 XP — Dívida quitada!');
-    
-    fecharModal('modal-detalhe');
-    await carregarDividas();
-  };
-  
-  window.editarDivida = function() {
-    if (!dividaDetalheAtual) return;
-    const d = dividaDetalheAtual;
-    
-    dividaEditando = d.id;
-    tipoSelecionado = d.tipo;
-    
-    document.getElementById('modal-form-titulo').textContent = 'Editar dívida';
-    document.getElementById('btn-salvar').textContent = 'Salvar alterações';
-    document.getElementById('f-credor').value = d.credor;
-    document.getElementById('f-valor').value = formatarMoeda(d.valor_atual);
-    document.getElementById('f-vencimento').value = d.data_vencimento || '';
-    document.getElementById('f-juros').value = d.juros_mensal || '';
-    document.getElementById('f-telefone').value = d.telefone_credor || '';
-    document.getElementById('f-obs').value = d.observacoes || '';
-    
-    document.querySelectorAll('.tipo-opt').forEach(o => {
-      o.classList.toggle('selected', o.dataset.tipo === d.tipo);
-    });
-    
-    validarForm();
-    fecharModal('modal-detalhe');
-    document.getElementById('modal-form').classList.add('show');
-  };
-  
-  window.excluirDivida = async function() {
-    if (!dividaDetalheAtual) return;
-    if (!confirm(`Excluir a dívida de ${dividaDetalheAtual.credor}? Essa ação não pode ser desfeita.`)) return;
-    
-    const { error } = await supabase.from('dividas').delete().eq('id', dividaDetalheAtual.id);
-    
-    if (error) {
-      alert('Erro: ' + error.message);
-      return;
-    }
-    
-    fecharModal('modal-detalhe');
-    await carregarDividas();
-  };
 </script>
 
 </body>
