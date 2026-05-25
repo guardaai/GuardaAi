@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0a0a">
+<title>contas • guardaí</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
+  
+  :root {
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --bg-elev: #1c1c1c;
+    --bg-input: #181818;
+    --border: #252525;
+    --border-strong: #353535;
+    --brand: #00d97e;
+    --brand-hover: #00ba6b;
+    --brand-soft: rgba(0, 217, 126, 0.1);
+    --danger: #ff4757;
+    --danger-soft: rgba(255, 71, 87, 0.1);
+    --warning: #ffb800;
+    --warning-soft: rgba(255, 184, 0, 0.1);
+    --info: #38bdf8;
+    --info-soft: rgba(56, 189, 248, 0.1);
+    --ia: #a855f7;
+    --ia-soft: rgba(168, 85, 247, 0.1);
+    --text: #ffffff;
+    --text-mute: #a3a3a3;
+    --text-faint: #525252;
+  }
+  
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  body { padding-bottom: 100px; }
+  
+  input, textarea, select {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    caret-color: var(--brand);
+  }
+  input:-webkit-autofill, textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-input) inset !important;
+    -webkit-text-fill-color: #fff !important;
+  }
+  
+  .header {
+    padding: 16px 20px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .back-btn {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  
+  .header-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    flex: 1;
+  }
+  
+  .brand-mark-mini {
+    width: 28px; height: 28px;
+    background: var(--brand);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  
+  .brand-mark-mini::before {
+    content: '';
+    width: 10px; height: 10px;
+    border: 2px solid var(--bg);
+    border-radius: 3px;
+    border-top: none; border-right: none;
+  }
+  
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 16px 20px 20px;
+  }
+  
+  /* SALDO TOTAL CARD */
+  .saldo-total {
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elev) 100%);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 22px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .saldo-total::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, var(--brand-soft) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  
+  .saldo-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    color: var(--text-mute);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+    position: relative;
+  }
+  
+  .saldo-valor {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+    position: relative;
+  }
+  
+  .saldo-valor.positivo { color: var(--brand); }
+  .saldo-valor.negativo { color: var(--danger); }
+  
+  .saldo-sub {
+    font-size: 12px;
+    color: var(--text-mute);
+    position: relative;
+  }
+  
+  /* TATU TIP */
+  .tatu-tip {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+  
+  .tatu-tip-emoji { font-size: 24px; flex-shrink: 0; }
+  
+  .tatu-tip-texto {
+    flex: 1;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--text-mute);
+  }
+  
+  .tatu-tip-texto strong { color: var(--text); }
+  
+  /* SECTION TITLE */
+  .secao-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    color: var(--text-mute);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 18px 4px 10px;
+  }
+  
+  /* CONTA CARD */
+  .conta-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  
+  .conta-card:active { transform: scale(0.99); }
+  
+  .conta-card.inativa { opacity: 0.5; }
+  
+  .conta-icone {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  
+  .conta-info {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .conta-nome {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .conta-tipo {
+    font-size: 11px;
+    color: var(--text-mute);
+    margin-bottom: 4px;
+  }
+  
+  .conta-tag {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--brand-soft);
+    color: var(--brand);
+    display: inline-block;
+    margin-top: 2px;
+  }
+  
+  .conta-saldo {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  
+  .conta-saldo-valor {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  
+  .conta-saldo-valor.positivo { color: var(--brand); }
+  .conta-saldo-valor.negativo { color: var(--danger); }
+  .conta-saldo-valor.neutro { color: var(--text); }
+  
+  .conta-saldo-label {
+    font-size: 10px;
+    color: var(--text-mute);
+    margin-top: 1px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+  }
+  
+  .conta-limite {
+    font-size: 10px;
+    color: var(--text-mute);
+    margin-top: 2px;
+  }
+  
+  .empty {
+    background: var(--bg-card);
+    border: 1px dashed var(--border-strong);
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  
+  .empty-emoji { font-size: 50px; margin-bottom: 12px; }
+  
+  .empty-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  
+  .empty-desc {
+    font-size: 13px;
+    color: var(--text-mute);
+    line-height: 1.5;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  
+  /* FAB */
+  .fab {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 90;
+    width: calc(100% - 40px);
+    max-width: 440px;
+    background: var(--brand);
+    color: #001a0e;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0, 217, 126, 0.3);
+  }
+  
+  .fab:active {
+    transform: translateX(-50%) scale(0.97);
+    background: var(--brand-hover);
+  }
+  
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 100;
+    display: none;
+    align-items: flex-end;
+    backdrop-filter: blur(4px);
+  }
+  
+  .modal-overlay.show { display: flex; }
+  
+  .modal {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px 24px 0 0;
+    max-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  
+  .modal-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--border-strong);
+    border-radius: 100px;
+    margin: 12px auto;
+    flex-shrink: 0;
+  }
+  
+  .modal-header {
+    padding: 8px 24px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  
+  .modal-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  
+  .modal-close {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    color: var(--text);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  
+  .modal-body {
+    padding: 0 24px;
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .modal-footer {
+    padding: 16px 24px 24px;
+    flex-shrink: 0;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+  }
+  
+  .field { margin-bottom: 14px; }
+  
+  .field label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-mute);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  
+  .field input, .field select {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    color: var(--text);
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--brand);
+  }
+  
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  /* TIPO SELECTOR */
+  .tipo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  
+  .tipo-opcao {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  
+  .tipo-opcao.active {
+    background: var(--brand-soft);
+    border-color: var(--brand);
+  }
+  
+  .tipo-opcao:active { transform: scale(0.97); }
+  
+  .tipo-emoji { font-size: 24px; margin-bottom: 4px; }
+  
+  .tipo-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-mute);
+  }
+  
+  .tipo-opcao.active .tipo-label { color: var(--brand); }
+  
+  /* BANCOS PRESET */
+  .bancos-presets {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  
+  .banco-preset {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  
+  .banco-preset:active { transform: scale(0.95); }
+  
+  .banco-preset.active {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+  }
+  
+  .banco-preset-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    margin: 0 auto 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+    font-weight: 700;
+  }
+  
+  .banco-preset-nome {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  
+  /* COR PICKER */
+  .cores-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  
+  .cor-opcao {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.15s;
+  }
+  
+  .cor-opcao:active { transform: scale(0.9); }
+  .cor-opcao.active {
+    border-color: var(--text);
+    transform: scale(1.1);
+  }
+  
+  /* EMOJI PICKER */
+  .emojis-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+  
+  .emoji-opcao {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  
+  .emoji-opcao:active { transform: scale(0.9); }
+  
+  .emoji-opcao.active {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+  }
+  
+  .valor-input-wrapper {
+    display: flex;
+    align-items: center;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+  
+  .valor-input-wrapper:focus-within { border-color: var(--brand); }
+  
+  .valor-prefix {
+    color: var(--text-mute);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-right: 8px;
+  }
+  
+  .valor-input-wrapper input {
+    background: transparent;
+    border: none;
+    flex: 1;
+    text-align: right;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    padding: 0;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .btn-primary { background: var(--brand); color: #001a0e; }
+  .btn-primary:active { background: var(--brand-hover); transform: scale(0.985); }
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--bg-elev);
+    color: var(--text-faint);
+  }
+  
+  .btn-secondary {
+    background: var(--bg-elev);
+    color: var(--text);
+    border: 1px solid var(--border);
+    margin-top: 8px;
+  }
+  
+  .btn-danger {
+    background: var(--danger-soft);
+    color: var(--danger);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    margin-top: 8px;
+  }
+  
+  .msg {
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    margin-bottom: 14px;
+    display: none;
+    font-weight: 500;
+  }
+  
+  .msg.show { display: block; }
+  
+  .msg-error {
+    background: var(--danger-soft);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    color: #ff6b78;
+  }
+  
+  .xp-toast {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--brand);
+    color: #001a0e;
+    padding: 12px 20px;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    z-index: 200;
+    box-shadow: 0 8px 32px rgba(0, 217, 126, 0.4);
+    display: none;
+    animation: toastIn 0.4s cubic-bezier(0.34, 1.5, 0.64, 1);
+  }
+  
+  @keyframes toastIn {
+    0% { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+    100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+  }
+  
+  .loader-circle {
+    width: 32px; height: 32px;
+    border: 3px solid var(--border);
+    border-radius: 50%;
+    border-top-color: var(--brand);
+    animation: spin 0.8s linear infinite;
+    margin: 40px auto;
+  }
+  
+  @keyframes spin { to { transform: rotate(360deg); } }
+  
+  .detalhe-card {
+    background: var(--bg-input);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .detalhe-linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+  
+  .detalhe-linha:last-child { border-bottom: none; }
+  .detalhe-label { font-size: 13px; color: var(--text-mute); flex-shrink: 0; }
+  .detalhe-valor {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: right;
+  }
+  
+  .info-box {
+    background: var(--info-soft);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    font-size: 11px;
+    color: var(--info);
+    line-height: 1.5;
+  }
+  
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="back-btn" onclick="window.location.href='home.html?v=1'">‹</button>
+  <div class="header-title">Contas</div>
+  <div class="brand-mark-mini" onclick="window.location.href='home.html?v=1'"></div>
+</div>
+
+<div class="container">
+
+  <div id="saldo-area"></div>
+  
+  <div class="tatu-tip">
+    <div class="tatu-tip-emoji">🦔</div>
+    <div class="tatu-tip-texto" id="tatu-tip-texto">
+      Cadastre <strong>todas suas contas</strong> (banco, carteira, cartão) pra ter controle total do seu dinheiro!
+    </div>
+  </div>
+  
+  <div id="lista">
+    <div class="loader-circle"></div>
+  </div>
+
+</div>
+
+<button class="fab" onclick="abrirModalNova()">+ Nova conta</button>
+
+<!-- MODAL FORM -->
+<div class="modal-overlay" id="modal-form">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="modal-form-titulo">Nova conta</div>
+      <button class="modal-close" onclick="fecharModal('modal-form')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msg" id="msg-form"></div>
+      
+      <div class="secao-titulo" style="margin-top:0;">Tipo de conta</div>
+      <div class="tipo-grid">
+        <div class="tipo-opcao active" data-tipo="conta_corrente" onclick="trocarTipo('conta_corrente')">
+          <div class="tipo-emoji">🏦</div>
+          <div class="tipo-label">Conta</div>
+        </div>
+        <div class="tipo-opcao" data-tipo="carteira" onclick="trocarTipo('carteira')">
+          <div class="tipo-emoji">💰</div>
+          <div class="tipo-label">Carteira</div>
+        </div>
+        <div class="tipo-opcao" data-tipo="cartao_credito" onclick="trocarTipo('cartao_credito')">
+          <div class="tipo-emoji">💳</div>
+          <div class="tipo-label">Cartão</div>
+        </div>
+        <div class="tipo-opcao" data-tipo="poupanca" onclick="trocarTipo('poupanca')">
+          <div class="tipo-emoji">🐷</div>
+          <div class="tipo-label">Poupança</div>
+        </div>
+        <div class="tipo-opcao" data-tipo="investimento" onclick="trocarTipo('investimento')">
+          <div class="tipo-emoji">📈</div>
+          <div class="tipo-label">Investim.</div>
+        </div>
+        <div class="tipo-opcao" data-tipo="outro" onclick="trocarTipo('outro')">
+          <div class="tipo-emoji">📌</div>
+          <div class="tipo-label">Outro</div>
+        </div>
+      </div>
+      
+      <div id="banco-section">
+        <div class="secao-titulo">Banco (opcional)</div>
+        <div class="bancos-presets" id="bancos-presets"></div>
+      </div>
+      
+      <div class="field">
+        <label>Nome da conta</label>
+        <input type="text" id="f-nome" placeholder="Ex: Nubank, Carteira, Cartão Black">
+      </div>
+      
+      <div class="secao-titulo">Cor</div>
+      <div class="cores-grid" id="cores-grid"></div>
+      
+      <div class="secao-titulo">Ícone</div>
+      <div class="emojis-grid" id="emojis-grid"></div>
+      
+      <div id="saldo-inicial-section">
+        <div class="secao-titulo">Saldo inicial</div>
+        <div class="info-box">
+          💡 Quanto você tem nessa conta <strong>HOJE</strong>. Para cartão de crédito, deixe zero (a fatura é controlada nas dívidas).
+        </div>
+        <div class="valor-input-wrapper">
+          <span class="valor-prefix">R$</span>
+          <input type="text" inputmode="decimal" id="f-saldo" placeholder="0,00" oninput="formatarValor(this)">
+        </div>
+      </div>
+      
+      <div id="cartao-section" class="hidden">
+        <div class="secao-titulo">Dados do cartão</div>
+        <div class="info-box">
+          💳 Cartão de crédito não tem saldo, tem <strong>limite disponível</strong>. Cadastre o limite total.
+        </div>
+        <div class="field">
+          <label>Limite total</label>
+          <div class="valor-input-wrapper" style="margin-bottom:0;">
+            <span class="valor-prefix">R$</span>
+            <input type="text" inputmode="decimal" id="f-limite" placeholder="0,00" oninput="formatarValor(this)">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Fechamento (dia)</label>
+            <input type="number" id="f-fechamento" placeholder="Ex: 25" min="1" max="31">
+          </div>
+          <div class="field">
+            <label>Vencimento (dia)</label>
+            <input type="number" id="f-vencimento" placeholder="Ex: 5" min="1" max="31">
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="btn-salvar" onclick="salvarConta()">Cadastrar conta</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETALHE -->
+<div class="modal-overlay" id="modal-detalhe">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="detalhe-titulo">Conta</div>
+      <button class="modal-close" onclick="fecharModal('modal-detalhe')">✕</button>
+    </div>
+    <div class="modal-body">
+      
+      <div id="detalhe-saldo-area"></div>
+      
+      <div class="detalhe-card">
+        <div class="detalhe-linha">
+          <div class="detalhe-label">Tipo</div>
+          <div class="detalhe-valor" id="detalhe-tipo">—</div>
+        </div>
+        <div class="detalhe-linha">
+          <div class="detalhe-label">Saldo inicial</div>
+          <div class="detalhe-valor" id="detalhe-inicial">—</div>
+        </div>
+        <div class="detalhe-linha" id="linha-limite" style="display:none;">
+          <div class="detalhe-label">Limite total</div>
+          <div class="detalhe-valor" id="detalhe-limite">—</div>
+        </div>
+        <div class="detalhe-linha" id="linha-fechamento" style="display:none;">
+          <div class="detalhe-label">Fechamento</div>
+          <div class="detalhe-valor" id="detalhe-fechamento">—</div>
+        </div>
+        <div class="detalhe-linha" id="linha-vencimento" style="display:none;">
+          <div class="detalhe-label">Vencimento</div>
+          <div class="detalhe-valor" id="detalhe-vencimento">—</div>
+        </div>
+        <div class="detalhe-linha">
+          <div class="detalhe-label">Status</div>
+          <div class="detalhe-valor" id="detalhe-status">—</div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="btn-editar" onclick="editarConta()">Editar</button>
+      <button class="btn btn-secondary" id="btn-toggle-ativa" onclick="toggleAtiva()">Desativar</button>
+      <button class="btn btn-danger" id="btn-excluir" onclick="excluirConta()">Excluir conta</button>
+    </div>
+  </div>
+</div>
+
+<div class="xp-toast" id="xp-toast">+5 XP</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+  
+  const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  
+  const tiposLabel = {
+    'conta_corrente': '🏦 Conta Corrente',
+    'poupanca': '🐷 Poupança',
+    'carteira': '💰 Carteira',
+    'cartao_credito': '💳 Cartão de Crédito',
+    'investimento': '📈 Investimento',
+    'outro': '📌 Outro'
+  };
+  
+  const bancosPresets = [
+    { nome: 'Nubank', cor: '#820AD1', icone: '🟣', sigla: 'NU' },
+    { nome: 'Itaú', cor: '#EC7000', icone: '🟠', sigla: 'IT' },
+    { nome: 'Bradesco', cor: '#CC092F', icone: '🔴', sigla: 'BR' },
+    { nome: 'Banco do Brasil', cor: '#FFEF38', icone: '🟡', sigla: 'BB' },
+    { nome: 'Santander', cor: '#EC0000', icone: '🔴', sigla: 'SA' },
+    { nome: 'Caixa', cor: '#005CA9', icone: '🔵', sigla: 'CX' },
+    { nome: 'Inter', cor: '#FF7A00', icone: '🟠', sigla: 'IN' },
+    { nome: 'C6 Bank', cor: '#1F1F1F', icone: '⚫', sigla: 'C6' },
+    { nome: 'PicPay', cor: '#21C25E', icone: '🟢', sigla: 'PP' },
+    { nome: 'Mercado Pago', cor: '#00B1EA', icone: '🔵', sigla: 'MP' },
+    { nome: 'PagBank', cor: '#FCB814', icone: '🟡', sigla: 'PB' },
+    { nome: 'Outro', cor: '#555555', icone: '🏦', sigla: '?' }
+  ];
+  
+  const coresDisponiveis = [
+    '#00d97e', '#ff4757', '#ffb800', '#38bdf8', '#a855f7', '#ec4899', '#14b8a6', '#f59e0b',
+    '#820AD1', '#EC7000', '#CC092F', '#1F1F1F', '#21C25E', '#00B1EA', '#005CA9', '#555555'
+  ];
+  
+  const emojisDisponiveis = ['🏦', '💰', '💳', '🐷', '📈', '💵', '💴', '💶', '🟣', '🟠', '🔴', '🟡', '🔵', '🟢', '⚫', '📌'];
+  
+  let usuario;
+  let contas = [];
+  let saldosCalculados = {};
+  let tipoSelecionado = 'conta_corrente';
+  let corSelecionada = '#00d97e';
+  let emojiSelecionado = '🏦';
+  let bancoSelecionado = null;
+  let editandoId = null;
+  let detalheAtual = null;
+  
+  (async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      window.location.href = 'index.html?v=1';
+      return;
+    }
+    usuario = session.user;
+    
+    renderBancosPresets();
+    renderCoresGrid();
+    renderEmojisGrid();
+    
+    await carregarContas();
+    render();
+  })();
+  
+  async function carregarContas() {
+    const { data: contasData } = await supabase
+      .from('contas')
+      .select('*')
+      .eq('user_id', usuario.id)
+      .order('ativa', { ascending: false })
+      .order('criado_em', { ascending: true });
+    
+    contas = contasData || [];
+    
+    // Calcula saldo real de cada conta (saldo_inicial + entradas - saidas)
+    saldosCalculados = {};
+    for (const c of contas) {
+      const { data: trans } = await supabase
+        .from('transacoes')
+        .select('valor, tipo')
+        .eq('user_id', usuario.id)
+        .eq('conta_id', c.id);
+      
+      let saldo = Number(c.saldo_inicial || 0);
+      (trans || []).forEach(t => {
+        saldo += t.tipo === 'entrada' ? Number(t.valor) : -Number(t.valor);
+      });
+      saldosCalculados[c.id] = saldo;
+    }
+  }
+  
+  function render() {
+    renderSaldoTotal();
+    renderTatuTip();
+    renderLista();
+  }
+  
+  function renderSaldoTotal() {
+    const ativas = contas.filter(c => c.ativa && c.tipo !== 'cartao_credito');
+    const total = ativas.reduce((a, c) => a + (saldosCalculados[c.id] || 0), 0);
+    
+    document.getElementById('saldo-area').innerHTML = `
+      <div class="saldo-total">
+        <div class="saldo-label">Patrimônio em contas</div>
+        <div class="saldo-valor ${total >= 0 ? 'positivo' : 'negativo'}">R$ ${formatarMoeda(total)}</div>
+        <div class="saldo-sub">${ativas.length} conta${ativas.length === 1 ? '' : 's'} ativa${ativas.length === 1 ? '' : 's'} • cartões não somam</div>
+      </div>
+    `;
+  }
+  
+  function renderTatuTip() {
+    const el = document.getElementById('tatu-tip-texto');
+    const ativas = contas.filter(c => c.ativa).length;
+    
+    if (contas.length === 0) {
+      el.innerHTML = 'Cadastre <strong>todas suas contas</strong> (banco, carteira, cartão) pra ter controle total do seu dinheiro!';
+    } else if (ativas < 2) {
+      el.innerHTML = `Você tem ${ativas} conta cadastrada. <strong>Cadastre mais</strong> pra separar onde seu dinheiro está!`;
+    } else if (!contas.some(c => c.tipo === 'cartao_credito')) {
+      el.innerHTML = `${ativas} contas cadastradas! Não esqueça de cadastrar seus <strong>cartões de crédito</strong> com limite e datas.`;
+    } else {
+      el.innerHTML = `<strong>${ativas} contas</strong> ativas. Quando cadastrar transações, escolha em qual conta cada uma vai!`;
+    }
+  }
+  
+  function renderLista() {
+    const lista = document.getElementById('lista');
+    
+    if (contas.length === 0) {
+      lista.innerHTML = `
+        <div class="empty">
+          <div class="empty-emoji">🏦</div>
+          <div class="empty-title">Sem contas cadastradas</div>
+          <div class="empty-desc">Comece cadastrando seu banco principal, carteira ou cartão.</div>
+        </div>
+      `;
+      return;
+    }
+    
+    // Agrupa: ativas primeiro, inativas depois
+    const ativas = contas.filter(c => c.ativa);
+    const inativas = contas.filter(c => !c.ativa);
+    
+    let html = '';
+    if (ativas.length > 0) {
+      html += '<div class="secao-titulo" style="margin-top:0;">Suas contas</div>';
+      html += ativas.map(c => contaHTML(c)).join('');
+    }
+    if (inativas.length > 0) {
+      html += '<div class="secao-titulo">Inativas</div>';
+      html += inativas.map(c => contaHTML(c)).join('');
+    }
+    
+    lista.innerHTML = html;
+  }
+  
+  function contaHTML(c) {
+    const saldo = saldosCalculados[c.id] || 0;
+    const ehCartao = c.tipo === 'cartao_credito';
+    const tag = c.padrao ? '<div class="conta-tag">⭐ PADRÃO</div>' : '';
+    
+    let saldoLabel, saldoValor, saldoClasse;
+    if (ehCartao) {
+      // Pra cartão: limite - gasto da fatura (vou simplificar mostrando o limite total por enquanto)
+      saldoLabel = 'Limite';
+      saldoValor = `R$ ${formatarMoeda(c.limite || 0)}`;
+      saldoClasse = 'neutro';
+    } else {
+      saldoLabel = 'Saldo';
+      saldoValor = `R$ ${formatarMoeda(saldo)}`;
+      saldoClasse = saldo >= 0 ? 'positivo' : 'negativo';
+    }
+    
+    return `
+      <div class="conta-card ${!c.ativa ? 'inativa' : ''}" onclick="abrirDetalhe('${c.id}')">
+        <div class="conta-icone" style="background:${c.cor}30;border:2px solid ${c.cor}66;color:${c.cor};">
+          ${c.icone}
+        </div>
+        <div class="conta-info">
+          <div class="conta-nome">${c.nome}</div>
+          <div class="conta-tipo">${tiposLabel[c.tipo] || 'Outro'}${c.banco ? ' • ' + c.banco : ''}</div>
+          ${tag}
+        </div>
+        <div class="conta-saldo">
+          <div class="conta-saldo-label">${saldoLabel}</div>
+          <div class="conta-saldo-valor ${saldoClasse}">${saldoValor}</div>
+        </div>
+      </div>
+    `;
+  }
+  
+  function renderBancosPresets() {
+    document.getElementById('bancos-presets').innerHTML = bancosPresets.map((b, i) => `
+      <div class="banco-preset" data-banco="${b.nome}" onclick="selecionarBanco(${i})">
+        <div class="banco-preset-icon" style="background:${b.cor};">${b.sigla}</div>
+        <div class="banco-preset-nome">${b.nome}</div>
+      </div>
+    `).join('');
+  }
+  
+  function renderCoresGrid() {
+    document.getElementById('cores-grid').innerHTML = coresDisponiveis.map(c => `
+      <div class="cor-opcao ${c === corSelecionada ? 'active' : ''}" 
+           data-cor="${c}" 
+           style="background:${c};" 
+           onclick="selecionarCor('${c}')"></div>
+    `).join('');
+  }
+  
+  function renderEmojisGrid() {
+    document.getElementById('emojis-grid').innerHTML = emojisDisponiveis.map(e => `
+      <div class="emoji-opcao ${e === emojiSelecionado ? 'active' : ''}" 
+           data-emoji="${e}" 
+           onclick="selecionarEmoji('${e}')">${e}</div>
+    `).join('');
+  }
+  
+  window.trocarTipo = function(tipo) {
+    tipoSelecionado = tipo;
+    document.querySelectorAll('.tipo-opcao').forEach(t => t.classList.toggle('active', t.dataset.tipo === tipo));
+    
+    // Mostra/esconde seções específicas
+    const isCartao = tipo === 'cartao_credito';
+    document.getElementById('cartao-section').classList.toggle('hidden', !isCartao);
+    document.getElementById('saldo-inicial-section').classList.toggle('hidden', isCartao);
+    document.getElementById('banco-section').classList.toggle('hidden', tipo === 'carteira' || tipo === 'outro');
+    
+    // Atualiza emoji padrão
+    if (tipo === 'cartao_credito') { emojiSelecionado = '💳'; }
+    else if (tipo === 'carteira') { emojiSelecionado = '💰'; }
+    else if (tipo === 'poupanca') { emojiSelecionado = '🐷'; }
+    else if (tipo === 'investimento') { emojiSelecionado = '📈'; }
+    else { emojiSelecionado = '🏦'; }
+    renderEmojisGrid();
+  };
+  
+  window.selecionarBanco = function(i) {
+    const b = bancosPresets[i];
+    bancoSelecionado = b.nome === 'Outro' ? null : b.nome;
+    corSelecionada = b.cor;
+    
+    document.querySelectorAll('.banco-preset').forEach((el, idx) => {
+      el.classList.toggle('active', idx === i);
+    });
+    
+    if (b.nome !== 'Outro' && !document.getElementById('f-nome').value) {
+      document.getElementById('f-nome').value = b.nome;
+    }
+    
+    renderCoresGrid();
+  };
+  
+  window.selecionarCor = function(c) {
+    corSelecionada = c;
+    document.querySelectorAll('.cor-opcao').forEach(el => el.classList.toggle('active', el.dataset.cor === c));
+  };
+  
+  window.selecionarEmoji = function(e) {
+    emojiSelecionado = e;
+    document.querySelectorAll('.emoji-opcao').forEach(el => el.classList.toggle('active', el.dataset.emoji === e));
+  };
+  
+  window.formatarValor = function(input) {
+    let v = input.value.replace(/\D/g, '');
+    if (!v) { input.value = ''; return; }
+    v = (parseInt(v) / 100).toFixed(2);
+    input.value = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  };
+  
+  function valorParaNumero(str) {
+    if (!str) return 0;
+    return Number(str.replace(/\./g, '').replace(',', '.')) || 0;
+  }
+  
+  window.abrirModalNova = function() {
+    editandoId = null;
+    document.getElementById('modal-form-titulo').textContent = 'Nova conta';
+    document.getElementById('btn-salvar').textContent = 'Cadastrar conta';
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-saldo').value = '';
+    document.getElementById('f-limite').value = '';
+    document.getElementById('f-fechamento').value = '';
+    document.getElementById('f-vencimento').value = '';
+    document.getElementById('msg-form').className = 'msg';
+    tipoSelecionado = 'conta_corrente';
+    corSelecionada = '#00d97e';
+    emojiSelecionado = '🏦';
+    bancoSelecionado = null;
+    document.querySelectorAll('.banco-preset').forEach(el => el.classList.remove('active'));
+    trocarTipo('conta_corrente');
+    renderCoresGrid();
+    renderEmojisGrid();
+    document.getElementById('modal-form').classList.add('show');
+  };
+  
+  window.fecharModal = function(id) {
+    document.getElementById(id).classList.remove('show');
+  };
+  
+  window.salvarConta = async function() {
+    const nome = document.getElementById('f-nome').value.trim();
+    
+    if (!nome) {
+      document.getElementById('msg-form').className = 'msg show msg-error';
+      document.getElementById('msg-form').textContent = 'Preencha o nome da conta';
+      return;
+    }
+    
+    const isCartao = tipoSelecionado === 'cartao_credito';
+    const saldoInicial = isCartao ? 0 : valorParaNumero(document.getElementById('f-saldo').value);
+    const limite = isCartao ? valorParaNumero(document.getElementById('f-limite').value) : null;
+    const fechamento = isCartao ? (parseInt(document.getElementById('f-fechamento').value) || null) : null;
+    const vencimento = isCartao ? (parseInt(document.getElementById('f-vencimento').value) || null) : null;
+    
+    const btn = document.getElementById('btn-salvar');
+    btn.disabled = true;
+    btn.textContent = 'Salvando...';
+    
+    const dados = {
+      nome,
+      tipo: tipoSelecionado,
+      banco: bancoSelecionado,
+      cor: corSelecionada,
+      icone: emojiSelecionado,
+      saldo_inicial: saldoInicial,
+      limite,
+      dia_fechamento: fechamento,
+      dia_vencimento: vencimento,
+      atualizado_em: new Date().toISOString()
+    };
+    
+    let result;
+    if (editandoId) {
+      result = await supabase.from('contas').update(dados).eq('id', editandoId);
+    } else {
+      // Primeira conta vira padrão
+      if (contas.length === 0 && !isCartao) dados.padrao = true;
+      dados.user_id = usuario.id;
+      result = await supabase.from('contas').insert(dados);
+    }
+    
+    if (result.error) {
+      document.getElementById('msg-form').className = 'msg show msg-error';
+      document.getElementById('msg-form').textContent = 'Erro: ' + result.error.message;
+      btn.disabled = false;
+      btn.textContent = editandoId ? 'Salvar' : 'Cadastrar conta';
+      return;
+    }
+    
+    if (!editandoId) {
+      await darXP(15, 'conta_cadastrada', 'Conta cadastrada: ' + nome);
+      mostrarToast('+15 XP 🏦');
+    }
+    
+    fecharModal('modal-form');
+    await carregarContas();
+    render();
+  };
+  
+  window.abrirDetalhe = function(id) {
+    const c = contas.find(x => x.id === id);
+    if (!c) return;
+    detalheAtual = c;
+    
+    const saldo = saldosCalculados[c.id] || 0;
+    const ehCartao = c.tipo === 'cartao_credito';
+    
+    document.getElementById('detalhe-titulo').textContent = `${c.icone} ${c.nome}`;
+    document.getElementById('detalhe-tipo').textContent = tiposLabel[c.tipo] || '—';
+    document.getElementById('detalhe-inicial').textContent = `R$ ${formatarMoeda(c.saldo_inicial || 0)}`;
+    document.getElementById('detalhe-status').textContent = c.ativa ? '✓ Ativa' : '✗ Inativa';
+    
+    document.getElementById('btn-toggle-ativa').textContent = c.ativa ? 'Desativar' : 'Reativar';
+    
+    document.getElementById('linha-limite').style.display = ehCartao ? 'flex' : 'none';
+    document.getElementById('linha-fechamento').style.display = ehCartao && c.dia_fechamento ? 'flex' : 'none';
+    document.getElementById('linha-vencimento').style.display = ehCartao && c.dia_vencimento ? 'flex' : 'none';
+    
+    if (ehCartao) {
+      document.getElementById('detalhe-limite').textContent = `R$ ${formatarMoeda(c.limite || 0)}`;
+      if (c.dia_fechamento) document.getElementById('detalhe-fechamento').textContent = `Dia ${c.dia_fechamento}`;
+      if (c.dia_vencimento) document.getElementById('detalhe-vencimento').textContent = `Dia ${c.dia_vencimento}`;
+    }
+    
+    // Card de saldo grande
+    const saldoArea = document.getElementById('detalhe-saldo-area');
+    if (ehCartao) {
+      saldoArea.innerHTML = `
+        <div class="saldo-total" style="margin-bottom:16px;">
+          <div class="saldo-label">Limite total</div>
+          <div class="saldo-valor positivo" style="color:${c.cor};">R$ ${formatarMoeda(c.limite || 0)}</div>
+          <div class="saldo-sub">Cartão de crédito</div>
+        </div>
+      `;
+    } else {
+      saldoArea.innerHTML = `
+        <div class="saldo-total" style="margin-bottom:16px;">
+          <div class="saldo-label">Saldo atual</div>
+          <div class="saldo-valor ${saldo >= 0 ? 'positivo' : 'negativo'}" style="${saldo >= 0 ? 'color:'+c.cor : ''}">R$ ${formatarMoeda(saldo)}</div>
+          <div class="saldo-sub">Inicial + entradas - saídas</div>
+        </div>
+      `;
+    }
+    
+    document.getElementById('modal-detalhe').classList.add('show');
+  };
+  
+  window.editarConta = function() {
+    if (!detalheAtual) return;
+    editandoId = detalheAtual.id;
+    
+    document.getElementById('modal-form-titulo').textContent = 'Editar conta';
+    document.getElementById('btn-salvar').textContent = 'Salvar';
+    document.getElementById('f-nome').value = detalheAtual.nome;
+    document.getElementById('f-saldo').value = formatarMoeda(detalheAtual.saldo_inicial || 0);
+    document.getElementById('f-limite').value = detalheAtual.limite ? formatarMoeda(detalheAtual.limite) : '';
+    document.getElementById('f-fechamento').value = detalheAtual.dia_fechamento || '';
+    document.getElementById('f-vencimento').value = detalheAtual.dia_vencimento || '';
+    
+    tipoSelecionado = detalheAtual.tipo;
+    corSelecionada = detalheAtual.cor;
+    emojiSelecionado = detalheAtual.icone;
+    bancoSelecionado = detalheAtual.banco;
+    
+    trocarTipo(detalheAtual.tipo);
+    renderCoresGrid();
+    renderEmojisGrid();
+    
+    // Marca banco selecionado
+    document.querySelectorAll('.banco-preset').forEach(el => {
+      el.classList.toggle('active', el.dataset.banco === detalheAtual.banco);
+    });
+    
+    fecharModal('modal-detalhe');
+    document.getElementById('modal-form').classList.add('show');
+  };
+  
+  window.toggleAtiva = async function() {
+    if (!detalheAtual) return;
+    
+    await supabase.from('contas').update({ 
+      ativa: !detalheAtual.ativa,
+      atualizado_em: new Date().toISOString()
+    }).eq('id', detalheAtual.id);
+    
+    fecharModal('modal-detalhe');
+    await carregarContas();
+    render();
+  };
+  
+  window.excluirConta = async function() {
+    if (!detalheAtual) return;
+    
+    // Verifica se tem transações vinculadas
+    const { count } = await supabase
+      .from('transacoes')
+      .select('*', { count: 'exact', head: true })
+      .eq('conta_id', detalheAtual.id);
+    
+    let msg = `Excluir "${detalheAtual.nome}"?`;
+    if (count > 0) {
+      msg += `\n\n⚠️ ${count} transação(ões) ficarão SEM conta vinculada (não vão sumir).`;
+    }
+    msg += '\n\nNão pode ser desfeito.';
+    
+    if (!confirm(msg)) return;
+    
+    await supabase.from('contas').delete().eq('id', detalheAtual.id);
+    fecharModal('modal-detalhe');
+    await carregarContas();
+    render();
+  };
+  
+  function formatarMoeda(v) {
+    return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  
+  async function darXP(xp, acao, descricao) {
+    await supabase.from('historico_xp').insert({
+      user_id: usuario.id, acao, xp_ganho: xp, descricao
+    });
+    const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).single();
+    await supabase.from('gamificacao').update({
+      xp_total: (g?.xp_total || 0) + xp,
+      ultima_atividade: new Date().toISOString().split('T')[0]
+    }).eq('user_id', usuario.id);
+  }
+  
+  function mostrarToast(texto) {
+    const t = document.getElementById('xp-toast');
+    t.textContent = texto;
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 2500);
+  }
+</script>
+
+</body>
+</html>
