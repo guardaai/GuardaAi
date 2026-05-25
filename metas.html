@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0a0a">
+<title>metas • guardaí</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
+  
+  :root {
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --bg-elev: #1c1c1c;
+    --bg-input: #181818;
+    --border: #252525;
+    --border-strong: #353535;
+    --brand: #00d97e;
+    --brand-hover: #00ba6b;
+    --brand-soft: rgba(0, 217, 126, 0.1);
+    --danger: #ff4757;
+    --danger-soft: rgba(255, 71, 87, 0.1);
+    --warning: #ffb800;
+    --warning-soft: rgba(255, 184, 0, 0.1);
+    --info: #38bdf8;
+    --info-soft: rgba(56, 189, 248, 0.1);
+    --purple: #a855f7;
+    --purple-soft: rgba(168, 85, 247, 0.1);
+    --text: #ffffff;
+    --text-mute: #a3a3a3;
+    --text-faint: #525252;
+  }
+  
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  body { padding-bottom: 100px; }
+  
+  .header {
+    padding: 16px 20px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .back-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  
+  .header-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    flex: 1;
+  }
+  
+  .brand-mark-mini {
+    width: 28px;
+    height: 28px;
+    background: var(--brand);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .brand-mark-mini::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--bg);
+    border-radius: 3px;
+    border-top: none;
+    border-right: none;
+  }
+  
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* SEÇÃO */
+  .section { margin-bottom: 20px; }
+  
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    color: var(--text-mute);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    padding: 0 4px;
+  }
+  
+  /* RESERVA - CARD ESPECIAL */
+  .reserva-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 22px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  
+  .reserva-card::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -20%;
+    width: 240px;
+    height: 240px;
+    background: radial-gradient(circle, var(--brand-soft) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  
+  .reserva-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    position: relative;
+  }
+  
+  .reserva-icon {
+    width: 52px;
+    height: 52px;
+    background: var(--brand-soft);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  
+  .reserva-info { flex: 1; }
+  
+  .reserva-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    color: var(--brand);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 2px;
+  }
+  
+  .reserva-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  
+  .reserva-valores {
+    position: relative;
+    margin-bottom: 14px;
+  }
+  
+  .reserva-atual {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--brand);
+    line-height: 1;
+  }
+  
+  .reserva-alvo {
+    color: var(--text-mute);
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  
+  .progress {
+    position: relative;
+    background: var(--bg-elev);
+    height: 10px;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background: var(--brand);
+    border-radius: 100px;
+    transition: width 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+    position: relative;
+  }
+  
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    animation: shimmer 2s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  
+  .reserva-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+  
+  .reserva-pct {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--brand);
+  }
+  
+  .reserva-falta {
+    font-size: 12px;
+    color: var(--text-mute);
+  }
+  
+  .reserva-acoes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 16px;
+    position: relative;
+  }
+  
+  .btn-acao {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  
+  .btn-acao:active { transform: scale(0.97); }
+  
+  .btn-acao.primario {
+    background: var(--brand);
+    color: #001a0e;
+    border-color: var(--brand);
+  }
+  
+  /* OBJETIVO */
+  .objetivo-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  
+  .objetivo-card:active { transform: scale(0.99); }
+  
+  .objetivo-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  
+  .objetivo-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  
+  .objetivo-info { flex: 1; }
+  
+  .objetivo-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+  
+  .objetivo-meta-info {
+    font-size: 12px;
+    color: var(--text-mute);
+  }
+  
+  .objetivo-valores {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  
+  .objetivo-atual {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  
+  .objetivo-alvo {
+    color: var(--text-mute);
+    font-size: 13px;
+  }
+  
+  .objetivo-pct-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    font-size: 11px;
+  }
+  
+  .objetivo-pct {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+  }
+  
+  .objetivo-prazo {
+    color: var(--text-mute);
+  }
+  
+  /* CONCLUÍDA */
+  .objetivo-card.concluida {
+    border-color: var(--brand);
+    background: linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%);
+  }
+  
+  .objetivo-card.concluida .objetivo-titulo::after {
+    content: ' ✓';
+    color: var(--brand);
+  }
+  
+  /* TATU */
+  .tatu-bubble {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 18px;
+  }
+  
+  .tatu-emoji { font-size: 28px; flex-shrink: 0; }
+  
+  .tatu-text {
+    flex: 1;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-mute);
+  }
+  
+  .tatu-text strong { color: var(--text); }
+  
+  /* EMPTY */
+  .empty {
+    background: var(--bg-card);
+    border: 1px dashed var(--border-strong);
+    border-radius: 16px;
+    padding: 32px 20px;
+    text-align: center;
+  }
+  
+  .empty-emoji { font-size: 40px; margin-bottom: 8px; }
+  
+  .empty-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  
+  .empty-desc {
+    font-size: 13px;
+    color: var(--text-mute);
+    line-height: 1.5;
+    max-width: 280px;
+    margin: 0 auto 14px;
+  }
+  
+  /* FAB */
+  .fab {
+    position: fixed;
+    bottom: 24px;
+    right: 50%;
+    transform: translateX(50%);
+    z-index: 90;
+    width: calc(100% - 40px);
+    max-width: 440px;
+    background: var(--brand);
+    color: #001a0e;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0, 217, 126, 0.3);
+  }
+  
+  .fab:active {
+    transform: translateX(50%) scale(0.97);
+    background: var(--brand-hover);
+  }
+  
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 100;
+    display: none;
+    align-items: flex-end;
+    backdrop-filter: blur(4px);
+  }
+  
+  .modal-overlay.show { display: flex; }
+  
+  .modal {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px 24px 0 0;
+    max-height: 92vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  
+  .modal-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--border-strong);
+    border-radius: 100px;
+    margin: 12px auto;
+  }
+  
+  .modal-header {
+    padding: 8px 24px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  
+  .modal-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  
+  .modal-body { padding: 0 24px 24px; }
+  
+  /* ICONE PICKER */
+  .icone-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  
+  .icone-opt {
+    aspect-ratio: 1;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    cursor: pointer;
+  }
+  
+  .icone-opt.selected {
+    background: var(--brand-soft);
+    border-color: var(--brand);
+  }
+  
+  /* CORES */
+  .cor-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+  }
+  
+  .cor-opt {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.15s;
+  }
+  
+  .cor-opt.selected {
+    border-color: var(--text);
+    transform: scale(1.1);
+  }
+  
+  /* FIELD */
+  .field { margin-bottom: 14px; }
+  
+  .field label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-mute);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  
+  .field input, .field select, .field textarea {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    color: var(--text);
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--brand);
+  }
+  
+  .field input::placeholder { color: var(--text-faint); }
+  
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .valor-input-wrapper {
+    display: flex;
+    align-items: center;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+  
+  .valor-input-wrapper:focus-within { border-color: var(--brand); }
+  
+  .valor-prefix {
+    color: var(--text-mute);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-right: 8px;
+  }
+  
+  .valor-input-wrapper input {
+    background: transparent;
+    border: none;
+    flex: 1;
+    text-align: right;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    padding: 0;
+  }
+  
+  .info-box {
+    background: var(--info-soft);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 14px;
+    font-size: 12px;
+    color: var(--info);
+    line-height: 1.5;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Inter', sans-serif;
+    margin-top: 8px;
+  }
+  
+  .btn-primary { background: var(--brand); color: #001a0e; }
+  .btn-primary:active { background: var(--brand-hover); transform: scale(0.985); }
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--bg-elev);
+    color: var(--text-faint);
+  }
+  
+  .btn-secondary {
+    background: var(--bg-elev);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  
+  .btn-danger {
+    background: var(--danger-soft);
+    color: var(--danger);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+  }
+  
+  .detalhe-grid {
+    background: var(--bg-input);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .detalhe-linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .detalhe-linha:last-child { border-bottom: none; }
+  .detalhe-label { font-size: 13px; color: var(--text-mute); }
+  .detalhe-valor {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .msg {
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    margin-bottom: 14px;
+    display: none;
+    font-weight: 500;
+  }
+  
+  .msg.show { display: block; }
+  
+  .msg-error {
+    background: var(--danger-soft);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    color: #ff6b78;
+  }
+  
+  .xp-toast {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--brand);
+    color: #001a0e;
+    padding: 12px 20px;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    z-index: 200;
+    box-shadow: 0 8px 32px rgba(0, 217, 126, 0.4);
+    display: none;
+    animation: toastIn 0.4s cubic-bezier(0.34, 1.5, 0.64, 1);
+  }
+  
+  @keyframes toastIn {
+    0% { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+    100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+  }
+  
+  .loader-circle {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border);
+    border-radius: 50%;
+    border-top-color: var(--brand);
+    animation: spin 0.8s linear infinite;
+    margin: 40px auto;
+  }
+  
+  @keyframes spin { to { transform: rotate(360deg); } }
+  
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="back-btn" onclick="window.location.href='home.html?v=1'">‹</button>
+  <div class="header-title">Metas</div>
+  <div class="brand-mark-mini" onclick="window.location.href='home.html?v=1'"></div>
+</div>
+
+<div class="container">
+
+  <!-- TATU -->
+  <div class="tatu-bubble">
+    <div class="tatu-emoji">🦔</div>
+    <div class="tatu-text" id="tatu-msg">
+      Reserva de emergência é seu <strong>colete à prova de bala</strong> financeiro. Vamos montar a sua?
+    </div>
+  </div>
+
+  <!-- RESERVA -->
+  <div class="section">
+    <div class="section-title">🛡️ Reserva de emergência</div>
+    <div id="reserva-container">
+      <div class="loader-circle"></div>
+    </div>
+  </div>
+  
+  <!-- OBJETIVOS -->
+  <div class="section">
+    <div class="section-title">🎯 Meus objetivos</div>
+    <div id="objetivos-container"></div>
+  </div>
+
+</div>
+
+<button class="fab" onclick="abrirModalNovoObjetivo()">+ Novo objetivo</button>
+
+<!-- MODAL RESERVA SETUP -->
+<div class="modal-overlay" id="modal-reserva">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">Reserva de emergência</div>
+      <button class="modal-close" onclick="fecharModal('modal-reserva')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msg" id="msg-reserva"></div>
+      
+      <div class="info-box">
+        🛡️ A regra de ouro: ter de <strong>6 a 12 meses</strong> dos seus gastos essenciais guardados. Em caso de emergência (perder emprego, doença), você não fica desesperado.
+      </div>
+      
+      <div class="field">
+        <label>Quantos meses de reserva você quer?</label>
+        <select id="f-meses">
+          <option value="3">3 meses (mínimo)</option>
+          <option value="6" selected>6 meses (recomendado)</option>
+          <option value="9">9 meses</option>
+          <option value="12">12 meses (folga)</option>
+        </select>
+      </div>
+      
+      <div class="field">
+        <label>Seu gasto médio mensal</label>
+        <div class="valor-input-wrapper">
+          <span class="valor-prefix">R$</span>
+          <input type="text" inputmode="decimal" id="f-gasto-mensal" placeholder="0,00" oninput="formatarValor(this); calcularAlvo()">
+        </div>
+      </div>
+      
+      <div class="info-box" id="alvo-calculado" style="display:none;">
+        💰 Sua meta: <strong id="alvo-valor">R$ 0,00</strong>
+      </div>
+      
+      <div class="field">
+        <label>Quanto você já tem guardado? <span style="color:var(--text-faint)">(opcional)</span></label>
+        <div class="valor-input-wrapper">
+          <span class="valor-prefix">R$</span>
+          <input type="text" inputmode="decimal" id="f-ja-tenho" placeholder="0,00" oninput="formatarValor(this)">
+        </div>
+      </div>
+      
+      <button class="btn btn-primary" id="btn-salvar-reserva" onclick="salvarReserva()">Configurar reserva</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL OBJETIVO -->
+<div class="modal-overlay" id="modal-objetivo">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="modal-objetivo-titulo">Novo objetivo</div>
+      <button class="modal-close" onclick="fecharModal('modal-objetivo')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msg" id="msg-objetivo"></div>
+      
+      <div class="field">
+        <label>Qual é o objetivo?</label>
+        <input type="text" id="f-nome" placeholder="Ex: Viagem Europa, Carro novo, Casa própria">
+      </div>
+      
+      <div class="field">
+        <label>Quanto custa?</label>
+        <div class="valor-input-wrapper">
+          <span class="valor-prefix">R$</span>
+          <input type="text" inputmode="decimal" id="f-alvo" placeholder="0,00" oninput="formatarValor(this)">
+        </div>
+      </div>
+      
+      <div class="field-row">
+        <div class="field">
+          <label>Já guardou? <span style="color:var(--text-faint)">(opcional)</span></label>
+          <div class="valor-input-wrapper">
+            <span class="valor-prefix">R$</span>
+            <input type="text" inputmode="decimal" id="f-atual" placeholder="0,00" oninput="formatarValor(this)">
+          </div>
+        </div>
+        <div class="field">
+          <label>Até quando? <span style="color:var(--text-faint)">(opcional)</span></label>
+          <input type="date" id="f-prazo">
+        </div>
+      </div>
+      
+      <div class="field">
+        <label>Escolha um ícone</label>
+        <div class="icone-grid" id="icone-grid"></div>
+      </div>
+      
+      <div class="field">
+        <label>Cor</label>
+        <div class="cor-grid" id="cor-grid"></div>
+      </div>
+      
+      <button class="btn btn-primary" id="btn-salvar-objetivo" onclick="salvarObjetivo()">Criar objetivo</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETALHE OBJETIVO -->
+<div class="modal-overlay" id="modal-detalhe">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="detalhe-titulo">Objetivo</div>
+      <button class="modal-close" onclick="fecharModal('modal-detalhe')">✕</button>
+    </div>
+    <div class="modal-body">
+      
+      <div style="text-align:center; padding: 20px 0;">
+        <div id="detalhe-icone" style="width:80px;height:80px;border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 14px;">🎯</div>
+        <div id="detalhe-pct" style="font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;letter-spacing:-0.02em;color:var(--brand);">0%</div>
+        <div id="detalhe-valores" style="margin-top:8px;color:var(--text-mute);font-size:14px;">R$ 0,00 / R$ 0,00</div>
+      </div>
+      
+      <div class="progress" style="margin-bottom:16px;">
+        <div class="progress-fill" id="detalhe-progress" style="width:0%;"></div>
+      </div>
+      
+      <div class="detalhe-grid">
+        <div class="detalhe-linha">
+          <div class="detalhe-label">Falta guardar</div>
+          <div class="detalhe-valor" id="detalhe-falta">R$ 0,00</div>
+        </div>
+        <div class="detalhe-linha" id="linha-prazo">
+          <div class="detalhe-label">Prazo</div>
+          <div class="detalhe-valor" id="detalhe-prazo">—</div>
+        </div>
+        <div class="detalhe-linha" id="linha-mensal">
+          <div class="detalhe-label">Guardar por mês</div>
+          <div class="detalhe-valor" id="detalhe-mensal">—</div>
+        </div>
+      </div>
+      
+      <button class="btn btn-primary" onclick="abrirAddValor()">+ Adicionar valor</button>
+      <button class="btn btn-secondary" onclick="editarObjetivo()">Editar</button>
+      <button class="btn btn-danger" onclick="excluirObjetivo()">Excluir</button>
+      
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ADICIONAR VALOR -->
+<div class="modal-overlay" id="modal-add-valor">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">Adicionar valor</div>
+      <button class="modal-close" onclick="fecharModal('modal-add-valor')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msg" id="msg-add-valor"></div>
+      
+      <div class="info-box" id="info-add-valor">
+        Quanto você guardou agora pra essa meta?
+      </div>
+      
+      <div class="valor-input-wrapper">
+        <span class="valor-prefix">R$</span>
+        <input type="text" inputmode="decimal" id="f-add-valor" placeholder="0,00" oninput="formatarValor(this); validarAddValor()">
+      </div>
+      
+      <button class="btn btn-primary" id="btn-add-valor" onclick="confirmarAddValor()" disabled style="margin-top:14px;">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<div class="xp-toast" id="xp-toast">+10 XP</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+  
+  const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  
+  let usuario;
+  let perfil;
+  let reserva = null;
+  let objetivos = [];
+  let detalheAtual = null;
+  let editandoId = null;
+  let iconeSelecionado = '🎯';
+  let corSelecionada = '#00d97e';
+  let modoAddValor = null;
+  
+  const icones = ['🎯','✈️','🚗','🏠','💍','📱','💻','🎓','💼','🏖️','🎮','📷','🎸','🚴','⌚','🛋️','🐕','💎','🏔️','🎂','💄','🛒'];
+  const cores = ['#00d97e','#38bdf8','#a855f7','#ffb800','#ff4757','#ec4899','#06b6d4','#f97316','#84cc16','#8b5cf6','#14b8a6','#ef4444'];
+  
+  (async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      window.location.href = 'index.html?v=1';
+      return;
+    }
+    usuario = session.user;
+    
+    await carregarTudo();
+    setupPickers();
+  })();
+  
+  async function carregarTudo() {
+    const [pRes, mRes] = await Promise.all([
+      supabase.from('perfis').select('*').eq('id', usuario.id).single(),
+      supabase.from('metas').select('*').eq('user_id', usuario.id).order('criado_em', { ascending: false })
+    ]);
+    
+    perfil = pRes.data;
+    const metas = mRes.data || [];
+    
+    reserva = metas.find(m => m.tipo === 'reserva_emergencia');
+    objetivos = metas.filter(m => m.tipo === 'objetivo');
+    
+    renderReserva();
+    renderObjetivos();
+    renderTatu();
+  }
+  
+  function setupPickers() {
+    document.getElementById('icone-grid').innerHTML = icones.map(i => 
+      `<div class="icone-opt ${i === iconeSelecionado ? 'selected' : ''}" data-icone="${i}" onclick="selecionarIcone('${i}')">${i}</div>`
+    ).join('');
+    
+    document.getElementById('cor-grid').innerHTML = cores.map(c => 
+      `<div class="cor-opt ${c === corSelecionada ? 'selected' : ''}" data-cor="${c}" style="background:${c};" onclick="selecionarCor('${c}')"></div>`
+    ).join('');
+  }
+  
+  window.selecionarIcone = function(i) {
+    iconeSelecionado = i;
+    document.querySelectorAll('.icone-opt').forEach(e => e.classList.toggle('selected', e.dataset.icone === i));
+  };
+  
+  window.selecionarCor = function(c) {
+    corSelecionada = c;
+    document.querySelectorAll('.cor-opt').forEach(e => e.classList.toggle('selected', e.dataset.cor === c));
+  };
+  
+  function formatarMoeda(v) {
+    return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  
+  window.formatarValor = function(input) {
+    let v = input.value.replace(/\D/g, '');
+    if (!v) { input.value = ''; return; }
+    v = (parseInt(v) / 100).toFixed(2);
+    input.value = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  };
+  
+  function valorParaNumero(str) {
+    if (!str) return 0;
+    return Number(str.replace(/\./g, '').replace(',', '.')) || 0;
+  }
+  
+  function formatarData(d) {
+    if (!d) return '—';
+    return new Date(d + 'T00:00:00').toLocaleDateString('pt-BR');
+  }
+  
+  function mesesAteData(prazo) {
+    if (!prazo) return null;
+    const hoje = new Date();
+    const fim = new Date(prazo + 'T00:00:00');
+    const diff = (fim.getFullYear() - hoje.getFullYear()) * 12 + (fim.getMonth() - hoje.getMonth());
+    return Math.max(diff, 1);
+  }
+  
+  /* ===== TATU ===== */
+  function renderTatu() {
+    const el = document.getElementById('tatu-msg');
+    if (!reserva) {
+      el.innerHTML = 'Reserva de emergência é seu <strong>colete à prova de bala</strong> financeiro. Vamos montar a sua?';
+    } else {
+      const pct = (reserva.valor_atual / reserva.valor_alvo) * 100;
+      if (pct >= 100) {
+        el.innerHTML = '🎉 <strong>Reserva completa!</strong> Você tá blindado. Bora pros próximos objetivos.';
+      } else if (pct >= 75) {
+        el.innerHTML = '💪 Quase lá! Faltam só <strong>R$ ' + formatarMoeda(reserva.valor_alvo - reserva.valor_atual) + '</strong>.';
+      } else if (pct >= 50) {
+        el.innerHTML = '🔥 Metade do caminho! Continua firme.';
+      } else if (pct >= 25) {
+        el.innerHTML = '🌱 Boa, já tá <strong>' + pct.toFixed(0) + '%</strong> do caminho. Constância é tudo.';
+      } else {
+        el.innerHTML = 'Toda jornada começa pelo primeiro passo. <strong>Bora guardar?</strong>';
+      }
+    }
+  }
+  
+  /* ===== RESERVA ===== */
+  function renderReserva() {
+    const container = document.getElementById('reserva-container');
+    
+    if (!reserva) {
+      container.innerHTML = `
+        <div class="empty">
+          <div class="empty-emoji">🛡️</div>
+          <div class="empty-title">Sua reserva ainda não foi montada</div>
+          <div class="empty-desc">É o primeiro passo pra parar de viver no aperto. Eu te ajudo a calcular.</div>
+          <button class="btn btn-primary" style="max-width:240px;margin:0 auto;" onclick="abrirModalReserva()">Configurar reserva</button>
+        </div>
+      `;
+      return;
+    }
+    
+    const pct = Math.min((reserva.valor_atual / reserva.valor_alvo) * 100, 100);
+    const falta = Math.max(reserva.valor_alvo - reserva.valor_atual, 0);
+    const concluida = pct >= 100;
+    
+    container.innerHTML = `
+      <div class="reserva-card ${concluida ? 'concluida' : ''}">
+        <div class="reserva-header">
+          <div class="reserva-icon">🛡️</div>
+          <div class="reserva-info">
+            <div class="reserva-label">${concluida ? 'COMPLETO ✓' : 'Sua segurança'}</div>
+            <div class="reserva-titulo">Reserva de emergência</div>
+          </div>
+        </div>
+        
+        <div class="reserva-valores">
+          <div class="reserva-atual">R$ ${formatarMoeda(reserva.valor_atual)}</div>
+          <div class="reserva-alvo">de R$ ${formatarMoeda(reserva.valor_alvo)}</div>
+        </div>
+        
+        <div class="progress">
+          <div class="progress-fill" style="width:${pct}%;"></div>
+        </div>
+        
+        <div class="reserva-stats">
+          <div class="reserva-pct">${pct.toFixed(0)}% concluído</div>
+          <div class="reserva-falta">${concluida ? '🎉 meta atingida' : 'faltam R$ ' + formatarMoeda(falta)}</div>
+        </div>
+        
+        <div class="reserva-acoes">
+          <button class="btn-acao primario" onclick="abrirAddValorReserva()">+ Adicionar</button>
+          <button class="btn-acao" onclick="abrirModalReservaEditar()">Ajustar meta</button>
+        </div>
+      </div>
+    `;
+  }
+  
+  window.calcularAlvo = function() {
+    const meses = parseInt(document.getElementById('f-meses').value);
+    const gasto = valorParaNumero(document.getElementById('f-gasto-mensal').value);
+    
+    if (gasto > 0) {
+      const alvo = meses * gasto;
+      document.getElementById('alvo-calculado').style.display = 'block';
+      document.getElementById('alvo-valor').textContent = 'R$ ' + formatarMoeda(alvo);
+    } else {
+      document.getElementById('alvo-calculado').style.display = 'none';
+    }
+  };
+  
+  document.getElementById('f-meses').addEventListener('change', calcularAlvo);
+  
+  window.abrirModalReserva = function() {
+    editandoId = null;
+    document.getElementById('msg-reserva').className = 'msg';
+    document.getElementById('f-meses').value = perfil?.meta_reserva_meses || 6;
+    document.getElementById('f-gasto-mensal').value = '';
+    document.getElementById('f-ja-tenho').value = '';
+    document.getElementById('alvo-calculado').style.display = 'none';
+    document.getElementById('btn-salvar-reserva').textContent = 'Configurar reserva';
+    document.getElementById('modal-reserva').classList.add('show');
+  };
+  
+  window.abrirModalReservaEditar = function() {
+    if (!reserva) return;
+    editandoId = reserva.id;
+    document.getElementById('msg-reserva').className = 'msg';
+    
+    const meses = perfil?.meta_reserva_meses || 6;
+    document.getElementById('f-meses').value = meses;
+    
+    const gasto = reserva.valor_alvo / meses;
+    document.getElementById('f-gasto-mensal').value = formatarMoeda(gasto);
+    document.getElementById('f-ja-tenho').value = formatarMoeda(reserva.valor_atual);
+    calcularAlvo();
+    
+    document.getElementById('btn-salvar-reserva').textContent = 'Salvar alterações';
+    document.getElementById('modal-reserva').classList.add('show');
+  };
+  
+  window.salvarReserva = async function() {
+    const meses = parseInt(document.getElementById('f-meses').value);
+    const gasto = valorParaNumero(document.getElementById('f-gasto-mensal').value);
+    const jaTenho = valorParaNumero(document.getElementById('f-ja-tenho').value);
+    
+    if (gasto <= 0) {
+      document.getElementById('msg-reserva').className = 'msg show msg-error';
+      document.getElementById('msg-reserva').textContent = 'Coloca seu gasto médio mensal';
+      return;
+    }
+    
+    const alvo = meses * gasto;
+    const btn = document.getElementById('btn-salvar-reserva');
+    btn.disabled = true;
+    btn.textContent = 'Salvando...';
+    
+    // Atualiza perfil
+    await supabase.from('perfis').update({ 
+      meta_reserva_meses: meses,
+      atualizado_em: new Date().toISOString()
+    }).eq('id', usuario.id);
+    
+    let result;
+    if (editandoId) {
+      result = await supabase.from('metas').update({
+        valor_alvo: alvo,
+        valor_atual: jaTenho
+      }).eq('id', editandoId);
+    } else {
+      result = await supabase.from('metas').insert({
+        user_id: usuario.id,
+        tipo: 'reserva_emergencia',
+        nome: 'Reserva de Emergência',
+        valor_alvo: alvo,
+        valor_atual: jaTenho,
+        cor: '#00d97e',
+        icone: '🛡️'
+      });
+    }
+    
+    if (result.error) {
+      document.getElementById('msg-reserva').className = 'msg show msg-error';
+      document.getElementById('msg-reserva').textContent = 'Erro: ' + result.error.message;
+      btn.disabled = false;
+      btn.textContent = editandoId ? 'Salvar alterações' : 'Configurar reserva';
+      return;
+    }
+    
+    if (!editandoId) {
+      await darXP(50, 'reserva_configurada', 'Reserva de emergência configurada');
+      mostrarToast('+50 XP 🛡️');
+    }
+    
+    fecharModal('modal-reserva');
+    await carregarTudo();
+  };
+  
+  /* ===== OBJETIVOS ===== */
+  function renderObjetivos() {
+    const container = document.getElementById('objetivos-container');
+    
+    if (objetivos.length === 0) {
+      container.innerHTML = `
+        <div class="empty">
+          <div class="empty-emoji">🎯</div>
+          <div class="empty-title">Nenhum objetivo ainda</div>
+          <div class="empty-desc">Viagem, carro, casa? Defina o sonho e o sistema te ajuda a chegar lá.</div>
+        </div>
+      `;
+      return;
+    }
+    
+    container.innerHTML = objetivos.map(o => {
+      const pct = Math.min((o.valor_atual / o.valor_alvo) * 100, 100);
+      const concluida = pct >= 100;
+      const meses = mesesAteData(o.prazo);
+      const guardarMes = meses ? Math.max((o.valor_alvo - o.valor_atual) / meses, 0) : null;
+      
+      return `
+        <div class="objetivo-card ${concluida ? 'concluida' : ''}" onclick="abrirDetalheObjetivo('${o.id}')">
+          <div class="objetivo-header">
+            <div class="objetivo-icon" style="background:${o.cor}20;color:${o.cor};">${o.icone}</div>
+            <div class="objetivo-info">
+              <div class="objetivo-titulo">${o.nome}</div>
+              <div class="objetivo-meta-info">${o.prazo ? 'Até ' + formatarData(o.prazo) : 'Sem prazo'}</div>
+            </div>
+          </div>
+          
+          <div class="objetivo-valores">
+            <div class="objetivo-atual" style="color:${o.cor};">R$ ${formatarMoeda(o.valor_atual)}</div>
+            <div class="objetivo-alvo">de R$ ${formatarMoeda(o.valor_alvo)}</div>
+          </div>
+          
+          <div class="progress">
+            <div class="progress-fill" style="width:${pct}%;background:${o.cor};"></div>
+          </div>
+          
+          <div class="objetivo-pct-row">
+            <div class="objetivo-pct" style="color:${o.cor};">${pct.toFixed(0)}% concluído</div>
+            <div class="objetivo-prazo">${guardarMes ? 'R$ ' + formatarMoeda(guardarMes) + '/mês' : ''}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+  
+  window.abrirModalNovoObjetivo = function() {
+    editandoId = null;
+    iconeSelecionado = '🎯';
+    corSelecionada = '#00d97e';
+    document.getElementById('modal-objetivo-titulo').textContent = 'Novo objetivo';
+    document.getElementById('btn-salvar-objetivo').textContent = 'Criar objetivo';
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-alvo').value = '';
+    document.getElementById('f-atual').value = '';
+    document.getElementById('f-prazo').value = '';
+    document.getElementById('msg-objetivo').className = 'msg';
+    setupPickers();
+    document.getElementById('modal-objetivo').classList.add('show');
+  };
+  
+  window.salvarObjetivo = async function() {
+    const nome = document.getElementById('f-nome').value.trim();
+    const alvo = valorParaNumero(document.getElementById('f-alvo').value);
+    const atual = valorParaNumero(document.getElementById('f-atual').value);
+    const prazo = document.getElementById('f-prazo').value || null;
+    
+    if (!nome || alvo <= 0) {
+      document.getElementById('msg-objetivo').className = 'msg show msg-error';
+      document.getElementById('msg-objetivo').textContent = 'Preencha nome e valor da meta';
+      return;
+    }
+    
+    const btn = document.getElementById('btn-salvar-objetivo');
+    btn.disabled = true;
+    btn.textContent = 'Salvando...';
+    
+    const payload = {
+      nome,
+      valor_alvo: alvo,
+      valor_atual: atual,
+      prazo,
+      cor: corSelecionada,
+      icone: iconeSelecionado
+    };
+    
+    let result;
+    if (editandoId) {
+      result = await supabase.from('metas').update(payload).eq('id', editandoId);
+    } else {
+      result = await supabase.from('metas').insert({
+        ...payload,
+        user_id: usuario.id,
+        tipo: 'objetivo'
+      });
+    }
+    
+    if (result.error) {
+      document.getElementById('msg-objetivo').className = 'msg show msg-error';
+      document.getElementById('msg-objetivo').textContent = 'Erro: ' + result.error.message;
+      btn.disabled = false;
+      btn.textContent = editandoId ? 'Salvar alterações' : 'Criar objetivo';
+      return;
+    }
+    
+    if (!editandoId) {
+      await darXP(30, 'objetivo_criado', 'Objetivo criado: ' + nome);
+      mostrarToast('+30 XP 🎯');
+    }
+    
+    fecharModal('modal-objetivo');
+    await carregarTudo();
+  };
+  
+  window.abrirDetalheObjetivo = function(id) {
+    const o = objetivos.find(x => x.id === id);
+    if (!o) return;
+    detalheAtual = o;
+    
+    const pct = Math.min((o.valor_atual / o.valor_alvo) * 100, 100);
+    const falta = Math.max(o.valor_alvo - o.valor_atual, 0);
+    const meses = mesesAteData(o.prazo);
+    const guardarMes = meses ? Math.max(falta / meses, 0) : null;
+    
+    document.getElementById('detalhe-titulo').textContent = o.nome;
+    document.getElementById('detalhe-icone').textContent = o.icone;
+    document.getElementById('detalhe-icone').style.background = o.cor + '20';
+    document.getElementById('detalhe-pct').textContent = pct.toFixed(0) + '%';
+    document.getElementById('detalhe-pct').style.color = o.cor;
+    document.getElementById('detalhe-valores').textContent = `R$ ${formatarMoeda(o.valor_atual)} de R$ ${formatarMoeda(o.valor_alvo)}`;
+    document.getElementById('detalhe-progress').style.width = pct + '%';
+    document.getElementById('detalhe-progress').style.background = o.cor;
+    document.getElementById('detalhe-falta').textContent = 'R$ ' + formatarMoeda(falta);
+    
+    if (o.prazo) {
+      document.getElementById('linha-prazo').style.display = 'flex';
+      document.getElementById('detalhe-prazo').textContent = formatarData(o.prazo);
+    } else {
+      document.getElementById('linha-prazo').style.display = 'none';
+    }
+    
+    if (guardarMes !== null) {
+      document.getElementById('linha-mensal').style.display = 'flex';
+      document.getElementById('detalhe-mensal').textContent = 'R$ ' + formatarMoeda(guardarMes);
+    } else {
+      document.getElementById('linha-mensal').style.display = 'none';
+    }
+    
+    document.getElementById('modal-detalhe').classList.add('show');
+  };
+  
+  window.editarObjetivo = function() {
+    if (!detalheAtual) return;
+    const o = detalheAtual;
+    
+    editandoId = o.id;
+    iconeSelecionado = o.icone;
+    corSelecionada = o.cor;
+    
+    document.getElementById('modal-objetivo-titulo').textContent = 'Editar objetivo';
+    document.getElementById('btn-salvar-objetivo').textContent = 'Salvar alterações';
+    document.getElementById('f-nome').value = o.nome;
+    document.getElementById('f-alvo').value = formatarMoeda(o.valor_alvo);
+    document.getElementById('f-atual').value = formatarMoeda(o.valor_atual);
+    document.getElementById('f-prazo').value = o.prazo || '';
+    document.getElementById('msg-objetivo').className = 'msg';
+    setupPickers();
+    
+    fecharModal('modal-detalhe');
+    document.getElementById('modal-objetivo').classList.add('show');
+  };
+  
+  window.excluirObjetivo = async function() {
+    if (!detalheAtual) return;
+    if (!confirm(`Excluir o objetivo "${detalheAtual.nome}"? Não pode ser desfeito.`)) return;
+    
+    await supabase.from('metas').delete().eq('id', detalheAtual.id);
+    fecharModal('modal-detalhe');
+    await carregarTudo();
+  };
+  
+  /* ===== ADD VALOR ===== */
+  window.abrirAddValor = function() {
+    modoAddValor = { tipo: 'objetivo', meta: detalheAtual };
+    document.getElementById('f-add-valor').value = '';
+    document.getElementById('msg-add-valor').className = 'msg';
+    document.getElementById('info-add-valor').innerHTML = `Quanto você guardou agora pra <strong>${detalheAtual.nome}</strong>?`;
+    document.getElementById('btn-add-valor').disabled = true;
+    document.getElementById('modal-add-valor').classList.add('show');
+  };
+  
+  window.abrirAddValorReserva = function() {
+    modoAddValor = { tipo: 'reserva', meta: reserva };
+    document.getElementById('f-add-valor').value = '';
+    document.getElementById('msg-add-valor').className = 'msg';
+    document.getElementById('info-add-valor').innerHTML = `Quanto você guardou agora pra <strong>reserva</strong>?`;
+    document.getElementById('btn-add-valor').disabled = true;
+    document.getElementById('modal-add-valor').classList.add('show');
+  };
+  
+  window.validarAddValor = function() {
+    const v = valorParaNumero(document.getElementById('f-add-valor').value);
+    document.getElementById('btn-add-valor').disabled = v <= 0;
+  };
+  
+  window.confirmarAddValor = async function() {
+    if (!modoAddValor) return;
+    const v = valorParaNumero(document.getElementById('f-add-valor').value);
+    if (v <= 0) return;
+    
+    const btn = document.getElementById('btn-add-valor');
+    btn.disabled = true;
+    btn.textContent = 'Adicionando...';
+    
+    const novoValor = Number(modoAddValor.meta.valor_atual) + v;
+    const batido = novoValor >= modoAddValor.meta.valor_alvo;
+    
+    const upd = { valor_atual: novoValor };
+    if (batido && !modoAddValor.meta.concluida) {
+      upd.concluida = true;
+      upd.data_conclusao = new Date().toISOString();
+    }
+    
+    await supabase.from('metas').update(upd).eq('id', modoAddValor.meta.id);
+    
+    // XP
+    if (batido) {
+      const xp = modoAddValor.tipo === 'reserva' ? 1000 : 200;
+      await darXP(xp, 'meta_concluida', 'Meta batida: ' + modoAddValor.meta.nome);
+      const { data: g } = await supabase.from('gamificacao').select('total_metas_batidas').eq('user_id', usuario.id).single();
+      await supabase.from('gamificacao').update({
+        total_metas_batidas: (g?.total_metas_batidas || 0) + 1
+      }).eq('user_id', usuario.id);
+      mostrarToast(`🎉 +${xp} XP — Meta batida!`);
+    } else {
+      await darXP(10, 'valor_meta', 'Aporte em meta');
+      mostrarToast('+10 XP 💰');
+    }
+    
+    btn.textContent = 'Adicionar';
+    fecharModal('modal-add-valor');
+    fecharModal('modal-detalhe');
+    await carregarTudo();
+  };
+  
+  /* ===== HELPERS ===== */
+  async function darXP(xp, acao, descricao) {
+    await supabase.from('historico_xp').insert({
+      user_id: usuario.id, acao, xp_ganho: xp, descricao
+    });
+    const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).single();
+    await supabase.from('gamificacao').update({
+      xp_total: (g?.xp_total || 0) + xp,
+      ultima_atividade: new Date().toISOString().split('T')[0]
+    }).eq('user_id', usuario.id);
+  }
+  
+  function mostrarToast(texto) {
+    const t = document.getElementById('xp-toast');
+    t.textContent = texto;
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 2500);
+  }
+  
+  window.fecharModal = function(id) {
+    document.getElementById(id).classList.remove('show');
+  };
+</script>
+
+</body>
+</html>
