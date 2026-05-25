@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0a0a">
+<title>aprender • guardaí</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
+  
+  :root {
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --bg-elev: #1c1c1c;
+    --bg-input: #181818;
+    --border: #252525;
+    --border-strong: #353535;
+    --brand: #00d97e;
+    --brand-hover: #00ba6b;
+    --brand-soft: rgba(0, 217, 126, 0.1);
+    --danger: #ff4757;
+    --warning: #ffb800;
+    --warning-soft: rgba(255, 184, 0, 0.1);
+    --info: #38bdf8;
+    --info-soft: rgba(56, 189, 248, 0.1);
+    --purple: #a855f7;
+    --purple-soft: rgba(168, 85, 247, 0.1);
+    --text: #ffffff;
+    --text-mute: #a3a3a3;
+    --text-faint: #525252;
+  }
+  
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  body { padding-bottom: 40px; }
+  
+  input, textarea, select {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    caret-color: var(--brand);
+  }
+  
+  .header {
+    padding: 16px 20px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .back-btn {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  
+  .header-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    flex: 1;
+  }
+  
+  .brand-mark-mini {
+    width: 28px; height: 28px;
+    background: var(--brand);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  
+  .brand-mark-mini::before {
+    content: '';
+    width: 10px; height: 10px;
+    border: 2px solid var(--bg);
+    border-radius: 3px;
+    border-top: none; border-right: none;
+  }
+  
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .tatu-bubble {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 18px;
+  }
+  
+  .tatu-emoji { font-size: 28px; flex-shrink: 0; }
+  
+  .tatu-text {
+    flex: 1;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-mute);
+  }
+  
+  .tatu-text strong { color: var(--text); }
+  
+  /* PROGRESSO GERAL */
+  .progresso-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .progresso-card::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -20%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, var(--brand-soft) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  
+  .progresso-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  
+  .progresso-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    color: var(--text-mute);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  
+  .progresso-pct {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--brand);
+  }
+  
+  .progresso-stats {
+    display: flex;
+    gap: 18px;
+    align-items: baseline;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  
+  .progresso-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--brand);
+    line-height: 1;
+  }
+  
+  .progresso-num-label {
+    color: var(--text-mute);
+    font-size: 13px;
+  }
+  
+  .progresso-bar {
+    background: var(--bg-elev);
+    height: 8px;
+    border-radius: 100px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .progresso-bar-fill {
+    height: 100%;
+    background: var(--brand);
+    border-radius: 100px;
+    transition: width 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+  
+  /* MÓDULO */
+  .modulo {
+    margin-bottom: 24px;
+  }
+  
+  .modulo-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding: 0 4px;
+  }
+  
+  .modulo-emoji {
+    font-size: 22px;
+  }
+  
+  .modulo-info {
+    flex: 1;
+  }
+  
+  .modulo-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  
+  .modulo-meta {
+    font-size: 11px;
+    color: var(--text-mute);
+    margin-top: 2px;
+  }
+  
+  .modulo-badge {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  
+  .modulo-badge.atual {
+    color: var(--brand);
+    background: var(--brand-soft);
+  }
+  
+  .modulo-badge.bloqueado {
+    color: var(--text-faint);
+    background: var(--bg-elev);
+  }
+  
+  .modulo-badge.completo {
+    color: var(--brand);
+    background: var(--brand-soft);
+  }
+  
+  /* TRILHA - CAMINHO ZIG-ZAG */
+  .trilha {
+    position: relative;
+    padding: 0;
+  }
+  
+  .licao-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  
+  .licao-row:last-child { margin-bottom: 0; }
+  
+  .licao-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  
+  .licao-circle:active { transform: scale(0.92); }
+  
+  .licao-row.atual .licao-circle {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: #001a0e;
+    box-shadow: 0 0 30px rgba(0, 217, 126, 0.5);
+    animation: pulse-current 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse-current {
+    0%, 100% { box-shadow: 0 0 30px rgba(0, 217, 126, 0.5); }
+    50% { box-shadow: 0 0 50px rgba(0, 217, 126, 0.8); }
+  }
+  
+  .licao-row.completa .licao-circle {
+    background: var(--brand-soft);
+    border-color: var(--brand);
+  }
+  
+  .licao-row.completa .licao-circle::after {
+    content: '✓';
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 22px;
+    height: 22px;
+    background: var(--brand);
+    color: #001a0e;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg);
+  }
+  
+  .licao-row.bloqueada .licao-circle {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  
+  .licao-row.bloqueada .licao-circle::after {
+    content: '🔒';
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    font-size: 12px;
+    background: var(--bg);
+    padding: 2px;
+    border-radius: 50%;
+  }
+  
+  .licao-info {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  
+  .licao-info:active { transform: scale(0.99); }
+  
+  .licao-row.atual .licao-info {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+  }
+  
+  .licao-row.bloqueada .licao-info {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .licao-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  
+  .licao-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--text-mute);
+  }
+  
+  .licao-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  
+  .licao-xp {
+    color: var(--warning);
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  
+  /* LINHA CONECTORA */
+  .licao-conector {
+    position: absolute;
+    left: 30px;
+    top: 60px;
+    width: 2px;
+    height: 12px;
+    background: var(--border);
+    z-index: 0;
+  }
+  
+  .licao-row.completa .licao-conector {
+    background: var(--brand);
+  }
+  
+  /* MODAL LEITURA */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 200;
+    display: none;
+    overflow-y: auto;
+  }
+  
+  .modal-overlay.show { display: block; }
+  
+  .modal-leitura {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--bg);
+    padding-bottom: 120px;
+  }
+  
+  .leitura-header {
+    padding: 16px 20px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    backdrop-filter: blur(10px);
+  }
+  
+  .leitura-body {
+    padding: 24px 20px;
+  }
+  
+  .leitura-cat {
+    display: inline-block;
+    background: var(--brand-soft);
+    color: var(--brand);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+  
+  .leitura-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  
+  .leitura-info {
+    display: flex;
+    gap: 14px;
+    font-size: 12px;
+    color: var(--text-mute);
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .leitura-info-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .leitura-conteudo {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  
+  .leitura-conteudo h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 8px 0 16px;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  
+  .leitura-conteudo h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    margin: 28px 0 12px;
+    letter-spacing: -0.01em;
+    color: var(--brand);
+  }
+  
+  .leitura-conteudo h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 20px 0 8px;
+  }
+  
+  .leitura-conteudo p {
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  
+  .leitura-conteudo strong {
+    color: var(--brand);
+    font-weight: 600;
+  }
+  
+  .leitura-conteudo ul, .leitura-conteudo ol {
+    margin: 0 0 16px 22px;
+    color: var(--text);
+  }
+  
+  .leitura-conteudo li {
+    margin-bottom: 6px;
+    line-height: 1.6;
+  }
+  
+  .leitura-conteudo table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    background: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  
+  .leitura-conteudo th, .leitura-conteudo td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  
+  .leitura-conteudo th {
+    background: var(--bg-elev);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--brand);
+  }
+  
+  .leitura-conteudo tr:last-child td { border-bottom: none; }
+  
+  .leitura-conteudo code {
+    background: var(--bg-elev);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: monospace;
+  }
+  
+  .footer-completar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 16px 20px;
+    z-index: 50;
+    backdrop-filter: blur(10px);
+  }
+  
+  .footer-completar-inner {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  
+  .btn-completar {
+    width: 100%;
+    background: var(--brand);
+    color: #001a0e;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0, 217, 126, 0.3);
+  }
+  
+  .btn-completar:active { background: var(--brand-hover); transform: scale(0.98); }
+  
+  .btn-completar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .btn-ja-completa {
+    background: var(--bg-elev);
+    color: var(--text-mute);
+    cursor: default;
+  }
+  
+  .btn-ja-completa:active { transform: none; }
+  
+  /* CONCLUSAO MODAL */
+  .conclusao-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(8px);
+  }
+  
+  .conclusao-overlay.show { display: flex; }
+  
+  .conclusao-modal {
+    width: 100%;
+    max-width: 400px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 36px 24px;
+    text-align: center;
+    animation: bounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  @keyframes bounceIn {
+    0% { transform: scale(0.6); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  
+  .conclusao-emoji {
+    font-size: 60px;
+    margin-bottom: 16px;
+    animation: bounce-emoji 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes bounce-emoji {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .conclusao-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  
+  .conclusao-desc {
+    color: var(--text-mute);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  
+  .conclusao-xp {
+    background: var(--brand-soft);
+    border: 1px solid rgba(0,217,126,0.3);
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 22px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    color: var(--brand);
+    font-size: 16px;
+  }
+  
+  .btn-continuar {
+    width: 100%;
+    background: var(--brand);
+    color: #001a0e;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  
+  .btn-continuar:active { background: var(--brand-hover); transform: scale(0.97); }
+  
+  .empty {
+    background: var(--bg-card);
+    border: 1px dashed var(--border-strong);
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  
+  .empty-emoji { font-size: 44px; margin-bottom: 10px; }
+  
+  .empty-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  
+  .empty-desc {
+    font-size: 13px;
+    color: var(--text-mute);
+    line-height: 1.5;
+  }
+  
+  .loader-circle {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border);
+    border-radius: 50%;
+    border-top-color: var(--brand);
+    animation: spin 0.8s linear infinite;
+    margin: 60px auto;
+  }
+  
+  @keyframes spin { to { transform: rotate(360deg); } }
+  
+  .confete {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    pointer-events: none;
+    animation: confeteFall 2.5s linear forwards;
+  }
+  
+  @keyframes confeteFall {
+    0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+  
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="back-btn" onclick="window.location.href='home.html?v=1'">‹</button>
+  <div class="header-title">Aprender</div>
+  <div class="brand-mark-mini" onclick="window.location.href='home.html?v=1'"></div>
+</div>
+
+<div class="container">
+
+  <div class="tatu-bubble">
+    <div class="tatu-emoji">🦔</div>
+    <div class="tatu-text" id="tatu-text">
+      Conhecimento é seu <strong>maior investimento</strong>. Cada lição te aproxima da liberdade.
+    </div>
+  </div>
+
+  <div id="progresso-area"></div>
+  
+  <div id="trilha-area">
+    <div class="loader-circle"></div>
+  </div>
+
+</div>
+
+<!-- MODAL LEITURA -->
+<div class="modal-overlay" id="modal-leitura">
+  <div class="modal-leitura">
+    <div class="leitura-header">
+      <button class="back-btn" onclick="fecharLeitura()">‹</button>
+      <div class="header-title" id="leitura-header-titulo">Lição</div>
+    </div>
+    <div class="leitura-body">
+      <div class="leitura-cat" id="leitura-cat">CATEGORIA</div>
+      <div class="leitura-titulo" id="leitura-titulo">Título</div>
+      <div class="leitura-info">
+        <div class="leitura-info-item">⏱ <span id="leitura-tempo">5 min</span></div>
+        <div class="leitura-info-item">⚡ <span id="leitura-xp">+30 XP</span></div>
+      </div>
+      <div class="leitura-conteudo" id="leitura-conteudo"></div>
+    </div>
+    <div class="footer-completar">
+      <div class="footer-completar-inner">
+        <button class="btn-completar" id="btn-completar" onclick="completarLicao()">Marcar como concluída</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONCLUSÃO -->
+<div class="conclusao-overlay" id="conclusao-overlay">
+  <div class="conclusao-modal" id="conclusao-modal">
+    <div class="conclusao-emoji">🎉</div>
+    <div class="conclusao-titulo">Lição completa!</div>
+    <div class="conclusao-desc" id="conclusao-desc">Mais um passo na sua jornada.</div>
+    <div class="conclusao-xp" id="conclusao-xp">+30 XP</div>
+    <button class="btn-continuar" onclick="fecharConclusao()">Continuar trilha</button>
+  </div>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+  
+  const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  
+  const niveisInfo = {
+    1: { emoji: '🎯', titulo: 'Diagnóstico' },
+    2: { emoji: '🚨', titulo: 'Resgate' },
+    3: { emoji: '⚖️', titulo: 'Estabilização' },
+    4: { emoji: '🏗️', titulo: 'Construção' },
+    5: { emoji: '🚀', titulo: 'Liberdade' }
+  };
+  
+  const categoriasNomes = {
+    'negociacao': 'Negociação',
+    'credito': 'Crédito',
+    'reserva': 'Reserva',
+    'orcamento': 'Orçamento',
+    'investimento': 'Investimento'
+  };
+  
+  let usuario, perfil;
+  let conteudos = [];
+  let progresso = []; // ids dos conteúdos já concluídos
+  let licaoAtual = null;
+  
+  (async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      window.location.href = 'index.html?v=1';
+      return;
+    }
+    usuario = session.user;
+    
+    await carregarTudo();
+  })();
+  
+  async function carregarTudo() {
+    const [perfilRes, conteudosRes, progressoRes] = await Promise.all([
+      supabase.from('perfis').select('*').eq('id', usuario.id).single(),
+      supabase.from('conteudos_educacionais').select('*').eq('ativo', true).order('nivel_jornada').order('ordem'),
+      supabase.from('educacao_progresso').select('conteudo_id').eq('user_id', usuario.id)
+    ]);
+    
+    perfil = perfilRes.data;
+    conteudos = conteudosRes.data || [];
+    progresso = (progressoRes.data || []).map(p => p.conteudo_id);
+    
+    renderTudo();
+  }
+  
+  function renderTudo() {
+    renderTatu();
+    renderProgresso();
+    renderTrilha();
+  }
+  
+  function renderTatu() {
+    const el = document.getElementById('tatu-text');
+    const total = conteudos.length;
+    const feitas = progresso.length;
+    
+    if (feitas === 0) {
+      el.innerHTML = 'Conhecimento é seu <strong>maior investimento</strong>. Cada lição te aproxima da liberdade.';
+    } else if (feitas === total) {
+      el.innerHTML = `🏆 <strong>Você completou TUDO!</strong> Mestre da educação financeira.`;
+    } else if (feitas < 3) {
+      el.innerHTML = `🌱 <strong>${feitas} lição${feitas > 1 ? 'ões' : ''}</strong> completa${feitas > 1 ? 's' : ''}. Continue avançando!`;
+    } else {
+      el.innerHTML = `🔥 <strong>${feitas} lições</strong> dominadas. Você tá voando!`;
+    }
+  }
+  
+  function renderProgresso() {
+    const total = conteudos.length;
+    const feitas = progresso.length;
+    const pct = total > 0 ? (feitas / total) * 100 : 0;
+    
+    document.getElementById('progresso-area').innerHTML = `
+      <div class="progresso-card">
+        <div class="progresso-header">
+          <div class="progresso-label">Seu progresso</div>
+          <div class="progresso-pct">${pct.toFixed(0)}%</div>
+        </div>
+        <div class="progresso-stats">
+          <div>
+            <div class="progresso-num">${feitas}</div>
+          </div>
+          <div class="progresso-num-label">de ${total} lições concluídas</div>
+        </div>
+        <div class="progresso-bar">
+          <div class="progresso-bar-fill" style="width:${pct}%;"></div>
+        </div>
+      </div>
+    `;
+  }
+  
+  function renderTrilha() {
+    const container = document.getElementById('trilha-area');
+    
+    if (conteudos.length === 0) {
+      container.innerHTML = `
+        <div class="empty">
+          <div class="empty-emoji">📚</div>
+          <div class="empty-title">Trilha vazia</div>
+          <div class="empty-desc">Conteúdos serão adicionados em breve.</div>
+        </div>
+      `;
+      return;
+    }
+    
+    // Agrupa por nível_jornada
+    const porNivel = {};
+    conteudos.forEach(c => {
+      if (!porNivel[c.nivel_jornada]) porNivel[c.nivel_jornada] = [];
+      porNivel[c.nivel_jornada].push(c);
+    });
+    
+    const nivelUsuario = perfil?.nivel_jornada || 2;
+    let primeiraNaoConcluida = null;
+    
+    // Acha primeira não concluída
+    for (const c of conteudos) {
+      if (!progresso.includes(c.id) && c.nivel_jornada <= nivelUsuario) {
+        primeiraNaoConcluida = c.id;
+        break;
+      }
+    }
+    
+    const niveisOrdenados = Object.keys(porNivel).sort((a, b) => Number(a) - Number(b));
+    
+    container.innerHTML = niveisOrdenados.map(nivel => {
+      const n = Number(nivel);
+      const info = niveisInfo[n];
+      const licoes = porNivel[nivel];
+      const bloqueado = n > nivelUsuario;
+      const todasCompletas = licoes.every(l => progresso.includes(l.id));
+      
+      let badge = '';
+      if (bloqueado) {
+        badge = '<div class="modulo-badge bloqueado">🔒 Bloqueado</div>';
+      } else if (todasCompletas) {
+        badge = '<div class="modulo-badge completo">✓ Completo</div>';
+      } else if (n === nivelUsuario) {
+        badge = '<div class="modulo-badge atual">⚡ Atual</div>';
+      }
+      
+      const licoesHtml = licoes.map((l, idx) => {
+        const completa = progresso.includes(l.id);
+        const ehBloqueada = bloqueado;
+        const ehAtual = !completa && !ehBloqueada && l.id === primeiraNaoConcluida;
+        
+        let rowClass = '';
+        if (completa) rowClass = 'completa';
+        else if (ehBloqueada) rowClass = 'bloqueada';
+        else if (ehAtual) rowClass = 'atual';
+        
+        const emoji = ehBloqueada ? '🔒' : (completa ? '📖' : (ehAtual ? '⚡' : '📘'));
+        const naoUltima = idx < licoes.length - 1;
+        const conectorClass = completa ? 'completa' : '';
+        
+        return `
+          <div class="licao-row ${rowClass}" data-id="${l.id}">
+            ${naoUltima ? `<div class="licao-conector ${conectorClass}"></div>` : ''}
+            <div class="licao-circle" onclick="${ehBloqueada ? '' : `abrirLicao('${l.id}')`}">${emoji}</div>
+            <div class="licao-info" onclick="${ehBloqueada ? '' : `abrirLicao('${l.id}')`}">
+              <div class="licao-titulo">${l.titulo}</div>
+              <div class="licao-meta">
+                <span class="licao-meta-item">⏱ ${l.duracao_minutos} min</span>
+                <span class="licao-meta-item licao-xp">⚡ +${l.xp_recompensa} XP</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      return `
+        <div class="modulo">
+          <div class="modulo-header">
+            <div class="modulo-emoji">${info.emoji}</div>
+            <div class="modulo-info">
+              <div class="modulo-titulo">Nível ${n} • ${info.titulo}</div>
+              <div class="modulo-meta">${licoes.length} ${licoes.length === 1 ? 'lição' : 'lições'} • ${licoes.filter(l => progresso.includes(l.id)).length} completa(s)</div>
+            </div>
+            ${badge}
+          </div>
+          <div class="trilha">
+            ${licoesHtml}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+  
+  // ====== LEITURA ======
+  window.abrirLicao = function(id) {
+    const l = conteudos.find(c => c.id === id);
+    if (!l) return;
+    
+    const nivelUsuario = perfil?.nivel_jornada || 2;
+    if (l.nivel_jornada > nivelUsuario) {
+      alert(`🔒 Essa lição é do Nível ${l.nivel_jornada} (${niveisInfo[l.nivel_jornada].titulo}). Continue sua jornada pra desbloquear!`);
+      return;
+    }
+    
+    licaoAtual = l;
+    
+    const jaCompleta = progresso.includes(l.id);
+    
+    document.getElementById('leitura-header-titulo').textContent = l.titulo;
+    document.getElementById('leitura-cat').textContent = categoriasNomes[l.categoria] || l.categoria;
+    document.getElementById('leitura-titulo').textContent = l.titulo;
+    document.getElementById('leitura-tempo').textContent = l.duracao_minutos + ' min';
+    document.getElementById('leitura-xp').textContent = '+' + l.xp_recompensa + ' XP';
+    document.getElementById('leitura-conteudo').innerHTML = markdownToHtml(l.conteudo || l.resumo);
+    
+    const btn = document.getElementById('btn-completar');
+    if (jaCompleta) {
+      btn.textContent = '✓ Já concluída';
+      btn.className = 'btn-completar btn-ja-completa';
+      btn.disabled = true;
+    } else {
+      btn.textContent = 'Marcar como concluída';
+      btn.className = 'btn-completar';
+      btn.disabled = false;
+    }
+    
+    document.getElementById('modal-leitura').classList.add('show');
+    window.scrollTo(0, 0);
+  };
+  
+  window.fecharLeitura = function() {
+    document.getElementById('modal-leitura').classList.remove('show');
+  };
+  
+  window.completarLicao = async function() {
+    if (!licaoAtual || progresso.includes(licaoAtual.id)) return;
+    
+    const btn = document.getElementById('btn-completar');
+    btn.disabled = true;
+    btn.textContent = 'Salvando...';
+    
+    const { error } = await supabase.from('educacao_progresso').insert({
+      user_id: usuario.id,
+      conteudo_id: licaoAtual.id,
+      concluido_em: new Date().toISOString()
+    });
+    
+    if (error) {
+      alert('Erro: ' + error.message);
+      btn.disabled = false;
+      btn.textContent = 'Marcar como concluída';
+      return;
+    }
+    
+    // XP
+    await darXP(licaoAtual.xp_recompensa, 'licao_concluida', 'Lição: ' + licaoAtual.titulo);
+    progresso.push(licaoAtual.id);
+    
+    // Mostra conclusão
+    document.getElementById('conclusao-xp').textContent = '+' + licaoAtual.xp_recompensa + ' XP';
+    
+    const totalFeitas = progresso.length;
+    const totalLicoes = conteudos.length;
+    
+    if (totalFeitas === totalLicoes) {
+      document.getElementById('conclusao-emoji').textContent = '🏆';
+      document.getElementById('conclusao-titulo').textContent = 'TRILHA COMPLETA!';
+      document.getElementById('conclusao-desc').textContent = 'Você dominou toda a trilha de educação financeira. Mestre!';
+    } else {
+      const niveisCompletos = {};
+      conteudos.forEach(c => {
+        if (!niveisCompletos[c.nivel_jornada]) niveisCompletos[c.nivel_jornada] = { total: 0, feitas: 0 };
+        niveisCompletos[c.nivel_jornada].total++;
+        if (progresso.includes(c.id)) niveisCompletos[c.nivel_jornada].feitas++;
+      });
+      
+      const moduloAtual = niveisCompletos[licaoAtual.nivel_jornada];
+      if (moduloAtual.feitas === moduloAtual.total) {
+        document.getElementById('conclusao-emoji').textContent = '🎯';
+        document.getElementById('conclusao-titulo').textContent = 'Módulo completo!';
+        document.getElementById('conclusao-desc').textContent = `Você terminou o ${niveisInfo[licaoAtual.nivel_jornada].titulo}!`;
+      } else {
+        document.getElementById('conclusao-emoji').textContent = '🎉';
+        document.getElementById('conclusao-titulo').textContent = 'Lição completa!';
+        document.getElementById('conclusao-desc').textContent = `Mais um passo na sua jornada. Faltam ${totalLicoes - totalFeitas} ${totalLicoes - totalFeitas === 1 ? 'lição' : 'lições'}.`;
+      }
+    }
+    
+    document.getElementById('conclusao-overlay').classList.add('show');
+    setTimeout(criarConfete, 200);
+    
+    btn.textContent = '✓ Concluída';
+    btn.className = 'btn-completar btn-ja-completa';
+  };
+  
+  window.fecharConclusao = function() {
+    document.getElementById('conclusao-overlay').classList.remove('show');
+    document.querySelectorAll('.confete').forEach(c => c.remove());
+    fecharLeitura();
+    renderTudo();
+  };
+  
+  function criarConfete() {
+    const cores = ['#00d97e', '#ffb800', '#38bdf8', '#a855f7', '#ec4899'];
+    const overlay = document.getElementById('conclusao-overlay');
+    
+    for (let i = 0; i < 40; i++) {
+      const c = document.createElement('div');
+      c.className = 'confete';
+      c.style.left = Math.random() * 100 + '%';
+      c.style.top = '-20px';
+      c.style.background = cores[Math.floor(Math.random() * cores.length)];
+      c.style.animationDelay = (Math.random() * 0.5) + 's';
+      c.style.animationDuration = (1.5 + Math.random() * 1.5) + 's';
+      overlay.appendChild(c);
+      setTimeout(() => c.remove(), 3500);
+    }
+  }
+  
+  async function darXP(xp, acao, descricao) {
+    await supabase.from('historico_xp').insert({
+      user_id: usuario.id, acao, xp_ganho: xp, descricao
+    });
+    const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).single();
+    await supabase.from('gamificacao').update({
+      xp_total: (g?.xp_total || 0) + xp,
+      ultima_atividade: new Date().toISOString().split('T')[0]
+    }).eq('user_id', usuario.id);
+  }
+  
+  // MARKDOWN SIMPLES PRA HTML
+  function markdownToHtml(md) {
+    if (!md) return '<p>Conteúdo não disponível.</p>';
+    
+    let html = md;
+    
+    // Tabelas (precisa ser primeiro)
+    const tableRegex = /(\|.+\|\n)+/g;
+    html = html.replace(tableRegex, (match) => {
+      const lines = match.trim().split('\n');
+      if (lines.length < 2) return match;
+      
+      const headers = lines[0].split('|').filter(c => c.trim()).map(c => c.trim());
+      const separator = lines[1];
+      if (!separator.includes('---')) return match;
+      
+      const rows = lines.slice(2).map(l => l.split('|').filter(c => c.trim()).map(c => c.trim()));
+      
+      let table = '<table><thead><tr>';
+      headers.forEach(h => table += `<th>${h}</th>`);
+      table += '</tr></thead><tbody>';
+      
+      rows.forEach(r => {
+        table += '<tr>';
+        r.forEach(c => table += `<td>${c}</td>`);
+        table += '</tr>';
+      });
+      table += '</tbody></table>';
+      return table;
+    });
+    
+    // Headers
+    html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+    html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+    html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+    
+    // Bold
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    
+    // Listas
+    html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+    html = html.replace(/(<li>.*<\/li>\n?)+/g, (match) => '<ul>' + match + '</ul>');
+    
+    // Numeradas
+    html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+    
+    // Inline code
+    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+    
+    // Parágrafos (linhas em branco viram quebra)
+    html = html.split('\n\n').map(p => {
+      p = p.trim();
+      if (!p) return '';
+      if (p.startsWith('<h') || p.startsWith('<ul') || p.startsWith('<ol') || p.startsWith('<table')) return p;
+      return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
+    }).join('\n');
+    
+    return html;
+  }
+</script>
+
+</body>
+</html>
