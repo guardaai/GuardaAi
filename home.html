@@ -462,6 +462,50 @@
     margin-bottom: 12px;
   }
   
+  /* PATRIMÔNIO NA HOME */
+  .patrimonio-home-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+    cursor: pointer;
+  }
+  
+  .patrimonio-home-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .patrimonio-home-label {
+    color: var(--text-mute);
+    font-size: 13px;
+  }
+  
+  .patrimonio-home-tag {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--brand);
+    background: var(--brand-soft);
+    padding: 4px 8px;
+    border-radius: 8px;
+  }
+  
+  .patrimonio-home-valor {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--brand);
+    margin-bottom: 4px;
+  }
+  
+  .patrimonio-home-meta {
+    color: var(--text-mute);
+    font-size: 12px;
+  }
+  
   .progress-mini {
     background: var(--bg-elev);
     height: 6px;
@@ -996,6 +1040,19 @@
     </div>
   </div>
   
+  <!-- PATRIMÔNIO (Nível 4+) -->
+  <div class="section hidden" id="bloco-patrimonio">
+    <div class="section-title">📈 Patrimônio investido</div>
+    <div class="patrimonio-home-card" onclick="irPara('patrimonio.html')">
+      <div class="patrimonio-home-header">
+        <div class="patrimonio-home-label">Total investido</div>
+        <div class="patrimonio-home-tag" id="patrimonio-qtd">0 ativos</div>
+      </div>
+      <div class="patrimonio-home-valor">R$ <span id="patrimonio-valor">0,00</span></div>
+      <div class="patrimonio-home-meta" id="patrimonio-meta">Comece a fazer o dinheiro trabalhar</div>
+    </div>
+  </div>
+  
   <div class="section">
     <div class="section-title">Este mês</div>
     
@@ -1064,6 +1121,13 @@
           <div class="atalho-desc">Reserva e objetivos</div>
         </div>
       </div>
+      <div class="atalho" onclick="irPara('patrimonio.html')">
+        <div class="atalho-icon">📈</div>
+        <div>
+          <div class="atalho-titulo">Patrimônio</div>
+          <div class="atalho-desc">Investimentos</div>
+        </div>
+      </div>
       <div class="atalho" onclick="irPara('educacao.html')">
         <div class="atalho-icon">📚</div>
         <div>
@@ -1103,8 +1167,8 @@
     1: { emoji: '🎯', titulo: 'Diagnóstico', acao: 'Completar diagnóstico', acaoLink: 'diagnostico.html', acaoIcon: '🎯', xpBonus: 0 },
     2: { emoji: '🚨', titulo: 'Resgate', acao: 'Cadastrar suas dívidas', acaoLink: 'dividas.html', acaoIcon: '🚨', xpBonus: 200 },
     3: { emoji: '⚖️', titulo: 'Estabilização', acao: 'Montar reserva de emergência', acaoLink: 'metas.html', acaoIcon: '🛡️', xpBonus: 500 },
-    4: { emoji: '🏗️', titulo: 'Construção', acao: 'Fazer primeiro aporte', acaoLink: 'metas.html', acaoIcon: '📈', xpBonus: 1000 },
-    5: { emoji: '🚀', titulo: 'Liberdade', acao: 'Otimizar portfólio', acaoLink: 'metas.html', acaoIcon: '💎', xpBonus: 2000 }
+    4: { emoji: '🏗️', titulo: 'Construção', acao: 'Fazer primeiro aporte', acaoLink: 'patrimonio.html', acaoIcon: '📈', xpBonus: 1000 },
+    5: { emoji: '🚀', titulo: 'Liberdade', acao: 'Otimizar portfólio', acaoLink: 'patrimonio.html', acaoIcon: '💎', xpBonus: 2000 }
   };
   
   const descricoesLevelUp = {
@@ -1165,13 +1229,12 @@
     const nivelAtual = perfil.nivel_jornada || 1;
     
     if (novoNivel > nivelAtual) {
-      // SOBE DE NÍVEL!
       await aplicarSubidaNivel(nivelAtual, novoNivel);
       perfil.nivel_jornada = novoNivel;
       mostrarLevelUp(nivelAtual, novoNivel);
     }
     
-    renderizar(dividas, transacoes, metas);
+    renderizar(dividas, transacoes, metas, patrimonio);
     document.getElementById('loader').classList.add('hidden');
   })();
   
@@ -1182,22 +1245,21 @@
     const totalInvestido = patrimonio.reduce((acc, p) => acc + Number(p.valor_atual), 0);
     const renda = Number(perfil?.renda_mensal || 0);
     
-    // Nível 5: Liberdade — patrimônio investido > 10x renda mensal
+    // Nível 5: Liberdade
     if (renda > 0 && totalInvestido > renda * 10 && reservaCompleta && dividasAbertas.length === 0) {
       return 5;
     }
     
-    // Nível 4: Construção — reserva completa, sem dívidas
+    // Nível 4: Construção
     if (reservaCompleta && dividasAbertas.length === 0) {
       return 4;
     }
     
-    // Nível 3: Estabilização — sem dívidas (mas sem reserva ainda)
+    // Nível 3: Estabilização
     if (dividasAbertas.length === 0 && dividas.length > 0) {
       return 3;
     }
     
-    // Nível 2: Resgate — tem dívidas em aberto OU veio do diagnóstico marcado como 2
     return Math.max(perfil?.nivel_jornada || 2, 2);
   }
   
@@ -1209,7 +1271,6 @@
       atualizado_em: new Date().toISOString()
     }).eq('id', usuario.id);
     
-    // Dá XP de bônus
     if (xpBonus > 0) {
       await supabase.from('historico_xp').insert({
         user_id: usuario.id,
@@ -1239,7 +1300,6 @@
     
     document.getElementById('levelup-overlay').classList.add('show');
     
-    // Confete
     setTimeout(criarConfete, 200);
   }
   
@@ -1285,7 +1345,7 @@
     return (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
   
-  function renderizar(dividas, transacoes, metas) {
+  function renderizar(dividas, transacoes, metas, patrimonio) {
     const nome = perfil?.nome?.split(' ')[0] || 'parceiro';
     document.getElementById('greeting-hi').textContent = saudacao();
     document.getElementById('greeting-name').textContent = nome + ' 👋';
@@ -1330,7 +1390,7 @@
       document.getElementById('bloco-dividas').classList.add('hidden');
     }
     
-    // RESERVA (mostra do Nível 3 em diante)
+    // RESERVA (Nível 3+)
     const reserva = metas.find(m => m.tipo === 'reserva_emergencia');
     if (nivel >= 3 && reserva) {
       document.getElementById('bloco-reserva').classList.remove('hidden');
@@ -1338,6 +1398,20 @@
       document.getElementById('reserva-pct').textContent = pct.toFixed(0) + '%';
       document.getElementById('reserva-valor').textContent = formatarMoeda(reserva.valor_atual) + ' de ' + formatarMoeda(reserva.valor_alvo);
       document.getElementById('reserva-progress').style.width = pct + '%';
+    }
+    
+    // PATRIMÔNIO (Nível 4+)
+    if (nivel >= 4) {
+      document.getElementById('bloco-patrimonio').classList.remove('hidden');
+      const totalInvest = patrimonio.reduce((acc, p) => acc + Number(p.valor_atual || 0), 0);
+      document.getElementById('patrimonio-valor').textContent = formatarMoeda(totalInvest);
+      document.getElementById('patrimonio-qtd').textContent = patrimonio.length + (patrimonio.length === 1 ? ' ativo' : ' ativos');
+      
+      if (patrimonio.length === 0) {
+        document.getElementById('patrimonio-meta').textContent = 'Cadastre seu primeiro investimento';
+      } else {
+        document.getElementById('patrimonio-meta').textContent = 'Toque pra ver detalhes';
+      }
     }
     
     // RESUMO MÊS
@@ -1369,7 +1443,7 @@
       document.getElementById('missao-meta').textContent = `${pct}% completa`;
     } else if (nivel === 4) {
       document.getElementById('missao-titulo').textContent = 'Faça seu primeiro aporte';
-      document.getElementById('missao-meta').textContent = 'Comece com qualquer valor';
+      document.getElementById('missao-meta').textContent = patrimonio.length > 0 ? `${patrimonio.length} ativos cadastrados` : 'Comece com qualquer valor';
     } else {
       document.getElementById('missao-titulo').textContent = 'Diversifique investimentos';
       document.getElementById('missao-meta').textContent = 'Renda fixa, ações, FII';
