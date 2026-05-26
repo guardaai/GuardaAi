@@ -828,7 +828,6 @@
     perfil = p || {};
     
     if (perfil.setup_concluido) {
-      // FIX v1.1: cache busting ao redirecionar
       window.location.href = 'home.html?v=' + Date.now();
       return;
     }
@@ -853,9 +852,11 @@
   }
   
   async function salvarProgresso() {
-    await supabase.from('perfis').update({
-      setup_passo_atual: passoAtual
-    }).eq('id', usuario.id);
+    try {
+      await supabase.from('perfis').update({
+        setup_passo_atual: passoAtual
+      }).eq('id', usuario.id);
+    } catch (e) { console.error(e); }
   }
   
   window.proximoPasso = function() {
@@ -882,7 +883,6 @@
       setup_concluido_em: new Date().toISOString()
     }).eq('id', usuario.id);
     
-    // FIX v1.1: cache busting
     window.location.href = 'home.html?v=' + Date.now();
   };
   
@@ -2045,24 +2045,44 @@
     `;
   }
   
-  // FIX v1.1: cache busting com timestamp único pra forçar reload dos dados na home
   window.irParaHome = function() {
     window.location.href = 'home.html?v=' + Date.now();
   };
+  
+  // ============================================
+  // FIX v1.2: Compressão de imagem antes da IA
+  // ============================================
   
   window.processarFoto = async function(e) {
     const file = e.target.files[0];
     if (!file) return;
     
+    // Reset do input pra permitir mandar a mesma foto de novo
+    e.target.value = '';
+    
     document.getElementById('container').innerHTML = `
       <div class="ia-loading">
         <div class="ia-spinner"></div>
-        <div class="ia-loading-titulo">🤖 IA lendo a foto...</div>
-        <div class="ia-loading-sub">Aguarda uns segundos</div>
+        <div class="ia-loading-titulo">📸 Preparando foto...</div>
+        <div class="ia-loading-sub">Reduzindo o tamanho pra IA processar mais rápido</div>
+        <div class="ia-loading-passo" id="passo-foto">Comprimindo imagem...</div>
       </div>
     `;
     
-    const base64 = await fileToBase64(file);
+    let base64;
+    try {
+      // FIX v1.2: comprime imagem antes de mandar (resolve "image exceeds 5MB")
+      base64 = await comprimirImagem(file, 1600, 0.85);
+      
+      const elPasso = document.getElementById('passo-foto');
+      if (elPasso) elPasso.textContent = 'IA Claude lendo a foto...';
+    } catch (err) {
+      console.error('Erro comprimindo:', err);
+      alert('⚠️ Não consegui processar essa foto. Tenta outra ou usa o cadastro manual.');
+      if (modoFoto === 'conta') renderPasso3();
+      else if (modoFoto === 'cartao') renderPasso4();
+      return;
+    }
     
     try {
       const tipoFn = modoFoto === 'conta' ? 'analisar_conta' : modoFoto === 'cartao' ? 'analisar_conta' : 'analisar_compromisso';
@@ -2089,17 +2109,81 @@
         if (modoFoto === 'conta') await processarResultadoContaIA(data.resultado);
         else if (modoFoto === 'cartao') await processarResultadoCartaoIA(data.resultado);
       } else {
-        alert('⚠️ IA não conseguiu processar: ' + (data.resultado?.erro || 'erro desconhecido'));
+        const erro = data.resultado?.erro || 'Erro desconhecido';
+        alert('⚠️ IA não conseguiu processar: ' + erro);
         if (modoFoto === 'conta') renderPasso3();
         else if (modoFoto === 'cartao') renderPasso4();
       }
     } catch (err) {
       console.error(err);
-      alert('Erro: ' + err.message);
+      alert('Erro de conexão: ' + err.message);
       if (modoFoto === 'conta') renderPasso3();
       else if (modoFoto === 'cartao') renderPasso4();
     }
   };
+  
+  /**
+   * Comprime uma imagem antes de mandar pra IA.
+   * Resolve o bug "image exceeds 5MB maximum" da Anthropic Claude.
+   * 
+   * @param {File} file - Arquivo de imagem do input
+   * @param {number} maxWidth - Largura máxima em pixels (padrão 1600px)
+   * @param {number} qualidade - Qualidade JPEG entre 0 e 1 (padrão 0.85)
+   * @returns {Promise<string>} - Base64 da imagem comprimida (data:image/jpeg;base64,...)
+   */
+  async function comprimirImagem(file, maxWidth = 1600, qualidade = 0.85) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        const img = new Image();
+        
+        img.onload = () => {
+          // Calcula tamanho proporcional
+          let largura = img.width;
+          let altura = img.height;
+          
+          if (largura > maxWidth) {
+            altura = Math.round((altura * maxWidth) / largura);
+            largura = maxWidth;
+          }
+          
+          // Cria canvas e redimensiona
+          const canvas = document.createElement('canvas');
+          canvas.width = largura;
+          canvas.height = altura;
+          
+          const ctx = canvas.getContext('2d');
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(img, 0, 0, largura, altura);
+          
+          // Converte pra JPEG comprimido (sempre JPEG pra menor tamanho)
+          const base64 = canvas.toDataURL('image/jpeg', qualidade);
+          
+          // Calcula tamanho aproximado
+          const tamanhoKB = Math.round((base64.length * 0.75) / 1024);
+          console.log(`📸 Imagem comprimida: ${largura}x${altura} ≈ ${tamanhoKB}KB`);
+          
+          // Se ainda passou de 4MB, comprime mais
+          if (tamanhoKB > 4000 && qualidade > 0.5) {
+            console.log('🔄 Comprimindo mais...');
+            // Tenta de novo com qualidade menor
+            const base64Menor = canvas.toDataURL('image/jpeg', 0.7);
+            resolve(base64Menor);
+          } else {
+            resolve(base64);
+          }
+        };
+        
+        img.onerror = () => reject(new Error('Erro carregando imagem'));
+        img.src = e.target.result;
+      };
+      
+      reader.onerror = () => reject(new Error('Erro lendo arquivo'));
+      reader.readAsDataURL(file);
+    });
+  }
   
   async function processarResultadoContaIA(r) {
     const banco = BANCOS.find(b => b.id === alvoFotoAtual);
@@ -2229,26 +2313,19 @@
     return Number(str.replace(/\./g, '').replace(',', '.')) || 0;
   }
   
-  function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  }
-  
   function formatarMoeda(v) {
     return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
   
   async function darXP(xp, acao, descricao) {
-    await supabase.from('historico_xp').insert({ user_id: usuario.id, acao, xp_ganho: xp, descricao });
-    const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).maybeSingle();
-    await supabase.from('gamificacao').update({
-      xp_total: (g?.xp_total || 0) + xp,
-      ultima_atividade: new Date().toISOString().split('T')[0]
-    }).eq('user_id', usuario.id);
+    try {
+      await supabase.from('historico_xp').insert({ user_id: usuario.id, acao, xp_ganho: xp, descricao });
+      const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).maybeSingle();
+      await supabase.from('gamificacao').update({
+        xp_total: (g?.xp_total || 0) + xp,
+        ultima_atividade: new Date().toISOString().split('T')[0]
+      }).eq('user_id', usuario.id);
+    } catch (e) { console.error('XP:', e); }
   }
   
   function mostrarToast(texto) {
