@@ -28,7 +28,6 @@
     --info: #38bdf8;
     --info-soft: rgba(56, 189, 248, 0.1);
     --ia: #a855f7;
-    --ia-hover: #9333ea;
     --ia-soft: rgba(168, 85, 247, 0.1);
     --text: #ffffff;
     --text-mute: #a3a3a3;
@@ -48,104 +47,80 @@
   input, textarea, select {
     color: #fff !important;
     -webkit-text-fill-color: #fff !important;
-    caret-color: var(--brand);
-  }
-  input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px var(--bg-input) inset !important;
-    -webkit-text-fill-color: #fff !important;
   }
   
-  .topbar {
+  .header {
     padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
-    background: var(--bg);
     z-index: 50;
-    border-bottom: 1px solid var(--border);
-  }
-  
-  .logo {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
   }
   
-  .logo-mark {
-    width: 32px; height: 32px;
+  .brand-mark {
+    width: 36px; height: 36px;
     background: var(--brand);
-    border-radius: 9px;
+    border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
   }
   
-  .logo-mark::before {
+  .brand-mark::before {
     content: '';
-    width: 12px; height: 12px;
-    border: 2px solid var(--bg);
+    width: 14px; height: 14px;
+    border: 3px solid var(--bg);
     border-radius: 4px;
     border-top: none; border-right: none;
   }
   
-  .logo-text {
+  .brand-text {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 20px;
     font-weight: 700;
+    font-size: 20px;
     letter-spacing: -0.02em;
+    flex: 1;
   }
   
-  .topbar-actions { display: flex; gap: 8px; }
-  
-  .chat-btn {
-    width: 38px; height: 38px;
-    border-radius: 12px;
-    background: var(--ia-soft);
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    color: var(--ia);
+  .header-btn {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
     display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     font-size: 18px;
     position: relative;
   }
   
-  .chat-btn:active { background: rgba(168, 85, 247, 0.2); }
-  
-  .chat-btn::after {
-    content: '';
+  .header-btn .badge {
     position: absolute;
-    top: 4px; right: 4px;
-    width: 8px; height: 8px;
+    top: -4px; right: -4px;
+    width: 10px; height: 10px;
     background: var(--brand);
     border: 2px solid var(--bg);
     border-radius: 50%;
   }
   
-  .menu-btn {
-    width: 38px; height: 38px;
-    border-radius: 12px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    font-size: 20px;
-  }
-  
   .container {
     max-width: 480px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 20px;
   }
   
-  .saudacao { padding: 20px 0 14px; }
+  .saudacao {
+    margin-bottom: 16px;
+  }
   
   .saudacao-titulo {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 700;
     letter-spacing: -0.02em;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
   
   .saudacao-sub {
@@ -153,28 +128,25 @@
     color: var(--text-mute);
   }
   
-  .nivel-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+  .level-card {
+    background: linear-gradient(135deg, var(--brand) 0%, #00a85f 100%);
     border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 14px;
+    padding: 18px;
+    color: #001a0e;
+    margin-bottom: 16px;
     position: relative;
     overflow: hidden;
   }
   
-  .nivel-card::before {
+  .level-card::before {
     content: '';
     position: absolute;
-    top: -40%;
-    right: -20%;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, var(--brand-soft) 0%, transparent 70%);
-    pointer-events: none;
+    top: -20%; right: -10%;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
   }
   
-  .nivel-header {
+  .level-top {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -182,590 +154,416 @@
     position: relative;
   }
   
-  .nivel-emoji-titulo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  .level-info-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.7;
   }
   
-  .nivel-emoji { font-size: 32px; }
+  .level-info-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-top: 2px;
+  }
   
-  .nivel-num {
+  .level-xp-info { text-align: right; }
+  
+  .level-xp-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  
+  .level-xp-sub {
+    font-size: 10px;
+    opacity: 0.7;
+    font-weight: 600;
+  }
+  
+  .level-progress {
+    background: rgba(0, 0, 0, 0.2);
+    height: 8px;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  
+  .level-progress-fill {
+    height: 100%;
+    background: #001a0e;
+    border-radius: 100px;
+    transition: width 0.5s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  
+  .level-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 600;
+    position: relative;
+  }
+  
+  /* RESUMO MÊS */
+  .resumo-mes {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  
+  .resumo-mes-titulo {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 11px;
     color: var(--text-mute);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-bottom: 2px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   
-  .nivel-nome {
+  .resumo-mes-mes {
+    font-size: 11px;
+    color: var(--text-faint);
+    text-transform: capitalize;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+  
+  .resumo-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .resumo-item {
+    padding: 10px;
+    background: var(--bg-input);
+    border-radius: 12px;
+  }
+  
+  .resumo-item-label {
+    font-size: 10px;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  
+  .resumo-item-valor {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
     letter-spacing: -0.01em;
   }
   
-  .nivel-xp-badge {
-    background: var(--brand-soft);
-    color: var(--brand);
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    padding: 6px 12px;
-    border-radius: 100px;
-    flex-shrink: 0;
-  }
+  .resumo-item-valor.brand { color: var(--brand); }
+  .resumo-item-valor.danger { color: var(--danger); }
+  .resumo-item-valor.warning { color: var(--warning); }
   
-  .nivel-progresso-label {
+  .resumo-saldo-row {
+    padding: 12px;
+    background: var(--bg-input);
+    border-radius: 12px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+  }
+  
+  .resumo-saldo-realizado {
     font-size: 11px;
     color: var(--text-mute);
-    margin-bottom: 6px;
-    position: relative;
   }
   
-  .nivel-progresso-bar {
-    background: var(--bg-elev);
-    height: 8px;
-    border-radius: 100px;
-    overflow: hidden;
-    position: relative;
+  .resumo-saldo-realizado strong {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    display: block;
+    margin-top: 2px;
   }
   
-  .nivel-progresso-fill {
-    height: 100%;
-    background: var(--brand);
-    border-radius: 100px;
-    transition: width 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+  .resumo-saldo-realizado strong.positivo { color: var(--brand); }
+  .resumo-saldo-realizado strong.negativo { color: var(--danger); }
+  
+  /* PRÓXIMAS CONTAS */
+  .secao-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    color: var(--text-mute);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 18px 4px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   
-  .tatu-card {
+  .ver-todas {
+    font-size: 11px;
+    color: var(--brand);
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  
+  .alerta-vencidas {
+    background: var(--danger-soft);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
     display: flex;
     gap: 12px;
-    align-items: flex-start;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 14px;
-    margin-bottom: 14px;
+    align-items: center;
     cursor: pointer;
-    transition: all 0.15s;
   }
   
-  .tatu-card:active { transform: scale(0.99); border-color: var(--ia); }
+  .alerta-vencidas-emoji { font-size: 28px; flex-shrink: 0; }
   
-  .tatu-emoji { font-size: 28px; flex-shrink: 0; }
+  .alerta-vencidas-info { flex: 1; }
   
-  .tatu-texto {
-    flex: 1;
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--text-mute);
-  }
-  
-  .tatu-texto strong { color: var(--text); }
-  
-  .tatu-chat-cta {
-    background: var(--ia);
-    color: white;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 100px;
-    margin-top: 6px;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
-  
-  .insights-card {
-    background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%);
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    border-radius: 18px;
-    padding: 16px;
-    margin-bottom: 14px;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .insights-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-    gap: 10px;
-  }
-  
-  .insights-titulo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  .alerta-vencidas-titulo {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 14px;
     font-weight: 700;
-    color: var(--ia);
-  }
-  
-  .insights-refresh-btn {
-    background: rgba(168, 85, 247, 0.15);
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    color: var(--ia);
-    border-radius: 8px;
-    padding: 6px 10px;
-    font-size: 11px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  
-  .insights-refresh-btn:active { background: rgba(168, 85, 247, 0.25); }
-  .insights-refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-  
-  .insights-conteudo {
-    font-size: 13px;
-    line-height: 1.6;
-  }
-  
-  .insights-conteudo h1, .insights-conteudo h2, .insights-conteudo h3 {
-    font-family: 'Space Grotesk', sans-serif;
-    color: var(--text);
-    font-weight: 700;
-    margin: 14px 0 6px;
-  }
-  
-  .insights-conteudo h2 {
-    font-size: 13px;
-    color: var(--ia);
-  }
-  
-  .insights-conteudo h2:first-child { margin-top: 0; }
-  
-  .insights-conteudo p { margin-bottom: 8px; }
-  .insights-conteudo strong { color: var(--text); font-weight: 600; }
-  .insights-conteudo ul { margin: 6px 0 8px 20px; }
-  .insights-conteudo li { margin-bottom: 4px; line-height: 1.5; }
-  
-  .insights-loading {
-    text-align: center;
-    padding: 24px 12px;
-  }
-  
-  .insights-spinner {
-    width: 36px; height: 36px;
-    border: 3px solid var(--ia-soft);
-    border-top-color: var(--ia);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 10px;
-  }
-  
-  .insights-loading-text {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    color: var(--ia);
-    font-size: 13px;
+    color: var(--danger);
     margin-bottom: 2px;
   }
   
-  .insights-loading-sub {
-    font-size: 11px;
-    color: var(--text-mute);
-  }
-  
-  .insights-vazio {
-    text-align: center;
-    padding: 20px 12px;
-  }
-  
-  .insights-vazio-emoji { font-size: 32px; margin-bottom: 8px; }
-  
-  .insights-vazio-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    color: var(--ia);
-    font-size: 14px;
-    margin-bottom: 4px;
-  }
-  
-  .insights-vazio-sub {
+  .alerta-vencidas-sub {
     font-size: 12px;
     color: var(--text-mute);
-    line-height: 1.5;
-    margin-bottom: 12px;
-    max-width: 280px;
-    margin-left: auto;
-    margin-right: auto;
   }
   
-  .insights-cta {
-    background: var(--ia);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 20px;
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
+  .vencimento-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
     cursor: pointer;
-    display: inline-flex;
+    border-left: 3px solid var(--warning);
+  }
+  
+  .vencimento-card.hoje {
+    border-left-color: var(--brand);
+    background: linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%);
+  }
+  
+  .vencimento-card.proximo {
+    border-left-color: var(--warning);
+  }
+  
+  .vencimento-card.longe {
+    border-left-color: var(--info);
+  }
+  
+  .vencimento-emoji {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  
+  .vencimento-info { flex: 1; min-width: 0; }
+  
+  .vencimento-desc {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .vencimento-data {
+    font-size: 11px;
+    color: var(--text-mute);
+    margin-top: 2px;
+    display: flex;
     align-items: center;
     gap: 6px;
   }
   
-  .insights-cta:active { background: var(--ia-hover); transform: scale(0.97); }
-  
-  .insights-footer {
-    margin-top: 12px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(168, 85, 247, 0.2);
-    font-size: 10px;
-    color: var(--text-faint);
-    text-align: center;
-  }
-  
-  @keyframes spin { to { transform: rotate(360deg); } }
-  
-  .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-  
-  .stat-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 14px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  
-  .stat-card:active { transform: scale(0.98); }
-  
-  .stat-label {
-    font-size: 11px;
-    color: var(--text-mute);
+  .vencimento-badge {
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-bottom: 6px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 4px;
   }
   
-  .stat-valor {
+  .vencimento-badge.hoje { background: var(--brand); color: #001a0e; }
+  .vencimento-badge.proximo { background: var(--warning-soft); color: var(--warning); }
+  .vencimento-badge.longe { background: var(--info-soft); color: var(--info); }
+  
+  .vencimento-valor {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-  
-  .stat-valor.brand { color: var(--brand); }
-  .stat-valor.danger { color: var(--danger); }
-  .stat-valor.warning { color: var(--warning); }
-  
-  .stat-sub {
-    font-size: 11px;
-    color: var(--text-mute);
-    margin-top: 2px;
-  }
-  
-  .acao-principal {
-    width: 100%;
-    background: var(--brand);
-    color: #001a0e;
-    border: none;
-    border-radius: 14px;
-    padding: 16px;
-    font-family: 'Inter', sans-serif;
     font-size: 15px;
     font-weight: 700;
-    cursor: pointer;
+    color: var(--danger);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  
+  /* INSIGHT */
+  .insight-card {
+    background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 16px;
+    padding: 16px;
     margin-bottom: 14px;
-    box-shadow: 0 8px 24px rgba(0, 217, 126, 0.2);
+    cursor: pointer;
+  }
+  
+  .insight-top {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
+    gap: 10px;
+    margin-bottom: 8px;
   }
   
-  .acao-principal:active {
-    background: var(--brand-hover);
-    transform: scale(0.985);
-  }
+  .insight-emoji { font-size: 22px; }
   
-  .acao-chat {
-    width: 100%;
-    background: var(--ia);
-    color: white;
-    border: none;
-    border-radius: 14px;
-    padding: 14px;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 14px;
-    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  
-  .acao-chat:active {
-    background: var(--ia-hover);
-    transform: scale(0.985);
-  }
-  
-  .menu-titulo {
+  .insight-titulo {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    color: var(--text-mute);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin: 18px 0 10px;
-    padding: 0 4px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ia);
   }
   
+  .insight-texto {
+    font-size: 12px;
+    color: var(--text-mute);
+    line-height: 1.5;
+  }
+  
+  .insight-texto strong { color: var(--text); }
+  
+  /* MENU GRID */
   .menu-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
+    margin-bottom: 14px;
   }
   
-  .menu-card {
+  .menu-item {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 14px;
+    border-radius: 16px;
+    padding: 16px;
     cursor: pointer;
     transition: all 0.15s;
-    text-align: left;
-    color: var(--text);
-    text-decoration: none;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-height: 100px;
+    position: relative;
+    overflow: hidden;
   }
   
-  .menu-card:active { transform: scale(0.98); }
+  .menu-item:active { transform: scale(0.97); }
   
-  .menu-card-emoji { font-size: 26px; margin-bottom: 8px; }
-  
-  .menu-card-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
+  .menu-item-icon {
+    font-size: 28px;
     margin-bottom: 2px;
   }
   
-  .menu-card-sub {
+  .menu-item-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  
+  .menu-item-sub {
     font-size: 11px;
     color: var(--text-mute);
     line-height: 1.3;
   }
   
-  .missao-card {
-    background: var(--bg-card);
-    border: 1px solid var(--warning-soft);
-    border-radius: 16px;
-    padding: 14px;
-    margin-bottom: 14px;
-    display: flex;
-    gap: 12px;
-    align-items: center;
-  }
-  
-  .missao-icone {
-    width: 44px; height: 44px;
-    background: var(--warning-soft);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
-  }
-  
-  .missao-info { flex: 1; }
-  
-  .missao-titulo {
+  .menu-item-stat {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 2px;
+    font-weight: 600;
+    margin-top: auto;
   }
   
-  .missao-sub {
+  .menu-item-stat.danger { color: var(--danger); }
+  .menu-item-stat.warning { color: var(--warning); }
+  .menu-item-stat.brand { color: var(--brand); }
+  
+  .menu-item.dividas { border-color: rgba(255, 71, 87, 0.2); }
+  .menu-item.dividas .menu-item-icon { color: var(--danger); }
+  
+  .menu-item.contas { border-color: rgba(0, 217, 126, 0.2); }
+  
+  .menu-item.transacoes { border-color: rgba(168, 85, 247, 0.2); }
+  
+  /* FAB CHAT */
+  .fab-chat {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 56px; height: 56px;
+    background: var(--ia);
+    color: white;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.4);
+    z-index: 90;
+  }
+  
+  .fab-chat:active { background: #9333ea; transform: scale(0.95); }
+  
+  .empty-bloco {
+    background: var(--bg-card);
+    border: 1px dashed var(--border-strong);
+    border-radius: 14px;
+    padding: 24px 16px;
+    text-align: center;
+  }
+  
+  .empty-bloco-emoji { font-size: 36px; margin-bottom: 8px; }
+  
+  .empty-bloco-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  
+  .empty-bloco-desc {
     font-size: 11px;
     color: var(--text-mute);
     line-height: 1.4;
-  }
-  
-  .drawer-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    z-index: 200;
-    display: none;
-    backdrop-filter: blur(4px);
-  }
-  
-  .drawer-overlay.show { display: block; }
-  
-  .drawer {
-    position: fixed;
-    top: 0; right: 0; bottom: 0;
-    width: 80%;
-    max-width: 320px;
-    background: var(--bg-card);
-    border-left: 1px solid var(--border);
-    padding: 24px 20px;
-    overflow-y: auto;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-  }
-  
-  .drawer-overlay.show .drawer {
-    transform: translateX(0);
-  }
-  
-  .drawer-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-  }
-  
-  .drawer-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-  }
-  
-  .drawer-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 0;
-    cursor: pointer;
-    border-bottom: 1px solid var(--border);
-    color: var(--text);
-    text-decoration: none;
-  }
-  
-  .drawer-item:active { opacity: 0.6; }
-  
-  .drawer-item-emoji { font-size: 20px; }
-  .drawer-item-label { font-size: 14px; font-weight: 500; }
-  .drawer-item.danger { color: var(--danger); }
-  
-  .levelup-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.92);
-    z-index: 999;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    backdrop-filter: blur(8px);
-  }
-  
-  .levelup-overlay.show { display: flex; }
-  
-  .levelup-modal {
-    width: 100%;
-    max-width: 400px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 40px 24px;
-    text-align: center;
-    animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  
-  @keyframes bounceIn {
-    0% { transform: scale(0.6); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-  }
-  
-  .levelup-emoji {
-    font-size: 80px;
-    margin-bottom: 14px;
-    animation: bounce-emoji 1.5s ease-in-out infinite;
-  }
-  
-  @keyframes bounce-emoji {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
-  }
-  
-  .levelup-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    color: var(--warning);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    margin-bottom: 6px;
-  }
-  
-  .levelup-nivel {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    letter-spacing: -0.02em;
-  }
-  
-  .levelup-nome {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 20px;
-    color: var(--brand);
-    margin-bottom: 18px;
-  }
-  
-  .levelup-desc {
-    color: var(--text-mute);
-    font-size: 14px;
-    line-height: 1.5;
-    margin-bottom: 24px;
-  }
-  
-  .btn-continuar {
-    width: 100%;
-    background: var(--brand);
-    color: #001a0e;
-    border: none;
-    border-radius: 12px;
-    padding: 16px;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-  
-  .btn-continuar:active { background: var(--brand-hover); transform: scale(0.97); }
-  
-  .confete {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    pointer-events: none;
-    animation: confeteFall 2.5s linear forwards;
-  }
-  
-  @keyframes confeteFall {
-    0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
   }
   
   .loader-circle {
@@ -774,23 +572,24 @@
     border-radius: 50%;
     border-top-color: var(--brand);
     animation: spin 0.8s linear infinite;
-    margin: 60px auto;
+    margin: 30px auto;
   }
+  
+  @keyframes spin { to { transform: rotate(360deg); } }
   
   .hidden { display: none !important; }
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="logo">
-    <div class="logo-mark"></div>
-    <div class="logo-text">guardaí</div>
-  </div>
-  <div class="topbar-actions">
-    <button class="chat-btn" onclick="window.location.href='chat.html?v=1'" title="Chat com Tatu">💬</button>
-    <button class="menu-btn" onclick="abrirDrawer()">☰</button>
-  </div>
+<div class="header">
+  <div class="brand-mark"></div>
+  <div class="brand-text">guardaí</div>
+  <button class="header-btn" onclick="window.location.href='chat.html?v=1'">
+    💬
+    <div class="badge"></div>
+  </button>
+  <button class="header-btn" onclick="window.location.href='configuracoes.html?v=1'">☰</button>
 </div>
 
 <div class="container">
@@ -799,72 +598,14 @@
     <div class="saudacao-titulo" id="saudacao-titulo">Olá!</div>
     <div class="saudacao-sub" id="saudacao-sub">Bem-vindo de volta ao GuardaAí</div>
   </div>
-  
+
   <div id="conteudo">
     <div class="loader-circle"></div>
   </div>
 
 </div>
 
-<div class="drawer-overlay" id="drawer-overlay" onclick="fecharDrawer(event)">
-  <div class="drawer" onclick="event.stopPropagation()">
-    <div class="drawer-header">
-      <div class="drawer-titulo">Menu</div>
-      <button class="menu-btn" onclick="fecharDrawer()">✕</button>
-    </div>
-    <a href="home.html?v=1" class="drawer-item">
-      <div class="drawer-item-emoji">🏠</div>
-      <div class="drawer-item-label">Início</div>
-    </a>
-    <a href="chat.html?v=1" class="drawer-item">
-      <div class="drawer-item-emoji">💬</div>
-      <div class="drawer-item-label">Chat com Tatu</div>
-    </a>
-    <a href="dashboard.html?v=1" class="drawer-item">
-      <div class="drawer-item-emoji">📊</div>
-      <div class="drawer-item-label">Dashboard</div>
-    </a>
-    <a href="transacoes.html?v=1" class="drawer-item">
-      <div class="drawer-item-emoji">💸</div>
-      <div class="drawer-item-label">Transações</div>
-    </a>
-    <a href="contas.html?v=1" class="drawer-item">
-      <div class="drawer-item-emoji">🏦</div>
-      <div class="drawer-item-label">Contas e Bancos</div>
-    </a>
-    <a href="dividas.html?v=1" class="drawer-item">
-      <div class="drawer-item-emoji">💳</div>
-      <div class="drawer-item-label">Dívidas</div>
-    </a>
-    <a href="metas.html?v=1" class="drawer-item">
-      <div class="drawer-item-emoji">🎯</div>
-      <div class="drawer-item-label">Metas</div>
-    </a>
-    <a href="patrimonio.html?v=1" class="drawer-item">
-      <div class="drawer-item-emoji">💎</div>
-      <div class="drawer-item-label">Patrimônio</div>
-    </a>
-    <a href="educacao.html?v=1" class="drawer-item">
-      <div class="drawer-item-emoji">📚</div>
-      <div class="drawer-item-label">Aprender</div>
-    </a>
-    <div class="drawer-item danger" onclick="sair()">
-      <div class="drawer-item-emoji">🚪</div>
-      <div class="drawer-item-label">Sair</div>
-    </div>
-  </div>
-</div>
-
-<div class="levelup-overlay" id="levelup-overlay">
-  <div class="levelup-modal" id="levelup-modal">
-    <div class="levelup-emoji" id="levelup-emoji">🎉</div>
-    <div class="levelup-titulo">LEVEL UP!</div>
-    <div class="levelup-nivel" id="levelup-nivel">Nível 2</div>
-    <div class="levelup-nome" id="levelup-nome">Resgate</div>
-    <div class="levelup-desc" id="levelup-desc">Você desbloqueou uma nova fase!</div>
-    <button class="btn-continuar" onclick="fecharLevelUp()">Continuar jornada</button>
-  </div>
-</div>
+<button class="fab-chat" onclick="window.location.href='chat.html?v=1'">💬</button>
 
 <script type="module">
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -874,17 +615,16 @@
   const IA_FUNCTION_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
   
-  const niveisInfo = {
-    1: { emoji: '🎯', nome: 'Diagnóstico', xp_max: 100, desc: 'Vamos descobrir onde você está.' },
-    2: { emoji: '🚨', nome: 'Resgate', xp_max: 1000, desc: 'Foco em quitar as dívidas.' },
-    3: { emoji: '⚖️', nome: 'Estabilização', xp_max: 3000, desc: 'Construir reserva de emergência.' },
-    4: { emoji: '🏗️', nome: 'Construção', xp_max: 8000, desc: 'Multiplicar patrimônio.' },
-    5: { emoji: '🚀', nome: 'Liberdade', xp_max: 999999, desc: 'Independência alcançada!' }
-  };
+  const niveis = [
+    { num: 1, nome: 'Diagnóstico', xpInicio: 0, xpFim: 100 },
+    { num: 2, nome: 'Resgate de Dívidas', xpInicio: 100, xpFim: 400 },
+    { num: 3, nome: 'Estabilização', xpInicio: 400, xpFim: 900 },
+    { num: 4, nome: 'Construção', xpInicio: 900, xpFim: 1800 },
+    { num: 5, nome: 'Liberdade Financeira', xpInicio: 1800, xpFim: 9999 }
+  ];
   
   let usuario, perfil, gamificacao;
-  let dividas = [], transacoes = [], metas = [], patrimonio = [];
-  let mesAtual = new Date();
+  let stats = {};
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -894,609 +634,318 @@
     }
     usuario = session.user;
     
-    await carregarTudo();
+    await carregarDados();
     render();
-    checarLevelUp();
-    carregarInsights();
   })();
   
-  async function carregarTudo() {
-    const inicioMes = new Date(mesAtual.getFullYear(), mesAtual.getMonth(), 1).toISOString().split('T')[0];
-    const fimMes = new Date(mesAtual.getFullYear(), mesAtual.getMonth() + 1, 0).toISOString().split('T')[0];
-    
-    const [perfilRes, gamRes, dividasRes, transRes, metasRes, patRes] = await Promise.all([
-      supabase.from('perfis').select('*').eq('id', usuario.id).single(),
-      supabase.from('gamificacao').select('*').eq('user_id', usuario.id).single(),
-      supabase.from('dividas').select('*').eq('user_id', usuario.id),
-      supabase.from('transacoes').select('*, categorias(nome, icone)').eq('user_id', usuario.id).gte('data', inicioMes).lte('data', fimMes),
-      supabase.from('metas').select('*').eq('user_id', usuario.id).neq('status', 'cancelada'),
-      supabase.from('patrimonio').select('*').eq('user_id', usuario.id).eq('ativo', true)
+  async function carregarDados() {
+    // Carrega perfil + gamificação em paralelo
+    const [perfilRes, gameRes] = await Promise.all([
+      supabase.from('perfis').select('*').eq('user_id', usuario.id).single(),
+      supabase.from('gamificacao').select('*').eq('user_id', usuario.id).single()
     ]);
     
     perfil = perfilRes.data;
-    gamificacao = gamRes.data || { xp_total: 0 };
-    dividas = dividasRes.data || [];
-    transacoes = transRes.data || [];
-    metas = metasRes.data || [];
-    patrimonio = patRes.data || [];
+    gamificacao = gameRes.data;
+    
+    if (!perfil || !gamificacao) {
+      window.location.href = 'diagnostico.html?v=1';
+      return;
+    }
+    
+    // Dados do mês atual
+    const hoje = new Date();
+    const hojeStr = hoje.toISOString().split('T')[0];
+    const inicio = new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().split('T')[0];
+    const fim = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).toISOString().split('T')[0];
+    const proximos30 = new Date(hoje);
+    proximos30.setDate(proximos30.getDate() + 30);
+    const proximos30Str = proximos30.toISOString().split('T')[0];
+    
+    const [transMes, previstasProx30, dividasAtivas, contasAtivas, comprsAtivos] = await Promise.all([
+      supabase.from('transacoes')
+        .select('valor, tipo, status, data')
+        .eq('user_id', usuario.id)
+        .gte('data', inicio)
+        .lte('data', fim),
+      supabase.from('transacoes')
+        .select('*, categorias(nome, icone)')
+        .eq('user_id', usuario.id)
+        .eq('status', 'prevista')
+        .lte('data', proximos30Str)
+        .order('data', { ascending: true }),
+      supabase.from('dividas')
+        .select('valor_atual')
+        .eq('user_id', usuario.id)
+        .eq('status', 'ativa'),
+      supabase.from('contas')
+        .select('*')
+        .eq('user_id', usuario.id)
+        .eq('ativa', true),
+      supabase.from('compromissos')
+        .select('id')
+        .eq('user_id', usuario.id)
+        .eq('ativo', true)
+    ]);
+    
+    const trans = transMes.data || [];
+    const realizadas = trans.filter(t => (t.status || 'realizada') === 'realizada');
+    const previstasMes = trans.filter(t => t.status === 'prevista');
+    
+    stats.entradaRealizada = realizadas.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
+    stats.saidaRealizada = realizadas.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
+    stats.saldoRealizado = stats.entradaRealizada - stats.saidaRealizada;
+    
+    stats.previstasMes = previstasMes.reduce((a, t) => a + (t.tipo === 'saida' ? Number(t.valor) : -Number(t.valor)), 0);
+    stats.saldoPrevisto = stats.saldoRealizado - stats.previstasMes;
+    
+    stats.proximasContas = (previstasProx30.data || []).slice(0, 5);
+    stats.vencidasHoje = (previstasProx30.data || []).filter(t => t.data < hojeStr);
+    stats.totalVencidas = stats.vencidasHoje.reduce((a, t) => a + Number(t.valor), 0);
+    
+    stats.totalDividas = (dividasAtivas.data || []).reduce((a, d) => a + Number(d.valor_atual), 0);
+    stats.qtdDividas = (dividasAtivas.data || []).length;
+    
+    stats.contas = contasAtivas.data || [];
+    stats.qtdContas = stats.contas.filter(c => c.tipo !== 'cartao_credito').length;
+    stats.qtdCartoes = stats.contas.filter(c => c.tipo === 'cartao_credito').length;
+    
+    // Calcula patrimônio das contas (saldo realizado)
+    let patrimonio = 0;
+    for (const c of stats.contas.filter(x => x.tipo !== 'cartao_credito')) {
+      const { data: t } = await supabase
+        .from('transacoes')
+        .select('valor, tipo')
+        .eq('user_id', usuario.id)
+        .eq('conta_id', c.id)
+        .eq('status', 'realizada');
+      let s = Number(c.saldo_inicial || 0);
+      (t || []).forEach(tx => { s += tx.tipo === 'entrada' ? Number(tx.valor) : -Number(tx.valor); });
+      patrimonio += s;
+    }
+    stats.patrimonio = patrimonio;
+    
+    stats.qtdCompromissos = (comprsAtivos.data || []).length;
+  }
+  
+  function nivelAtual() {
+    const xp = gamificacao.xp_total || 0;
+    for (const n of niveis) {
+      if (xp >= n.xpInicio && xp < n.xpFim) return n;
+    }
+    return niveis[niveis.length - 1];
   }
   
   function render() {
-    renderSaudacao();
-    
-    const nivel = perfil?.nivel_jornada || 1;
-    const info = niveisInfo[nivel];
-    
-    document.getElementById('conteudo').innerHTML = `
-      ${renderNivelCard(nivel, info)}
-      ${renderTatuCard(nivel)}
-      <div id="insights-area"></div>
-      ${renderAcaoChat()}
-      ${renderStats(nivel)}
-      ${renderAcaoPrincipal(nivel)}
-      ${renderMissao(nivel)}
-      ${renderMenuCards(nivel)}
-    `;
-    
-    renderInsightsArea();
-  }
-  
-  function renderSaudacao() {
+    const nome = perfil.nome ? perfil.nome.split(' ')[0] : 'Aí';
     const hora = new Date().getHours();
-    let saudacao = 'Olá';
+    let saudacao;
     if (hora < 12) saudacao = 'Bom dia';
     else if (hora < 18) saudacao = 'Boa tarde';
     else saudacao = 'Boa noite';
     
-    const nome = perfil?.nome?.split(' ')[0] || '';
-    document.getElementById('saudacao-titulo').textContent = `${saudacao}${nome ? ', ' + nome : ''}!`;
+    document.getElementById('saudacao-titulo').textContent = `${saudacao}, ${nome}!`;
+    document.getElementById('saudacao-sub').textContent = `${stats.qtdContas} contas + ${stats.qtdCartoes} cartões • ${stats.qtdDividas} dívida${stats.qtdDividas === 1 ? '' : 's'} ativa${stats.qtdDividas === 1 ? '' : 's'}`;
     
-    const total = gamificacao?.xp_total || 0;
-    const streak = gamificacao?.streak_dias || 0;
-    let sub = `${total.toLocaleString('pt-BR')} XP`;
-    if (streak > 1) sub += ` • 🔥 ${streak} dias seguidos`;
-    document.getElementById('saudacao-sub').textContent = sub;
-  }
-  
-  function renderNivelCard(nivel, info) {
-    const xp = gamificacao?.xp_total || 0;
-    const xpAnterior = nivel > 1 ? niveisInfo[nivel - 1].xp_max : 0;
-    const xpNecessario = info.xp_max - xpAnterior;
-    const xpAtual = Math.max(0, xp - xpAnterior);
-    const pct = Math.min(100, (xpAtual / xpNecessario) * 100);
+    const n = nivelAtual();
+    const xp = gamificacao.xp_total || 0;
+    const xpNivel = xp - n.xpInicio;
+    const xpTotal = n.xpFim - n.xpInicio;
+    const pct = Math.min(100, (xpNivel / xpTotal) * 100);
     
-    return `
-      <div class="nivel-card">
-        <div class="nivel-header">
-          <div class="nivel-emoji-titulo">
-            <div class="nivel-emoji">${info.emoji}</div>
-            <div>
-              <div class="nivel-num">Nível ${nivel}</div>
-              <div class="nivel-nome">${info.nome}</div>
+    const hojeStr = new Date().toISOString().split('T')[0];
+    const mesAtual = new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    
+    let html = `
+      <div class="level-card" onclick="window.location.href='educacao.html?v=1'">
+        <div class="level-top">
+          <div>
+            <div class="level-info-label">Nível ${n.num}</div>
+            <div class="level-info-titulo">${n.nome}</div>
+          </div>
+          <div class="level-xp-info">
+            <div class="level-xp-num">${xp}</div>
+            <div class="level-xp-sub">XP TOTAL</div>
+          </div>
+        </div>
+        <div class="level-progress">
+          <div class="level-progress-fill" style="width:${pct}%"></div>
+        </div>
+        <div class="level-meta">
+          <span>${xpNivel} / ${xpTotal} XP</span>
+          <span>🔥 ${gamificacao.streak_dias || 0} dias</span>
+        </div>
+      </div>
+    `;
+    
+    // RESUMO DO MÊS
+    html += `
+      <div class="resumo-mes">
+        <div class="resumo-mes-titulo">
+          <span>📊 Resumo do mês</span>
+          <span class="resumo-mes-mes">${mesAtual}</span>
+        </div>
+        <div class="resumo-row">
+          <div class="resumo-item">
+            <div class="resumo-item-label">↓ Entradas</div>
+            <div class="resumo-item-valor brand">R$ ${formatarMoeda(stats.entradaRealizada)}</div>
+          </div>
+          <div class="resumo-item">
+            <div class="resumo-item-label">↑ Saídas</div>
+            <div class="resumo-item-valor danger">R$ ${formatarMoeda(stats.saidaRealizada)}</div>
+          </div>
+        </div>
+        <div class="resumo-saldo-row">
+          <div class="resumo-saldo-realizado">
+            Saldo realizado
+            <strong class="${stats.saldoRealizado >= 0 ? 'positivo' : 'negativo'}">R$ ${formatarMoeda(stats.saldoRealizado)}</strong>
+          </div>
+          ${stats.previstasMes !== 0 ? `
+          <div class="resumo-saldo-realizado" style="text-align:right;">
+            📅 Previsto fim do mês
+            <strong class="${stats.saldoPrevisto >= 0 ? 'positivo' : 'negativo'}">R$ ${formatarMoeda(stats.saldoPrevisto)}</strong>
+          </div>
+          ` : ''}
+        </div>
+      </div>
+    `;
+    
+    // ALERTA DE VENCIDAS
+    if (stats.vencidasHoje.length > 0) {
+      html += `
+        <div class="alerta-vencidas" onclick="window.location.href='transacoes.html?v=3'">
+          <div class="alerta-vencidas-emoji">⚠️</div>
+          <div class="alerta-vencidas-info">
+            <div class="alerta-vencidas-titulo">${stats.vencidasHoje.length} conta${stats.vencidasHoje.length === 1 ? '' : 's'} vencida${stats.vencidasHoje.length === 1 ? '' : 's'}!</div>
+            <div class="alerta-vencidas-sub">Total: R$ ${formatarMoeda(stats.totalVencidas)} • Toque pra ver</div>
+          </div>
+        </div>
+      `;
+    }
+    
+    // PRÓXIMAS CONTAS A VENCER
+    if (stats.proximasContas.length > 0) {
+      html += `
+        <div class="secao-titulo">
+          <span>📅 Próximas contas</span>
+          <span class="ver-todas" onclick="window.location.href='transacoes.html?v=3'">Ver todas →</span>
+        </div>
+      `;
+      
+      stats.proximasContas.forEach(t => {
+        const cat = t.categorias;
+        const dataObj = new Date(t.data + 'T12:00:00');
+        const dataFormatada = dataObj.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' });
+        const dias = Math.ceil((dataObj - new Date(hojeStr + 'T00:00:00')) / (1000*60*60*24));
+        
+        let classe, badge, badgeClass;
+        if (t.data < hojeStr) {
+          classe = 'vencida';
+          badge = '⚠️ VENCIDA';
+          badgeClass = 'hoje'; // verde forte pra chamar atenção
+        } else if (t.data === hojeStr) {
+          classe = 'hoje';
+          badge = 'HOJE';
+          badgeClass = 'hoje';
+        } else if (dias <= 7) {
+          classe = 'proximo';
+          badge = `EM ${dias}D`;
+          badgeClass = 'proximo';
+        } else {
+          classe = 'longe';
+          badge = `EM ${dias}D`;
+          badgeClass = 'longe';
+        }
+        
+        html += `
+          <div class="vencimento-card ${classe}" onclick="window.location.href='transacoes.html?v=3'">
+            <div class="vencimento-emoji">${cat?.icone || '📅'}</div>
+            <div class="vencimento-info">
+              <div class="vencimento-desc">${t.descricao}</div>
+              <div class="vencimento-data">
+                ${dataFormatada}
+                <span class="vencimento-badge ${badgeClass}">${badge}</span>
+              </div>
             </div>
+            <div class="vencimento-valor">R$ ${formatarMoeda(t.valor)}</div>
           </div>
-          <div class="nivel-xp-badge">${xpAtual.toLocaleString('pt-BR')} XP</div>
-        </div>
-        ${nivel < 5 ? `
-          <div class="nivel-progresso-label">
-            <span>Próximo: ${niveisInfo[nivel + 1].nome}</span>
-            <span>${xpAtual} / ${xpNecessario}</span>
-          </div>
-          <div class="nivel-progresso-bar">
-            <div class="nivel-progresso-fill" style="width:${pct}%;"></div>
-          </div>
-        ` : `
-          <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--brand);text-align:center;padding:8px 0;">
-            🏆 NÍVEL MÁXIMO ATINGIDO
-          </div>
-        `}
-      </div>
-    `;
-  }
-  
-  function renderTatuCard(nivel) {
-    let texto = '';
-    
-    if (nivel === 1) {
-      texto = '🦔 Vamos fazer seu <strong>diagnóstico financeiro</strong> pra começar!';
-    } else if (nivel === 2) {
-      const ativas = dividas.filter(d => d.status !== 'quitada');
-      const quitadas = dividas.filter(d => d.status === 'quitada').length;
-      const totalDivida = ativas.reduce((a, d) => a + Number(d.valor_atual || d.valor_original), 0);
-      
-      if (ativas.length === 0 && dividas.length === 0) {
-        texto = '🦔 Cadastre suas dívidas pra eu te ajudar a quitar com IA!';
-      } else if (ativas.length === 0) {
-        texto = '🦔 <strong>TUDO QUITADO!</strong> Você venceu o Resgate! 🏆';
-      } else if (quitadas > 0) {
-        texto = `🦔 Já quitou <strong>${quitadas}</strong>. Faltam <strong>${ativas.length}</strong>. Não pare!`;
-      } else {
-        texto = `🦔 <strong>R$ ${formatarMoeda(totalDivida)}</strong> em dívidas. Use a IA pra negociar.`;
-      }
-    } else if (nivel === 3) {
-      texto = '🦔 Hora de <strong>construir reserva</strong>! Meta: 6 meses de gastos.';
-    } else if (nivel === 4) {
-      texto = '🦔 Hora de <strong>multiplicar patrimônio</strong>! Diversificação é a chave.';
-    } else {
-      texto = '🦔 <strong>LIBERDADE FINANCEIRA!</strong> Você é uma inspiração. 🚀';
-    }
-    
-    return `
-      <div class="tatu-card" onclick="window.location.href='chat.html?v=1'">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-texto">
-          ${texto}
-          <div><span class="tatu-chat-cta">💬 Conversar com Tatu</span></div>
-        </div>
-      </div>
-    `;
-  }
-  
-  function renderAcaoChat() {
-    return `
-      <button class="acao-chat" onclick="window.location.href='chat.html?v=1'">
-        <span>💬</span> Pergunte algo ao Tatu
-      </button>
-    `;
-  }
-  
-  function renderStats(nivel) {
-    const entrada = transacoes.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
-    const saida = transacoes.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
-    
-    let cards = `
-      <div class="stat-card" onclick="window.location.href='transacoes.html?v=1'">
-        <div class="stat-label">Entradas do mês</div>
-        <div class="stat-valor brand">R$ ${formatarMoeda(entrada)}</div>
-      </div>
-      <div class="stat-card" onclick="window.location.href='transacoes.html?v=1'">
-        <div class="stat-label">Saídas do mês</div>
-        <div class="stat-valor danger">R$ ${formatarMoeda(saida)}</div>
-      </div>
-    `;
-    
-    if (nivel >= 2) {
-      const ativas = dividas.filter(d => d.status !== 'quitada');
-      const totalDivida = ativas.reduce((a, d) => a + Number(d.valor_atual || d.valor_original), 0);
-      cards += `
-        <div class="stat-card" onclick="window.location.href='dividas.html?v=1'">
-          <div class="stat-label">Dívidas ativas</div>
-          <div class="stat-valor warning">R$ ${formatarMoeda(totalDivida)}</div>
-          <div class="stat-sub">${ativas.length} em aberto</div>
-        </div>
-      `;
-    }
-    
-    if (nivel >= 3) {
-      const reserva = metas.find(m => m.tipo === 'reserva_emergencia');
-      const valorReserva = reserva ? Number(reserva.valor_atual || 0) : 0;
-      const valorAlvo = reserva ? Number(reserva.valor_objetivo || 0) : 0;
-      const pctReserva = valorAlvo > 0 ? Math.min(100, (valorReserva / valorAlvo) * 100) : 0;
-      cards += `
-        <div class="stat-card" onclick="window.location.href='metas.html?v=1'">
-          <div class="stat-label">Reserva emergência</div>
-          <div class="stat-valor brand">${pctReserva.toFixed(0)}%</div>
-          <div class="stat-sub">R$ ${formatarMoeda(valorReserva)}</div>
-        </div>
-      `;
-    }
-    
-    if (nivel >= 4) {
-      const totalPat = patrimonio.reduce((a, p) => a + Number(p.valor_atual || 0), 0);
-      cards += `
-        <div class="stat-card" onclick="window.location.href='patrimonio.html?v=1'">
-          <div class="stat-label">Patrimônio</div>
-          <div class="stat-valor brand">R$ ${formatarMoeda(totalPat)}</div>
-          <div class="stat-sub">${patrimonio.length} ativos</div>
-        </div>
-      `;
-    }
-    
-    return `<div class="stats-grid">${cards}</div>`;
-  }
-  
-  function renderAcaoPrincipal(nivel) {
-    let label = '', acao = '';
-    
-    if (nivel === 1) {
-      label = '🎯 Fazer Diagnóstico';
-      acao = "window.location.href='diagnostico.html?v=1'";
-    } else if (nivel === 2) {
-      const ativas = dividas.filter(d => d.status !== 'quitada');
-      label = ativas.length === 0 ? '+ Cadastrar dívidas' : '✨ Quitar próxima dívida';
-      acao = "window.location.href='dividas.html?v=1'";
-    } else if (nivel === 3) {
-      label = '🎯 Configurar reserva';
-      acao = "window.location.href='metas.html?v=1'";
-    } else if (nivel === 4) {
-      const totalPat = patrimonio.reduce((a, p) => a + Number(p.valor_atual || 0), 0);
-      label = totalPat === 0 ? '💎 Primeiro aporte' : '📊 Diversificar carteira';
-      acao = "window.location.href='patrimonio.html?v=1'";
-    } else {
-      label = '🚀 Ver patrimônio';
-      acao = "window.location.href='patrimonio.html?v=1'";
-    }
-    
-    return `<button class="acao-principal" onclick="${acao}">${label}</button>`;
-  }
-  
-  function renderMissao(nivel) {
-    let titulo = '', sub = '', emoji = '🎯';
-    
-    if (nivel === 2) {
-      const ativas = dividas.filter(d => d.status !== 'quitada');
-      if (ativas.length > 0) {
-        titulo = 'Missão da semana';
-        sub = `Quitar pelo menos 1 dívida das ${ativas.length} ativas`;
-        emoji = '🎯';
-      } else { return ''; }
-    } else if (nivel === 3) {
-      titulo = 'Missão da semana';
-      sub = 'Guardar pelo menos R$ 100 na reserva';
-      emoji = '🐷';
-    } else if (nivel === 4) {
-      titulo = 'Missão da semana';
-      sub = 'Estudar 2 lições de investimento';
-      emoji = '📚';
-    } else { return ''; }
-    
-    return `
-      <div class="missao-card">
-        <div class="missao-icone">${emoji}</div>
-        <div class="missao-info">
-          <div class="missao-titulo">${titulo}</div>
-          <div class="missao-sub">${sub}</div>
-        </div>
-      </div>
-    `;
-  }
-  
-  function renderMenuCards(nivel) {
-    return `
-      <div class="menu-titulo">Menu rápido</div>
-      <div class="menu-grid">
-        <a href="contas.html?v=1" class="menu-card" style="background:linear-gradient(135deg, rgba(56,189,248,0.08) 0%, var(--bg-card) 100%);border-color:rgba(56,189,248,0.25);">
-          <div class="menu-card-emoji">🏦</div>
-          <div class="menu-card-titulo">Contas</div>
-          <div class="menu-card-sub">Bancos e cartões</div>
-        </a>
-        <a href="transacoes.html?v=1" class="menu-card">
-          <div class="menu-card-emoji">💸</div>
-          <div class="menu-card-titulo">Transações</div>
-          <div class="menu-card-sub">Gastos e receitas</div>
-        </a>
-        <a href="dashboard.html?v=1" class="menu-card">
-          <div class="menu-card-emoji">📊</div>
-          <div class="menu-card-titulo">Dashboard</div>
-          <div class="menu-card-sub">Gráficos e análises</div>
-        </a>
-        <a href="dividas.html?v=1" class="menu-card">
-          <div class="menu-card-emoji">💳</div>
-          <div class="menu-card-titulo">Dívidas</div>
-          <div class="menu-card-sub">Negociar com IA</div>
-        </a>
-        <a href="metas.html?v=1" class="menu-card">
-          <div class="menu-card-emoji">🎯</div>
-          <div class="menu-card-titulo">Metas</div>
-          <div class="menu-card-sub">Reserva e objetivos</div>
-        </a>
-        <a href="patrimonio.html?v=1" class="menu-card">
-          <div class="menu-card-emoji">💎</div>
-          <div class="menu-card-titulo">Patrimônio</div>
-          <div class="menu-card-sub">Investimentos</div>
-        </a>
-        <a href="chat.html?v=1" class="menu-card" style="background:linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%);border-color:rgba(168, 85, 247, 0.3);">
-          <div class="menu-card-emoji">💬</div>
-          <div class="menu-card-titulo" style="color:var(--ia);">Chat IA</div>
-          <div class="menu-card-sub">Pergunte ao Tatu</div>
-        </a>
-        <a href="educacao.html?v=1" class="menu-card">
-          <div class="menu-card-emoji">📚</div>
-          <div class="menu-card-titulo">Aprender</div>
-          <div class="menu-card-sub">Educação financeira</div>
-        </a>
-      </div>
-    `;
-  }
-  
-  function renderInsightsArea() {
-    const area = document.getElementById('insights-area');
-    if (!area) return;
-    
-    const totalTrans = transacoes.length;
-    
-    if (totalTrans < 3) {
-      area.innerHTML = `
-        <div class="insights-card">
-          <div class="insights-header">
-            <div class="insights-titulo">✨ Insights da IA</div>
-          </div>
-          <div class="insights-vazio">
-            <div class="insights-vazio-emoji">📸</div>
-            <div class="insights-vazio-titulo">Cadastre mais transações</div>
-            <div class="insights-vazio-sub">Quando você tiver pelo menos 3 transações no mês, a IA analisa seus gastos e gera insights personalizados.</div>
-            <button class="insights-cta" onclick="window.location.href='transacoes.html?v=1'">
-              ✨ Cadastrar via foto
-            </button>
-          </div>
-        </div>
-      `;
-      return;
-    }
-    
-    const cacheKey = `insights_${usuario.id}_${mesAtual.getFullYear()}_${mesAtual.getMonth()}`;
-    const cached = localStorage.getItem(cacheKey);
-    
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached);
-        const idade = (Date.now() - parsed.timestamp) / (1000 * 60 * 60);
-        if (idade < 24) {
-          mostrarInsights(parsed.texto, true);
-          return;
-        }
-      } catch (e) {}
-    }
-    
-    area.innerHTML = `
-      <div class="insights-card">
-        <div class="insights-header">
-          <div class="insights-titulo">✨ Insights da IA</div>
-        </div>
-        <div class="insights-loading">
-          <div class="insights-spinner"></div>
-          <div class="insights-loading-text">🤖 Tatu analisando seus gastos...</div>
-          <div class="insights-loading-sub">Lendo ${totalTrans} transações do mês</div>
-        </div>
-      </div>
-    `;
-  }
-  
-  function mostrarInsights(texto, cacheado) {
-    const area = document.getElementById('insights-area');
-    if (!area) return;
-    
-    area.innerHTML = `
-      <div class="insights-card">
-        <div class="insights-header">
-          <div class="insights-titulo">✨ Insights da IA</div>
-          <button class="insights-refresh-btn" onclick="forcarNovoInsight()" id="btn-refresh-insights">
-            🔄 Atualizar
-          </button>
-        </div>
-        <div class="insights-conteudo">${markdownToHtml(texto)}</div>
-        ${cacheado ? '<div class="insights-footer">Insights atualizados há menos de 24h</div>' : ''}
-      </div>
-    `;
-  }
-  
-  async function carregarInsights() {
-    if (transacoes.length < 3) return;
-    
-    const cacheKey = `insights_${usuario.id}_${mesAtual.getFullYear()}_${mesAtual.getMonth()}`;
-    const cached = localStorage.getItem(cacheKey);
-    
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached);
-        const idade = (Date.now() - parsed.timestamp) / (1000 * 60 * 60);
-        if (idade < 24) return;
-      } catch (e) {}
-    }
-    
-    await gerarInsightsIA();
-  }
-  
-  async function gerarInsightsIA() {
-    if (transacoes.length < 3) return;
-    
-    const entrada = transacoes.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
-    const saida = transacoes.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
-    const saldo = entrada - saida;
-    
-    const porCategoria = {};
-    transacoes.filter(t => t.tipo === 'saida').forEach(t => {
-      const cat = t.categorias?.nome || 'Outros';
-      if (!porCategoria[cat]) porCategoria[cat] = 0;
-      porCategoria[cat] += Number(t.valor);
-    });
-    
-    const topCategorias = Object.entries(porCategoria)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5)
-      .map(([nome, valor]) => `${nome}: R$ ${formatarMoeda(valor)}`)
-      .join(', ');
-    
-    const inicioMesAnt = new Date(mesAtual.getFullYear(), mesAtual.getMonth() - 1, 1).toISOString().split('T')[0];
-    const fimMesAnt = new Date(mesAtual.getFullYear(), mesAtual.getMonth(), 0).toISOString().split('T')[0];
-    
-    const { data: transAnt } = await supabase
-      .from('transacoes')
-      .select('valor, tipo, categorias(nome)')
-      .eq('user_id', usuario.id)
-      .gte('data', inicioMesAnt)
-      .lte('data', fimMesAnt);
-    
-    let contextoAnterior = '';
-    if (transAnt && transAnt.length > 0) {
-      const entradaAnt = transAnt.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
-      const saidaAnt = transAnt.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
-      contextoAnterior = `\nMês anterior: entrou R$ ${formatarMoeda(entradaAnt)}, saiu R$ ${formatarMoeda(saidaAnt)}`;
-    }
-    
-    const nomeMes = mesAtual.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-    const ativas = dividas.filter(d => d.status !== 'quitada').length;
-    
-    const contexto = `Mês: ${nomeMes}
-Total de transações: ${transacoes.length}
-Entradas: R$ ${formatarMoeda(entrada)}
-Saídas: R$ ${formatarMoeda(saida)}
-Saldo: R$ ${formatarMoeda(saldo)}
-Top categorias de gasto: ${topCategorias}
-Dívidas ativas: ${ativas}
-Nível na jornada: ${perfil?.nivel_jornada || 1}${contextoAnterior}`;
-    
-    try {
-      const resp = await fetch(IA_FUNCTION_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_KEY,
-          'Authorization': 'Bearer ' + SUPABASE_KEY
-        },
-        body: JSON.stringify({
-          tipo: 'insights',
-          mensagem: 'Analisa esses dados e me dá insights sobre meu mês.',
-          contexto,
-          max_tokens: 800
-        })
+        `;
       });
-      
-      const data = await resp.json();
-      
-      if (data.resposta) {
-        const cacheKey = `insights_${usuario.id}_${mesAtual.getFullYear()}_${mesAtual.getMonth()}`;
-        localStorage.setItem(cacheKey, JSON.stringify({
-          texto: data.resposta,
-          timestamp: Date.now()
-        }));
-        
-        mostrarInsights(data.resposta, false);
-        
-        const xpKey = `insights_xp_${usuario.id}_${mesAtual.getFullYear()}_${mesAtual.getMonth()}`;
-        if (!localStorage.getItem(xpKey)) {
-          localStorage.setItem(xpKey, 'true');
-          await darXP(15, 'insights_lido', 'Insights do mês lidos');
-        }
+    }
+    
+    // INSIGHT IA (se tem transações suficientes)
+    const totalTrans = stats.entradaRealizada + stats.saidaRealizada;
+    if (totalTrans > 0 && (stats.qtdDividas > 0 || stats.proximasContas.length > 0)) {
+      let insightTexto;
+      if (stats.totalVencidas > 0) {
+        insightTexto = `Você tem <strong>R$ ${formatarMoeda(stats.totalVencidas)}</strong> em contas vencidas. Resolver isso primeiro libera espaço mental e evita juros. Eu te ajudo a negociar! 🦔`;
+      } else if (stats.totalDividas > stats.entradaRealizada * 0.3) {
+        insightTexto = `Suas dívidas (<strong>R$ ${formatarMoeda(stats.totalDividas)}</strong>) representam mais de 30% da sua renda mensal. Toca em "Dívidas" e usa o Negociador IA — descontos de 30-70% são comuns! 🦔`;
+      } else if (stats.saldoPrevisto < 0) {
+        insightTexto = `Cuidado! Com as contas previstas, você vai fechar o mês negativo em <strong>R$ ${formatarMoeda(Math.abs(stats.saldoPrevisto))}</strong>. Tem como negociar alguma despesa ou aumentar entrada? 🦔`;
       } else {
-        const area = document.getElementById('insights-area');
-        if (area) area.innerHTML = '';
+        insightTexto = `Você está organizado! Saldo previsto fim do mês: <strong>R$ ${formatarMoeda(stats.saldoPrevisto)}</strong>. Continue assim e suba de nível. 🦔`;
       }
-    } catch (err) {
-      console.error('Erro insights:', err);
-      const area = document.getElementById('insights-area');
-      if (area) area.innerHTML = '';
-    }
-  }
-  
-  window.forcarNovoInsight = async function() {
-    const btn = document.getElementById('btn-refresh-insights');
-    if (btn) {
-      btn.disabled = true;
-      btn.textContent = '⏳ Gerando...';
-    }
-    
-    const cacheKey = `insights_${usuario.id}_${mesAtual.getFullYear()}_${mesAtual.getMonth()}`;
-    localStorage.removeItem(cacheKey);
-    
-    const area = document.getElementById('insights-area');
-    if (area) {
-      area.innerHTML = `
-        <div class="insights-card">
-          <div class="insights-header">
-            <div class="insights-titulo">✨ Insights da IA</div>
+      
+      html += `
+        <div class="insight-card" onclick="window.location.href='chat.html?v=1'">
+          <div class="insight-top">
+            <div class="insight-emoji">🦔</div>
+            <div class="insight-titulo">Tatu observou...</div>
           </div>
-          <div class="insights-loading">
-            <div class="insights-spinner"></div>
-            <div class="insights-loading-text">🤖 Atualizando análise...</div>
-          </div>
+          <div class="insight-texto">${insightTexto}</div>
         </div>
       `;
     }
     
-    await gerarInsightsIA();
-  };
-  
-  function markdownToHtml(md) {
-    if (!md) return '';
-    let html = md;
-    html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
-    html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
-    html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
-    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
-    html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
-    html = html.replace(/(<li>.*<\/li>\n?)+/g, (match) => '<ul>' + match + '</ul>');
-    html = html.split('\n\n').map(p => {
-      p = p.trim();
-      if (!p) return '';
-      if (p.startsWith('<h') || p.startsWith('<ul') || p.startsWith('<ol')) return p;
-      return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
-    }).join('\n');
-    return html;
-  }
-  
-  function checarLevelUp() {
-    const ultimo = localStorage.getItem(`lastNivel_${usuario.id}`);
-    const atual = perfil?.nivel_jornada || 1;
+    // MENU GRID
+    html += `
+      <div class="secao-titulo" style="margin-top:20px;">Atalhos</div>
+      <div class="menu-grid">
+        <div class="menu-item contas" onclick="window.location.href='contas.html?v=2'">
+          <div class="menu-item-icon">🏦</div>
+          <div class="menu-item-titulo">Vida Financeira</div>
+          <div class="menu-item-sub">Contas, cartões, fixas</div>
+          <div class="menu-item-stat brand">R$ ${formatarMoeda(stats.patrimonio)}</div>
+        </div>
+        <div class="menu-item transacoes" onclick="window.location.href='transacoes.html?v=3'">
+          <div class="menu-item-icon">💸</div>
+          <div class="menu-item-titulo">Transações</div>
+          <div class="menu-item-sub">Entradas e saídas</div>
+          <div class="menu-item-stat ${stats.saldoRealizado >= 0 ? 'brand' : 'danger'}">${stats.saldoRealizado >= 0 ? '+' : ''}R$ ${formatarMoeda(Math.abs(stats.saldoRealizado))}</div>
+        </div>
+        <div class="menu-item dividas" onclick="window.location.href='dividas.html?v=1'">
+          <div class="menu-item-icon">💳</div>
+          <div class="menu-item-titulo">Dívidas</div>
+          <div class="menu-item-sub">Negociador IA</div>
+          <div class="menu-item-stat ${stats.totalDividas > 0 ? 'danger' : 'brand'}">${stats.totalDividas > 0 ? 'R$ ' + formatarMoeda(stats.totalDividas) : '✓ Quitado'}</div>
+        </div>
+        <div class="menu-item" onclick="window.location.href='metas.html?v=1'">
+          <div class="menu-item-icon">🎯</div>
+          <div class="menu-item-titulo">Metas</div>
+          <div class="menu-item-sub">Reserva e objetivos</div>
+          <div class="menu-item-stat"></div>
+        </div>
+        <div class="menu-item" onclick="window.location.href='dashboard.html?v=1'">
+          <div class="menu-item-icon">📊</div>
+          <div class="menu-item-titulo">Dashboard</div>
+          <div class="menu-item-sub">Gráficos detalhados</div>
+          <div class="menu-item-stat"></div>
+        </div>
+        <div class="menu-item" onclick="window.location.href='educacao.html?v=1'">
+          <div class="menu-item-icon">🎓</div>
+          <div class="menu-item-titulo">Educação</div>
+          <div class="menu-item-sub">Trilha do Tatu</div>
+          <div class="menu-item-stat brand">Nível ${n.num}</div>
+        </div>
+      </div>
+    `;
     
-    if (ultimo && parseInt(ultimo) < atual) {
-      mostrarLevelUp(atual);
-    }
-    
-    localStorage.setItem(`lastNivel_${usuario.id}`, atual.toString());
+    document.getElementById('conteudo').innerHTML = html;
   }
-  
-  function mostrarLevelUp(nivel) {
-    const info = niveisInfo[nivel];
-    document.getElementById('levelup-emoji').textContent = info.emoji;
-    document.getElementById('levelup-nivel').textContent = 'Nível ' + nivel;
-    document.getElementById('levelup-nome').textContent = info.nome;
-    document.getElementById('levelup-desc').textContent = info.desc;
-    document.getElementById('levelup-overlay').classList.add('show');
-    setTimeout(criarConfete, 200);
-  }
-  
-  window.fecharLevelUp = function() {
-    document.getElementById('levelup-overlay').classList.remove('show');
-    document.querySelectorAll('.confete').forEach(c => c.remove());
-  };
-  
-  function criarConfete() {
-    const cores = ['#00d97e', '#ffb800', '#38bdf8', '#a855f7', '#ec4899'];
-    const overlay = document.getElementById('levelup-overlay');
-    
-    for (let i = 0; i < 50; i++) {
-      const c = document.createElement('div');
-      c.className = 'confete';
-      c.style.left = Math.random() * 100 + '%';
-      c.style.top = '-20px';
-      c.style.background = cores[Math.floor(Math.random() * cores.length)];
-      c.style.animationDelay = (Math.random() * 0.5) + 's';
-      c.style.animationDuration = (1.5 + Math.random() * 1.5) + 's';
-      overlay.appendChild(c);
-      setTimeout(() => c.remove(), 3500);
-    }
-  }
-  
-  window.abrirDrawer = function() {
-    document.getElementById('drawer-overlay').classList.add('show');
-  };
-  
-  window.fecharDrawer = function(e) {
-    if (e && e.target.closest('.drawer')) return;
-    document.getElementById('drawer-overlay').classList.remove('show');
-  };
-  
-  window.sair = async function() {
-    if (!confirm('Sair da conta?')) return;
-    await supabase.auth.signOut();
-    window.location.href = 'index.html?v=1';
-  };
   
   function formatarMoeda(v) {
     return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-  
-  async function darXP(xp, acao, descricao) {
-    await supabase.from('historico_xp').insert({
-      user_id: usuario.id, acao, xp_ganho: xp, descricao
-    });
-    const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).single();
-    await supabase.from('gamificacao').update({
-      xp_total: (g?.xp_total || 0) + xp,
-      ultima_atividade: new Date().toISOString().split('T')[0]
-    }).eq('user_id', usuario.id);
   }
 </script>
 
