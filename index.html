@@ -44,10 +44,17 @@
     padding: 24px 20px;
   }
   
-  /* ===== LOGO ===== */
-  .brand-area {
-    padding: 32px 0 48px;
+  input, textarea, select {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    caret-color: var(--brand);
   }
+  input:-webkit-autofill, textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-input) inset !important;
+    -webkit-text-fill-color: #fff !important;
+  }
+  
+  .brand-area { padding: 32px 0 48px; }
   
   .brand {
     display: flex;
@@ -85,10 +92,7 @@
     color: var(--text);
   }
   
-  /* ===== HERO ===== */
-  .hero {
-    margin: 24px 0 36px;
-  }
+  .hero { margin: 24px 0 36px; }
   
   .hero-eyebrow {
     color: var(--brand);
@@ -109,9 +113,7 @@
     margin-bottom: 12px;
   }
   
-  .hero-title span {
-    color: var(--brand);
-  }
+  .hero-title span { color: var(--brand); }
   
   .hero-subtitle {
     color: var(--text-mute);
@@ -120,7 +122,6 @@
     max-width: 320px;
   }
   
-  /* ===== CONTAINER ===== */
   .container {
     max-width: 440px;
     margin: 0 auto;
@@ -128,7 +129,6 @@
     flex: 1;
   }
   
-  /* ===== TABS ===== */
   .tabs {
     display: flex;
     gap: 4px;
@@ -141,7 +141,7 @@
   
   .tab {
     flex: 1;
-    padding: 12px;
+    padding: 14px;
     text-align: center;
     background: transparent;
     border: none;
@@ -152,6 +152,7 @@
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.2s;
+    min-height: 48px;
   }
   
   .tab.active {
@@ -159,7 +160,6 @@
     color: var(--text);
   }
   
-  /* ===== FORM ===== */
   .form-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -181,9 +181,7 @@
     margin-bottom: 24px;
   }
   
-  .field {
-    margin-bottom: 16px;
-  }
+  .field { margin-bottom: 16px; }
   
   .field label {
     display: block;
@@ -203,6 +201,7 @@
     font-size: 16px;
     font-family: 'Inter', sans-serif;
     transition: all 0.2s;
+    min-height: 52px;
   }
   
   .field input:focus {
@@ -211,11 +210,8 @@
     background: var(--bg-elev);
   }
   
-  .field input::placeholder {
-    color: var(--text-faint);
-  }
+  .field input::placeholder { color: var(--text-faint); }
   
-  /* ===== BUTTON ===== */
   .btn {
     width: 100%;
     padding: 17px;
@@ -228,6 +224,7 @@
     font-family: 'Inter', sans-serif;
     margin-top: 12px;
     letter-spacing: -0.01em;
+    min-height: 56px;
   }
   
   .btn-primary {
@@ -245,7 +242,6 @@
     cursor: not-allowed;
   }
   
-  /* ===== MSG ===== */
   .msg {
     padding: 12px 14px;
     border-radius: 10px;
@@ -269,7 +265,6 @@
     color: var(--brand);
   }
   
-  /* ===== FOOTER ===== */
   .footer {
     text-align: center;
     color: var(--text-faint);
@@ -289,7 +284,6 @@
     color: var(--text-mute);
   }
   
-  /* ===== LOADING ===== */
   .loader {
     display: inline-block;
     width: 14px;
@@ -306,9 +300,35 @@
   
   .screen { display: none; }
   .screen.active { display: block; }
+  
+  /* Loading inicial enquanto checa sessão */
+  .splash {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  
+  .splash-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--border);
+    border-radius: 50%;
+    border-top-color: var(--brand);
+    animation: spin 0.8s linear infinite;
+  }
+  
+  .splash.hidden { display: none; }
 </style>
 </head>
 <body>
+
+<div class="splash" id="splash">
+  <div class="splash-spinner"></div>
+</div>
 
 <div class="brand-area">
   <div class="brand" onclick="window.location.reload()">
@@ -340,12 +360,12 @@
       
       <div class="field">
         <label>E-mail</label>
-        <input type="email" id="email-entrar" placeholder="seu@email.com" autocomplete="email">
+        <input type="email" id="email-entrar" placeholder="Digite seu e-mail" autocomplete="email">
       </div>
       
       <div class="field">
         <label>Senha</label>
-        <input type="password" id="senha-entrar" placeholder="••••••••" autocomplete="current-password">
+        <input type="password" id="senha-entrar" placeholder="Digite sua senha" autocomplete="current-password">
       </div>
       
       <button class="btn btn-primary" id="btn-entrar" onclick="entrar()">Entrar</button>
@@ -362,12 +382,12 @@
       
       <div class="field">
         <label>Primeiro nome</label>
-        <input type="text" id="nome-cadastrar" placeholder="Como vou te chamar?" autocomplete="given-name">
+        <input type="text" id="nome-cadastrar" placeholder="Digite seu nome" autocomplete="given-name">
       </div>
       
       <div class="field">
         <label>E-mail</label>
-        <input type="email" id="email-cadastrar" placeholder="seu@email.com" autocomplete="email">
+        <input type="email" id="email-cadastrar" placeholder="Digite seu e-mail" autocomplete="email">
       </div>
       
       <div class="field">
@@ -382,7 +402,7 @@
 </div>
 
 <div class="footer">
-  feito no brasil <span class="footer-version">v1.0</span>
+  feito no brasil <span class="footer-version">v2.0</span>
 </div>
 
 <script type="module">
@@ -394,10 +414,35 @@
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
   window.supabase = supabase;
   
+  // FIX v2: Função central que decide pra onde mandar o usuário após login
+  async function redirecionarPosLogin(userId) {
+    // Cache busting com timestamp único pra forçar reload dos dados
+    const v = Date.now();
+    
+    // Checa se setup foi concluído
+    const { data: perfil } = await supabase
+      .from('perfis')
+      .select('setup_concluido')
+      .eq('id', userId)
+      .maybeSingle();
+    
+    if (!perfil || !perfil.setup_concluido) {
+      // Não fez setup -> Modo Setup
+      window.location.href = `setup.html?v=${v}`;
+    } else {
+      // Já fez setup -> Home com cache fresco
+      window.location.href = `home.html?v=${v}`;
+    }
+  }
+  
+  // Checa se já tem sessão ativa ao abrir o app
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (session) {
-      window.location.href = 'home.html?v=1';
+      await redirecionarPosLogin(session.user.id);
+    } else {
+      // Sem sessão, esconde splash e mostra tela de login
+      document.getElementById('splash').classList.add('hidden');
     }
   })();
   
@@ -442,7 +487,7 @@
     }
     
     showMsg('msg-entrar', 'success', 'Redirecionando...');
-    setTimeout(() => window.location.href = 'home.html?v=1', 500);
+    setTimeout(() => redirecionarPosLogin(data.user.id), 500);
   };
   
   window.cadastrar = async function() {
@@ -476,7 +521,12 @@
     }
     
     showMsg('msg-cadastrar', 'success', `Boa, ${nome}! Preparando tudo...`);
-    setTimeout(() => window.location.href = 'diagnostico.html?v=1', 1000);
+    
+    // FIX v2: novo usuário SEMPRE vai pro setup (não tem perfil ainda, redirecionarPosLogin vai mandar pra lá)
+    setTimeout(() => {
+      const v = Date.now();
+      window.location.href = `setup.html?v=${v}`;
+    }, 1000);
   };
   
   function traduzirErro(msg) {
