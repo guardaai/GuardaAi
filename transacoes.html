@@ -67,14 +67,14 @@
   }
   
   .back-btn {
-    width: 36px; height: 36px;
+    width: 40px; height: 40px;
     border-radius: 10px;
     background: var(--bg-card);
     border: 1px solid var(--border);
     color: var(--text);
     display: flex; align-items: center; justify-content: center;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 20px;
     flex-shrink: 0;
   }
   
@@ -87,7 +87,7 @@
   }
   
   .brand-mark-mini {
-    width: 28px; height: 28px;
+    width: 32px; height: 32px;
     background: var(--brand);
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
@@ -96,8 +96,8 @@
   
   .brand-mark-mini::before {
     content: '';
-    width: 10px; height: 10px;
-    border: 2px solid var(--bg);
+    width: 11px; height: 11px;
+    border: 2.5px solid var(--bg);
     border-radius: 3px;
     border-top: none; border-right: none;
   }
@@ -120,14 +120,14 @@
   }
   
   .nav-btn {
-    width: 36px; height: 36px;
+    width: 40px; height: 40px;
     border-radius: 10px;
     background: var(--bg-elev);
     border: 1px solid var(--border);
     color: var(--text);
     display: flex; align-items: center; justify-content: center;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 20px;
     flex-shrink: 0;
   }
   
@@ -137,9 +137,13 @@
     flex: 1;
     text-align: center;
     cursor: pointer;
-    padding: 4px;
-    border-radius: 8px;
+    padding: 6px;
+    border-radius: 10px;
     transition: background 0.15s;
+    min-height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   
   .nav-mes-info:active { background: var(--bg-elev); }
@@ -152,12 +156,13 @@
     letter-spacing: -0.01em;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
+    justify-content: center;
   }
   
   .nav-mes-titulo::after {
     content: '▾';
-    font-size: 10px;
+    font-size: 11px;
     color: var(--text-mute);
   }
   
@@ -171,12 +176,13 @@
     background: var(--brand);
     color: #001a0e;
     border: none;
-    padding: 6px 12px;
-    border-radius: 8px;
+    padding: 8px 14px;
+    border-radius: 10px;
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
     cursor: pointer;
+    min-height: 40px;
   }
   
   .btn-hoje:active { background: var(--brand-hover); }
@@ -269,6 +275,8 @@
     flex-direction: column;
     align-items: center;
     gap: 4px;
+    min-height: 80px;
+    justify-content: center;
   }
   
   .quick-btn:active { transform: scale(0.97); }
@@ -303,7 +311,7 @@
   }
   
   .filtro-opt {
-    padding: 10px 6px;
+    padding: 10px 4px;
     border-radius: 10px;
     text-align: center;
     cursor: pointer;
@@ -314,6 +322,12 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    min-height: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
   }
   
   .filtro-opt.active.todas { background: var(--brand-soft); color: var(--brand); }
@@ -321,9 +335,7 @@
   .filtro-opt.active.previstas { background: var(--warning-soft); color: var(--warning); }
   
   .filtro-count {
-    display: block;
     font-size: 9px;
-    margin-top: 2px;
     opacity: 0.7;
   }
   
@@ -357,6 +369,7 @@
     gap: 12px;
     cursor: pointer;
     position: relative;
+    min-height: 70px;
   }
   
   .trans-card:active { transform: scale(0.99); }
@@ -380,7 +393,7 @@
   }
   
   .trans-icone {
-    width: 42px; height: 42px;
+    width: 44px; height: 44px;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -546,10 +559,7 @@
     overflow: hidden;
   }
   
-  .modal.small {
-    height: auto;
-    max-height: 80vh;
-  }
+  .modal.small { height: 85vh; max-height: 85vh; }
   
   @keyframes slideUp {
     from { transform: translateY(100%); }
@@ -581,7 +591,7 @@
   }
   
   .modal-close {
-    width: 32px; height: 32px;
+    width: 36px; height: 36px;
     border-radius: 10px;
     background: var(--bg-elev);
     border: 1px solid var(--border);
@@ -618,7 +628,7 @@
   }
   
   .tipo-tab {
-    padding: 10px;
+    padding: 12px;
     border-radius: 10px;
     text-align: center;
     cursor: pointer;
@@ -627,6 +637,10 @@
     font-size: 13px;
     font-weight: 600;
     color: var(--text-mute);
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .tipo-tab.active.entrada { background: var(--brand); color: #001a0e; }
@@ -682,6 +696,7 @@
     color: var(--text);
     font-size: 16px;
     font-family: 'Inter', sans-serif;
+    min-height: 48px;
   }
   
   .field input:focus, .field select:focus {
@@ -706,6 +721,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    min-height: 56px;
   }
   
   .conta-opcao:active { transform: scale(0.97); }
@@ -716,7 +732,7 @@
   }
   
   .conta-opcao-icon {
-    width: 32px; height: 32px;
+    width: 36px; height: 36px;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -786,10 +802,16 @@
     background: var(--bg-input);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 8px 4px;
+    padding: 10px 4px;
     text-align: center;
     cursor: pointer;
     transition: all 0.15s;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
   }
   
   .cat-opcao:active { transform: scale(0.95); }
@@ -805,7 +827,7 @@
     border-style: dashed;
   }
   
-  .cat-emoji { font-size: 20px; margin-bottom: 2px; }
+  .cat-emoji { font-size: 20px; }
   .cat-nome {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 9px;
@@ -846,8 +868,8 @@
   }
   
   .toggle-switch {
-    width: 44px;
-    height: 24px;
+    width: 48px;
+    height: 28px;
     background: var(--border-strong);
     border-radius: 100px;
     position: relative;
@@ -863,8 +885,8 @@
     position: absolute;
     top: 2px;
     left: 2px;
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     background: white;
     border-radius: 50%;
     transition: transform 0.2s;
@@ -894,6 +916,7 @@
     font-weight: 600;
     cursor: pointer;
     font-family: 'Inter', sans-serif;
+    min-height: 52px;
   }
   
   .btn-primary { background: var(--brand); color: #001a0e; }
@@ -1046,7 +1069,22 @@
     text-align: right;
   }
   
-  /* === SELETOR DE MÊS === */
+  /* === SELETOR DE MÊS (FIX v5.1) === */
+  .ano-grupo {
+    margin-bottom: 20px;
+  }
+  
+  .ano-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    color: var(--text-mute);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    padding: 0 4px;
+  }
+  
   .meses-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -1057,17 +1095,23 @@
     background: var(--bg-input);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 14px 8px;
+    padding: 14px 6px;
     text-align: center;
     cursor: pointer;
     transition: all 0.15s;
+    min-height: 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
   }
   
-  .mes-opcao:active { transform: scale(0.96); }
+  .mes-opcao:active { transform: scale(0.95); }
   
   .mes-opcao.atual {
     background: var(--brand-soft);
     border-color: var(--brand);
+    border-width: 2px;
   }
   
   .mes-opcao.hoje {
@@ -1078,33 +1122,20 @@
   
   .mes-nome {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     text-transform: capitalize;
-    margin-bottom: 2px;
   }
   
-  .mes-ano {
+  .mes-ano-label {
     font-size: 10px;
     color: var(--text-mute);
     font-weight: 500;
   }
   
-  .mes-opcao.atual .mes-ano { color: var(--brand); }
-  .mes-opcao.hoje .mes-ano { color: #001a0e; opacity: 0.7; }
+  .mes-opcao.atual .mes-ano-label { color: var(--brand); }
+  .mes-opcao.hoje .mes-ano-label { color: #001a0e; opacity: 0.7; }
   
-  .ano-divider {
-    grid-column: 1 / -1;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    color: var(--text-faint);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin: 12px 0 4px;
-  }
-  
-  /* === MODAL NOVA CATEGORIA === */
   .emoji-picker {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
@@ -1224,13 +1255,16 @@
   
   <div class="filtro-status">
     <div class="filtro-opt active todas" data-filtro="todas" onclick="trocarFiltro('todas')">
-      Todas <span class="filtro-count" id="count-todas">0</span>
+      <span>Todas</span>
+      <span class="filtro-count" id="count-todas">0</span>
     </div>
     <div class="filtro-opt previstas" data-filtro="previstas" onclick="trocarFiltro('previstas')">
-      📅 Previstas <span class="filtro-count" id="count-previstas">0</span>
+      <span>📅 Previstas</span>
+      <span class="filtro-count" id="count-previstas">0</span>
     </div>
     <div class="filtro-opt realizadas" data-filtro="realizadas" onclick="trocarFiltro('realizadas')">
-      ✅ Realizadas <span class="filtro-count" id="count-realizadas">0</span>
+      <span>✅ Realizadas</span>
+      <span class="filtro-count" id="count-realizadas">0</span>
     </div>
   </div>
   
@@ -1441,7 +1475,10 @@
   const IA_FUNCTION_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
   
-  const EMOJIS_DISPONIVEIS = ['💰','💵','💸','🛒','🍽️','🛵','⛽','🚗','🚕','🚌','🏠','💡','💧','🔥','📱','🌐','📺','🎬','🎵','🎮','🏥','💊','💉','💪','💄','✂️','🎓','📚','📝','💼','📊','📈','📉','🛍️','👕','👞','👜','💍','🎁','🎉','🎂','🍰','✈️','🏖️','🐾','🐕','🐈','🪑','🪴','🧹','🧺','🧴','🛠️','🔧','⚙️','🛡️','🏛️','📌','📎','📋','🎯','🎪','🎭','🎨','🎤','🍺','☕','🧉','🍷','💧','💎','🏆','⭐','❤️','💔','🌟','🦔'];
+  const MESES_CURTOS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const MESES_LONGOS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  
+  const EMOJIS_DISPONIVEIS = ['💰','💵','💸','🛒','🍽️','🛵','⛽','🚗','🚕','🚌','🏠','💡','💧','🔥','📱','🌐','📺','🎬','🎵','🎮','🏥','💊','💉','💪','💄','✂️','🎓','📚','📝','💼','📊','📈','📉','🛍️','👕','👞','👜','💍','🎁','🎉','🎂','🍰','✈️','🏖️','🐾','🐕','🐈','🪑','🪴','🧹','🧺','🧴','🛠️','🔧','⚙️','🛡️','🏛️','📌','📎','📋','🎯','🎪','🎭','🎨','🎤','🍺','☕','🧉','🍷','💎','🏆','⭐','❤️','💔','🌟','🦔'];
   
   const CORES_DISPONIVEIS = [
     '#00d97e','#14b8a6','#06b6d4','#38bdf8','#3b82f6','#6366f1','#8b5cf6','#a855f7',
@@ -1468,7 +1505,6 @@
   let isRecorrente = false;
   let isParcelado = false;
   
-  // Nova categoria
   let novaCatTipo = 'saida';
   let novaCatEmoji = '📌';
   let novaCatCor = '#00d97e';
@@ -1523,7 +1559,6 @@
     categorias = catRes.data || [];
     contas = contasRes.data || [];
     
-    // Maps pra lookup rápido
     compromissosMap = {};
     (compromissosRes.data || []).forEach(c => compromissosMap[c.id] = c);
     
@@ -1549,8 +1584,7 @@
   }
   
   function renderNavMes() {
-    const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-    document.getElementById('nav-mes-titulo').textContent = `${meses[mesAtual.getMonth()]} ${mesAtual.getFullYear()}`;
+    document.getElementById('nav-mes-titulo').textContent = `${MESES_LONGOS[mesAtual.getMonth()]} ${mesAtual.getFullYear()}`;
     const hoje = new Date();
     const ehHoje = mesAtual.getMonth() === hoje.getMonth() && mesAtual.getFullYear() === hoje.getFullYear();
     document.getElementById('nav-mes-sub').textContent = ehHoje ? 'Mês atual' : '';
@@ -1615,31 +1649,21 @@
     renderLista();
   };
   
-  // FIX BUG 1: Resolve categoria pra transação - usa compromisso/renda se categoria_id for null
   function resolverCategoria(t) {
-    // 1) Se tem categoria_id válida, usa
     if (t.categorias && t.categorias.nome) {
       return { nome: t.categorias.nome, icone: t.categorias.icone, cor: t.categorias.cor };
     }
-    
-    // 2) Se vinculada a compromisso, usa categoria dele
     if (t.compromisso_id && compromissosMap[t.compromisso_id]) {
       const c = compromissosMap[t.compromisso_id];
       return { nome: c.nome, icone: c.icone || '📋', cor: c.cor || '#ffb800' };
     }
-    
-    // 3) Se vinculada a renda, usa categoria dela
     if (t.renda_id && rendasMap[t.renda_id]) {
       const r = rendasMap[t.renda_id];
       return { nome: r.nome, icone: r.icone || '💰', cor: r.cor || '#00d97e' };
     }
-    
-    // 4) Se vinculada a dívida (fatura cartão)
     if (t.divida_id) {
       return { nome: 'Pagamento de dívida', icone: '💳', cor: '#ff4757' };
     }
-    
-    // 5) Fallback
     return { nome: 'Sem categoria', icone: t.tipo === 'entrada' ? '↓' : '↑', cor: '#a3a3a3' };
   }
   
@@ -1751,8 +1775,6 @@
       : '';
     
     const sinal = ehEntrada ? '+' : '-';
-    
-    // FIX BUG 1: usa ícone da categoria resolvida (do compromisso/renda)
     const emoji = cat.icone || (ehEntrada ? '↓' : '↑');
     
     return `
@@ -1816,7 +1838,6 @@
       </div>
     `).join('');
     
-    // Botão de NOVA categoria
     html += `
       <div class="cat-opcao nova" onclick="abrirModalNovaCat()">
         <div class="cat-emoji">➕</div>
@@ -1837,53 +1858,63 @@
     carregarDados().then(render);
   };
   
-  // FIX BUG 3: Seletor de mês com lista
+  // === FIX v5.1: Seletor de mês reescrito do zero, sem gambiarra ===
   window.abrirSeletorMes = function() {
-    const area = document.getElementById('meses-area');
     const hoje = new Date();
-    const anoAtual = hoje.getFullYear();
+    const anoHoje = hoje.getFullYear();
     const mesHoje = hoje.getMonth();
-    const meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    const anoAtual = mesAtual.getFullYear();
+    const mesAtualNum = mesAtual.getMonth();
     
-    // Gera 36 meses (1 ano passado + ano atual + 1 ano futuro)
-    let html = '';
-    let ultimoAno = null;
-    
+    // Monta lista de 36 meses (12 passados + atual + 23 futuros)
+    // Agrupa por ano
+    const porAno = {};
     for (let i = -12; i < 24; i++) {
-      const d = new Date(anoAtual, mesHoje + i, 1);
+      const d = new Date(anoHoje, mesHoje + i, 1);
       const ano = d.getFullYear();
       const mes = d.getMonth();
-      
-      if (ano !== ultimoAno) {
-        html += `<div class="ano-divider">${ano}</div><div class="meses-grid">`;
-        if (ultimoAno !== null) html = html.slice(0, -22) + '</div>' + html.slice(-22);
-        ultimoAno = ano;
-      }
-      
-      const ehHoje = (ano === anoAtual && mes === mesHoje);
-      const ehAtual = (ano === mesAtual.getFullYear() && mes === mesAtual.getMonth());
-      
-      let cls = '';
-      if (ehHoje) cls = 'hoje';
-      else if (ehAtual) cls = 'atual';
-      
-      html += `
-        <div class="mes-opcao ${cls}" onclick="selecionarMes(${ano}, ${mes})">
-          <div class="mes-nome">${meses[mes]}</div>
-          <div class="mes-ano">${ano}</div>
-        </div>
-      `;
+      if (!porAno[ano]) porAno[ano] = [];
+      porAno[ano].push({ ano, mes });
     }
-    html += '</div>';
     
-    area.innerHTML = html;
+    // Renderiza HTML limpo, sem gambiarra
+    let html = '';
+    const anosOrdenados = Object.keys(porAno).sort();
+    
+    anosOrdenados.forEach(ano => {
+      const meses = porAno[ano];
+      html += `<div class="ano-grupo">`;
+      html += `<div class="ano-titulo">${ano}</div>`;
+      html += `<div class="meses-grid">`;
+      
+      meses.forEach(({ ano: a, mes: m }) => {
+        const ehHoje = (a === anoHoje && m === mesHoje);
+        const ehAtual = (a === anoAtual && m === mesAtualNum);
+        
+        let cls = '';
+        if (ehHoje) cls = 'hoje';
+        else if (ehAtual) cls = 'atual';
+        
+        html += `
+          <div class="mes-opcao ${cls}" onclick="selecionarMes(${a}, ${m})">
+            <div class="mes-nome">${MESES_CURTOS[m]}</div>
+            <div class="mes-ano-label">${a}</div>
+          </div>
+        `;
+      });
+      
+      html += `</div>`;
+      html += `</div>`;
+    });
+    
+    document.getElementById('meses-area').innerHTML = html;
     document.getElementById('modal-meses').classList.add('show');
     
-    // Scroll até o mês atual
+    // Scroll automático até o mês selecionado
     setTimeout(() => {
       const atual = document.querySelector('.mes-opcao.atual') || document.querySelector('.mes-opcao.hoje');
       if (atual) atual.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    }, 100);
+    }, 150);
   };
   
   window.selecionarMes = function(ano, mes) {
@@ -1902,7 +1933,9 @@
   
   window.selecionarCategoria = function(id) {
     categoriaSelecionada = id;
-    document.querySelectorAll('.cat-opcao').forEach(el => el.classList.toggle('active', el.dataset.cat === id));
+    document.querySelectorAll('.cat-opcao').forEach(el => {
+      if (el.dataset.cat) el.classList.toggle('active', el.dataset.cat === id);
+    });
   };
   
   window.selecionarConta = function(id) {
@@ -1932,7 +1965,6 @@
     document.getElementById('extras-parcelado').classList.toggle('show', isParcelado);
   };
   
-  // FIX BUG 2: Detecta data futura e mostra aviso
   window.checarDataFutura = function() {
     const data = document.getElementById('f-data').value;
     const hoje = new Date().toISOString().split('T')[0];
@@ -1998,7 +2030,6 @@
     document.getElementById(id).classList.remove('show');
   };
   
-  // === MODAL NOVA CATEGORIA (FIX BUG 4) ===
   window.abrirModalNovaCat = function() {
     document.getElementById('cat-nome').value = '';
     document.getElementById('msg-cat').className = 'msg';
@@ -2070,14 +2101,12 @@
       
       if (error) throw error;
       
-      // Recarrega categorias
       const { data: catRes } = await supabase.from('categorias')
         .select('*')
         .or(`user_id.eq.${usuario.id},padrao.eq.true`)
         .eq('ativa', true);
       categorias = catRes || [];
       
-      // Se o tipo da nova categoria for igual ao tipo selecionado no form, seleciona
       if (novaCatTipo === tipoSelecionado) {
         categoriaSelecionada = data.id;
         renderCategorias(tipoSelecionado);
@@ -2237,7 +2266,6 @@
       return;
     }
     
-    // FIX BUG 2: status auto baseado em data
     const statusAuto = data > hoje ? 'prevista' : 'realizada';
     
     btn.disabled = true;
