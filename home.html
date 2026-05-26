@@ -12,727 +12,261 @@
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
   
   :root {
-    --bg: #0a0a0a;
-    --bg-card: #141414;
-    --bg-elev: #1c1c1c;
-    --bg-input: #181818;
-    --border: #252525;
-    --border-strong: #353535;
-    --brand: #00d97e;
-    --brand-hover: #00ba6b;
-    --brand-soft: rgba(0, 217, 126, 0.1);
-    --danger: #ff4757;
-    --danger-soft: rgba(255, 71, 87, 0.1);
-    --warning: #ffb800;
-    --warning-soft: rgba(255, 184, 0, 0.1);
-    --info: #38bdf8;
-    --info-soft: rgba(56, 189, 248, 0.1);
-    --ia: #a855f7;
-    --ia-soft: rgba(168, 85, 247, 0.1);
-    --text: #ffffff;
-    --text-mute: #a3a3a3;
-    --text-faint: #525252;
+    --bg: #0a0a0a; --bg-card: #141414; --bg-elev: #1c1c1c; --bg-input: #181818;
+    --border: #252525; --border-strong: #353535;
+    --brand: #00d97e; --brand-hover: #00ba6b; --brand-soft: rgba(0, 217, 126, 0.1);
+    --danger: #ff4757; --danger-soft: rgba(255, 71, 87, 0.1);
+    --warning: #ffb800; --warning-soft: rgba(255, 184, 0, 0.1);
+    --info: #38bdf8; --info-soft: rgba(56, 189, 248, 0.1);
+    --ia: #a855f7; --ia-soft: rgba(168, 85, 247, 0.1);
+    --text: #ffffff; --text-mute: #a3a3a3; --text-faint: #525252;
   }
   
-  html, body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', -apple-system, sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  
+  html, body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh; overflow-x: hidden; }
   body { padding-bottom: 80px; }
   
-  .header {
-    padding: 16px 20px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  
-  .brand-mark {
-    width: 36px; height: 36px;
-    background: var(--brand);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  
-  .brand-mark::before {
-    content: '';
-    width: 14px; height: 14px;
-    border: 2.5px solid var(--bg);
-    border-radius: 4px;
-    border-top: none; border-right: none;
-  }
-  
-  .header-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    flex: 1;
-    text-transform: lowercase;
-  }
-  
-  .header-btn {
-    width: 38px; height: 38px;
-    border-radius: 10px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    font-size: 18px;
-    flex-shrink: 0;
-    position: relative;
-  }
-  
+  .header { padding: 16px 20px; background: var(--bg); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 12px; }
+  .brand-mark { width: 36px; height: 36px; background: var(--brand); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .brand-mark::before { content: ''; width: 14px; height: 14px; border: 2.5px solid var(--bg); border-radius: 4px; border-top: none; border-right: none; }
+  .header-title { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -0.02em; flex: 1; text-transform: lowercase; }
+  .header-btn { width: 38px; height: 38px; border-radius: 10px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; flex-shrink: 0; position: relative; }
   .header-btn:active { background: var(--bg-elev); }
   
-  .header-btn-dot {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    width: 8px;
-    height: 8px;
-    background: var(--brand);
-    border-radius: 50%;
-    border: 2px solid var(--bg-card);
-  }
+  .container { max-width: 480px; margin: 0 auto; padding: 20px; }
   
-  .container {
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 20px;
-  }
+  .saudacao { margin-bottom: 16px; }
+  .saudacao-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .saudacao-sub { font-size: 13px; color: var(--text-mute); }
   
-  .saudacao {
-    margin-bottom: 16px;
-  }
+  .level-card { background: linear-gradient(135deg, var(--brand) 0%, #00ba6b 100%); border-radius: 20px; padding: 20px; margin-bottom: 16px; color: #001a0e; position: relative; overflow: hidden; }
+  .level-card::before { content: ''; position: absolute; top: -50%; right: -10%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%); pointer-events: none; }
+  .level-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; position: relative; }
+  .level-label { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.7; margin-bottom: 2px; }
+  .level-nome { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+  .level-xp { text-align: right; }
+  .level-xp-num { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+  .level-xp-label { font-family: 'Space Grotesk', sans-serif; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.7; }
+  .level-bar { height: 6px; background: rgba(0,0,0,0.2); border-radius: 100px; overflow: hidden; margin-bottom: 10px; position: relative; }
+  .level-bar-fill { height: 100%; background: #001a0e; border-radius: 100px; transition: width 0.4s; }
+  .level-bottom { display: flex; justify-content: space-between; align-items: center; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; position: relative; }
   
-  .saudacao-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: 4px;
-  }
-  
-  .saudacao-sub {
-    font-size: 13px;
-    color: var(--text-mute);
-  }
-  
-  .level-card {
-    background: linear-gradient(135deg, var(--brand) 0%, #00ba6b 100%);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 16px;
-    color: #001a0e;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .level-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -10%;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  
-  .level-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 14px;
-    position: relative;
-  }
-  
-  .level-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    opacity: 0.7;
-    margin-bottom: 2px;
-  }
-  
-  .level-nome {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  
-  .level-xp {
-    text-align: right;
-  }
-  
-  .level-xp-num {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  
-  .level-xp-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 9px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    opacity: 0.7;
-  }
-  
-  .level-bar {
-    height: 6px;
-    background: rgba(0,0,0,0.2);
-    border-radius: 100px;
-    overflow: hidden;
-    margin-bottom: 10px;
-    position: relative;
-  }
-  
-  .level-bar-fill {
-    height: 100%;
-    background: #001a0e;
-    border-radius: 100px;
-    transition: width 0.4s;
-  }
-  
-  .level-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    position: relative;
-  }
-  
-  .resumo-mes {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-  
-  .resumo-titulo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-  }
-  
-  .resumo-titulo-txt {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text-mute);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-  
-  .resumo-mes-label {
-    font-size: 11px;
-    color: var(--text-faint);
-    text-transform: capitalize;
-  }
-  
-  .resumo-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-  
-  .resumo-item {
-    background: var(--bg-input);
-    border-radius: 12px;
-    padding: 12px;
-  }
-  
-  .resumo-item-label {
-    font-size: 10px;
-    color: var(--text-mute);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 4px;
-    font-weight: 500;
-  }
-  
-  .resumo-item-valor {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 17px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-  
+  .resumo-mes { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 16px; margin-bottom: 16px; }
+  .resumo-titulo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .resumo-titulo-txt { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.1em; }
+  .resumo-mes-label { font-size: 11px; color: var(--text-faint); text-transform: capitalize; }
+  .resumo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .resumo-item { background: var(--bg-input); border-radius: 12px; padding: 12px; }
+  .resumo-item-label { font-size: 10px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; font-weight: 500; }
+  .resumo-item-valor { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
   .resumo-item-valor.brand { color: var(--brand); }
   .resumo-item-valor.danger { color: var(--danger); }
-  
-  .resumo-saldo {
-    background: var(--bg-input);
-    border-radius: 12px;
-    padding: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  
+  .resumo-saldo { background: var(--bg-input); border-radius: 12px; padding: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
   .resumo-saldo-bloco { flex: 1; min-width: 120px; }
-  
-  .resumo-saldo-label {
-    font-size: 10px;
-    color: var(--text-mute);
-    margin-bottom: 2px;
-  }
-  
-  .resumo-saldo-valor {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-  }
-  
+  .resumo-saldo-label { font-size: 10px; color: var(--text-mute); margin-bottom: 2px; }
+  .resumo-saldo-valor { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; }
   .resumo-saldo-valor.brand { color: var(--brand); }
   .resumo-saldo-valor.danger { color: var(--danger); }
   
-  .alert-vencidas {
-    background: var(--danger-soft);
-    border: 1px solid rgba(255, 71, 87, 0.3);
-    border-radius: 14px;
-    padding: 14px;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-  }
-  
+  .alert-vencidas { background: var(--danger-soft); border: 1px solid rgba(255, 71, 87, 0.3); border-radius: 14px; padding: 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
   .alert-vencidas:active { transform: scale(0.99); }
-  
   .alert-emoji { font-size: 28px; }
-  
   .alert-info { flex: 1; }
-  
-  .alert-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--danger);
-    margin-bottom: 2px;
-  }
-  
-  .alert-sub {
-    font-size: 11px;
-    color: var(--text-mute);
-  }
-  
+  .alert-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; color: var(--danger); margin-bottom: 2px; }
+  .alert-sub { font-size: 11px; color: var(--text-mute); }
   .alert-seta { color: var(--danger); font-size: 18px; }
   
-  .secao-titulo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 18px 4px 10px;
-  }
+  .secao-titulo { display: flex; justify-content: space-between; align-items: center; margin: 18px 4px 10px; }
+  .secao-titulo-txt { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--text-mute); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+  .secao-link { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--brand); font-weight: 600; cursor: pointer; }
   
-  .secao-titulo-txt {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    color: var(--text-mute);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-  
-  .secao-link {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    color: var(--brand);
-    font-weight: 600;
-    cursor: pointer;
-  }
-  
-  .proxima-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 14px;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-  }
-  
+  .proxima-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
   .proxima-card:active { transform: scale(0.99); }
-  
   .proxima-card.hoje { border-left: 3px solid var(--brand); }
   .proxima-card.urgente { border-left: 3px solid var(--warning); }
-  
-  .proxima-icone {
-    width: 42px; height: 42px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
-    background: var(--warning-soft);
-    color: var(--warning);
-  }
-  
+  .proxima-icone { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; background: var(--warning-soft); color: var(--warning); }
   .proxima-info { flex: 1; min-width: 0; }
-  
-  .proxima-desc {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  .proxima-data {
-    font-size: 11px;
-    color: var(--text-mute);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  
-  .proxima-badge {
-    font-size: 9px;
-    padding: 2px 5px;
-    border-radius: 4px;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-  
+  .proxima-desc { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .proxima-data { font-size: 11px; color: var(--text-mute); display: flex; align-items: center; gap: 6px; }
+  .proxima-badge { font-size: 9px; padding: 2px 5px; border-radius: 4px; font-weight: 700; text-transform: uppercase; }
   .proxima-badge.hoje { background: var(--brand-soft); color: var(--brand); }
   .proxima-badge.urgente { background: var(--warning-soft); color: var(--warning); }
   .proxima-badge.future { background: var(--info-soft); color: var(--info); }
+  .proxima-valor { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; color: var(--danger); white-space: nowrap; }
   
-  .proxima-valor {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--danger);
-    white-space: nowrap;
-  }
-  
-  .tatu-card {
-    background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%);
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    border-radius: 16px;
-    padding: 16px;
-    margin: 18px 0;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-  }
-  
+  .tatu-card { background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 16px; margin: 18px 0; display: flex; gap: 12px; align-items: flex-start; }
   .tatu-emoji { font-size: 32px; flex-shrink: 0; }
-  
   .tatu-content { flex: 1; }
-  
-  .tatu-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--ia);
-    margin-bottom: 6px;
-  }
-  
-  .tatu-texto {
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--text-mute);
-  }
-  
+  .tatu-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: var(--ia); margin-bottom: 6px; }
+  .tatu-texto { font-size: 13px; line-height: 1.5; color: var(--text-mute); }
   .tatu-texto strong { color: var(--text); }
   
-  .atalhos-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 16px;
-  }
-  
-  .atalho-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px;
-    cursor: pointer;
-    transition: all 0.15s;
-    color: var(--text);
-    text-decoration: none;
-    display: block;
-  }
-  
+  .atalhos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+  .atalho-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; cursor: pointer; transition: all 0.15s; color: var(--text); text-decoration: none; display: block; }
   .atalho-card:active { transform: scale(0.97); }
-  
   .atalho-emoji { font-size: 32px; margin-bottom: 8px; }
-  
-  .atalho-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 2px;
-  }
-  
-  .atalho-sub {
-    font-size: 11px;
-    color: var(--text-mute);
-    line-height: 1.3;
-  }
-  
-  .atalho-valor {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    margin-top: 6px;
-  }
-  
+  .atalho-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .atalho-sub { font-size: 11px; color: var(--text-mute); line-height: 1.3; }
+  .atalho-valor { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; margin-top: 6px; }
   .atalho-valor.brand { color: var(--brand); }
   .atalho-valor.danger { color: var(--danger); }
   
-  .loader-circle {
-    width: 32px; height: 32px;
-    border: 3px solid var(--border);
-    border-radius: 50%;
-    border-top-color: var(--brand);
-    animation: spin 0.8s linear infinite;
-    margin: 40px auto;
-  }
-  
+  .loader-circle { width: 32px; height: 32px; border: 3px solid var(--border); border-radius: 50%; border-top-color: var(--brand); animation: spin 0.8s linear infinite; margin: 40px auto; }
   @keyframes spin { to { transform: rotate(360deg); } }
   
   /* === MENU LATERAL === */
-  .menu-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 100;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s;
-    backdrop-filter: blur(2px);
-  }
-  
-  .menu-overlay.show {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  
-  .menu-lateral {
-    position: fixed;
-    top: 0;
-    right: -85%;
-    bottom: 0;
-    width: 85%;
-    max-width: 340px;
-    background: var(--bg-card);
-    border-left: 1px solid var(--border);
-    z-index: 101;
-    transition: right 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  
+  .menu-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.25s; backdrop-filter: blur(2px); }
+  .menu-overlay.show { opacity: 1; pointer-events: auto; }
+  .menu-lateral { position: fixed; top: 0; right: -85%; bottom: 0; width: 85%; max-width: 340px; background: var(--bg-card); border-left: 1px solid var(--border); z-index: 101; transition: right 0.3s cubic-bezier(0.34, 1.2, 0.64, 1); display: flex; flex-direction: column; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .menu-lateral.show { right: 0; }
-  
-  .menu-header {
-    padding: 24px 20px 20px;
-    border-bottom: 1px solid var(--border);
-    background: linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%);
-    position: relative;
-  }
-  
-  .menu-close {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 32px;
-    height: 32px;
-    border-radius: 10px;
-    background: var(--bg-elev);
-    border: 1px solid var(--border);
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .menu-avatar {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--brand) 0%, #00ba6b 100%);
-    color: #001a0e;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 12px;
-  }
-  
-  .menu-nome {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    margin-bottom: 2px;
-  }
-  
-  .menu-email {
-    font-size: 11px;
-    color: var(--text-mute);
-    margin-bottom: 10px;
-    word-break: break-all;
-  }
-  
-  .menu-status {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  
-  .menu-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: var(--bg-elev);
-    border: 1px solid var(--border);
-    padding: 4px 8px;
-    border-radius: 100px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-  }
-  
+  .menu-header { padding: 24px 20px 20px; border-bottom: 1px solid var(--border); background: linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%); position: relative; }
+  .menu-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 10px; background: var(--bg-elev); border: 1px solid var(--border); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
+  .menu-avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--brand) 0%, #00ba6b 100%); color: #001a0e; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+  .menu-nome { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 2px; }
+  .menu-email { font-size: 11px; color: var(--text-mute); margin-bottom: 10px; word-break: break-all; }
+  .menu-status { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .menu-pill { display: inline-flex; align-items: center; gap: 4px; background: var(--bg-elev); border: 1px solid var(--border); padding: 4px 8px; border-radius: 100px; font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; }
   .menu-pill.brand { color: var(--brand); border-color: rgba(0, 217, 126, 0.4); }
   .menu-pill.warning { color: var(--warning); border-color: rgba(255, 184, 0, 0.4); }
-  
-  .menu-section {
-    padding: 16px 12px 4px;
-  }
-  
-  .menu-section-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--text-faint);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 0 8px 8px;
-  }
-  
-  .menu-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    border-radius: 12px;
-    cursor: pointer;
-    color: var(--text);
-    text-decoration: none;
-    margin-bottom: 2px;
-    transition: background 0.15s;
-  }
-  
+  .menu-section { padding: 16px 12px 4px; }
+  .menu-section-title { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.1em; padding: 0 8px 8px; }
+  .menu-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; cursor: pointer; color: var(--text); text-decoration: none; margin-bottom: 2px; transition: background 0.15s; }
   .menu-item:active { background: var(--bg-elev); }
-  
-  .menu-item-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: var(--bg-input);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-  
+  .menu-item-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--bg-input); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
   .menu-item-icon.brand { background: var(--brand-soft); color: var(--brand); }
   .menu-item-icon.ia { background: var(--ia-soft); color: var(--ia); }
   .menu-item-icon.info { background: var(--info-soft); color: var(--info); }
   .menu-item-icon.warning { background: var(--warning-soft); color: var(--warning); }
   .menu-item-icon.danger { background: var(--danger-soft); color: var(--danger); }
-  
   .menu-item-info { flex: 1; }
+  .menu-item-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; margin-bottom: 1px; }
+  .menu-item-sub { font-size: 11px; color: var(--text-mute); }
+  .menu-item-arrow { color: var(--text-faint); font-size: 16px; }
+  .menu-item-badge { background: var(--brand); color: #001a0e; font-family: 'Space Grotesk', sans-serif; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 100px; text-transform: uppercase; }
+  .menu-divider { height: 1px; background: var(--border); margin: 8px 16px; }
+  .menu-footer { padding: 16px 20px 24px; color: var(--text-faint); font-size: 10px; text-align: center; line-height: 1.5; }
+  .menu-footer-brand { color: var(--brand); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12px; margin-bottom: 4px; }
   
-  .menu-item-titulo {
+  /* === NOVO v2.0: TUTORIAL GUIADO === */
+  .tutorial-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(2px);
+    display: none;
+    pointer-events: auto;
+  }
+  .tutorial-overlay.show { display: block; }
+  
+  .tutorial-spotlight {
+    position: absolute;
+    border-radius: 18px;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75), 0 0 30px 4px rgba(168, 85, 247, 0.6);
+    border: 3px solid var(--ia);
+    transition: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+    pointer-events: none;
+    z-index: 9001;
+  }
+  
+  .tutorial-balao {
+    position: absolute;
+    z-index: 9002;
+    background: var(--bg-card);
+    border: 2px solid var(--ia);
+    border-radius: 18px;
+    padding: 16px;
+    max-width: 320px;
+    width: calc(100% - 40px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.4s ease;
+  }
+  
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  
+  .tutorial-balao-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+  }
+  
+  .tutorial-balao-tatu { font-size: 32px; }
+  
+  .tutorial-balao-titulo {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 1px;
-  }
-  
-  .menu-item-sub {
-    font-size: 11px;
-    color: var(--text-mute);
-  }
-  
-  .menu-item-arrow { color: var(--text-faint); font-size: 16px; }
-  
-  .menu-item-badge {
-    background: var(--brand);
-    color: #001a0e;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 9px;
     font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 100px;
-    text-transform: uppercase;
+    color: var(--ia);
   }
   
-  .menu-divider {
-    height: 1px;
-    background: var(--border);
-    margin: 8px 16px;
-  }
-  
-  .menu-footer {
-    padding: 16px 20px 24px;
-    color: var(--text-faint);
+  .tutorial-balao-passo {
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 10px;
-    text-align: center;
-    line-height: 1.5;
+    font-weight: 700;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-left: auto;
   }
   
-  .menu-footer-brand {
-    color: var(--brand);
+  .tutorial-balao-texto {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  
+  .tutorial-balao-texto strong { color: var(--brand); }
+  
+  .tutorial-balao-acoes {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .tutorial-balao-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    min-height: 44px;
+  }
+  
+  .tutorial-balao-btn.primary { background: var(--ia); color: #fff; }
+  .tutorial-balao-btn.primary:active { background: #9333ea; transform: scale(0.97); }
+  
+  .tutorial-balao-btn.secondary {
+    background: transparent;
+    color: var(--text-mute);
+    border: 1px solid var(--border);
+    flex: 0 0 80px;
+  }
+  
+  .tutorial-balao-btn.secondary:active { background: var(--bg-elev); }
+  
+  /* Tutorial highlights (zera no scroll) */
+  .tutorial-target { 
+    position: relative; 
+    z-index: 9001; 
+  }
+  
+  .xp-toast-tutorial {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ia);
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 100px;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
-    font-size: 12px;
-    margin-bottom: 4px;
+    font-size: 14px;
+    z-index: 9999;
+    box-shadow: 0 8px 32px rgba(168, 85, 247, 0.6);
+    display: none;
+    animation: fadeIn 0.4s ease;
   }
 </style>
 </head>
@@ -741,9 +275,7 @@
 <div class="header">
   <div class="brand-mark"></div>
   <div class="header-title">guardaí</div>
-  <button class="header-btn" onclick="abrirMenu()">
-    ≡
-  </button>
+  <button class="header-btn" id="btn-menu" onclick="abrirMenu()">≡</button>
 </div>
 
 <div class="container" id="container">
@@ -754,7 +286,6 @@
 <div class="menu-overlay" id="menu-overlay" onclick="fecharMenu()"></div>
 
 <div class="menu-lateral" id="menu-lateral">
-  
   <div class="menu-header">
     <button class="menu-close" onclick="fecharMenu()">✕</button>
     <div class="menu-avatar" id="menu-avatar">R</div>
@@ -765,110 +296,45 @@
   
   <div class="menu-section">
     <div class="menu-section-title">Principal</div>
-    
-    <div class="menu-item" onclick="navegarPara('chat.html?v=1')">
+    <div class="menu-item" onclick="navegarPara('chat.html?v=2')">
       <div class="menu-item-icon ia">💬</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo">Tatu (Chat IA)</div>
-        <div class="menu-item-sub">Conversa com o assistente</div>
-      </div>
+      <div class="menu-item-info"><div class="menu-item-titulo">Tatu (Chat IA)</div><div class="menu-item-sub">Conversa com o assistente</div></div>
       <div class="menu-item-arrow">›</div>
     </div>
-    
     <div class="menu-item" onclick="navegarPara('contas.html?v=3')">
       <div class="menu-item-icon brand">🏦</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo">Vida Financeira</div>
-        <div class="menu-item-sub">Contas, cartões, rendas, fixas</div>
-      </div>
+      <div class="menu-item-info"><div class="menu-item-titulo">Vida Financeira</div><div class="menu-item-sub">Contas, cartões, rendas, fixas</div></div>
       <div class="menu-item-arrow">›</div>
     </div>
-    
     <div class="menu-item" onclick="navegarPara('transacoes.html?v=4')">
       <div class="menu-item-icon brand">💸</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo">Transações</div>
-        <div class="menu-item-sub">Entradas e saídas</div>
-      </div>
+      <div class="menu-item-info"><div class="menu-item-titulo">Transações</div><div class="menu-item-sub">Entradas e saídas</div></div>
       <div class="menu-item-arrow">›</div>
     </div>
-    
     <div class="menu-item" onclick="navegarPara('dividas.html?v=2')">
       <div class="menu-item-icon danger">💳</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo">Dívidas</div>
-        <div class="menu-item-sub">Negociador IA</div>
-      </div>
+      <div class="menu-item-info"><div class="menu-item-titulo">Dívidas</div><div class="menu-item-sub">Negociador IA</div></div>
       <div class="menu-item-arrow">›</div>
     </div>
-    
     <div class="menu-item" onclick="navegarPara('metas.html?v=1')">
       <div class="menu-item-icon warning">🎯</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo">Metas</div>
-        <div class="menu-item-sub">Reserva e objetivos</div>
-      </div>
+      <div class="menu-item-info"><div class="menu-item-titulo">Metas</div><div class="menu-item-sub">Reserva e objetivos</div></div>
       <div class="menu-item-arrow">›</div>
     </div>
-    
     <div class="menu-item" onclick="navegarPara('dashboard.html?v=1')">
       <div class="menu-item-icon info">📊</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo">Dashboard</div>
-        <div class="menu-item-sub">Gráficos e análises</div>
-      </div>
+      <div class="menu-item-info"><div class="menu-item-titulo">Dashboard</div><div class="menu-item-sub">Gráficos e análises</div></div>
       <div class="menu-item-arrow">›</div>
     </div>
-    
     <div class="menu-item" onclick="navegarPara('patrimonio.html?v=1')">
       <div class="menu-item-icon brand">💎</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo">Patrimônio</div>
-        <div class="menu-item-sub">Visão geral dos seus bens</div>
-      </div>
+      <div class="menu-item-info"><div class="menu-item-titulo">Patrimônio</div><div class="menu-item-sub">Visão geral dos seus bens</div></div>
       <div class="menu-item-arrow">›</div>
     </div>
-    
     <div class="menu-item" onclick="navegarPara('educacao.html?v=1')">
       <div class="menu-item-icon ia">🎓</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo">Educação</div>
-        <div class="menu-item-sub">Trilha do Tatu</div>
-      </div>
+      <div class="menu-item-info"><div class="menu-item-titulo">Educação</div><div class="menu-item-sub">Trilha do Tatu</div></div>
       <div class="menu-item-arrow">›</div>
-    </div>
-  </div>
-  
-  <div class="menu-divider"></div>
-  
-  <div class="menu-section">
-    <div class="menu-section-title">Em breve</div>
-    
-    <div class="menu-item" onclick="emBreve('Modo Setup')">
-      <div class="menu-item-icon ia">🦔</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo">Modo Setup</div>
-        <div class="menu-item-sub">Configurar tudo com IA</div>
-      </div>
-      <span class="menu-item-badge">Em breve</span>
-    </div>
-    
-    <div class="menu-item" onclick="emBreve('Modo Viagem')">
-      <div class="menu-item-icon info">🧳</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo">Prestação de Contas</div>
-        <div class="menu-item-sub">Despesas de viagem</div>
-      </div>
-      <span class="menu-item-badge">Em breve</span>
-    </div>
-    
-    <div class="menu-item" onclick="emBreve('Notificações')">
-      <div class="menu-item-icon warning">🔔</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo">Notificações</div>
-        <div class="menu-item-sub">Alertas e lembretes</div>
-      </div>
-      <span class="menu-item-badge">Em breve</span>
     </div>
   </div>
   
@@ -876,22 +342,19 @@
   
   <div class="menu-section">
     <div class="menu-section-title">Conta</div>
-    
-    <div class="menu-item" onclick="emBreve('Perfil')">
-      <div class="menu-item-icon">👤</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo">Meu Perfil</div>
-        <div class="menu-item-sub">Editar dados pessoais</div>
-      </div>
+    <div class="menu-item" onclick="reiniciarTutorial()">
+      <div class="menu-item-icon ia">🦔</div>
+      <div class="menu-item-info"><div class="menu-item-titulo">Ver tutorial</div><div class="menu-item-sub">Recapitular o app</div></div>
       <div class="menu-item-arrow">›</div>
     </div>
-    
+    <div class="menu-item" onclick="emBreve('Perfil')">
+      <div class="menu-item-icon">👤</div>
+      <div class="menu-item-info"><div class="menu-item-titulo">Meu Perfil</div><div class="menu-item-sub">Editar dados pessoais</div></div>
+      <div class="menu-item-arrow">›</div>
+    </div>
     <div class="menu-item" onclick="emBreve('Configurações')">
       <div class="menu-item-icon">⚙️</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo">Configurações</div>
-        <div class="menu-item-sub">Preferências do app</div>
-      </div>
+      <div class="menu-item-info"><div class="menu-item-titulo">Configurações</div><div class="menu-item-sub">Preferências do app</div></div>
       <div class="menu-item-arrow">›</div>
     </div>
   </div>
@@ -900,29 +363,19 @@
   
   <div class="menu-section">
     <div class="menu-section-title">Legal</div>
-    
     <div class="menu-item" onclick="emBreve('Política de Privacidade')">
       <div class="menu-item-icon">🛡️</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo">Política de Privacidade</div>
-      </div>
+      <div class="menu-item-info"><div class="menu-item-titulo">Política de Privacidade</div></div>
       <div class="menu-item-arrow">›</div>
     </div>
-    
     <div class="menu-item" onclick="emBreve('Termos de Uso')">
       <div class="menu-item-icon">📜</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo">Termos de Uso</div>
-      </div>
+      <div class="menu-item-info"><div class="menu-item-titulo">Termos de Uso</div></div>
       <div class="menu-item-arrow">›</div>
     </div>
-    
     <div class="menu-item" onclick="emBreve('Excluir conta')">
       <div class="menu-item-icon danger">🗑️</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo" style="color:var(--danger);">Excluir minha conta</div>
-        <div class="menu-item-sub">Apaga todos seus dados</div>
-      </div>
+      <div class="menu-item-info"><div class="menu-item-titulo" style="color:var(--danger);">Excluir minha conta</div><div class="menu-item-sub">Apaga todos seus dados</div></div>
       <div class="menu-item-arrow">›</div>
     </div>
   </div>
@@ -932,20 +385,24 @@
   <div class="menu-section">
     <div class="menu-item" onclick="sair()">
       <div class="menu-item-icon danger">🚪</div>
-      <div class="menu-item-info">
-        <div class="menu-item-titulo" style="color:var(--danger);">Sair</div>
-        <div class="menu-item-sub">Encerrar sessão</div>
-      </div>
+      <div class="menu-item-info"><div class="menu-item-titulo" style="color:var(--danger);">Sair</div><div class="menu-item-sub">Encerrar sessão</div></div>
     </div>
   </div>
   
   <div class="menu-footer">
     <div class="menu-footer-brand">guardaí</div>
     <div>Assistente financeiro pessoal com IA</div>
-    <div>v1.0.0 • beta</div>
+    <div>v2.0 • beta</div>
   </div>
-  
 </div>
+
+<!-- TUTORIAL OVERLAY -->
+<div class="tutorial-overlay" id="tutorial-overlay">
+  <div class="tutorial-spotlight" id="tutorial-spotlight"></div>
+  <div class="tutorial-balao" id="tutorial-balao"></div>
+</div>
+
+<div class="xp-toast-tutorial" id="xp-toast-tutorial">+50 XP 🎉</div>
 
 <script type="module">
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -963,21 +420,24 @@
     { num: 5, nome: 'Liberdade', xp_min: 1500, xp_max: 99999 }
   ];
   
-  let usuario;
-  let perfil;
-  let gamif;
+  let usuario, perfil, gamif;
   let stats = {};
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
-      window.location.href = 'index.html?v=1';
+      window.location.href = 'index.html?v=' + Date.now();
       return;
     }
     usuario = session.user;
     
     await carregarTudo();
     render();
+    
+    // NOVO v2.0: detecta se precisa rodar tutorial
+    if (perfil.setup_concluido && !perfil.tutorial_concluido) {
+      setTimeout(() => iniciarTutorial(), 800);
+    }
   })();
   
   async function carregarTudo() {
@@ -985,36 +445,14 @@
     const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0];
     const fimMes = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).toISOString().split('T')[0];
     
-    const [
-      perfilRes,
-      gamifRes,
-      contasRes,
-      dividasRes,
-      transRes,
-      transContasRes,
-      proximasRes
-    ] = await Promise.all([
+    const [perfilRes, gamifRes, contasRes, dividasRes, transRes, transContasRes, proximasRes] = await Promise.all([
       supabase.from('perfis').select('*').eq('id', usuario.id).maybeSingle(),
       supabase.from('gamificacao').select('*').eq('user_id', usuario.id).maybeSingle(),
       supabase.from('contas').select('*').eq('user_id', usuario.id).eq('ativa', true),
       supabase.from('dividas').select('*').eq('user_id', usuario.id).eq('status', 'ativa'),
-      supabase.from('transacoes')
-        .select('valor, tipo, status, data')
-        .eq('user_id', usuario.id)
-        .gte('data', inicioMes)
-        .lte('data', fimMes),
-      supabase.from('transacoes')
-        .select('valor, tipo, conta_id')
-        .eq('user_id', usuario.id)
-        .eq('status', 'realizada')
-        .not('conta_id', 'is', null),
-      supabase.from('transacoes')
-        .select('id, descricao, data, valor, tipo, status')
-        .eq('user_id', usuario.id)
-        .eq('status', 'prevista')
-        .gte('data', hojeStr)
-        .order('data', { ascending: true })
-        .limit(5)
+      supabase.from('transacoes').select('valor, tipo, status, data').eq('user_id', usuario.id).gte('data', inicioMes).lte('data', fimMes),
+      supabase.from('transacoes').select('valor, tipo, conta_id').eq('user_id', usuario.id).eq('status', 'realizada').not('conta_id', 'is', null),
+      supabase.from('transacoes').select('id, descricao, data, valor, tipo, status').eq('user_id', usuario.id).eq('status', 'prevista').gte('data', hojeStr).order('data', { ascending: true }).limit(5)
     ]);
     
     perfil = perfilRes.data || { nome: usuario.email?.split('@')[0] || 'amigo' };
@@ -1039,33 +477,20 @@
     
     const realizadas = trans.filter(t => (t.status || 'realizada') === 'realizada');
     const previstas = trans.filter(t => t.status === 'prevista');
-    
     const entradas = realizadas.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
     const saidas = realizadas.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
     const saldoMes = entradas - saidas;
-    
     const aReceber = previstas.filter(t => t.tipo === 'entrada' && t.data >= hojeStr).reduce((a, t) => a + Number(t.valor), 0);
     const aPagar = previstas.filter(t => t.tipo === 'saida' && t.data >= hojeStr).reduce((a, t) => a + Number(t.valor), 0);
     const vencidas = trans.filter(t => t.status === 'prevista' && t.data < hojeStr && t.tipo === 'saida');
     const totalVencidas = vencidas.reduce((a, t) => a + Number(t.valor), 0);
-    
     const saldoPrevisto = saldoMes + aReceber - aPagar;
     
     stats = {
-      contas: contasReais.length,
-      cartoes: cartoes.length,
-      dividas: dividas.length,
+      contas: contasReais.length, cartoes: cartoes.length, dividas: dividas.length,
       totalDividas: dividas.reduce((a, d) => a + Number(d.valor_atual), 0),
-      patrimonio,
-      entradas,
-      saidas,
-      saldoMes,
-      aReceber,
-      aPagar,
-      saldoPrevisto,
-      vencidas: vencidas.length,
-      totalVencidas,
-      proximas: proximasRes.data || []
+      patrimonio, entradas, saidas, saldoMes, aReceber, aPagar, saldoPrevisto,
+      vencidas: vencidas.length, totalVencidas, proximas: proximasRes.data || []
     };
   }
   
@@ -1084,7 +509,6 @@
     const xpPraProx = proxNivel.xp_max - nivel.xp_min;
     const pctNivel = Math.min(100, (xpNivel / xpPraProx) * 100);
     
-    // Menu lateral
     document.getElementById('menu-avatar').textContent = primeiroNome.charAt(0).toUpperCase();
     document.getElementById('menu-nome').textContent = nome;
     document.getElementById('menu-email').textContent = usuario.email || '';
@@ -1095,7 +519,6 @@
     
     const horaAtual = new Date().getHours();
     const saudacao = horaAtual < 5 ? 'Boa noite' : horaAtual < 12 ? 'Bom dia' : horaAtual < 18 ? 'Boa tarde' : 'Boa noite';
-    
     const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
     const mesAtual = `${meses[new Date().getMonth()]} de ${new Date().getFullYear()}`;
     
@@ -1121,24 +544,20 @@
           <div class="secao-link" onclick="window.location.href='transacoes.html?v=4'">Ver todas →</div>
         </div>
       `;
-      
       const hoje = new Date().toISOString().split('T')[0];
       stats.proximas.forEach(t => {
         const data = new Date(t.data + 'T12:00:00');
         const dias = Math.ceil((new Date(t.data) - new Date(hoje)) / (1000*60*60*24));
         const ehHoje = t.data === hoje;
         const ehUrgente = dias > 0 && dias <= 7;
-        
         let badge, cardClass;
         if (ehHoje) { badge = '<span class="proxima-badge hoje">🟢 HOJE</span>'; cardClass = 'hoje'; }
         else if (ehUrgente) { badge = `<span class="proxima-badge urgente">EM ${dias}D</span>`; cardClass = 'urgente'; }
         else { badge = `<span class="proxima-badge future">EM ${dias}D</span>`; cardClass = ''; }
-        
         const ehEntrada = t.tipo === 'entrada';
         const emoji = ehEntrada ? '💰' : '📅';
         const valorClass = ehEntrada ? 'brand' : 'danger';
         const sinal = ehEntrada ? '+' : '-';
-        
         proximasHTML += `
           <div class="proxima-card ${cardClass}" onclick="window.location.href='transacoes.html?v=4'">
             <div class="proxima-icone" style="${ehEntrada ? 'background:var(--brand-soft);color:var(--brand);' : ''}">${emoji}</div>
@@ -1152,25 +571,15 @@
       });
     }
     
-    // Insight do Tatu
-    let tatuHTML = '';
     let insightTexto = '';
+    if (stats.vencidas > 0) insightTexto = `Você tem <strong>${stats.vencidas} conta${stats.vencidas === 1 ? '' : 's'} vencida${stats.vencidas === 1 ? '' : 's'}</strong>. Resolver isso já é um passo grande pra reduzir juros e estresse. 🦔`;
+    else if (stats.totalDividas > 0 && stats.entradas > 0 && (stats.totalDividas / stats.entradas) > 0.3) insightTexto = `Suas dívidas (<strong>R$ ${formatarMoeda(stats.totalDividas)}</strong>) representam mais de 30% da sua renda mensal. Toca em "Dívidas" e usa o Negociador IA! 🦔`;
+    else if (stats.saldoPrevisto < 0) insightTexto = `Seu saldo previsto pro fim do mês tá <strong>negativo</strong>. Que tal cadastrar mais rendas ou rever despesas? 🦔`;
+    else if (stats.contas === 0 && stats.cartoes === 0) insightTexto = `Cadastra teus <strong>cartões e contas</strong> em "Vida Financeira"! 🦔`;
+    else if (stats.proximas.length === 0 && stats.contas > 0) insightTexto = `Cadastre suas <strong>despesas fixas</strong> em Vida Financeira → Fixas. 🦔`;
+    else insightTexto = `Tá indo bem! Próximo: <strong>${proxNivel.nome}</strong>. 🦔`;
     
-    if (stats.vencidas > 0) {
-      insightTexto = `Você tem <strong>${stats.vencidas} conta${stats.vencidas === 1 ? '' : 's'} vencida${stats.vencidas === 1 ? '' : 's'}</strong>. Resolver isso já é um passo grande pra reduzir juros e estresse. 🦔`;
-    } else if (stats.totalDividas > 0 && stats.entradas > 0 && (stats.totalDividas / stats.entradas) > 0.3) {
-      insightTexto = `Suas dívidas (<strong>R$ ${formatarMoeda(stats.totalDividas)}</strong>) representam mais de 30% da sua renda mensal. Toca em "Dívidas" e usa o Negociador IA — descontos de 30-70% são comuns! 🦔`;
-    } else if (stats.saldoPrevisto < 0) {
-      insightTexto = `Seu saldo previsto pro fim do mês tá <strong>negativo</strong>. Que tal cadastrar mais rendas ou rever despesas? Posso te ajudar. 🦔`;
-    } else if (stats.contas === 0 && stats.cartoes === 0) {
-      insightTexto = `Cadastra teus <strong>cartões e contas</strong> em "Vida Financeira". Quanto mais o sistema conhece, melhor te ajudo! 🦔`;
-    } else if (stats.proximas.length === 0 && stats.contas > 0) {
-      insightTexto = `Cadastre suas <strong>despesas fixas</strong> (luz, água, internet) em Vida Financeira → Fixas. Aí o calendário fica completo! 🦔`;
-    } else {
-      insightTexto = `Tá indo bem! Continua cadastrando transações pra subir de nível. Próximo: <strong>${proxNivel.nome}</strong>. 🦔`;
-    }
-    
-    tatuHTML = `
+    const tatuHTML = `
       <div class="tatu-card">
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
@@ -1186,50 +595,27 @@
         <div class="saudacao-sub">${stats.contas} conta${stats.contas === 1 ? '' : 's'} + ${stats.cartoes} cartões • ${stats.dividas} dívida${stats.dividas === 1 ? '' : 's'} ativa${stats.dividas === 1 ? '' : 's'}</div>
       </div>
       
-      <div class="level-card">
+      <div class="level-card" id="tut-nivel">
         <div class="level-top">
-          <div>
-            <div class="level-label">Nível ${nivel.num}</div>
-            <div class="level-nome">${nivel.nome}</div>
-          </div>
-          <div class="level-xp">
-            <div class="level-xp-num">${xp}</div>
-            <div class="level-xp-label">XP Total</div>
-          </div>
+          <div><div class="level-label">Nível ${nivel.num}</div><div class="level-nome">${nivel.nome}</div></div>
+          <div class="level-xp"><div class="level-xp-num">${xp}</div><div class="level-xp-label">XP Total</div></div>
         </div>
         <div class="level-bar"><div class="level-bar-fill" style="width:${pctNivel}%"></div></div>
-        <div class="level-bottom">
-          <span>${xpNivel} / ${xpPraProx} XP</span>
-          <span>🔥 ${streak} dia${streak === 1 ? '' : 's'}</span>
-        </div>
+        <div class="level-bottom"><span>${xpNivel} / ${xpPraProx} XP</span><span>🔥 ${streak} dia${streak === 1 ? '' : 's'}</span></div>
       </div>
       
-      <div class="resumo-mes">
+      <div class="resumo-mes" id="tut-resumo">
         <div class="resumo-titulo">
           <div class="resumo-titulo-txt">📊 Resumo do mês</div>
           <div class="resumo-mes-label">${mesAtual}</div>
         </div>
         <div class="resumo-grid">
-          <div class="resumo-item">
-            <div class="resumo-item-label">↓ Entradas</div>
-            <div class="resumo-item-valor brand">R$ ${formatarMoeda(stats.entradas)}</div>
-          </div>
-          <div class="resumo-item">
-            <div class="resumo-item-label">↑ Saídas</div>
-            <div class="resumo-item-valor danger">R$ ${formatarMoeda(stats.saidas)}</div>
-          </div>
+          <div class="resumo-item"><div class="resumo-item-label">↓ Entradas</div><div class="resumo-item-valor brand">R$ ${formatarMoeda(stats.entradas)}</div></div>
+          <div class="resumo-item"><div class="resumo-item-label">↑ Saídas</div><div class="resumo-item-valor danger">R$ ${formatarMoeda(stats.saidas)}</div></div>
         </div>
         <div class="resumo-saldo">
-          <div class="resumo-saldo-bloco">
-            <div class="resumo-saldo-label">Saldo realizado</div>
-            <div class="resumo-saldo-valor ${stats.saldoMes >= 0 ? 'brand' : 'danger'}">R$ ${formatarMoeda(stats.saldoMes)}</div>
-          </div>
-          ${(stats.aReceber > 0 || stats.aPagar > 0) ? `
-            <div class="resumo-saldo-bloco" style="text-align:right;">
-              <div class="resumo-saldo-label">📅 Previsto fim do mês</div>
-              <div class="resumo-saldo-valor ${stats.saldoPrevisto >= 0 ? 'brand' : 'danger'}">R$ ${formatarMoeda(stats.saldoPrevisto)}</div>
-            </div>
-          ` : ''}
+          <div class="resumo-saldo-bloco"><div class="resumo-saldo-label">Saldo realizado</div><div class="resumo-saldo-valor ${stats.saldoMes >= 0 ? 'brand' : 'danger'}">R$ ${formatarMoeda(stats.saldoMes)}</div></div>
+          ${(stats.aReceber > 0 || stats.aPagar > 0) ? `<div class="resumo-saldo-bloco" style="text-align:right;"><div class="resumo-saldo-label">📅 Previsto fim do mês</div><div class="resumo-saldo-valor ${stats.saldoPrevisto >= 0 ? 'brand' : 'danger'}">R$ ${formatarMoeda(stats.saldoPrevisto)}</div></div>` : ''}
         </div>
       </div>
       
@@ -1238,25 +624,25 @@
       ${tatuHTML}
       
       <div class="atalhos-grid">
-        <div class="atalho-card" onclick="window.location.href='contas.html?v=3'">
+        <div class="atalho-card" id="tut-vida" onclick="window.location.href='contas.html?v=3'">
           <div class="atalho-emoji">🏦</div>
           <div class="atalho-titulo">Vida Financeira</div>
           <div class="atalho-sub">Contas, cartões, fixas</div>
           <div class="atalho-valor brand">R$ ${formatarMoeda(stats.patrimonio)}</div>
         </div>
-        <div class="atalho-card" onclick="window.location.href='transacoes.html?v=4'">
+        <div class="atalho-card" id="tut-trans" onclick="window.location.href='transacoes.html?v=4'">
           <div class="atalho-emoji">💸</div>
           <div class="atalho-titulo">Transações</div>
           <div class="atalho-sub">Entradas e saídas</div>
           <div class="atalho-valor ${stats.saldoMes >= 0 ? 'brand' : 'danger'}">${stats.saldoMes >= 0 ? '+' : ''}R$ ${formatarMoeda(stats.saldoMes)}</div>
         </div>
-        <div class="atalho-card" onclick="window.location.href='dividas.html?v=2'">
+        <div class="atalho-card" id="tut-divs" onclick="window.location.href='dividas.html?v=2'">
           <div class="atalho-emoji">💳</div>
           <div class="atalho-titulo">Dívidas</div>
           <div class="atalho-sub">Negociador IA</div>
           <div class="atalho-valor ${stats.totalDividas > 0 ? 'danger' : 'brand'}">R$ ${formatarMoeda(stats.totalDividas)}</div>
         </div>
-        <div class="atalho-card" onclick="window.location.href='metas.html?v=1'">
+        <div class="atalho-card" id="tut-metas" onclick="window.location.href='metas.html?v=1'">
           <div class="atalho-emoji">🎯</div>
           <div class="atalho-titulo">Metas</div>
           <div class="atalho-sub">Reserva e objetivos</div>
@@ -1275,6 +661,182 @@
       </div>
     `;
   }
+  
+  // ============================================
+  // NOVO v2.0: TUTORIAL GUIADO
+  // ============================================
+  
+  const PASSOS_TUTORIAL = [
+    { 
+      target: 'tut-nivel', 
+      titulo: 'Seu nível de jornada',
+      texto: 'Aqui você acompanha seu <strong>progresso financeiro</strong>! Tem 6 níveis: Início → Diagnóstico → Resgate → Estabilização → Construção → <strong>Liberdade</strong>. Quanto mais cadastra, mais sobe! 🎮' 
+    },
+    { 
+      target: 'tut-resumo', 
+      titulo: 'Resumo do mês',
+      texto: 'Quanto <strong>entrou</strong> e quanto <strong>saiu</strong> esse mês. Também mostra a previsão de saldo no fim do mês considerando o que ainda vai entrar/sair. 📊'
+    },
+    { 
+      target: 'tut-vida', 
+      titulo: 'Vida Financeira',
+      texto: 'Aqui ficam tuas <strong>contas, cartões, rendas e despesas fixas</strong>. Tudo que cadastramos no Setup tá aqui! 🏦' 
+    },
+    { 
+      target: 'tut-trans', 
+      titulo: 'Transações do dia a dia',
+      texto: 'Cada gasto e cada entrada vão aqui. Você pode <strong>tirar foto do cupom</strong> e a IA cadastra sozinha. Em breve até por áudio! 📸' 
+    },
+    { 
+      target: 'tut-divs', 
+      titulo: 'Dívidas + Negociador IA',
+      texto: 'Suas dívidas e o melhor: o <strong>Negociador IA</strong> que te ajuda a fazer acordos com bancos. Modelo Serasa Limpa Nome! 💪' 
+    },
+    { 
+      target: 'tut-metas', 
+      titulo: 'Suas metas',
+      texto: 'Reserva de emergência, sonhos, objetivos. <strong>Tudo organizado</strong> com prazo e valor. Te ajudo a chegar lá! 🎯' 
+    },
+    { 
+      target: 'btn-menu', 
+      titulo: 'Menu lateral',
+      texto: 'Aqui você acessa <strong>tudo do app</strong>: chat com Tatu, dashboard, educação, perfil, logout. Tudo num lugar só! ⚙️' 
+    }
+  ];
+  
+  let passoTutAtual = 0;
+  
+  window.iniciarTutorial = function() {
+    passoTutAtual = 0;
+    document.getElementById('tutorial-overlay').classList.add('show');
+    // Trava scroll
+    document.body.style.overflow = 'hidden';
+    mostrarPassoTutorial();
+  };
+  
+  function mostrarPassoTutorial() {
+    if (passoTutAtual >= PASSOS_TUTORIAL.length) {
+      finalizarTutorial();
+      return;
+    }
+    
+    const passo = PASSOS_TUTORIAL[passoTutAtual];
+    const elemento = document.getElementById(passo.target);
+    
+    if (!elemento) {
+      // Se elemento não existe (ex: dívidas oculta), pula
+      passoTutAtual++;
+      mostrarPassoTutorial();
+      return;
+    }
+    
+    // Scroll suave pro elemento
+    elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    
+    setTimeout(() => {
+      const rect = elemento.getBoundingClientRect();
+      const spotlight = document.getElementById('tutorial-spotlight');
+      const balao = document.getElementById('tutorial-balao');
+      
+      // Posiciona spotlight no elemento
+      spotlight.style.top = (rect.top - 6) + 'px';
+      spotlight.style.left = (rect.left - 6) + 'px';
+      spotlight.style.width = (rect.width + 12) + 'px';
+      spotlight.style.height = (rect.height + 12) + 'px';
+      
+      // Renderiza balão
+      balao.innerHTML = `
+        <div class="tutorial-balao-header">
+          <div class="tutorial-balao-tatu">🦔</div>
+          <div class="tutorial-balao-titulo">${passo.titulo}</div>
+          <div class="tutorial-balao-passo">${passoTutAtual + 1}/${PASSOS_TUTORIAL.length}</div>
+        </div>
+        <div class="tutorial-balao-texto">${passo.texto}</div>
+        <div class="tutorial-balao-acoes">
+          ${passoTutAtual > 0 ? `<button class="tutorial-balao-btn secondary" onclick="voltarTutorial()">‹ Voltar</button>` : `<button class="tutorial-balao-btn secondary" onclick="pularTutorial()">Pular</button>`}
+          <button class="tutorial-balao-btn primary" onclick="proximoTutorial()">${passoTutAtual === PASSOS_TUTORIAL.length - 1 ? 'Terminar 🎉' : 'Próximo →'}</button>
+        </div>
+      `;
+      
+      // Posiciona balão (acima ou abaixo do elemento)
+      const espacoAcima = rect.top;
+      const espacoAbaixo = window.innerHeight - rect.bottom;
+      const balaoH = balao.offsetHeight;
+      
+      if (espacoAbaixo >= balaoH + 30 || espacoAbaixo > espacoAcima) {
+        // Coloca embaixo
+        balao.style.top = (rect.bottom + 14) + 'px';
+        balao.style.bottom = 'auto';
+      } else {
+        // Coloca em cima
+        balao.style.bottom = (window.innerHeight - rect.top + 14) + 'px';
+        balao.style.top = 'auto';
+      }
+      
+      // Centraliza horizontalmente
+      const balaoW = balao.offsetWidth;
+      let leftBalao = rect.left + (rect.width / 2) - (balaoW / 2);
+      if (leftBalao < 20) leftBalao = 20;
+      if (leftBalao + balaoW > window.innerWidth - 20) leftBalao = window.innerWidth - balaoW - 20;
+      balao.style.left = leftBalao + 'px';
+    }, 400);
+  }
+  
+  window.proximoTutorial = function() {
+    passoTutAtual++;
+    mostrarPassoTutorial();
+  };
+  
+  window.voltarTutorial = function() {
+    if (passoTutAtual > 0) {
+      passoTutAtual--;
+      mostrarPassoTutorial();
+    }
+  };
+  
+  window.pularTutorial = async function() {
+    if (!confirm('Pular o tutorial? Você pode rever pelo menu lateral depois.')) return;
+    await finalizarTutorial(true);
+  };
+  
+  async function finalizarTutorial(pulou = false) {
+    document.getElementById('tutorial-overlay').classList.remove('show');
+    document.body.style.overflow = '';
+    
+    try {
+      await supabase.from('perfis').update({
+        tutorial_concluido: true,
+        tutorial_concluido_em: new Date().toISOString()
+      }).eq('id', usuario.id);
+      
+      if (!pulou) {
+        await darXP(50, 'tutorial_concluido', 'Tutorial completo!');
+        mostrarXpToast();
+      }
+    } catch (e) {
+      console.error('Erro tutorial:', e);
+    }
+  }
+  
+  function mostrarXpToast() {
+    const t = document.getElementById('xp-toast-tutorial');
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 3000);
+  }
+  
+  window.reiniciarTutorial = async function() {
+    fecharMenu();
+    setTimeout(async () => {
+      // Reseta flag
+      await supabase.from('perfis').update({ tutorial_concluido: false }).eq('id', usuario.id);
+      perfil.tutorial_concluido = false;
+      iniciarTutorial();
+    }, 300);
+  };
+  
+  // ============================================
+  // MENU LATERAL
+  // ============================================
   
   window.abrirMenu = function() {
     document.getElementById('menu-overlay').classList.add('show');
@@ -1298,8 +860,19 @@
   window.sair = async function() {
     if (!confirm('Encerrar sessão?')) return;
     await supabase.auth.signOut();
-    window.location.href = 'index.html?v=1';
+    window.location.href = 'index.html?v=' + Date.now();
   };
+  
+  async function darXP(xp, acao, descricao) {
+    try {
+      await supabase.from('historico_xp').insert({ user_id: usuario.id, acao, xp_ganho: xp, descricao });
+      const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).maybeSingle();
+      await supabase.from('gamificacao').update({
+        xp_total: (g?.xp_total || 0) + xp,
+        ultima_atividade: new Date().toISOString().split('T')[0]
+      }).eq('user_id', usuario.id);
+    } catch (e) { console.error('XP:', e); }
+  }
   
   function formatarMoeda(v) {
     return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
