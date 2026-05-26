@@ -163,6 +163,14 @@
   .loader-circle { width: 32px; height: 32px; border: 3px solid var(--border); border-radius: 50%; border-top-color: var(--brand); animation: spin 0.8s linear infinite; margin: 40px auto; }
   
   .xp-toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #001a0e; padding: 12px 20px; border-radius: 100px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 14px; z-index: 200; box-shadow: 0 8px 32px rgba(0, 217, 126, 0.4); display: none; max-width: 90%; text-align: center; }
+  
+  .aviso-divergencia { background: var(--warning-soft); border: 1px solid rgba(255, 184, 0, 0.4); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
+  .aviso-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: var(--warning); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .aviso-texto { font-size: 13px; color: var(--text); line-height: 1.5; margin-bottom: 12px; }
+  .aviso-acoes { display: flex; gap: 8px; }
+  .aviso-btn { flex: 1; padding: 10px; border-radius: 10px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; border: none; }
+  .aviso-btn-primary { background: var(--brand); color: #001a0e; }
+  .aviso-btn-secondary { background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); }
 </style>
 </head>
 <body>
@@ -239,7 +247,6 @@
   let usuario, perfil;
   let passoAtual = 0;
   
-  // Estados gerais
   let objetivoPrincipal = null;
   let bancosSelecionados = [];
   let bancoIndexAtual = 0;
@@ -250,7 +257,6 @@
   let dividasAdicionadas = [];
   let analiseIA = null;
   
-  // Estados de cartões
   let temCartoes = null;
   let bancosCartoes = [];
   let bancoCartaoIdx = 0;
@@ -259,9 +265,9 @@
   let cartaoTemp = null;
   let statusFaturaTemp = null;
   
-  // Foto
   let modoFoto = null;
   let alvoFoto = null;
+  let dadosIAPendentes = null;
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -304,7 +310,7 @@
     window.location.href = 'home.html?v=' + Date.now();
   };
   
-  // ============ PASSO 1: BOAS-VINDAS ============
+  // ============ PASSO 1 ============
   function renderP1() {
     const nome = perfil.nome || usuario.email?.split('@')[0] || 'amigo';
     const pnome = nome.split(' ')[0];
@@ -347,31 +353,19 @@
       <div class="objetivo-list">
         <div class="objetivo-card ${objetivoPrincipal === 'sair_dividas' ? 'selected' : ''}" data-val="sair_dividas" onclick="selObj('sair_dividas')">
           <div class="objetivo-emoji">🚨</div>
-          <div class="objetivo-info">
-            <div class="objetivo-titulo">Sair das dívidas</div>
-            <div class="objetivo-desc">Quitar tudo e limpar o nome</div>
-          </div>
+          <div class="objetivo-info"><div class="objetivo-titulo">Sair das dívidas</div><div class="objetivo-desc">Quitar tudo e limpar o nome</div></div>
         </div>
         <div class="objetivo-card ${objetivoPrincipal === 'criar_reserva' ? 'selected' : ''}" data-val="criar_reserva" onclick="selObj('criar_reserva')">
           <div class="objetivo-emoji">🛡️</div>
-          <div class="objetivo-info">
-            <div class="objetivo-titulo">Criar minha reserva</div>
-            <div class="objetivo-desc">Parar de viver no aperto</div>
-          </div>
+          <div class="objetivo-info"><div class="objetivo-titulo">Criar minha reserva</div><div class="objetivo-desc">Parar de viver no aperto</div></div>
         </div>
         <div class="objetivo-card ${objetivoPrincipal === 'investir' ? 'selected' : ''}" data-val="investir" onclick="selObj('investir')">
           <div class="objetivo-emoji">📈</div>
-          <div class="objetivo-info">
-            <div class="objetivo-titulo">Começar a investir</div>
-            <div class="objetivo-desc">Fazer o dinheiro trabalhar</div>
-          </div>
+          <div class="objetivo-info"><div class="objetivo-titulo">Começar a investir</div><div class="objetivo-desc">Fazer o dinheiro trabalhar</div></div>
         </div>
         <div class="objetivo-card ${objetivoPrincipal === 'liberdade' ? 'selected' : ''}" data-val="liberdade" onclick="selObj('liberdade')">
           <div class="objetivo-emoji">🚀</div>
-          <div class="objetivo-info">
-            <div class="objetivo-titulo">Liberdade financeira</div>
-            <div class="objetivo-desc">Otimizar e crescer patrimônio</div>
-          </div>
+          <div class="objetivo-info"><div class="objetivo-titulo">Liberdade financeira</div><div class="objetivo-desc">Otimizar e crescer patrimônio</div></div>
         </div>
       </div>
     `;
@@ -387,13 +381,12 @@
   
   window.confirmarObjetivo = async function() {
     if (!objetivoPrincipal) return;
-    try {
-      await supabase.from('perfis').update({ objetivo_principal: objetivoPrincipal }).eq('id', usuario.id);
-    } catch (e) { console.error(e); }
+    try { await supabase.from('perfis').update({ objetivo_principal: objetivoPrincipal }).eq('id', usuario.id); }
+    catch (e) { console.error(e); }
     proximoPasso();
   };
   
-  // ============ PASSO 3: BANCOS DAS CONTAS ============
+  // ============ PASSO 3: BANCOS ============
   function renderP3() {
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble">
@@ -426,7 +419,7 @@
     if (btn) btn.disabled = bancosSelecionados.length === 0;
   };
   
-  // ============ PASSO 4: CONTAS (cada banco) ============
+  // ============ PASSO 4: CONTAS ============
   function renderP4() {
     if (bancosSelecionados.length === 0) { proximoPasso(); return; }
     if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); return; }
@@ -458,7 +451,7 @@
         <div class="opcao-btn ia" onclick="abrirFoto('conta', '${bId}')">
           <div class="opcao-btn-icon">📸</div>
           <div class="opcao-btn-titulo">Mandar foto</div>
-          <div class="opcao-btn-sub">IA lê pra você</div>
+          <div class="opcao-btn-sub">IA lê o saldo</div>
         </div>
         <div class="opcao-btn" onclick="manualConta('${bId}')">
           <div class="opcao-btn-icon">✍️</div>
@@ -484,7 +477,7 @@
               <div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">${c.icone}</div>
               <div class="item-info-mini">
                 <div class="item-nome-mini">${c.nome}</div>
-                <div class="item-valor-mini positivo">R$ ${formatarMoeda(c.saldo_inicial || 0)}</div>
+                <div class="item-valor-mini ${Number(c.saldo_inicial) >= 0 ? 'positivo' : 'danger'}">R$ ${formatarMoeda(c.saldo_inicial || 0)}</div>
               </div>
               <div class="item-acoes">
                 <div class="item-acao-btn danger" onclick="excluirConta('${c.id}')">✕</div>
@@ -530,8 +523,9 @@
           </select>
         </div>
         <div class="field">
-          <label>Saldo atual</label>
-          <div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mc-saldo" placeholder="0,00" oninput="formatarValor(this)"></div>
+          <label>Saldo atual (positivo ou negativo)</label>
+          <div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mc-saldo" placeholder="0,00" oninput="formatarValorComSinal(this)"></div>
+          <div style="font-size:11px;color:var(--text-mute);margin-top:4px;">💡 Cheque especial usado? Coloca com sinal negativo: -500,00</div>
         </div>
         <button class="btn btn-primary" onclick="salvarContaManual('${bId}')">Salvar conta</button>
       </div>
@@ -543,7 +537,7 @@
     const tipo = document.getElementById('mc-tipo').value;
     const saldo = valorParaNumero(document.getElementById('mc-saldo').value);
     const banco = BANCOS.find(b => b.id === bId);
-    if (saldo === null || isNaN(saldo)) { alert('Informe o saldo (pode ser 0,00)'); return; }
+    if (saldo === null || isNaN(saldo)) { alert('Informe o saldo (pode ser 0,00 ou negativo)'); return; }
     const emojis = { 'conta_corrente': '🏦', 'poupanca': '🐷', 'investimento': '📈' };
     try {
       const { data, error } = await supabase.from('contas').insert({
@@ -698,7 +692,6 @@
     const qtd = qtdPorBanco[bId];
     const passos = INSTRUCOES_CARTAO[bId] || INSTRUCOES_CARTAO.default;
     const numC = cartaoIdx + 1;
-    const sugNome = qtd === 1 ? banco.nome : `${banco.nome} ${numC}`;
     
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu te ensina</div><div class="tatu-texto">Cartão <strong>${numC} de ${qtd}</strong> do ${banco.nome}.</div></div></div>
@@ -716,7 +709,7 @@
         <div class="opcao-btn ia" onclick="abrirFoto('fatura', '${bId}')">
           <div class="opcao-btn-icon">📸</div>
           <div class="opcao-btn-titulo">Foto da fatura</div>
-          <div class="opcao-btn-sub">IA lê tudo</div>
+          <div class="opcao-btn-sub">IA lê limite + valor</div>
         </div>
         <div class="opcao-btn" onclick="manualCartao('${bId}')">
           <div class="opcao-btn-icon">✍️</div>
@@ -968,11 +961,8 @@
       }).select().single();
       if (error) throw error;
       rendasAdicionadas.push(data);
-      
-      // Salva renda principal no perfil também
       const totalRenda = rendasAdicionadas.reduce((a, r) => a + Number(r.valor || 0), 0);
       await supabase.from('perfis').update({ renda_mensal: totalRenda }).eq('id', usuario.id);
-      
       const hoje = new Date();
       const dUsar = dia || hoje.getDate();
       let mes = hoje.getMonth();
@@ -989,7 +979,7 @@
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  // ============ PASSO 7: DESPESAS FIXAS ============
+  // ============ PASSO 7: DESPESAS ============
   function renderP7() {
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>Despesas fixas</strong>: luz, água, internet, aluguel, streaming. Pode <strong>tirar foto do boleto</strong> que eu cadastro!</div></div></div>
@@ -1197,7 +1187,7 @@
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  // ============ PASSO 9: ANÁLISE FINAL ============
+  // ============ PASSO 9: ANÁLISE ============
   async function renderP9() {
     document.getElementById('container').innerHTML = `
       <div class="ia-loading">
@@ -1325,7 +1315,7 @@
   
   window.irHome = function() { window.location.href = 'home.html?v=' + Date.now(); };
   
-  // ============ FOTO + COMPRESSÃO + IA ============
+  // ============ FOTO + IA (CORRIGIDO v3.1) ============
   
   window.abrirFoto = function(modo, alvo) {
     modoFoto = modo;
@@ -1374,8 +1364,8 @@
       const d = await r.json();
       
       if (d.resultado && !d.resultado.erro) {
-        if (modoFoto === 'conta') await processarConta(d.resultado);
-        else if (modoFoto === 'fatura') await processarFatura(d.resultado);
+        if (modoFoto === 'conta') await checarDivergenciaConta(d.resultado);
+        else if (modoFoto === 'fatura') await checarDivergenciaCartao(d.resultado);
         else if (modoFoto === 'boleto') await processarBoleto(d.resultado);
         else if (modoFoto === 'contrato') await processarContrato(d.resultado);
       } else {
@@ -1424,20 +1414,76 @@
     });
   }
   
-  async function processarConta(r) {
-    const banco = BANCOS.find(b => b.id === alvoFoto);
+  // 🔥 v3.1 FIX: respeita banco selecionado pelo usuário
+  async function checarDivergenciaConta(r) {
+    const bancoSelecionado = BANCOS.find(b => b.id === alvoFoto);
+    const bancoDetectado = (r.banco_detectado || '').toLowerCase();
+    const nomeSelecionado = bancoSelecionado.nome.toLowerCase();
+    
+    // Detecta divergência (banco da IA não bate com selecionado)
+    const houveDivergencia = bancoDetectado && 
+      !bancoDetectado.includes(nomeSelecionado) && 
+      !nomeSelecionado.includes(bancoDetectado);
+    
+    if (houveDivergencia) {
+      // Mostra aviso pro usuário decidir
+      dadosIAPendentes = r;
+      document.getElementById('container').innerHTML = `
+        <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu detectou algo</div><div class="tatu-texto">Você escolheu <strong>${bancoSelecionado.nome}</strong>, mas a foto parece ser <strong>${r.banco_detectado}</strong>.</div></div></div>
+        
+        <div class="aviso-divergencia">
+          <div class="aviso-titulo">⚠️ Banco diferente detectado</div>
+          <div class="aviso-texto">A IA leu a foto e identificou como <strong>${r.banco_detectado}</strong>, mas você selecionou <strong>${bancoSelecionado.nome}</strong>.<br><br>O que prefere fazer?</div>
+        </div>
+        
+        <div class="form-card">
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <button class="btn btn-primary" onclick="usarBancoSelecionado()">
+              ✅ Usar ${bancoSelecionado.nome} mesmo (foto pode estar errada)
+            </button>
+            <button class="btn" style="background:var(--warning-soft);color:var(--warning);border:1px solid var(--warning);" onclick="cancelarFoto()">
+              🔄 Cancelar e mandar outra foto
+            </button>
+          </div>
+        </div>
+      `;
+      document.getElementById('footer-content').innerHTML = '';
+      return;
+    }
+    
+    // Sem divergência: processa direto
+    await processarContaFinal(r, bancoSelecionado);
+  }
+  
+  window.usarBancoSelecionado = async function() {
+    const bancoSelecionado = BANCOS.find(b => b.id === alvoFoto);
+    await processarContaFinal(dadosIAPendentes, bancoSelecionado);
+    dadosIAPendentes = null;
+  };
+  
+  window.cancelarFoto = function() {
+    dadosIAPendentes = null;
+    voltarAposFoto();
+  };
+  
+  async function processarContaFinal(r, banco) {
+    // SEMPRE usa o banco selecionado pelo usuário
     const dados = {
-      user_id: usuario.id, nome: r.nome_sugerido || banco.nome,
-      tipo: r.tipo_conta || 'conta_corrente', banco: banco.nome, cor: banco.cor,
+      user_id: usuario.id,
+      nome: banco.nome,
+      tipo: r.tipo_conta || 'conta_corrente',
+      banco: banco.nome,
+      cor: banco.cor,
       icone: r.tipo_conta === 'poupanca' ? '🐷' : r.tipo_conta === 'investimento' ? '📈' : '🏦',
-      saldo_inicial: r.saldo_atual || 0, padrao: contasAdicionadas.length === 0
+      saldo_inicial: r.saldo_atual || 0,
+      padrao: contasAdicionadas.length === 0
     };
     try {
       const { data, error } = await supabase.from('contas').insert(dados).select().single();
       if (error) throw error;
       contasAdicionadas.push(data);
       await darXP(25, 'conta_ia', 'Setup IA: ' + banco.nome);
-      toast('+25 XP ✨ IA cadastrou!');
+      toast(`+25 XP ✨ ${banco.nome} cadastrado!`);
       setTimeout(() => {
         bancoIndexAtual++;
         if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); }
@@ -1446,17 +1492,63 @@
     } catch (e) { alert('Erro: ' + e.message); renderP4(); }
   }
   
-  async function processarFatura(r) {
+  // 🔥 v3.1 FIX: respeita banco selecionado também no cartão
+  async function checarDivergenciaCartao(r) {
     const bId = alvoFoto;
-    const banco = BANCOS.find(b => b.id === bId);
-    const nome = r.nome_sugerido || banco.nome;
+    const bancoSelecionado = BANCOS.find(b => b.id === bId);
+    const bancoDetectado = (r.banco_detectado || '').toLowerCase();
+    const nomeSelecionado = bancoSelecionado.nome.toLowerCase();
+    
+    const houveDivergencia = bancoDetectado && 
+      !bancoDetectado.includes(nomeSelecionado) && 
+      !nomeSelecionado.includes(bancoDetectado);
+    
+    if (houveDivergencia) {
+      dadosIAPendentes = r;
+      document.getElementById('container').innerHTML = `
+        <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu detectou algo</div><div class="tatu-texto">Você está cadastrando cartão do <strong>${bancoSelecionado.nome}</strong>, mas a foto parece ser do <strong>${r.banco_detectado}</strong>.</div></div></div>
+        
+        <div class="aviso-divergencia">
+          <div class="aviso-titulo">⚠️ Banco diferente na foto</div>
+          <div class="aviso-texto">A IA leu como <strong>${r.banco_detectado}</strong>, mas você selecionou <strong>${bancoSelecionado.nome}</strong>.<br><br>O que prefere fazer?</div>
+        </div>
+        
+        <div class="form-card">
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <button class="btn btn-primary" onclick="usarBancoCartaoSelecionado()">
+              ✅ Usar ${bancoSelecionado.nome} mesmo
+            </button>
+            <button class="btn" style="background:var(--warning-soft);color:var(--warning);border:1px solid var(--warning);" onclick="cancelarFoto()">
+              🔄 Cancelar e mandar outra foto
+            </button>
+          </div>
+        </div>
+      `;
+      document.getElementById('footer-content').innerHTML = '';
+      return;
+    }
+    
+    await processarFaturaFinal(r, bancoSelecionado);
+  }
+  
+  window.usarBancoCartaoSelecionado = async function() {
+    const bId = alvoFoto;
+    const bancoSelecionado = BANCOS.find(b => b.id === bId);
+    await processarFaturaFinal(dadosIAPendentes, bancoSelecionado);
+    dadosIAPendentes = null;
+  };
+  
+  async function processarFaturaFinal(r, banco) {
+    const qtd = qtdPorBanco[banco.id];
+    const nomeBase = qtd === 1 ? banco.nome : `${banco.nome} ${cartaoIdx + 1}`;
+    const nome = r.nome_sugerido ? `${banco.nome} (${r.nome_sugerido})` : nomeBase;
     const limite = r.limite_total || 0;
     const fec = r.dia_fechamento || null;
     const ven = r.dia_vencimento || null;
     const valor = r.valor_fatura || 0;
     const atrasada = r.esta_atrasada || false;
     
-    cartaoTemp = { bancoId: bId, nome, limite, fechamento: fec, vencimento: ven };
+    cartaoTemp = { bancoId: banco.id, nome, limite, fechamento: fec, vencimento: ven };
     
     if (valor > 0) {
       await salvarCartaoFinal({ valor, paga: false, atrasada });
@@ -1478,8 +1570,6 @@
     }
     
     await salvarDespesaNoBanco(nome, cat, val, dia);
-    await darXP(25, 'despesa_ia', 'Setup IA: ' + nome);
-    toast('+25 XP ✨ Boleto lido!');
   }
   
   async function processarContrato(r) {
@@ -1522,9 +1612,21 @@
     input.value = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   };
   
+  window.formatarValorComSinal = function(input) {
+    const ehNeg = input.value.trim().startsWith('-');
+    let v = input.value.replace(/[^0-9]/g, '');
+    if (!v) { input.value = ''; return; }
+    v = (parseInt(v) / 100).toFixed(2);
+    const formatado = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+    input.value = (ehNeg ? '-' : '') + formatado;
+  };
+  
   function valorParaNumero(str) {
     if (!str) return 0;
-    return Number(str.replace(/\./g, '').replace(',', '.')) || 0;
+    const ehNeg = str.trim().startsWith('-');
+    const limpo = str.replace(/[^0-9,\.]/g, '').replace(/\./g, '').replace(',', '.');
+    const num = Number(limpo) || 0;
+    return ehNeg ? -num : num;
   }
   
   function formatarMoeda(v) {
