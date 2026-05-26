@@ -6,7 +6,6 @@
 <meta name="theme-color" content="#0a0a0a">
 <title>guardaí</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
@@ -21,7 +20,7 @@
     --text: #ffffff; --text-mute: #a3a3a3; --text-faint: #525252;
   }
   html, body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh; overflow-x: hidden; }
-  body { padding-bottom: 80px; }
+  body { padding-bottom: 100px; }
   
   .header { padding: 16px 20px; background: var(--bg); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 12px; }
   .brand-mark { width: 36px; height: 36px; background: var(--brand); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -97,6 +96,16 @@
   .tatu-texto { font-size: 13px; line-height: 1.5; color: var(--text-mute); }
   .tatu-texto strong { color: var(--text); }
   
+  /* NOVO v2.3: BANNER ÁUDIO */
+  .audio-banner { background: linear-gradient(135deg, var(--ia) 0%, #9333ea 100%); border-radius: 18px; padding: 16px; margin: 16px 0; cursor: pointer; display: flex; align-items: center; gap: 14px; position: relative; overflow: hidden; box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3); }
+  .audio-banner::before { content: ''; position: absolute; top: -50%; right: -10%; width: 150px; height: 150px; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%); pointer-events: none; }
+  .audio-banner:active { transform: scale(0.99); }
+  .audio-banner-icon { width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; position: relative; }
+  .audio-banner-info { flex: 1; position: relative; color: #fff; }
+  .audio-banner-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+  .audio-banner-sub { font-size: 12px; opacity: 0.9; }
+  .audio-banner-seta { color: #fff; font-size: 24px; opacity: 0.8; position: relative; }
+  
   .atalhos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
   .atalho-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; cursor: pointer; color: var(--text); }
   .atalho-card:active { transform: scale(0.97); }
@@ -110,6 +119,11 @@
   .loader-circle { width: 32px; height: 32px; border: 3px solid var(--border); border-radius: 50%; border-top-color: var(--brand); animation: spin 0.8s linear infinite; margin: 40px auto; }
   @keyframes spin { to { transform: rotate(360deg); } }
   
+  /* FAB ÁUDIO */
+  .fab-audio { position: fixed; bottom: 24px; right: 20px; width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--ia) 0%, #9333ea 100%); color: #fff; font-size: 28px; border: none; cursor: pointer; box-shadow: 0 8px 24px rgba(168, 85, 247, 0.5); display: flex; align-items: center; justify-content: center; z-index: 50; }
+  .fab-audio:active { transform: scale(0.95); }
+  
+  /* MENU LATERAL */
   .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
   .menu-overlay.show { opacity: 1; pointer-events: auto; }
   .menu-lateral { position: fixed; top: 0; right: -85%; bottom: 0; width: 85%; max-width: 340px; background: var(--bg-card); border-left: 1px solid var(--border); z-index: 101; transition: right 0.3s cubic-bezier(0.34, 1.2, 0.64, 1); display: flex; flex-direction: column; overflow-y: auto; }
@@ -141,10 +155,46 @@
   .menu-footer { padding: 16px 20px 24px; color: var(--text-faint); font-size: 10px; text-align: center; line-height: 1.5; }
   .menu-footer-brand { color: var(--brand); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12px; margin-bottom: 4px; }
   
-  .tutorial-overlay { position: fixed; inset: 0; z-index: 9000; background: rgba(0,0,0,0.75); backdrop-filter: blur(2px); display: none; }
+  /* MODAL ÁUDIO */
+  .audio-overlay { position: fixed; inset: 0; background: rgba(10,10,10,0.95); z-index: 9000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(8px); }
+  .audio-overlay.show { display: flex; }
+  .audio-modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 30px 24px; max-width: 380px; width: 100%; text-align: center; }
+  .audio-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .audio-sub { font-size: 13px; color: var(--text-mute); margin-bottom: 24px; line-height: 1.5; }
+  .mic-btn { width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, var(--ia) 0%, #9333ea 100%); border: none; color: #fff; font-size: 56px; cursor: pointer; box-shadow: 0 12px 40px rgba(168, 85, 247, 0.5); margin: 0 auto 20px; display: block; transition: transform 0.2s; }
+  .mic-btn:active { transform: scale(0.95); }
+  .mic-btn.recording { animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 12px 40px rgba(168, 85, 247, 0.5); } 50% { box-shadow: 0 12px 60px rgba(168, 85, 247, 0.9); transform: scale(1.05); } }
+  .mic-status { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; color: var(--ia); margin-bottom: 14px; min-height: 22px; }
+  .mic-status.recording { color: var(--danger); }
+  .transcricao-box { background: var(--bg-input); border: 1px solid var(--border); border-radius: 14px; padding: 14px; min-height: 80px; margin-bottom: 16px; font-size: 14px; line-height: 1.5; text-align: left; }
+  .transcricao-box.placeholder { color: var(--text-faint); font-style: italic; text-align: center; }
+  .exemplos { background: var(--bg-input); border-radius: 12px; padding: 12px; margin-bottom: 16px; text-align: left; }
+  .exemplos-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 10px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; font-weight: 700; }
+  .exemplo-item { font-size: 12px; color: var(--text-mute); padding: 3px 0; font-style: italic; }
+  .exemplo-item::before { content: '"'; }
+  .exemplo-item::after { content: '"'; }
+  .audio-acoes { display: flex; gap: 10px; }
+  .btn { padding: 14px; border-radius: 12px; border: none; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; flex: 1; min-height: 50px; }
+  .btn-primary { background: var(--brand); color: #001a0e; }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; background: var(--bg-elev); color: var(--text-faint); }
+  .btn-secondary { background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); }
+  .btn-ia { background: var(--ia); color: #fff; }
+  .conf-row { display: grid; grid-template-columns: 100px 1fr; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .conf-label { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--text-mute); text-transform: uppercase; font-weight: 600; }
+  .conf-valor { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; }
+  .conf-valor.entrada { color: var(--brand); }
+  .conf-valor.saida { color: var(--danger); }
+  .conf-tatu-box { background: var(--ia-soft); border: 1px solid rgba(168,85,247,0.3); border-radius: 14px; padding: 14px; margin-bottom: 16px; display: flex; gap: 10px; align-items: flex-start; text-align: left; }
+  .conf-tatu-emoji { font-size: 28px; }
+  .conf-tatu-texto { font-size: 13px; line-height: 1.5; color: var(--text); }
+  .ia-spinner { width: 40px; height: 40px; border: 3px solid var(--ia-soft); border-top-color: var(--ia); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 30px auto 16px; }
+  
+  /* TUTORIAL */
+  .tutorial-overlay { position: fixed; inset: 0; z-index: 9500; background: rgba(0,0,0,0.75); backdrop-filter: blur(2px); display: none; }
   .tutorial-overlay.show { display: block; }
-  .tutorial-spotlight { position: absolute; border-radius: 18px; box-shadow: 0 0 0 9999px rgba(0,0,0,0.75), 0 0 30px 4px rgba(168,85,247,0.6); border: 3px solid var(--ia); transition: all 0.4s cubic-bezier(0.34,1.2,0.64,1); pointer-events: none; z-index: 9001; }
-  .tutorial-balao { position: absolute; z-index: 9002; background: var(--bg-card); border: 2px solid var(--ia); border-radius: 18px; padding: 16px; max-width: 320px; width: calc(100% - 40px); box-shadow: 0 12px 40px rgba(0,0,0,0.6); }
+  .tutorial-spotlight { position: absolute; border-radius: 18px; box-shadow: 0 0 0 9999px rgba(0,0,0,0.75), 0 0 30px 4px rgba(168,85,247,0.6); border: 3px solid var(--ia); transition: all 0.4s cubic-bezier(0.34,1.2,0.64,1); pointer-events: none; z-index: 9501; }
+  .tutorial-balao { position: absolute; z-index: 9502; background: var(--bg-card); border: 2px solid var(--ia); border-radius: 18px; padding: 16px; max-width: 320px; width: calc(100% - 40px); box-shadow: 0 12px 40px rgba(0,0,0,0.6); }
   .tutorial-balao-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
   .tutorial-balao-tatu { font-size: 32px; }
   .tutorial-balao-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; color: var(--ia); }
@@ -154,10 +204,9 @@
   .tutorial-balao-acoes { display: flex; gap: 8px; align-items: center; }
   .tutorial-balao-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; min-height: 44px; }
   .tutorial-balao-btn.primary { background: var(--ia); color: #fff; }
-  .tutorial-balao-btn.primary:active { background: #9333ea; transform: scale(0.97); }
   .tutorial-balao-btn.secondary { background: transparent; color: var(--text-mute); border: 1px solid var(--border); flex: 0 0 80px; }
   
-  .xp-toast-tutorial { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--ia); color: #fff; padding: 14px 24px; border-radius: 100px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 14px; z-index: 9999; box-shadow: 0 8px 32px rgba(168,85,247,0.6); display: none; }
+  .xp-toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #001a0e; padding: 14px 24px; border-radius: 100px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 14px; z-index: 9999; box-shadow: 0 8px 32px rgba(0,217,126,0.4); display: none; }
 </style>
 </head>
 <body>
@@ -170,6 +219,10 @@
 
 <div class="container" id="container"><div class="loader-circle"></div></div>
 
+<!-- FAB ÁUDIO -->
+<button class="fab-audio" id="fab-audio" onclick="abrirAudio()" title="Falar transação">🎤</button>
+
+<!-- MENU LATERAL -->
 <div class="menu-overlay" id="menu-overlay" onclick="fecharMenu()"></div>
 
 <div class="menu-lateral" id="menu-lateral">
@@ -186,10 +239,10 @@
     <div class="menu-item" onclick="navegarPara('chat.html?v=2')"><div class="menu-item-icon ia">💬</div><div class="menu-item-info"><div class="menu-item-titulo">Tatu (Chat IA)</div><div class="menu-item-sub">Conversa com o assistente</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('contas.html?v=3')"><div class="menu-item-icon brand">🏦</div><div class="menu-item-info"><div class="menu-item-titulo">Vida Financeira</div><div class="menu-item-sub">Contas, cartões, rendas, fixas</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('transacoes.html?v=6')"><div class="menu-item-icon brand">💸</div><div class="menu-item-info"><div class="menu-item-titulo">Transações</div><div class="menu-item-sub">Entradas e saídas</div></div><div class="menu-item-arrow">›</div></div>
-    <div class="menu-item" onclick="navegarPara('dividas.html?v=2')"><div class="menu-item-icon danger">💳</div><div class="menu-item-info"><div class="menu-item-titulo">Dívidas</div><div class="menu-item-sub">Negociador IA</div></div><div class="menu-item-arrow">›</div></div>
+    <div class="menu-item" onclick="navegarPara('dividas.html?v=3')"><div class="menu-item-icon danger">💳</div><div class="menu-item-info"><div class="menu-item-titulo">Dívidas</div><div class="menu-item-sub">Negociador IA</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('metas.html?v=1')"><div class="menu-item-icon warning">🎯</div><div class="menu-item-info"><div class="menu-item-titulo">Metas</div><div class="menu-item-sub">Reserva e objetivos</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('dashboard.html?v=1')"><div class="menu-item-icon info">📊</div><div class="menu-item-info"><div class="menu-item-titulo">Dashboard</div><div class="menu-item-sub">Gráficos e análises</div></div><div class="menu-item-arrow">›</div></div>
-    <div class="menu-item" onclick="navegarPara('patrimonio.html?v=1')"><div class="menu-item-icon brand">💎</div><div class="menu-item-info"><div class="menu-item-titulo">Patrimônio</div><div class="menu-item-sub">Visão geral dos seus bens</div></div><div class="menu-item-arrow">›</div></div>
+    <div class="menu-item" onclick="navegarPara('patrimonio.html?v=1')"><div class="menu-item-icon brand">💎</div><div class="menu-item-info"><div class="menu-item-titulo">Patrimônio</div><div class="menu-item-sub">Visão dos bens</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('educacao.html?v=1')"><div class="menu-item-icon ia">🎓</div><div class="menu-item-info"><div class="menu-item-titulo">Educação</div><div class="menu-item-sub">Trilha do Tatu</div></div><div class="menu-item-arrow">›</div></div>
   </div>
   
@@ -197,17 +250,17 @@
   
   <div class="menu-section">
     <div class="menu-section-title">Conta</div>
-    <div class="menu-item" onclick="reiniciarTutorial()"><div class="menu-item-icon ia">🦔</div><div class="menu-item-info"><div class="menu-item-titulo">Ver tutorial</div><div class="menu-item-sub">Recapitular o app</div></div><div class="menu-item-arrow">›</div></div>
-    <div class="menu-item" onclick="emBreve('Perfil')"><div class="menu-item-icon">👤</div><div class="menu-item-info"><div class="menu-item-titulo">Meu Perfil</div><div class="menu-item-sub">Editar dados</div></div><div class="menu-item-arrow">›</div></div>
-    <div class="menu-item" onclick="emBreve('Configurações')"><div class="menu-item-icon">⚙️</div><div class="menu-item-info"><div class="menu-item-titulo">Configurações</div><div class="menu-item-sub">Preferências</div></div><div class="menu-item-arrow">›</div></div>
+    <div class="menu-item" onclick="reiniciarTutorial()"><div class="menu-item-icon ia">🦔</div><div class="menu-item-info"><div class="menu-item-titulo">Ver tutorial</div><div class="menu-item-sub">Recapitular app</div></div><div class="menu-item-arrow">›</div></div>
+    <div class="menu-item" onclick="emBreve('Perfil')"><div class="menu-item-icon">👤</div><div class="menu-item-info"><div class="menu-item-titulo">Meu Perfil</div></div><div class="menu-item-arrow">›</div></div>
+    <div class="menu-item" onclick="emBreve('Configurações')"><div class="menu-item-icon">⚙️</div><div class="menu-item-info"><div class="menu-item-titulo">Configurações</div></div><div class="menu-item-arrow">›</div></div>
   </div>
   
   <div class="menu-divider"></div>
   
   <div class="menu-section">
     <div class="menu-section-title">⚠️ Zona de testes</div>
-    <div class="menu-item" onclick="refazerSetup()"><div class="menu-item-icon warning">🔄</div><div class="menu-item-info"><div class="menu-item-titulo" style="color:var(--warning);">Refazer Setup</div><div class="menu-item-sub">Recadastrar tudo do zero</div></div><div class="menu-item-arrow">›</div></div>
-    <div class="menu-item" onclick="zerarConta()"><div class="menu-item-icon danger">🗑️</div><div class="menu-item-info"><div class="menu-item-titulo" style="color:var(--danger);">Zerar minha conta</div><div class="menu-item-sub">Apagar TODOS meus dados</div></div><div class="menu-item-arrow">›</div></div>
+    <div class="menu-item" onclick="refazerSetup()"><div class="menu-item-icon warning">🔄</div><div class="menu-item-info"><div class="menu-item-titulo" style="color:var(--warning);">Refazer Setup</div><div class="menu-item-sub">Recadastrar do zero</div></div><div class="menu-item-arrow">›</div></div>
+    <div class="menu-item" onclick="zerarConta()"><div class="menu-item-icon danger">🗑️</div><div class="menu-item-info"><div class="menu-item-titulo" style="color:var(--danger);">Zerar minha conta</div><div class="menu-item-sub">Apaga TUDO</div></div><div class="menu-item-arrow">›</div></div>
   </div>
   
   <div class="menu-divider"></div>
@@ -226,22 +279,29 @@
   
   <div class="menu-footer">
     <div class="menu-footer-brand">guardaí</div>
-    <div>Assistente financeiro pessoal com IA</div>
-    <div>v2.2 • beta</div>
+    <div>Assistente financeiro com IA</div>
+    <div>v2.3 • beta</div>
   </div>
 </div>
 
+<!-- MODAL ÁUDIO -->
+<div class="audio-overlay" id="audio-overlay">
+  <div class="audio-modal" id="audio-modal-content"></div>
+</div>
+
+<!-- TUTORIAL -->
 <div class="tutorial-overlay" id="tutorial-overlay">
   <div class="tutorial-spotlight" id="tutorial-spotlight"></div>
   <div class="tutorial-balao" id="tutorial-balao"></div>
 </div>
 
-<div class="xp-toast-tutorial" id="xp-toast-tutorial">+50 XP 🎉</div>
+<div class="xp-toast" id="xp-toast">+50 XP 🎉</div>
 
 <script type="module">
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
   const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+  const IA_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
   
   const niveis = [
@@ -253,8 +313,22 @@
     { num: 5, nome: 'Liberdade', xp_min: 1500, xp_max: 99999 }
   ];
   
+  const CATEGORIAS = {
+    alimentacao: { e: '🍔', n: 'Alimentação' }, transporte: { e: '🚗', n: 'Transporte' },
+    moradia: { e: '🏠', n: 'Moradia' }, lazer: { e: '🎮', n: 'Lazer' },
+    saude: { e: '🏥', n: 'Saúde' }, educacao: { e: '🎓', n: 'Educação' },
+    vestuario: { e: '👕', n: 'Vestuário' }, compras: { e: '🛒', n: 'Compras' },
+    servicos: { e: '🛠️', n: 'Serviços' }, salario: { e: '💼', n: 'Salário' },
+    transferencia: { e: '🔁', n: 'Transferência' }, outro: { e: '📌', n: 'Outro' }
+  };
+  
   let usuario, perfil, gamif;
   let stats = {};
+  let contas = [];
+  let recognition = null;
+  let isRecording = false;
+  let textoTranscrito = '';
+  let propostaAudio = null;
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -284,7 +358,7 @@
     
     perfil = pR.data || { nome: usuario.email?.split('@')[0] || 'amigo' };
     gamif = gR.data || { xp_total: 0, streak_atual: 0 };
-    const contas = cR.data || [];
+    contas = cR.data || [];
     const dividas = dR.data || [];
     const trans = tR.data || [];
     const transContas = tcR.data || [];
@@ -349,7 +423,7 @@
         else if (eUrg) { bg = `<span class="proxima-badge urgente">EM ${dias}D</span>`; cc = 'urgente'; }
         else { bg = `<span class="proxima-badge future">EM ${dias}D</span>`; cc = ''; }
         const eEnt = t.tipo === 'entrada';
-        proxHTML += `<div class="proxima-card ${cc}" onclick="window.location.href='transacoes.html?v=6'"><div class="proxima-icone" style="${eEnt ? 'background:var(--brand-soft);color:var(--brand);' : ''}">${eEnt ? '💰' : '📅'}</div><div class="proxima-info"><div class="proxima-desc">${t.descricao}</div><div class="proxima-data">${d.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })} ${bg}</div></div><div class="proxima-valor ${eEnt ? 'brand' : 'danger'}" style="${eEnt ? 'color:var(--brand);' : ''}">${eEnt ? '+' : '-'}R$ ${fm(t.valor)}</div></div>`;
+        proxHTML += `<div class="proxima-card ${cc}" onclick="window.location.href='transacoes.html?v=6'"><div class="proxima-icone" style="${eEnt ? 'background:var(--brand-soft);color:var(--brand);' : ''}">${eEnt ? '💰' : '📅'}</div><div class="proxima-info"><div class="proxima-desc">${t.descricao}</div><div class="proxima-data">${d.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })} ${bg}</div></div><div class="proxima-valor" style="${eEnt ? 'color:var(--brand);' : ''}">${eEnt ? '+' : '-'}R$ ${fm(t.valor)}</div></div>`;
       });
     }
     
@@ -370,6 +444,16 @@
         <div class="level-bar"><div class="level-bar-fill" style="width:${pct}%"></div></div>
         <div class="level-bottom"><span>${xpN} / ${xpProx} XP</span><span>🔥 ${streak} dia${streak === 1 ? '' : 's'}</span></div>
       </div>
+      
+      <div class="audio-banner" id="tut-audio" onclick="abrirAudio()">
+        <div class="audio-banner-icon">🎤</div>
+        <div class="audio-banner-info">
+          <div class="audio-banner-titulo">Falar e lançar transação</div>
+          <div class="audio-banner-sub">"paguei 15 no espetinho" — IA cadastra</div>
+        </div>
+        <div class="audio-banner-seta">›</div>
+      </div>
+      
       <div class="resumo-mes" id="tut-resumo">
         <div class="resumo-titulo"><div class="resumo-titulo-txt">📊 Resumo do mês</div><div class="resumo-mes-label">${mesA}</div></div>
         <div class="resumo-grid">
@@ -386,7 +470,7 @@
       <div class="atalhos-grid">
         <div class="atalho-card" id="tut-vida" onclick="window.location.href='contas.html?v=3'"><div class="atalho-emoji">🏦</div><div class="atalho-titulo">Vida Financeira</div><div class="atalho-sub">Contas, cartões, fixas</div><div class="atalho-valor brand">R$ ${fm(stats.patrimonio)}</div></div>
         <div class="atalho-card" id="tut-trans" onclick="window.location.href='transacoes.html?v=6'"><div class="atalho-emoji">💸</div><div class="atalho-titulo">Transações</div><div class="atalho-sub">Entradas e saídas</div><div class="atalho-valor ${stats.saldoMes >= 0 ? 'brand' : 'danger'}">${stats.saldoMes >= 0 ? '+' : ''}R$ ${fm(stats.saldoMes)}</div></div>
-        <div class="atalho-card" id="tut-divs" onclick="window.location.href='dividas.html?v=2'"><div class="atalho-emoji">💳</div><div class="atalho-titulo">Dívidas</div><div class="atalho-sub">Negociador IA</div><div class="atalho-valor ${stats.totalDividas > 0 ? 'danger' : 'brand'}">R$ ${fm(stats.totalDividas)}</div></div>
+        <div class="atalho-card" id="tut-divs" onclick="window.location.href='dividas.html?v=3'"><div class="atalho-emoji">💳</div><div class="atalho-titulo">Dívidas</div><div class="atalho-sub">Negociador IA</div><div class="atalho-valor ${stats.totalDividas > 0 ? 'danger' : 'brand'}">R$ ${fm(stats.totalDividas)}</div></div>
         <div class="atalho-card" id="tut-metas" onclick="window.location.href='metas.html?v=1'"><div class="atalho-emoji">🎯</div><div class="atalho-titulo">Metas</div><div class="atalho-sub">Reserva e objetivos</div></div>
         <div class="atalho-card" onclick="window.location.href='dashboard.html?v=1'"><div class="atalho-emoji">📊</div><div class="atalho-titulo">Dashboard</div><div class="atalho-sub">Gráficos</div></div>
         <div class="atalho-card" onclick="window.location.href='educacao.html?v=1'"><div class="atalho-emoji">🎓</div><div class="atalho-titulo">Educação</div><div class="atalho-sub">Trilha do Tatu</div><div class="atalho-valor brand">Nível ${nivel.num}</div></div>
@@ -394,15 +478,164 @@
     `;
   }
   
+  // ============ ÁUDIO (mesmo de transacoes.html) ============
+  
+  window.abrirAudio = function() {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      alert('🦔 Seu navegador não suporta áudio.\n\nUse Safari (iPhone) ou Chrome.');
+      return;
+    }
+    textoTranscrito = '';
+    isRecording = false;
+    renderAudio();
+    document.getElementById('audio-overlay').classList.add('show');
+  };
+  
+  function renderAudio() {
+    document.getElementById('audio-modal-content').innerHTML = `
+      <div class="audio-titulo">🎤 Falar transação</div>
+      <div class="audio-sub">Toque no microfone e fale. Toque de novo pra parar.</div>
+      <button class="mic-btn ${isRecording ? 'recording' : ''}" id="mic-btn" onclick="toggleRec()">${isRecording ? '⏹️' : '🎤'}</button>
+      <div class="mic-status ${isRecording ? 'recording' : ''}">${isRecording ? '🔴 Ouvindo... fale agora' : (textoTranscrito ? '✅ Pronto!' : 'Toque pra falar')}</div>
+      <div class="transcricao-box ${textoTranscrito ? '' : 'placeholder'}" id="transcricao-box">${textoTranscrito || 'O que você falar vai aparecer aqui...'}</div>
+      ${!textoTranscrito ? `
+        <div class="exemplos">
+          <div class="exemplos-titulo">💡 Exemplos</div>
+          <div class="exemplo-item">paguei 15 reais no espetinho no Santander</div>
+          <div class="exemplo-item">recebi 300 do amigo João em dinheiro</div>
+          <div class="exemplo-item">gastei 80 reais de Uber no cartão Nubank</div>
+        </div>
+      ` : ''}
+      <div class="audio-acoes">
+        <button class="btn btn-secondary" onclick="fecharAudio()">Cancelar</button>
+        <button class="btn btn-ia" onclick="processarAudio()" ${!textoTranscrito || isRecording ? 'disabled' : ''}>🦔 IA interpretar</button>
+      </div>
+    `;
+  }
+  
+  window.toggleRec = function() { if (isRecording) pararGravacao(); else iniciarGravacao(); };
+  
+  function iniciarGravacao() {
+    const SR = window.webkitSpeechRecognition || window.SpeechRecognition;
+    recognition = new SR();
+    recognition.lang = 'pt-BR';
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    let textoFinal = '';
+    let textoInterim = '';
+    recognition.onresult = (e) => {
+      textoInterim = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) textoFinal += e.results[i][0].transcript + ' ';
+        else textoInterim += e.results[i][0].transcript;
+      }
+      textoTranscrito = (textoFinal + textoInterim).trim();
+      const box = document.getElementById('transcricao-box');
+      if (box) { box.textContent = textoTranscrito || 'Ouvindo...'; box.classList.remove('placeholder'); }
+    };
+    recognition.onerror = (e) => {
+      if (e.error === 'no-speech') return;
+      if (e.error === 'not-allowed') alert('🎤 Permissão negada. Libera nas configurações.');
+      else alert('Erro: ' + e.error);
+      pararGravacao();
+    };
+    recognition.onend = () => { if (isRecording) { try { recognition.start(); } catch (e) {} } };
+    try { recognition.start(); isRecording = true; renderAudio(); }
+    catch (e) { alert('Erro: ' + e.message); }
+  }
+  
+  function pararGravacao() {
+    if (recognition) { isRecording = false; try { recognition.stop(); } catch (e) {} recognition = null; }
+    renderAudio();
+  }
+  
+  window.processarAudio = async function() {
+    if (!textoTranscrito) return;
+    if (isRecording) pararGravacao();
+    
+    document.getElementById('audio-modal-content').innerHTML = `<div class="ia-spinner"></div><div class="audio-titulo">🦔 Tatu interpretando...</div><div class="audio-sub">"${textoTranscrito}"</div>`;
+    
+    try {
+      const r = await fetch(IA_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
+        body: JSON.stringify({ tipo: 'interpretar_audio_transacao', texto: textoTranscrito, max_tokens: 800 })
+      });
+      const d = await r.json();
+      if (d.resultado && !d.resultado.erro) {
+        propostaAudio = d.resultado;
+        propostaAudio.texto_original = textoTranscrito;
+        renderConfirmacao();
+      } else {
+        alert('🦔 ' + (d.resultado?.erro || 'Não entendi'));
+        renderAudio();
+      }
+    } catch (e) { alert('Erro: ' + e.message); renderAudio(); }
+  };
+  
+  function renderConfirmacao() {
+    const p = propostaAudio;
+    const cat = CATEGORIAS[p.categoria_sugerida] || CATEGORIAS.outro;
+    let contaSugerida = null;
+    if (p.conta_mencionada) {
+      const cm = p.conta_mencionada.toLowerCase();
+      contaSugerida = contas.find(c => c.nome.toLowerCase().includes(cm) || c.banco?.toLowerCase().includes(cm) || cm.includes(c.nome.toLowerCase().split(' ')[0]));
+    }
+    
+    document.getElementById('audio-modal-content').innerHTML = `
+      <div class="audio-titulo">Confirma a transação?</div>
+      <div class="audio-sub">Tatu entendeu o que falou. Confere antes de salvar:</div>
+      <div class="conf-tatu-box">
+        <div class="conf-tatu-emoji">🦔</div>
+        <div class="conf-tatu-texto">Você disse: <em>"${p.texto_original}"</em></div>
+      </div>
+      <div style="text-align:left;">
+        <div class="conf-row"><div class="conf-label">Tipo</div><div class="conf-valor ${p.tipo}">${p.tipo === 'entrada' ? '💰 Entrada' : '💸 Saída'}</div></div>
+        <div class="conf-row"><div class="conf-label">Valor</div><div class="conf-valor ${p.tipo}">${p.tipo === 'entrada' ? '+' : '-'}R$ ${fm(p.valor)}</div></div>
+        <div class="conf-row"><div class="conf-label">Descrição</div><div class="conf-valor" style="font-size:14px;">${p.descricao}</div></div>
+        <div class="conf-row"><div class="conf-label">Categoria</div><div class="conf-valor" style="font-size:14px;">${cat.e} ${cat.n}</div></div>
+        ${contaSugerida ? `<div class="conf-row"><div class="conf-label">Conta</div><div class="conf-valor" style="font-size:14px;">${contaSugerida.icone} ${contaSugerida.nome}</div></div>` : ''}
+      </div>
+      <div style="margin-top:20px; display:flex; gap:10px;">
+        <button class="btn btn-secondary" onclick="renderAudio()">🔄 Falar de novo</button>
+        <button class="btn btn-primary" onclick="salvarAudio('${contaSugerida?.id || ''}')">✅ Salvar</button>
+      </div>
+    `;
+  }
+  
+  window.salvarAudio = async function(contaId) {
+    const p = propostaAudio;
+    try {
+      await supabase.from('transacoes').insert({
+        user_id: usuario.id, valor: p.valor, descricao: p.descricao, tipo: p.tipo,
+        categoria: p.categoria_sugerida || 'outro', data: new Date().toISOString().split('T')[0],
+        conta_id: contaId || null, status: 'realizada'
+      });
+      await darXP(15, 'audio_transacao', 'Áudio');
+      mostrarToast('+15 XP 🎤 Cadastrado!');
+      fecharAudio();
+      await carregarTudo();
+      render();
+    } catch (e) { alert('Erro: ' + e.message); }
+  };
+  
+  window.fecharAudio = function() {
+    if (isRecording) pararGravacao();
+    document.getElementById('audio-overlay').classList.remove('show');
+    textoTranscrito = '';
+    propostaAudio = null;
+  };
+  
   // ============ TUTORIAL ============
   const PASSOS_TUT = [
-    { target: 'tut-nivel', titulo: 'Seu nível', texto: 'Acompanhe seu <strong>progresso financeiro</strong>! 6 níveis: Início → Diagnóstico → Resgate → Estabilização → Construção → <strong>Liberdade</strong>. 🎮' },
-    { target: 'tut-resumo', titulo: 'Resumo do mês', texto: 'Quanto <strong>entrou</strong> e quanto <strong>saiu</strong>. Também a previsão do fim do mês. 📊' },
-    { target: 'tut-vida', titulo: 'Vida Financeira', texto: 'Suas <strong>contas, cartões, rendas e despesas fixas</strong>. Tudo do Setup tá aqui! 🏦' },
-    { target: 'tut-trans', titulo: 'Transações', texto: 'Cada gasto e entrada. Foto do cupom OU <strong>áudio</strong>! 📸🎤' },
-    { target: 'tut-divs', titulo: 'Dívidas + Negociador IA', texto: 'Suas dívidas + <strong>Negociador IA</strong> pra fazer acordos. Modelo Serasa Limpa Nome! 💪' },
-    { target: 'tut-metas', titulo: 'Metas', texto: 'Reserva, sonhos, objetivos. Te ajudo a chegar lá! 🎯' },
-    { target: 'btn-menu', titulo: 'Menu lateral', texto: '<strong>Tudo do app</strong>: chat, dashboard, perfil, logout. ⚙️' }
+    { target: 'tut-nivel', titulo: 'Seu nível', texto: 'Sua <strong>jornada financeira</strong> em 6 níveis: Início → Diagnóstico → Resgate → Estabilização → Construção → <strong>Liberdade</strong>! 🎮' },
+    { target: 'tut-audio', titulo: '🎤 NOVO: Lançar por áudio!', texto: 'Toque aqui e <strong>FALE seu gasto</strong>. A IA cadastra sozinha! "Paguei 15 no espetinho". Pronto. ⚡' },
+    { target: 'tut-resumo', titulo: 'Resumo do mês', texto: 'Quanto entrou + quanto saiu + previsão fim do mês. 📊' },
+    { target: 'tut-vida', titulo: 'Vida Financeira', texto: 'Suas <strong>contas, cartões, rendas e despesas fixas</strong>. 🏦' },
+    { target: 'tut-trans', titulo: 'Transações', texto: 'Histórico completo. Filtra por entrada/saída/vencidas. 💸' },
+    { target: 'tut-divs', titulo: 'Dívidas + Negociador', texto: '<strong>Negociador IA</strong> pra fazer acordos com bancos. Modelo Serasa Limpa Nome! 💪' },
+    { target: 'tut-metas', titulo: 'Metas', texto: 'Reserva, sonhos, objetivos. 🎯' },
+    { target: 'btn-menu', titulo: 'Menu', texto: 'Acessa <strong>tudo</strong>: chat Tatu, dashboard, perfil, logout. ⚙️' }
   ];
   let passoT = 0;
   
@@ -449,24 +682,15 @@
   
   window.proxTut = function() { passoT++; mostrarPasso(); };
   window.voltarTut = function() { if (passoT > 0) { passoT--; mostrarPasso(); } };
-  window.pularTut = async function() {
-    if (!confirm('Pular tutorial? Você pode rever pelo menu depois.')) return;
-    await finalizarTutorial(true);
-  };
+  window.pularTut = async function() { if (!confirm('Pular tutorial?')) return; await finalizarTutorial(true); };
   
   async function finalizarTutorial(pulou = false) {
     document.getElementById('tutorial-overlay').classList.remove('show');
     document.body.style.overflow = '';
     try {
       await supabase.from('perfis').update({ tutorial_concluido: true, tutorial_concluido_em: new Date().toISOString() }).eq('id', usuario.id);
-      if (!pulou) { await darXP(50, 'tutorial_concluido', 'Tutorial completo!'); mostrarXp(); }
+      if (!pulou) { await darXP(50, 'tutorial_concluido', 'Tutorial!'); mostrarToast('+50 XP 🎉'); }
     } catch (e) { console.error(e); }
-  }
-  
-  function mostrarXp() {
-    const t = document.getElementById('xp-toast-tutorial');
-    t.style.display = 'block';
-    setTimeout(() => { t.style.display = 'none'; }, 3000);
   }
   
   window.reiniciarTutorial = async function() {
@@ -483,9 +707,8 @@
   window.refazerSetup = async function() {
     fecharMenu();
     setTimeout(async () => {
-      if (!confirm('🦔 REFAZER SETUP\n\nIsso vai limpar os dados cadastrados (contas, cartões, dívidas, despesas, rendas) e te mandar pro Setup do zero.\n\nA conta NÃO será apagada.\n\nTem certeza?')) return;
-      if (!confirm('⚠️ ÚLTIMA CONFIRMAÇÃO\n\nVou apagar TODOS seus cadastros financeiros agora. Continuar?')) return;
-      
+      if (!confirm('🦔 REFAZER SETUP\n\nIsso vai limpar os dados (contas, cartões, dívidas, despesas, rendas).\n\nA conta NÃO será apagada.\n\nContinuar?')) return;
+      if (!confirm('⚠️ ÚLTIMA CONFIRMAÇÃO\n\nVou apagar todos cadastros agora. Continuar?')) return;
       try {
         await supabase.from('transacoes').delete().eq('user_id', usuario.id);
         await supabase.from('dividas').delete().eq('user_id', usuario.id);
@@ -493,27 +716,20 @@
         await supabase.from('compromissos').delete().eq('user_id', usuario.id);
         await supabase.from('contas').delete().eq('user_id', usuario.id);
         await supabase.from('perfis').update({
-          setup_concluido: false,
-          setup_passo_atual: 0,
-          analise_setup: null,
-          tutorial_concluido: false,
-          objetivo_principal: null
+          setup_concluido: false, setup_passo_atual: 0, analise_setup: null,
+          tutorial_concluido: false, objetivo_principal: null
         }).eq('id', usuario.id);
-        
-        alert('✅ Pronto! Vou te levar pro Setup novo.');
+        alert('✅ Pronto! Indo pro Setup novo.');
         window.location.href = 'setup.html?v=' + Date.now();
-      } catch (e) {
-        alert('Erro: ' + e.message);
-      }
+      } catch (e) { alert('Erro: ' + e.message); }
     }, 300);
   };
   
   window.zerarConta = async function() {
     fecharMenu();
     setTimeout(async () => {
-      if (!confirm('🚨 ZERAR CONTA INTEIRA\n\nIsso vai apagar TUDO:\n- Todos os cadastros\n- Histórico de XP\n- Sua jornada\n\nSua conta de LOGIN será mantida.\n\nTem certeza?')) return;
-      if (!confirm('⚠️ ÚLTIMA CONFIRMAÇÃO\n\nDigite mentalmente "SIM" se realmente quer apagar tudo.\n\nEssa ação NÃO pode ser desfeita. Continuar?')) return;
-      
+      if (!confirm('🚨 ZERAR CONTA INTEIRA\n\nApaga TUDO:\n- Todos cadastros\n- Histórico XP\n- Jornada\n\nA conta de LOGIN é mantida.\n\nContinuar?')) return;
+      if (!confirm('⚠️ ÚLTIMA CONFIRMAÇÃO\n\nNão pode ser desfeito. Continuar?')) return;
       try {
         await supabase.from('transacoes').delete().eq('user_id', usuario.id);
         await supabase.from('dividas').delete().eq('user_id', usuario.id);
@@ -523,41 +739,22 @@
         await supabase.from('chat_mensagens').delete().eq('user_id', usuario.id);
         await supabase.from('metas').delete().eq('user_id', usuario.id);
         await supabase.from('contas').delete().eq('user_id', usuario.id);
-        await supabase.from('gamificacao').update({
-          xp_total: 0, streak_atual: 0, streak_recorde: 0, ultima_atividade: null
-        }).eq('user_id', usuario.id);
+        await supabase.from('gamificacao').update({ xp_total: 0, streak_atual: 0, streak_recorde: 0, ultima_atividade: null }).eq('user_id', usuario.id);
         await supabase.from('perfis').update({
-          setup_concluido: false,
-          setup_passo_atual: 0,
-          analise_setup: null,
-          tutorial_concluido: false,
-          objetivo_principal: null,
-          nivel_jornada: 1,
-          renda_mensal: null
+          setup_concluido: false, setup_passo_atual: 0, analise_setup: null,
+          tutorial_concluido: false, objetivo_principal: null, nivel_jornada: 1, renda_mensal: null
         }).eq('id', usuario.id);
-        
-        alert('✅ Conta zerada! Vou te levar pro Setup do zero.');
+        alert('✅ Conta zerada!');
         window.location.href = 'setup.html?v=' + Date.now();
-      } catch (e) {
-        alert('Erro: ' + e.message);
-      }
+      } catch (e) { alert('Erro: ' + e.message); }
     }, 300);
   };
   
   // ============ MENU ============
-  window.abrirMenu = function() {
-    document.getElementById('menu-overlay').classList.add('show');
-    document.getElementById('menu-lateral').classList.add('show');
-  };
-  window.fecharMenu = function() {
-    document.getElementById('menu-overlay').classList.remove('show');
-    document.getElementById('menu-lateral').classList.remove('show');
-  };
-  window.navegarPara = function(url) {
-    fecharMenu();
-    setTimeout(() => { window.location.href = url; }, 250);
-  };
-  window.emBreve = function(n) { alert(`🦔 ${n} está em desenvolvimento!`); };
+  window.abrirMenu = function() { document.getElementById('menu-overlay').classList.add('show'); document.getElementById('menu-lateral').classList.add('show'); };
+  window.fecharMenu = function() { document.getElementById('menu-overlay').classList.remove('show'); document.getElementById('menu-lateral').classList.remove('show'); };
+  window.navegarPara = function(url) { fecharMenu(); setTimeout(() => { window.location.href = url; }, 250); };
+  window.emBreve = function(n) { alert(`🦔 ${n} em desenvolvimento!`); };
   window.sair = async function() {
     if (!confirm('Encerrar sessão?')) return;
     await supabase.auth.signOut();
@@ -570,6 +767,13 @@
       const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).maybeSingle();
       await supabase.from('gamificacao').update({ xp_total: (g?.xp_total || 0) + xp, ultima_atividade: new Date().toISOString().split('T')[0] }).eq('user_id', usuario.id);
     } catch (e) { console.error(e); }
+  }
+  
+  function mostrarToast(t) {
+    const e = document.getElementById('xp-toast');
+    e.textContent = t;
+    e.style.display = 'block';
+    setTimeout(() => { e.style.display = 'none'; }, 3000);
   }
   
   function fm(v) { return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
