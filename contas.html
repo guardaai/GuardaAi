@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0a0a0a">
-<title>contas • guardaí</title>
+<title>vida financeira • guardaí</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -81,7 +81,7 @@
   
   .header-title {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     letter-spacing: -0.02em;
     flex: 1;
@@ -107,6 +107,42 @@
     max-width: 480px;
     margin: 0 auto;
     padding: 16px 20px 20px;
+  }
+  
+  /* TABS DE NAVEGAÇÃO */
+  .tabs-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 4px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 4px;
+    margin-bottom: 16px;
+  }
+  
+  .tab-nav {
+    padding: 12px 6px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text-mute);
+  }
+  
+  .tab-nav.active {
+    background: var(--brand-soft);
+    color: var(--brand);
+  }
+  
+  .tab-nav-emoji { font-size: 18px; }
+  .tab-nav-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
   
   .saldo-total {
@@ -143,7 +179,7 @@
   
   .saldo-valor {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 36px;
+    font-size: 32px;
     font-weight: 700;
     letter-spacing: -0.02em;
     margin-bottom: 4px;
@@ -152,6 +188,7 @@
   
   .saldo-valor.positivo { color: var(--brand); }
   .saldo-valor.negativo { color: var(--danger); }
+  .saldo-valor.warning { color: var(--warning); }
   
   .saldo-sub {
     font-size: 12px;
@@ -233,7 +270,7 @@
     margin: 18px 4px 10px;
   }
   
-  .conta-card {
+  .item-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 16px;
@@ -248,11 +285,11 @@
     gap: 14px;
   }
   
-  .conta-card:active { transform: scale(0.99); }
+  .item-card:active { transform: scale(0.99); }
   
-  .conta-card.inativa { opacity: 0.5; }
+  .item-card.inativa { opacity: 0.5; }
   
-  .conta-icone {
+  .item-icone {
     width: 52px; height: 52px;
     border-radius: 14px;
     display: flex;
@@ -263,12 +300,12 @@
     position: relative;
   }
   
-  .conta-info {
+  .item-info {
     flex: 1;
     min-width: 0;
   }
   
-  .conta-nome {
+  .item-nome {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 15px;
     font-weight: 700;
@@ -278,13 +315,13 @@
     text-overflow: ellipsis;
   }
   
-  .conta-tipo {
+  .item-tipo {
     font-size: 11px;
     color: var(--text-mute);
     margin-bottom: 4px;
   }
   
-  .conta-tag {
+  .item-tag {
     font-size: 9px;
     font-weight: 700;
     padding: 2px 6px;
@@ -297,23 +334,24 @@
     margin-top: 2px;
   }
   
-  .conta-saldo {
+  .item-valor {
     text-align: right;
     flex-shrink: 0;
   }
   
-  .conta-saldo-valor {
+  .item-valor-num {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 16px;
     font-weight: 700;
     white-space: nowrap;
   }
   
-  .conta-saldo-valor.positivo { color: var(--brand); }
-  .conta-saldo-valor.negativo { color: var(--danger); }
-  .conta-saldo-valor.neutro { color: var(--text); }
+  .item-valor-num.positivo { color: var(--brand); }
+  .item-valor-num.negativo { color: var(--danger); }
+  .item-valor-num.neutro { color: var(--text); }
+  .item-valor-num.warning { color: var(--warning); }
   
-  .conta-saldo-label {
+  .item-valor-label {
     font-size: 10px;
     color: var(--text-mute);
     margin-top: 1px;
@@ -346,31 +384,6 @@
     line-height: 1.5;
     max-width: 280px;
     margin: 0 auto;
-  }
-  
-  .fab {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 90;
-    width: calc(100% - 40px);
-    max-width: 440px;
-    background: var(--brand);
-    color: #001a0e;
-    border: none;
-    border-radius: 14px;
-    padding: 16px;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 8px 24px rgba(0, 217, 126, 0.3);
-  }
-  
-  .fab:active {
-    transform: translateX(-50%) scale(0.97);
-    background: var(--brand-hover);
   }
   
   .modal-overlay {
@@ -488,7 +501,7 @@
     gap: 10px;
   }
   
-  .tipo-grid {
+  .tipo-grid-3 {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 8px;
@@ -499,7 +512,7 @@
     background: var(--bg-input);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 12px 8px;
+    padding: 12px 6px;
     text-align: center;
     cursor: pointer;
     transition: all 0.15s;
@@ -516,9 +529,10 @@
   
   .tipo-label {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     color: var(--text-mute);
+    line-height: 1.2;
   }
   
   .tipo-opcao.active .tipo-label { color: var(--brand); }
@@ -792,6 +806,7 @@
   }
   
   .upload-area:active { transform: scale(0.98); }
+  .upload-area.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
   .upload-emoji { font-size: 40px; margin-bottom: 8px; }
   .upload-titulo {
     font-family: 'Space Grotesk', sans-serif;
@@ -822,6 +837,50 @@
     margin: 0 auto 14px;
   }
   
+  /* SELETOR DE TIPO IA (novo fluxo - escolhe ANTES) */
+  .ia-tipos-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    color: var(--ia);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 10px;
+  }
+  
+  .ia-tipos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  
+  .ia-tipo-card {
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  
+  .ia-tipo-card:active { transform: scale(0.96); }
+  .ia-tipo-card.active {
+    background: var(--ia-soft);
+    border-color: var(--ia);
+  }
+  
+  .ia-tipo-emoji { font-size: 26px; margin-bottom: 4px; }
+  .ia-tipo-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-mute);
+    line-height: 1.2;
+  }
+  .ia-tipo-card.active .ia-tipo-label { color: var(--ia); }
+  
   .hidden { display: none !important; }
 </style>
 </head>
@@ -829,78 +888,70 @@
 
 <div class="header">
   <button class="back-btn" onclick="window.location.href='home.html?v=1'">‹</button>
-  <div class="header-title">Contas</div>
+  <div class="header-title">Vida Financeira</div>
   <div class="brand-mark-mini" onclick="window.location.href='home.html?v=1'"></div>
 </div>
 
 <div class="container">
 
-  <div id="saldo-area"></div>
-  
-  <div class="tatu-tip">
-    <div class="tatu-tip-emoji">🦔</div>
-    <div class="tatu-tip-texto" id="tatu-tip-texto">
-      Cadastre <strong>todas suas contas</strong> (banco, carteira, cartão) pra ter controle total!
+  <!-- TABS DE NAVEGAÇÃO -->
+  <div class="tabs-nav">
+    <div class="tab-nav active" data-aba="contas" onclick="trocarAba('contas')">
+      <div class="tab-nav-emoji">🏦</div>
+      <div class="tab-nav-label">Contas</div>
+    </div>
+    <div class="tab-nav" data-aba="despesas" onclick="trocarAba('despesas')">
+      <div class="tab-nav-emoji">📋</div>
+      <div class="tab-nav-label">Fixas</div>
+    </div>
+    <div class="tab-nav" data-aba="compromissos" onclick="trocarAba('compromissos')">
+      <div class="tab-nav-emoji">📄</div>
+      <div class="tab-nav-label">Parcelados</div>
     </div>
   </div>
-  
-  <div class="quick-actions">
-    <div class="quick-btn" onclick="abrirModalNova()">
-      <div class="quick-btn-icon">✍️</div>
-      <div class="quick-btn-label">Cadastrar manual</div>
-      <div class="quick-btn-sub">Você digita</div>
-    </div>
-    <div class="quick-btn ia" onclick="abrirModalIA()">
-      <div class="quick-btn-icon">✨</div>
-      <div class="quick-btn-label">Cadastrar por foto</div>
-      <div class="quick-btn-sub">IA preenche tudo</div>
-    </div>
-  </div>
-  
-  <div id="lista">
+
+  <div id="conteudo-aba">
     <div class="loader-circle"></div>
   </div>
 
 </div>
 
-<button class="fab" onclick="abrirModalNova()">+ Nova conta</button>
-
 <input type="file" id="input-ia" class="input-hidden" accept="image/*,application/pdf" onchange="processarIA(event)">
 
-<!-- MODAL FORM -->
-<div class="modal-overlay" id="modal-form">
+<!-- MODAL CONTA (cartão/conta/poupança/etc) -->
+<div class="modal-overlay" id="modal-conta">
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-header">
-      <div class="modal-title" id="modal-form-titulo">Nova conta</div>
-      <button class="modal-close" onclick="fecharModal('modal-form')">✕</button>
+      <div class="modal-title" id="modal-conta-titulo">Nova conta</div>
+      <button class="modal-close" onclick="fecharModal('modal-conta')">✕</button>
     </div>
     <div class="modal-body">
-      <div class="msg" id="msg-form"></div>
+      <div class="msg" id="msg-conta"></div>
       
-      <div class="secao-titulo" style="margin-top:0;">Tipo de conta</div>
-      <div class="tipo-grid">
-        <div class="tipo-opcao active" data-tipo="conta_corrente" onclick="trocarTipo('conta_corrente')">
+      <div class="secao-titulo" style="margin-top:0;">Tipo</div>
+      <div class="tipo-grid-3">
+        <div class="tipo-opcao active" data-tipo="conta_corrente" onclick="trocarTipoConta('conta_corrente')">
           <div class="tipo-emoji">🏦</div>
           <div class="tipo-label">Conta</div>
         </div>
-        <div class="tipo-opcao" data-tipo="carteira" onclick="trocarTipo('carteira')">
+        <div class="tipo-opcao" data-tipo="carteira" onclick="trocarTipoConta('carteira')">
           <div class="tipo-emoji">💰</div>
           <div class="tipo-label">Carteira</div>
         </div>
-        <div class="tipo-opcao" data-tipo="cartao_credito" onclick="trocarTipo('cartao_credito')">
+        <div class="tipo-opcao" data-tipo="cartao_credito" onclick="trocarTipoConta('cartao_credito')">
           <div class="tipo-emoji">💳</div>
           <div class="tipo-label">Cartão</div>
         </div>
-        <div class="tipo-opcao" data-tipo="poupanca" onclick="trocarTipo('poupanca')">
+        <div class="tipo-opcao" data-tipo="poupanca" onclick="trocarTipoConta('poupanca')">
           <div class="tipo-emoji">🐷</div>
           <div class="tipo-label">Poupança</div>
         </div>
-        <div class="tipo-opcao" data-tipo="investimento" onclick="trocarTipo('investimento')">
+        <div class="tipo-opcao" data-tipo="investimento" onclick="trocarTipoConta('investimento')">
           <div class="tipo-emoji">📈</div>
           <div class="tipo-label">Investim.</div>
         </div>
-        <div class="tipo-opcao" data-tipo="outro" onclick="trocarTipo('outro')">
+        <div class="tipo-opcao" data-tipo="outro" onclick="trocarTipoConta('outro')">
           <div class="tipo-emoji">📌</div>
           <div class="tipo-label">Outro</div>
         </div>
@@ -912,8 +963,8 @@
       </div>
       
       <div class="field">
-        <label>Nome da conta</label>
-        <input type="text" id="f-nome" placeholder="Ex: Nubank, Carteira, Cartão Black">
+        <label>Nome</label>
+        <input type="text" id="c-nome" placeholder="Ex: Nubank, Carteira, Cartão Black">
       </div>
       
       <div class="secao-titulo">Cor</div>
@@ -924,61 +975,137 @@
       
       <div id="saldo-inicial-section">
         <div class="secao-titulo">Saldo inicial</div>
-        <div class="info-box">
-          💡 Quanto você tem nessa conta <strong>HOJE</strong>.
-        </div>
         <div class="valor-input-wrapper">
           <span class="valor-prefix">R$</span>
-          <input type="text" inputmode="decimal" id="f-saldo" placeholder="0,00" oninput="formatarValor(this)">
+          <input type="text" inputmode="decimal" id="c-saldo" placeholder="0,00" oninput="formatarValor(this)">
         </div>
       </div>
       
       <div id="cartao-section" class="hidden">
         <div class="secao-titulo">Dados do cartão</div>
-        <div class="info-box">
-          💳 Cartão de crédito não tem saldo, tem <strong>limite</strong>.
-        </div>
         <div class="field">
           <label>Limite total</label>
           <div class="valor-input-wrapper" style="margin-bottom:0;">
             <span class="valor-prefix">R$</span>
-            <input type="text" inputmode="decimal" id="f-limite" placeholder="0,00" oninput="formatarValor(this)">
+            <input type="text" inputmode="decimal" id="c-limite" placeholder="0,00" oninput="formatarValor(this)">
           </div>
         </div>
         <div id="fatura-aberta-section" class="hidden" style="margin-top:14px;">
           <div class="info-box" style="background:rgba(255,184,0,0.1);border-color:rgba(255,184,0,0.3);color:var(--warning);">
-            ⚠️ <strong>Fatura aberta detectada!</strong> Quando salvar essa conta, <strong>vou cadastrar essa fatura como dívida automaticamente</strong> pra você acompanhar.
+            ⚠️ <strong>Fatura aberta detectada!</strong> Ao salvar, vou cadastrar essa fatura como dívida + transação prevista automaticamente.
           </div>
           <div class="field">
             <label>Valor da fatura</label>
             <div class="valor-input-wrapper" style="margin-bottom:0;">
               <span class="valor-prefix">R$</span>
-              <input type="text" inputmode="decimal" id="f-fatura" placeholder="0,00" oninput="formatarValor(this)">
+              <input type="text" inputmode="decimal" id="c-fatura" placeholder="0,00" oninput="formatarValor(this)">
             </div>
           </div>
         </div>
         <div class="field-row">
           <div class="field">
             <label>Fechamento (dia)</label>
-            <input type="number" id="f-fechamento" placeholder="Ex: 25" min="1" max="31">
+            <input type="number" id="c-fechamento" placeholder="Ex: 25" min="1" max="31">
           </div>
           <div class="field">
             <label>Vencimento (dia)</label>
-            <input type="number" id="f-vencimento" placeholder="Ex: 5" min="1" max="31">
+            <input type="number" id="c-vencimento" placeholder="Ex: 5" min="1" max="31">
           </div>
         </div>
       </div>
       
       <div style="height:20px;"></div>
-      
     </div>
     <div class="modal-footer">
-      <button class="btn btn-primary" id="btn-salvar" onclick="salvarConta()">Cadastrar conta</button>
+      <button class="btn btn-primary" id="btn-salvar-conta" onclick="salvarConta()">Cadastrar conta</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL IA -->
+<!-- MODAL DESPESA FIXA / COMPROMISSO -->
+<div class="modal-overlay" id="modal-compromisso">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="modal-compromisso-titulo">Nova despesa fixa</div>
+      <button class="modal-close" onclick="fecharModal('modal-compromisso')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msg" id="msg-compromisso"></div>
+      
+      <div class="secao-titulo" style="margin-top:0;">Categoria</div>
+      <div class="tipo-grid-3" id="categorias-compromisso"></div>
+      
+      <div class="field">
+        <label>Nome</label>
+        <input type="text" id="k-nome" placeholder="Ex: Aluguel apto, Conta luz">
+      </div>
+      
+      <div class="field">
+        <label>Fornecedor (opcional)</label>
+        <input type="text" id="k-fornecedor" placeholder="Ex: Cemig, Sabesp, Vivo">
+      </div>
+      
+      <div class="secao-titulo">Valor mensal</div>
+      <div class="valor-input-wrapper">
+        <span class="valor-prefix">R$</span>
+        <input type="text" inputmode="decimal" id="k-valor" placeholder="0,00" oninput="formatarValor(this)">
+      </div>
+      
+      <div class="field">
+        <label>Dia do vencimento (1-31)</label>
+        <input type="number" id="k-vencimento" placeholder="Ex: 10" min="1" max="31">
+      </div>
+      
+      <div class="secao-titulo">Tipo de compromisso</div>
+      <div class="tipo-grid-3">
+        <div class="tipo-opcao active" data-tipo-k="recorrente" onclick="trocarTipoComp('recorrente')">
+          <div class="tipo-emoji">🔁</div>
+          <div class="tipo-label">Mensal sem fim</div>
+        </div>
+        <div class="tipo-opcao" data-tipo-k="parcelado" onclick="trocarTipoComp('parcelado')">
+          <div class="tipo-emoji">📊</div>
+          <div class="tipo-label">Parcelado</div>
+        </div>
+        <div class="tipo-opcao" data-tipo-k="fixo" onclick="trocarTipoComp('fixo')">
+          <div class="tipo-emoji">📅</div>
+          <div class="tipo-label">Anual</div>
+        </div>
+      </div>
+      
+      <div id="parcelas-section" class="hidden">
+        <div class="field-row">
+          <div class="field">
+            <label>Total de parcelas</label>
+            <input type="number" id="k-parcelas-total" placeholder="Ex: 60" min="1">
+          </div>
+          <div class="field">
+            <label>Pagas até hoje</label>
+            <input type="number" id="k-parcelas-pagas" placeholder="Ex: 12" min="0">
+          </div>
+        </div>
+      </div>
+      
+      <div class="field">
+        <label>Sair de qual conta? (opcional)</label>
+        <select id="k-conta">
+          <option value="">Sem conta vinculada</option>
+        </select>
+      </div>
+      
+      <div id="info-recorrente" class="info-box">
+        🦔 <strong>Vou gerar uma transação prevista para o vencimento de cada mês.</strong> Quando você pagar, é só marcar como pago.
+      </div>
+      
+      <div style="height:20px;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="btn-salvar-compromisso" onclick="salvarCompromisso()">Cadastrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL IA (com seletor de tipo ANTES) -->
 <div class="modal-overlay" id="modal-ia">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -988,35 +1115,28 @@
     </div>
     <div class="modal-body">
       
-      <div id="ia-vazio">
+      <div id="ia-conteudo">
         <div class="info-box">
-          📸 Tire foto/print de uma dessas opções e a IA preenche tudo automaticamente:
+          📸 <strong>Primeiro:</strong> escolha o tipo de imagem que vai mandar (deixa a IA mais precisa)
         </div>
         
-        <div class="upload-area" onclick="document.getElementById('input-ia').click()">
+        <div id="ia-tipos-area"></div>
+        
+        <div class="upload-area disabled" id="upload-area" onclick="abrirInputIA()">
           <div class="upload-emoji">📱</div>
-          <div class="upload-titulo">Toque pra escolher imagem</div>
-          <div class="upload-sub">Print do app do banco, fatura do cartão ou foto do cartão</div>
-        </div>
-        
-        <div class="info-box" style="background:rgba(255,184,0,0.1);border-color:rgba(255,184,0,0.3);color:var(--warning);">
-          💡 <strong>Exemplos do que enviar:</strong><br>
-          • Tela do app Nubank/Itaú/Bradesco com saldo<br>
-          • Tela de fatura mostrando limite + vencimento<br>
-          • Foto do cartão físico (frente)<br>
-          • PDF da fatura mensal completa
+          <div class="upload-titulo">Selecione o tipo acima</div>
+          <div class="upload-sub" id="upload-sub-texto">Depois toque aqui pra enviar foto/print</div>
         </div>
       </div>
       
       <div id="ia-analisando-area" class="hidden ia-analisando">
         <div class="ia-spinner"></div>
         <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--ia);margin-bottom:4px;">🤖 IA lendo a imagem...</div>
-        <div style="font-size:12px;color:var(--text-mute);">Extraindo banco, saldo, datas</div>
+        <div style="font-size:12px;color:var(--text-mute);" id="ia-loading-sub">Extraindo dados</div>
       </div>
       
     </div>
-    <div class="modal-footer">
-    </div>
+    <div class="modal-footer"></div>
   </div>
 </div>
 
@@ -1025,46 +1145,13 @@
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-header">
-      <div class="modal-title" id="detalhe-titulo">Conta</div>
+      <div class="modal-title" id="detalhe-titulo">Detalhe</div>
       <button class="modal-close" onclick="fecharModal('modal-detalhe')">✕</button>
     </div>
     <div class="modal-body">
-      
-      <div id="detalhe-saldo-area"></div>
-      
-      <div class="detalhe-card">
-        <div class="detalhe-linha">
-          <div class="detalhe-label">Tipo</div>
-          <div class="detalhe-valor" id="detalhe-tipo">—</div>
-        </div>
-        <div class="detalhe-linha">
-          <div class="detalhe-label">Saldo inicial</div>
-          <div class="detalhe-valor" id="detalhe-inicial">—</div>
-        </div>
-        <div class="detalhe-linha" id="linha-limite" style="display:none;">
-          <div class="detalhe-label">Limite total</div>
-          <div class="detalhe-valor" id="detalhe-limite">—</div>
-        </div>
-        <div class="detalhe-linha" id="linha-fechamento" style="display:none;">
-          <div class="detalhe-label">Fechamento</div>
-          <div class="detalhe-valor" id="detalhe-fechamento">—</div>
-        </div>
-        <div class="detalhe-linha" id="linha-vencimento" style="display:none;">
-          <div class="detalhe-label">Vencimento</div>
-          <div class="detalhe-valor" id="detalhe-vencimento">—</div>
-        </div>
-        <div class="detalhe-linha">
-          <div class="detalhe-label">Status</div>
-          <div class="detalhe-valor" id="detalhe-status">—</div>
-        </div>
-      </div>
-      
+      <div id="detalhe-area"></div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-primary" id="btn-editar" onclick="editarConta()">Editar</button>
-      <button class="btn btn-secondary" id="btn-toggle-ativa" onclick="toggleAtiva()">Desativar</button>
-      <button class="btn btn-danger" id="btn-excluir" onclick="excluirConta()">Excluir conta</button>
-    </div>
+    <div class="modal-footer" id="detalhe-footer"></div>
   </div>
 </div>
 
@@ -1078,13 +1165,37 @@
   const IA_FUNCTION_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
   
-  const tiposLabel = {
+  const tiposContaLabel = {
     'conta_corrente': '🏦 Conta Corrente',
     'poupanca': '🐷 Poupança',
     'carteira': '💰 Carteira',
     'cartao_credito': '💳 Cartão de Crédito',
     'investimento': '📈 Investimento',
     'outro': '📌 Outro'
+  };
+  
+  const categoriasCompromisso = {
+    'luz': { label: 'Luz', icone: '💡', cor: '#ffb800', grupo: 'fixa' },
+    'agua': { label: 'Água', icone: '💧', cor: '#38bdf8', grupo: 'fixa' },
+    'gas': { label: 'Gás', icone: '🔥', cor: '#ff6b35', grupo: 'fixa' },
+    'telefone': { label: 'Telefone', icone: '📱', cor: '#a855f7', grupo: 'fixa' },
+    'internet': { label: 'Internet', icone: '🌐', cor: '#a855f7', grupo: 'fixa' },
+    'tv': { label: 'TV', icone: '📺', cor: '#a855f7', grupo: 'fixa' },
+    'streaming': { label: 'Streaming', icone: '🎬', cor: '#8b5cf6', grupo: 'fixa' },
+    'aluguel': { label: 'Aluguel', icone: '🏠', cor: '#00d97e', grupo: 'fixa' },
+    'condominio': { label: 'Condomínio', icone: '🏢', cor: '#14b8a6', grupo: 'fixa' },
+    'iptu': { label: 'IPTU', icone: '🏛️', cor: '#f59e0b', grupo: 'fixa' },
+    'escola': { label: 'Escola', icone: '🎓', cor: '#3b82f6', grupo: 'fixa' },
+    'mensalidade': { label: 'Mensalidade', icone: '📚', cor: '#3b82f6', grupo: 'fixa' },
+    'plano_saude': { label: 'Plano Saúde', icone: '🏥', cor: '#ef4444', grupo: 'fixa' },
+    'academia': { label: 'Academia', icone: '💪', cor: '#f59e0b', grupo: 'fixa' },
+    'assinatura': { label: 'Assinatura', icone: '🎬', cor: '#8b5cf6', grupo: 'fixa' },
+    'seguro': { label: 'Seguro', icone: '🛡️', cor: '#6366f1', grupo: 'fixa' },
+    'pensao': { label: 'Pensão', icone: '👨‍👩‍👧', cor: '#ec4899', grupo: 'fixa' },
+    'consorcio': { label: 'Consórcio', icone: '🚗', cor: '#ff4757', grupo: 'parcelado' },
+    'emprestimo': { label: 'Empréstimo', icone: '💸', cor: '#ff4757', grupo: 'parcelado' },
+    'financiamento': { label: 'Financiamento', icone: '🏦', cor: '#ff4757', grupo: 'parcelado' },
+    'outro': { label: 'Outro', icone: '📋', cor: '#38bdf8', grupo: 'fixa' }
   };
   
   const bancosPresets = [
@@ -1111,7 +1222,11 @@
   
   let usuario;
   let contas = [];
+  let compromissos = [];
   let saldosCalculados = {};
+  let abaAtiva = 'contas';
+  
+  // Estado modal conta
   let tipoSelecionado = 'conta_corrente';
   let corSelecionada = '#00d97e';
   let emojiSelecionado = '🏦';
@@ -1119,6 +1234,15 @@
   let editandoId = null;
   let detalheAtual = null;
   let veiodaIA = false;
+  
+  // Estado modal compromisso
+  let categoriaComp = 'luz';
+  let tipoComp = 'recorrente';
+  let editandoComp = null;
+  
+  // Estado modal IA
+  let iaHintTipo = null;
+  let iaModoAlvo = 'conta'; // 'conta' ou 'compromisso'
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -1131,28 +1255,38 @@
     renderBancosPresets();
     renderCoresGrid();
     renderEmojisGrid();
+    renderCategoriasCompromisso();
     
-    await carregarContas();
+    await carregarTudo();
     render();
   })();
   
-  async function carregarContas() {
-    const { data: contasData } = await supabase
-      .from('contas')
-      .select('*')
-      .eq('user_id', usuario.id)
-      .order('ativa', { ascending: false })
-      .order('criado_em', { ascending: true });
+  async function carregarTudo() {
+    const [contasRes, compromissosRes] = await Promise.all([
+      supabase.from('contas')
+        .select('*')
+        .eq('user_id', usuario.id)
+        .order('ativa', { ascending: false })
+        .order('criado_em', { ascending: true }),
+      supabase.from('compromissos')
+        .select('*')
+        .eq('user_id', usuario.id)
+        .order('ativo', { ascending: false })
+        .order('dia_vencimento', { ascending: true })
+    ]);
     
-    contas = contasData || [];
+    contas = contasRes.data || [];
+    compromissos = compromissosRes.data || [];
     
+    // Calcula saldos das contas (apenas realizadas)
     saldosCalculados = {};
     for (const c of contas) {
       const { data: trans } = await supabase
         .from('transacoes')
         .select('valor, tipo')
         .eq('user_id', usuario.id)
-        .eq('conta_id', c.id);
+        .eq('conta_id', c.id)
+        .eq('status', 'realizada');
       
       let saldo = Number(c.saldo_inicial || 0);
       (trans || []).forEach(t => {
@@ -1162,104 +1296,276 @@
     }
   }
   
+  window.trocarAba = function(aba) {
+    abaAtiva = aba;
+    document.querySelectorAll('.tab-nav').forEach(t => t.classList.toggle('active', t.dataset.aba === aba));
+    render();
+  };
+  
   function render() {
-    renderSaldoTotal();
-    renderTatuTip();
-    renderLista();
+    if (abaAtiva === 'contas') renderAbaContas();
+    else if (abaAtiva === 'despesas') renderAbaDespesas();
+    else if (abaAtiva === 'compromissos') renderAbaCompromissos();
   }
   
-  function renderSaldoTotal() {
-    const ativas = contas.filter(c => c.ativa && c.tipo !== 'cartao_credito');
-    const total = ativas.reduce((a, c) => a + (saldosCalculados[c.id] || 0), 0);
+  // ============== ABA CONTAS ==============
+  function renderAbaContas() {
+    const ativas = contas.filter(c => c.ativa);
+    const contasReais = ativas.filter(c => c.tipo !== 'cartao_credito');
+    const cartoes = ativas.filter(c => c.tipo === 'cartao_credito');
+    const totalSaldo = contasReais.reduce((a, c) => a + (saldosCalculados[c.id] || 0), 0);
+    const totalLimite = cartoes.reduce((a, c) => a + Number(c.limite || 0), 0);
     
-    document.getElementById('saldo-area').innerHTML = `
-      <div class="saldo-total">
-        <div class="saldo-label">Patrimônio em contas</div>
-        <div class="saldo-valor ${total >= 0 ? 'positivo' : 'negativo'}">R$ ${formatarMoeda(total)}</div>
-        <div class="saldo-sub">${ativas.length} conta${ativas.length === 1 ? '' : 's'} ativa${ativas.length === 1 ? '' : 's'} • cartões não somam</div>
-      </div>
-    `;
-  }
-  
-  function renderTatuTip() {
-    const el = document.getElementById('tatu-tip-texto');
-    const ativas = contas.filter(c => c.ativa).length;
-    
-    if (contas.length === 0) {
-      el.innerHTML = 'Cadastre <strong>todas suas contas</strong>. Use ✨ pra IA fazer por você!';
-    } else if (ativas < 2) {
-      el.innerHTML = `Você tem ${ativas} conta. <strong>Cadastre mais</strong> com IA via foto!`;
-    } else if (!contas.some(c => c.tipo === 'cartao_credito')) {
-      el.innerHTML = `${ativas} contas! Não esqueça dos seus <strong>cartões de crédito</strong>.`;
+    let saldoHTML;
+    if (contasReais.length === 0 && cartoes.length > 0) {
+      saldoHTML = `
+        <div class="saldo-total">
+          <div class="saldo-label">Limite total em cartões</div>
+          <div class="saldo-valor warning">R$ ${formatarMoeda(totalLimite)}</div>
+          <div class="saldo-sub">${cartoes.length} cartão(ões) • cadastre uma conta corrente pra ver patrimônio</div>
+        </div>
+      `;
+    } else if (cartoes.length === 0 && contasReais.length === 0) {
+      saldoHTML = `
+        <div class="saldo-total">
+          <div class="saldo-label">Patrimônio</div>
+          <div class="saldo-valor">R$ 0,00</div>
+          <div class="saldo-sub">Cadastre suas contas e cartões pra começar</div>
+        </div>
+      `;
     } else {
-      el.innerHTML = `<strong>${ativas} contas</strong> ativas! Quando lançar transação, escolha onde vai.`;
+      saldoHTML = `
+        <div class="saldo-total">
+          <div class="saldo-label">Patrimônio em contas</div>
+          <div class="saldo-valor ${totalSaldo >= 0 ? 'positivo' : 'negativo'}">R$ ${formatarMoeda(totalSaldo)}</div>
+          <div class="saldo-sub">${contasReais.length} conta${contasReais.length === 1 ? '' : 's'}${cartoes.length > 0 ? ` + ${cartoes.length} cartão(ões) com limite R$ ${formatarMoeda(totalLimite)}` : ''}</div>
+        </div>
+      `;
     }
-  }
-  
-  function renderLista() {
-    const lista = document.getElementById('lista');
     
-    if (contas.length === 0) {
-      lista.innerHTML = `
+    let tatuTexto;
+    if (ativas.length === 0) {
+      tatuTexto = '🦔 Cadastre suas <strong>contas e cartões</strong>. Use ✨ pra IA fazer por você!';
+    } else if (contasReais.length === 0) {
+      tatuTexto = '🦔 Só tem cartões. <strong>Cadastre uma conta corrente</strong> pra ver patrimônio real.';
+    } else {
+      tatuTexto = `🦔 <strong>${ativas.length} contas</strong> cadastradas! Quando lançar transação, escolha onde foi.`;
+    }
+    
+    let listaHTML = '';
+    if (ativas.length === 0) {
+      listaHTML = `
         <div class="empty">
           <div class="empty-emoji">🏦</div>
           <div class="empty-title">Sem contas cadastradas</div>
           <div class="empty-desc">Tire print do app do seu banco que a IA cadastra automaticamente!</div>
         </div>
       `;
-      return;
+    } else {
+      if (contasReais.length > 0) {
+        listaHTML += '<div class="secao-titulo" style="margin-top:0;">Contas e Carteira</div>';
+        listaHTML += contasReais.map(c => contaHTML(c)).join('');
+      }
+      if (cartoes.length > 0) {
+        listaHTML += '<div class="secao-titulo">Cartões de Crédito</div>';
+        listaHTML += cartoes.map(c => contaHTML(c)).join('');
+      }
+      const inativas = contas.filter(c => !c.ativa);
+      if (inativas.length > 0) {
+        listaHTML += '<div class="secao-titulo">Inativas</div>';
+        listaHTML += inativas.map(c => contaHTML(c)).join('');
+      }
     }
     
-    const ativas = contas.filter(c => c.ativa);
-    const inativas = contas.filter(c => !c.ativa);
-    
-    let html = '';
-    if (ativas.length > 0) {
-      html += '<div class="secao-titulo" style="margin-top:0;">Suas contas</div>';
-      html += ativas.map(c => contaHTML(c)).join('');
-    }
-    if (inativas.length > 0) {
-      html += '<div class="secao-titulo">Inativas</div>';
-      html += inativas.map(c => contaHTML(c)).join('');
-    }
-    
-    lista.innerHTML = html;
+    document.getElementById('conteudo-aba').innerHTML = `
+      ${saldoHTML}
+      <div class="tatu-tip">
+        <div class="tatu-tip-emoji">🦔</div>
+        <div class="tatu-tip-texto">${tatuTexto}</div>
+      </div>
+      <div class="quick-actions">
+        <div class="quick-btn" onclick="abrirModalNovaConta()">
+          <div class="quick-btn-icon">✍️</div>
+          <div class="quick-btn-label">Cadastrar manual</div>
+          <div class="quick-btn-sub">Você digita</div>
+        </div>
+        <div class="quick-btn ia" onclick="abrirModalIA('conta')">
+          <div class="quick-btn-icon">✨</div>
+          <div class="quick-btn-label">Cadastrar por foto</div>
+          <div class="quick-btn-sub">IA preenche tudo</div>
+        </div>
+      </div>
+      ${listaHTML}
+    `;
   }
   
   function contaHTML(c) {
     const saldo = saldosCalculados[c.id] || 0;
     const ehCartao = c.tipo === 'cartao_credito';
-    const tag = c.padrao ? '<div class="conta-tag">⭐ PADRÃO</div>' : '';
+    const tag = c.padrao ? '<div class="item-tag">⭐ PADRÃO</div>' : '';
     
-    let saldoLabel, saldoValor, saldoClasse;
+    let valorLabel, valorTxt, valorClasse;
     if (ehCartao) {
-      saldoLabel = 'Limite';
-      saldoValor = `R$ ${formatarMoeda(c.limite || 0)}`;
-      saldoClasse = 'neutro';
+      valorLabel = 'Limite';
+      valorTxt = `R$ ${formatarMoeda(c.limite || 0)}`;
+      valorClasse = 'neutro';
     } else {
-      saldoLabel = 'Saldo';
-      saldoValor = `R$ ${formatarMoeda(saldo)}`;
-      saldoClasse = saldo >= 0 ? 'positivo' : 'negativo';
+      valorLabel = 'Saldo';
+      valorTxt = `R$ ${formatarMoeda(saldo)}`;
+      valorClasse = saldo >= 0 ? 'positivo' : 'negativo';
     }
     
     return `
-      <div class="conta-card ${!c.ativa ? 'inativa' : ''}" onclick="abrirDetalhe('${c.id}')">
-        <div class="conta-icone" style="background:${c.cor}30;border:2px solid ${c.cor}66;color:${c.cor};">
-          ${c.icone}
-        </div>
-        <div class="conta-info">
-          <div class="conta-nome">${c.nome}</div>
-          <div class="conta-tipo">${tiposLabel[c.tipo] || 'Outro'}${c.banco ? ' • ' + c.banco : ''}</div>
+      <div class="item-card ${!c.ativa ? 'inativa' : ''}" onclick="abrirDetalhe('conta', '${c.id}')">
+        <div class="item-icone" style="background:${c.cor}30;border:2px solid ${c.cor}66;color:${c.cor};">${c.icone}</div>
+        <div class="item-info">
+          <div class="item-nome">${c.nome}</div>
+          <div class="item-tipo">${tiposContaLabel[c.tipo] || 'Outro'}${c.banco ? ' • ' + c.banco : ''}</div>
           ${tag}
         </div>
-        <div class="conta-saldo">
-          <div class="conta-saldo-label">${saldoLabel}</div>
-          <div class="conta-saldo-valor ${saldoClasse}">${saldoValor}</div>
+        <div class="item-valor">
+          <div class="item-valor-label">${valorLabel}</div>
+          <div class="item-valor-num ${valorClasse}">${valorTxt}</div>
         </div>
       </div>
     `;
   }
   
+  // ============== ABA DESPESAS FIXAS ==============
+  function renderAbaDespesas() {
+    const fixas = compromissos.filter(c => c.ativo && c.tipo === 'recorrente');
+    const totalMes = fixas.reduce((a, c) => a + Number(c.valor || 0), 0);
+    
+    let saldoHTML = `
+      <div class="saldo-total">
+        <div class="saldo-label">Despesas fixas mensais</div>
+        <div class="saldo-valor ${totalMes > 0 ? 'warning' : ''}">R$ ${formatarMoeda(totalMes)}</div>
+        <div class="saldo-sub">${fixas.length} despesa${fixas.length === 1 ? '' : 's'} fixa${fixas.length === 1 ? '' : 's'} cadastrada${fixas.length === 1 ? '' : 's'}</div>
+      </div>
+    `;
+    
+    let tatuTexto = fixas.length === 0
+      ? '🦔 Cadastre <strong>luz, água, telefone, internet, aluguel</strong>. Vira transação prevista automática!'
+      : `🦔 <strong>R$ ${formatarMoeda(totalMes)}/mês</strong> em despesas fixas. Já está no seu calendário.`;
+    
+    let listaHTML = '';
+    if (fixas.length === 0) {
+      listaHTML = `
+        <div class="empty">
+          <div class="empty-emoji">📋</div>
+          <div class="empty-title">Sem despesas fixas</div>
+          <div class="empty-desc">Cadastre suas contas mensais (luz, água, aluguel, internet). Cada uma vira transação prevista pro mês inteiro!</div>
+        </div>
+      `;
+    } else {
+      listaHTML = '<div class="secao-titulo" style="margin-top:0;">Suas despesas fixas</div>';
+      listaHTML += fixas.map(c => compromissoHTML(c)).join('');
+    }
+    
+    document.getElementById('conteudo-aba').innerHTML = `
+      ${saldoHTML}
+      <div class="tatu-tip">
+        <div class="tatu-tip-emoji">🦔</div>
+        <div class="tatu-tip-texto">${tatuTexto}</div>
+      </div>
+      <div class="quick-actions">
+        <div class="quick-btn" onclick="abrirModalNovoCompromisso('recorrente')">
+          <div class="quick-btn-icon">✍️</div>
+          <div class="quick-btn-label">Cadastrar manual</div>
+          <div class="quick-btn-sub">Você digita</div>
+        </div>
+        <div class="quick-btn ia" onclick="abrirModalIA('compromisso')">
+          <div class="quick-btn-icon">✨</div>
+          <div class="quick-btn-label">Foto da conta</div>
+          <div class="quick-btn-sub">IA lê boleto</div>
+        </div>
+      </div>
+      ${listaHTML}
+    `;
+  }
+  
+  // ============== ABA COMPROMISSOS PARCELADOS ==============
+  function renderAbaCompromissos() {
+    const parc = compromissos.filter(c => c.ativo && (c.tipo === 'parcelado' || c.tipo === 'fixo'));
+    const totalMes = parc.filter(c => c.tipo === 'parcelado').reduce((a, c) => a + Number(c.valor || 0), 0);
+    
+    let saldoHTML = `
+      <div class="saldo-total">
+        <div class="saldo-label">Parcelas mensais</div>
+        <div class="saldo-valor ${totalMes > 0 ? 'warning' : ''}">R$ ${formatarMoeda(totalMes)}</div>
+        <div class="saldo-sub">${parc.length} compromisso${parc.length === 1 ? '' : 's'} parcelado${parc.length === 1 ? '' : 's'}/anual${parc.length === 1 ? '' : 'is'}</div>
+      </div>
+    `;
+    
+    let tatuTexto = parc.length === 0
+      ? '🦔 Cadastre <strong>consórcio, empréstimo, financiamento, IPTU</strong>. Tudo que tem fim ou repete anualmente.'
+      : `🦔 <strong>${parc.length}</strong> compromissos longos. Cada parcela vira transação prevista no calendário.`;
+    
+    let listaHTML = '';
+    if (parc.length === 0) {
+      listaHTML = `
+        <div class="empty">
+          <div class="empty-emoji">📄</div>
+          <div class="empty-title">Sem compromissos parcelados</div>
+          <div class="empty-desc">Cadastre consórcio, empréstimo, financiamento ou IPTU. O sistema gera todas as parcelas previstas automaticamente!</div>
+        </div>
+      `;
+    } else {
+      listaHTML = '<div class="secao-titulo" style="margin-top:0;">Seus compromissos</div>';
+      listaHTML += parc.map(c => compromissoHTML(c)).join('');
+    }
+    
+    document.getElementById('conteudo-aba').innerHTML = `
+      ${saldoHTML}
+      <div class="tatu-tip">
+        <div class="tatu-tip-emoji">🦔</div>
+        <div class="tatu-tip-texto">${tatuTexto}</div>
+      </div>
+      <div class="quick-actions">
+        <div class="quick-btn" onclick="abrirModalNovoCompromisso('parcelado')">
+          <div class="quick-btn-icon">✍️</div>
+          <div class="quick-btn-label">Cadastrar manual</div>
+          <div class="quick-btn-sub">Você digita</div>
+        </div>
+        <div class="quick-btn ia" onclick="abrirModalIA('compromisso')">
+          <div class="quick-btn-icon">✨</div>
+          <div class="quick-btn-label">Foto do contrato</div>
+          <div class="quick-btn-sub">IA lê</div>
+        </div>
+      </div>
+      ${listaHTML}
+    `;
+  }
+  
+  function compromissoHTML(c) {
+    const cat = categoriasCompromisso[c.categoria] || categoriasCompromisso['outro'];
+    let badge = '';
+    if (c.tipo === 'parcelado' && c.parcelas_total) {
+      const pagas = c.parcelas_pagas || 0;
+      badge = `<div class="item-tag">${pagas}/${c.parcelas_total}</div>`;
+    } else if (c.tipo === 'recorrente') {
+      badge = `<div class="item-tag" style="background:var(--info-soft);color:var(--info);">🔁 Mensal</div>`;
+    } else if (c.tipo === 'fixo') {
+      badge = `<div class="item-tag" style="background:var(--warning-soft);color:var(--warning);">📅 Anual</div>`;
+    }
+    
+    return `
+      <div class="item-card ${!c.ativo ? 'inativa' : ''}" onclick="abrirDetalhe('compromisso', '${c.id}')">
+        <div class="item-icone" style="background:${c.cor}30;border:2px solid ${c.cor}66;color:${c.cor};">${c.icone}</div>
+        <div class="item-info">
+          <div class="item-nome">${c.nome}</div>
+          <div class="item-tipo">${cat.label}${c.dia_vencimento ? ' • Vence dia ' + c.dia_vencimento : ''}</div>
+          ${badge}
+        </div>
+        <div class="item-valor">
+          <div class="item-valor-label">Mensal</div>
+          <div class="item-valor-num negativo">R$ ${formatarMoeda(c.valor)}</div>
+        </div>
+      </div>
+    `;
+  }
+  
+  // ============== HELPERS DE RENDER ==============
   function renderBancosPresets() {
     document.getElementById('bancos-presets').innerHTML = bancosPresets.map((b, i) => `
       <div class="banco-preset" data-banco="${b.nome}" onclick="selecionarBanco(${i})">
@@ -1271,24 +1577,33 @@
   
   function renderCoresGrid() {
     document.getElementById('cores-grid').innerHTML = coresDisponiveis.map(c => `
-      <div class="cor-opcao ${c.toLowerCase() === corSelecionada.toLowerCase() ? 'active' : ''}" 
-           data-cor="${c}" 
-           style="background:${c};" 
-           onclick="selecionarCor('${c}')"></div>
+      <div class="cor-opcao ${c.toLowerCase() === corSelecionada.toLowerCase() ? 'active' : ''}" data-cor="${c}" style="background:${c};" onclick="selecionarCor('${c}')"></div>
     `).join('');
   }
   
   function renderEmojisGrid() {
     document.getElementById('emojis-grid').innerHTML = emojisDisponiveis.map(e => `
-      <div class="emoji-opcao ${e === emojiSelecionado ? 'active' : ''}" 
-           data-emoji="${e}" 
-           onclick="selecionarEmoji('${e}')">${e}</div>
+      <div class="emoji-opcao ${e === emojiSelecionado ? 'active' : ''}" data-emoji="${e}" onclick="selecionarEmoji('${e}')">${e}</div>
     `).join('');
   }
   
-  window.trocarTipo = function(tipo, manterEmoji) {
+  function renderCategoriasCompromisso() {
+    document.getElementById('categorias-compromisso').innerHTML = Object.entries(categoriasCompromisso).map(([key, cat]) => `
+      <div class="tipo-opcao ${key === categoriaComp ? 'active' : ''}" data-cat="${key}" onclick="selecionarCategoriaComp('${key}')">
+        <div class="tipo-emoji">${cat.icone}</div>
+        <div class="tipo-label">${cat.label}</div>
+      </div>
+    `).join('');
+  }
+  
+  window.selecionarCategoriaComp = function(key) {
+    categoriaComp = key;
+    document.querySelectorAll('#categorias-compromisso .tipo-opcao').forEach(el => el.classList.toggle('active', el.dataset.cat === key));
+  };
+  
+  window.trocarTipoConta = function(tipo, manterEmoji) {
     tipoSelecionado = tipo;
-    document.querySelectorAll('.tipo-opcao').forEach(t => t.classList.toggle('active', t.dataset.tipo === tipo));
+    document.querySelectorAll('#modal-conta .tipo-opcao').forEach(t => t.classList.toggle('active', t.dataset.tipo === tipo));
     
     const isCartao = tipo === 'cartao_credito';
     document.getElementById('cartao-section').classList.toggle('hidden', !isCartao);
@@ -1296,28 +1611,34 @@
     document.getElementById('banco-section').classList.toggle('hidden', tipo === 'carteira' || tipo === 'outro');
     
     if (!manterEmoji) {
-      if (tipo === 'cartao_credito') { emojiSelecionado = '💳'; }
-      else if (tipo === 'carteira') { emojiSelecionado = '💰'; }
-      else if (tipo === 'poupanca') { emojiSelecionado = '🐷'; }
-      else if (tipo === 'investimento') { emojiSelecionado = '📈'; }
-      else { emojiSelecionado = '🏦'; }
+      if (tipo === 'cartao_credito') emojiSelecionado = '💳';
+      else if (tipo === 'carteira') emojiSelecionado = '💰';
+      else if (tipo === 'poupanca') emojiSelecionado = '🐷';
+      else if (tipo === 'investimento') emojiSelecionado = '📈';
+      else emojiSelecionado = '🏦';
       renderEmojisGrid();
     }
+  };
+  
+  window.trocarTipoComp = function(tipo) {
+    tipoComp = tipo;
+    document.querySelectorAll('[data-tipo-k]').forEach(el => el.classList.toggle('active', el.dataset.tipoK === tipo));
+    document.getElementById('parcelas-section').classList.toggle('hidden', tipo !== 'parcelado');
+    
+    const info = document.getElementById('info-recorrente');
+    if (tipo === 'recorrente') info.innerHTML = '🦔 <strong>Vou gerar 1 transação prevista por mês</strong> (próximos 12 meses). Quando pagar é só marcar como pago.';
+    else if (tipo === 'parcelado') info.innerHTML = '🦔 <strong>Vou gerar 1 transação prevista para cada parcela restante.</strong> Você vê tudo no calendário.';
+    else info.innerHTML = '🦔 <strong>Vou gerar 1 transação anual</strong> na data do vencimento.';
   };
   
   window.selecionarBanco = function(i) {
     const b = bancosPresets[i];
     bancoSelecionado = b.nome === 'Outro' ? null : b.nome;
     corSelecionada = b.cor;
-    
-    document.querySelectorAll('.banco-preset').forEach((el, idx) => {
-      el.classList.toggle('active', idx === i);
-    });
-    
-    if (b.nome !== 'Outro' && !document.getElementById('f-nome').value) {
-      document.getElementById('f-nome').value = b.nome;
+    document.querySelectorAll('.banco-preset').forEach((el, idx) => el.classList.toggle('active', idx === i));
+    if (b.nome !== 'Outro' && !document.getElementById('c-nome').value) {
+      document.getElementById('c-nome').value = b.nome;
     }
-    
     renderCoresGrid();
   };
   
@@ -1343,48 +1664,49 @@
     return Number(str.replace(/\./g, '').replace(',', '.')) || 0;
   }
   
-  window.abrirModalNova = function() {
+  window.fecharModal = function(id) {
+    document.getElementById(id).classList.remove('show');
+  };
+  
+  // ============== MODAL CONTA ==============
+  window.abrirModalNovaConta = function() {
     editandoId = null;
     veiodaIA = false;
-    document.getElementById('modal-form-titulo').textContent = 'Nova conta';
-    document.getElementById('btn-salvar').textContent = 'Cadastrar conta';
-    document.getElementById('f-nome').value = '';
-    document.getElementById('f-saldo').value = '';
-    document.getElementById('f-limite').value = '';
-    document.getElementById('f-fatura').value = '';
-    document.getElementById('f-fechamento').value = '';
-    document.getElementById('f-vencimento').value = '';
-    document.getElementById('msg-form').className = 'msg';
+    
+    document.getElementById('modal-conta-titulo').textContent = 'Nova conta';
+    const btn = document.getElementById('btn-salvar-conta');
+    btn.textContent = 'Cadastrar conta';
+    btn.disabled = false; // BUG FIX: garantir botão habilitado
+    
+    document.getElementById('c-nome').value = '';
+    document.getElementById('c-saldo').value = '';
+    document.getElementById('c-limite').value = '';
+    document.getElementById('c-fatura').value = '';
+    document.getElementById('c-fechamento').value = '';
+    document.getElementById('c-vencimento').value = '';
+    document.getElementById('msg-conta').className = 'msg';
     document.getElementById('fatura-aberta-section').classList.add('hidden');
     tipoSelecionado = 'conta_corrente';
     corSelecionada = '#00d97e';
     emojiSelecionado = '🏦';
     bancoSelecionado = null;
     document.querySelectorAll('.banco-preset').forEach(el => el.classList.remove('active'));
-    trocarTipo('conta_corrente');
+    trocarTipoConta('conta_corrente');
     renderCoresGrid();
     renderEmojisGrid();
-    document.getElementById('modal-form').classList.add('show');
+    document.getElementById('modal-conta').classList.add('show');
   };
   
-  window.abrirModalIA = function() {
-    document.getElementById('ia-vazio').classList.remove('hidden');
-    document.getElementById('ia-analisando-area').classList.add('hidden');
-    document.getElementById('input-ia').value = '';
-    document.getElementById('modal-ia').classList.add('show');
-  };
-  
-  window.fecharModal = function(id) {
-    document.getElementById(id).classList.remove('show');
-  };
-  
-  function abrirFormularioComDadosIA(r) {
+  function abrirContaComDadosIA(r) {
     editandoId = null;
     veiodaIA = true;
     
-    document.getElementById('modal-form-titulo').textContent = '✨ Conta detectada pela IA';
-    document.getElementById('btn-salvar').textContent = (r.tem_divida && r.valor_divida) ? 'Salvar conta + fatura' : 'Salvar conta';
-    document.getElementById('msg-form').className = 'msg';
+    document.getElementById('modal-conta-titulo').textContent = '✨ Detectado pela IA';
+    const btn = document.getElementById('btn-salvar-conta');
+    btn.textContent = (r.tem_divida && r.valor_divida) ? 'Salvar conta + fatura' : 'Salvar conta';
+    btn.disabled = false;
+    
+    document.getElementById('msg-conta').className = 'msg';
     document.querySelectorAll('.banco-preset').forEach(el => el.classList.remove('active'));
     
     const tipo = r.tipo_conta || 'conta_corrente';
@@ -1411,79 +1733,455 @@
       corSelecionada = b.cor;
     } else {
       bancoSelecionado = r.banco_detectado || null;
-      if (r.cor_sugerida) {
-        corSelecionada = r.cor_sugerida;
-      } else {
-        corSelecionada = tipo === 'cartao_credito' ? '#820AD1' : '#00d97e';
-      }
+      corSelecionada = r.cor_sugerida || (tipo === 'cartao_credito' ? '#820AD1' : '#00d97e');
     }
     
-    document.getElementById('f-nome').value = r.nome_sugerido || r.banco_detectado || '';
-    document.getElementById('f-saldo').value = '';
-    document.getElementById('f-limite').value = '';
-    document.getElementById('f-fatura').value = '';
-    document.getElementById('f-fechamento').value = '';
-    document.getElementById('f-vencimento').value = '';
+    document.getElementById('c-nome').value = r.nome_sugerido || r.banco_detectado || '';
+    document.getElementById('c-saldo').value = '';
+    document.getElementById('c-limite').value = '';
+    document.getElementById('c-fatura').value = '';
+    document.getElementById('c-fechamento').value = '';
+    document.getElementById('c-vencimento').value = '';
     document.getElementById('fatura-aberta-section').classList.add('hidden');
     
     if (tipo === 'cartao_credito') {
-      if (r.limite_total != null) {
-        document.getElementById('f-limite').value = formatarMoeda(r.limite_total);
-      }
-      if (r.dia_fechamento) {
-        document.getElementById('f-fechamento').value = r.dia_fechamento;
-      }
-      if (r.dia_vencimento) {
-        document.getElementById('f-vencimento').value = r.dia_vencimento;
-      }
+      if (r.limite_total != null) document.getElementById('c-limite').value = formatarMoeda(r.limite_total);
+      if (r.dia_fechamento) document.getElementById('c-fechamento').value = r.dia_fechamento;
+      if (r.dia_vencimento) document.getElementById('c-vencimento').value = r.dia_vencimento;
       if (r.tem_divida && r.valor_divida) {
-        document.getElementById('f-fatura').value = formatarMoeda(r.valor_divida);
+        document.getElementById('c-fatura').value = formatarMoeda(r.valor_divida);
         document.getElementById('fatura-aberta-section').classList.remove('hidden');
       }
     } else {
-      if (r.saldo_atual != null) {
-        document.getElementById('f-saldo').value = formatarMoeda(r.saldo_atual);
-      }
+      if (r.saldo_atual != null) document.getElementById('c-saldo').value = formatarMoeda(r.saldo_atual);
     }
     
-    trocarTipo(tipo, true);
-    
+    trocarTipoConta(tipo, true);
     if (bancoIdx >= 0) {
-      document.querySelectorAll('.banco-preset').forEach((el, idx) => {
-        el.classList.toggle('active', idx === bancoIdx);
-      });
+      document.querySelectorAll('.banco-preset').forEach((el, idx) => el.classList.toggle('active', idx === bancoIdx));
     }
-    
     renderCoresGrid();
     renderEmojisGrid();
     
     const conf = r.confianca || 'média';
-    let msgTexto = `✨ <strong>IA preencheu tudo!</strong> Confiança: ${conf}. Revise e ajuste se algo estiver errado.`;
-    
+    let msgTexto = `✨ <strong>IA preencheu tudo!</strong> Confiança: ${conf}. Revise e ajuste.`;
     if (r.tem_divida && r.valor_divida) {
-      msgTexto += `<br><br>💳 <strong>Fatura de R$ ${formatarMoeda(r.valor_divida)} detectada</strong>. Ao salvar, vou cadastrar como dívida automaticamente!`;
+      msgTexto += `<br><br>💳 <strong>Fatura R$ ${formatarMoeda(r.valor_divida)} detectada</strong>. Vai virar dívida + transação prevista.`;
     }
+    if (r.observacao) msgTexto += '<br><br>💡 ' + r.observacao;
+    document.getElementById('msg-conta').className = 'msg msg-ia show';
+    document.getElementById('msg-conta').innerHTML = msgTexto;
     
-    if (r.observacao) {
-      msgTexto += '<br><br>💡 ' + r.observacao;
-    }
-    
-    document.getElementById('msg-form').className = 'msg msg-ia show';
-    document.getElementById('msg-form').innerHTML = msgTexto;
-    
-    document.getElementById('modal-form').classList.add('show');
+    document.getElementById('modal-conta').classList.add('show');
   }
+  
+  function calcularProximoVencimento(diaVencimento) {
+    if (!diaVencimento) return null;
+    const hoje = new Date();
+    const ano = hoje.getFullYear();
+    const mes = hoje.getMonth();
+    const diaHoje = hoje.getDate();
+    let dataVenc;
+    if (diaVencimento > diaHoje) dataVenc = new Date(ano, mes, diaVencimento);
+    else dataVenc = new Date(ano, mes + 1, diaVencimento);
+    return dataVenc.toISOString().split('T')[0];
+  }
+  
+  window.salvarConta = async function() {
+    const btn = document.getElementById('btn-salvar-conta');
+    const nome = document.getElementById('c-nome').value.trim();
+    
+    if (!nome) {
+      document.getElementById('msg-conta').className = 'msg show msg-error';
+      document.getElementById('msg-conta').textContent = 'Preencha o nome';
+      return;
+    }
+    
+    const isCartao = tipoSelecionado === 'cartao_credito';
+    const saldoInicial = isCartao ? 0 : valorParaNumero(document.getElementById('c-saldo').value);
+    const limite = isCartao ? valorParaNumero(document.getElementById('c-limite').value) : null;
+    const fechamento = isCartao ? (parseInt(document.getElementById('c-fechamento').value) || null) : null;
+    const vencimento = isCartao ? (parseInt(document.getElementById('c-vencimento').value) || null) : null;
+    const valorFatura = isCartao ? valorParaNumero(document.getElementById('c-fatura').value) : 0;
+    
+    btn.disabled = true;
+    btn.textContent = 'Salvando...';
+    
+    const dados = {
+      nome, tipo: tipoSelecionado, banco: bancoSelecionado,
+      cor: corSelecionada, icone: emojiSelecionado,
+      saldo_inicial: saldoInicial, limite,
+      dia_fechamento: fechamento, dia_vencimento: vencimento,
+      atualizado_em: new Date().toISOString()
+    };
+    
+    let contaId;
+    let result;
+    
+    try {
+      if (editandoId) {
+        result = await supabase.from('contas').update(dados).eq('id', editandoId);
+        contaId = editandoId;
+      } else {
+        if (contas.length === 0 && !isCartao) dados.padrao = true;
+        dados.user_id = usuario.id;
+        result = await supabase.from('contas').insert(dados).select().single();
+        contaId = result.data?.id;
+      }
+      
+      if (result.error) throw result.error;
+      
+      // Se cartão com fatura, cria dívida + transação prevista
+      let dividaCadastrada = false;
+      if (!editandoId && isCartao && valorFatura > 0) {
+        const dataVencFatura = calcularProximoVencimento(vencimento) || new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0];
+        
+        const { data: divida, error: errDiv } = await supabase.from('dividas').insert({
+          user_id: usuario.id,
+          credor: bancoSelecionado || nome,
+          tipo: 'cartao',
+          descricao: `Fatura do cartão ${nome}`,
+          valor_original: valorFatura,
+          valor_atual: valorFatura,
+          data_vencimento: dataVencFatura,
+          data_inicio: new Date().toISOString().split('T')[0],
+          status: 'ativa',
+          prioridade: 1,
+          conta_id: contaId,
+          observacoes: 'Cadastrada automaticamente via IA ao adicionar a conta'
+        }).select().single();
+        
+        if (!errDiv && divida) {
+          dividaCadastrada = true;
+          // Cria transação prevista vinculada à dívida
+          await supabase.from('transacoes').insert({
+            user_id: usuario.id,
+            valor: valorFatura,
+            descricao: `Fatura ${nome}`,
+            data: dataVencFatura,
+            tipo: 'saida',
+            conta_id: contaId,
+            divida_id: divida.id,
+            status: 'prevista'
+          });
+        }
+      }
+      
+      if (!editandoId) {
+        let xp = veiodaIA ? 25 : 15;
+        let toastTexto = veiodaIA ? '+25 XP ✨ IA' : '+15 XP 🏦';
+        if (dividaCadastrada) {
+          xp += 15;
+          toastTexto = '+40 XP ✨ Conta + Fatura!';
+          await darXP(15, 'fatura_via_ia', 'Fatura cadastrada via IA: ' + nome);
+        }
+        await darXP(veiodaIA ? 25 : 15, veiodaIA ? 'conta_via_ia' : 'conta_cadastrada', 'Conta cadastrada: ' + nome);
+        mostrarToast(toastTexto);
+      }
+      
+      veiodaIA = false;
+      btn.disabled = false; // BUG FIX
+      btn.textContent = editandoId ? 'Salvar' : 'Cadastrar conta';
+      fecharModal('modal-conta');
+      await carregarTudo();
+      render();
+    } catch (e) {
+      document.getElementById('msg-conta').className = 'msg show msg-error';
+      document.getElementById('msg-conta').textContent = 'Erro: ' + (e.message || e);
+      btn.disabled = false;
+      btn.textContent = editandoId ? 'Salvar' : 'Cadastrar conta';
+    }
+  };
+  
+  // ============== MODAL COMPROMISSO ==============
+  window.abrirModalNovoCompromisso = function(tipoInicial) {
+    editandoComp = null;
+    
+    document.getElementById('modal-compromisso-titulo').textContent = tipoInicial === 'parcelado' ? 'Novo parcelado' : 'Nova despesa fixa';
+    const btn = document.getElementById('btn-salvar-compromisso');
+    btn.textContent = 'Cadastrar';
+    btn.disabled = false;
+    
+    document.getElementById('k-nome').value = '';
+    document.getElementById('k-fornecedor').value = '';
+    document.getElementById('k-valor').value = '';
+    document.getElementById('k-vencimento').value = '';
+    document.getElementById('k-parcelas-total').value = '';
+    document.getElementById('k-parcelas-pagas').value = '';
+    document.getElementById('msg-compromisso').className = 'msg';
+    
+    categoriaComp = tipoInicial === 'parcelado' ? 'emprestimo' : 'luz';
+    tipoComp = tipoInicial;
+    
+    renderCategoriasCompromisso();
+    trocarTipoComp(tipoComp);
+    
+    // Preenche dropdown de contas
+    const sel = document.getElementById('k-conta');
+    const ativas = contas.filter(c => c.ativa && c.tipo !== 'cartao_credito');
+    sel.innerHTML = '<option value="">Sem conta vinculada</option>' + 
+      ativas.map(c => `<option value="${c.id}">${c.icone} ${c.nome}</option>`).join('');
+    
+    document.getElementById('modal-compromisso').classList.add('show');
+  };
+  
+  function abrirCompromissoComDadosIA(r) {
+    editandoComp = null;
+    
+    document.getElementById('modal-compromisso-titulo').textContent = '✨ Detectado pela IA';
+    const btn = document.getElementById('btn-salvar-compromisso');
+    btn.textContent = 'Cadastrar';
+    btn.disabled = false;
+    
+    categoriaComp = r.categoria || 'outro';
+    tipoComp = r.tipo || 'recorrente';
+    
+    document.getElementById('k-nome').value = r.nome_sugerido || '';
+    document.getElementById('k-fornecedor').value = r.fornecedor || '';
+    document.getElementById('k-valor').value = r.valor ? formatarMoeda(r.valor) : '';
+    document.getElementById('k-vencimento').value = r.dia_vencimento || '';
+    document.getElementById('k-parcelas-total').value = r.parcelas_total || '';
+    document.getElementById('k-parcelas-pagas').value = r.parcelas_pagas || '';
+    
+    renderCategoriasCompromisso();
+    trocarTipoComp(tipoComp);
+    
+    const sel = document.getElementById('k-conta');
+    const ativas = contas.filter(c => c.ativa && c.tipo !== 'cartao_credito');
+    sel.innerHTML = '<option value="">Sem conta vinculada</option>' + 
+      ativas.map(c => `<option value="${c.id}">${c.icone} ${c.nome}</option>`).join('');
+    
+    const conf = r.confianca || 'média';
+    let msg = `✨ <strong>IA preencheu tudo!</strong> Confiança: ${conf}. Revise e salve.`;
+    if (r.observacao) msg += '<br><br>💡 ' + r.observacao;
+    document.getElementById('msg-compromisso').className = 'msg msg-ia show';
+    document.getElementById('msg-compromisso').innerHTML = msg;
+    
+    document.getElementById('modal-compromisso').classList.add('show');
+  }
+  
+  window.salvarCompromisso = async function() {
+    const btn = document.getElementById('btn-salvar-compromisso');
+    const nome = document.getElementById('k-nome').value.trim();
+    const valor = valorParaNumero(document.getElementById('k-valor').value);
+    const dia = parseInt(document.getElementById('k-vencimento').value) || null;
+    
+    if (!nome) {
+      document.getElementById('msg-compromisso').className = 'msg show msg-error';
+      document.getElementById('msg-compromisso').textContent = 'Preencha o nome';
+      return;
+    }
+    if (!valor || valor <= 0) {
+      document.getElementById('msg-compromisso').className = 'msg show msg-error';
+      document.getElementById('msg-compromisso').textContent = 'Informe o valor';
+      return;
+    }
+    
+    const cat = categoriasCompromisso[categoriaComp];
+    const contaPagId = document.getElementById('k-conta').value || null;
+    const parcelasTotal = tipoComp === 'parcelado' ? (parseInt(document.getElementById('k-parcelas-total').value) || null) : null;
+    const parcelasPagas = tipoComp === 'parcelado' ? (parseInt(document.getElementById('k-parcelas-pagas').value) || 0) : 0;
+    const fornecedor = document.getElementById('k-fornecedor').value.trim();
+    
+    btn.disabled = true;
+    btn.textContent = 'Salvando...';
+    
+    const dados = {
+      user_id: usuario.id,
+      nome,
+      categoria: categoriaComp,
+      tipo: tipoComp,
+      valor,
+      dia_vencimento: dia,
+      parcelas_total: parcelasTotal,
+      parcelas_pagas: parcelasPagas,
+      conta_pagamento_id: contaPagId,
+      cor: cat.cor,
+      icone: cat.icone,
+      observacoes: fornecedor ? 'Fornecedor: ' + fornecedor : null
+    };
+    
+    try {
+      const { data: comp, error } = await supabase.from('compromissos').insert(dados).select().single();
+      if (error) throw error;
+      
+      // Gera transações previstas
+      const hoje = new Date();
+      const trans = [];
+      
+      if (tipoComp === 'recorrente') {
+        // 12 meses pra frente
+        for (let i = 0; i < 12; i++) {
+          const dataVenc = new Date(hoje.getFullYear(), hoje.getMonth() + i, dia || hoje.getDate());
+          // Pula meses já passados
+          if (dataVenc < hoje && i === 0) {
+            // próximo mês
+            dataVenc.setMonth(dataVenc.getMonth() + 1);
+          }
+          trans.push({
+            user_id: usuario.id,
+            valor,
+            descricao: nome,
+            data: dataVenc.toISOString().split('T')[0],
+            tipo: 'saida',
+            conta_id: contaPagId,
+            compromisso_id: comp.id,
+            status: 'prevista',
+            recorrente: true
+          });
+        }
+      } else if (tipoComp === 'parcelado' && parcelasTotal) {
+        const restantes = parcelasTotal - parcelasPagas;
+        for (let i = 0; i < restantes; i++) {
+          const dataVenc = new Date(hoje.getFullYear(), hoje.getMonth() + i, dia || hoje.getDate());
+          if (dataVenc < hoje && i === 0) {
+            dataVenc.setMonth(dataVenc.getMonth() + 1);
+          }
+          trans.push({
+            user_id: usuario.id,
+            valor,
+            descricao: `${nome} (${parcelasPagas + i + 1}/${parcelasTotal})`,
+            data: dataVenc.toISOString().split('T')[0],
+            tipo: 'saida',
+            conta_id: contaPagId,
+            compromisso_id: comp.id,
+            status: 'prevista',
+            parcelado: true,
+            numero_parcela: parcelasPagas + i + 1,
+            total_parcelas: parcelasTotal
+          });
+        }
+      } else if (tipoComp === 'fixo') {
+        // Anual - 1 transação
+        const dataVenc = new Date(hoje.getFullYear(), hoje.getMonth(), dia || hoje.getDate());
+        if (dataVenc < hoje) dataVenc.setFullYear(dataVenc.getFullYear() + 1);
+        trans.push({
+          user_id: usuario.id,
+          valor,
+          descricao: nome,
+          data: dataVenc.toISOString().split('T')[0],
+          tipo: 'saida',
+          conta_id: contaPagId,
+          compromisso_id: comp.id,
+          status: 'prevista'
+        });
+      }
+      
+      if (trans.length > 0) {
+        await supabase.from('transacoes').insert(trans);
+      }
+      
+      await darXP(20, 'compromisso_cadastrado', 'Compromisso: ' + nome);
+      mostrarToast(`+20 XP 📋 ${trans.length} transações previstas`);
+      
+      btn.disabled = false;
+      btn.textContent = 'Cadastrar';
+      fecharModal('modal-compromisso');
+      await carregarTudo();
+      render();
+    } catch (e) {
+      document.getElementById('msg-compromisso').className = 'msg show msg-error';
+      document.getElementById('msg-compromisso').textContent = 'Erro: ' + (e.message || e);
+      btn.disabled = false;
+      btn.textContent = 'Cadastrar';
+    }
+  };
+  
+  // ============== MODAL IA ==============
+  window.abrirModalIA = function(modo) {
+    iaModoAlvo = modo;
+    iaHintTipo = null;
+    document.getElementById('ia-conteudo').classList.remove('hidden');
+    document.getElementById('ia-analisando-area').classList.add('hidden');
+    document.getElementById('input-ia').value = '';
+    document.getElementById('upload-area').classList.add('disabled');
+    document.getElementById('upload-sub-texto').textContent = 'Depois toque aqui pra enviar foto/print';
+    
+    // Renderiza os tipos disponíveis pra cada modo
+    let html = '<div class="ia-tipos-titulo">📌 Tipo da imagem</div><div class="ia-tipos-grid">';
+    
+    if (modo === 'conta') {
+      const tipos = [
+        { key: 'cartao_credito', emoji: '💳', label: 'Cartão' },
+        { key: 'conta_corrente', emoji: '🏦', label: 'Conta' },
+        { key: 'poupanca', emoji: '🐷', label: 'Poupança' },
+        { key: 'investimento', emoji: '📈', label: 'Invest.' },
+        { key: 'carteira', emoji: '💰', label: 'Carteira' },
+        { key: 'outro', emoji: '📌', label: 'Outro' }
+      ];
+      html += tipos.map(t => `
+        <div class="ia-tipo-card" data-hint="${t.key}" onclick="selecionarHintIA('${t.key}')">
+          <div class="ia-tipo-emoji">${t.emoji}</div>
+          <div class="ia-tipo-label">${t.label}</div>
+        </div>
+      `).join('');
+    } else {
+      const tipos = [
+        { key: 'luz', emoji: '💡', label: 'Luz' },
+        { key: 'agua', emoji: '💧', label: 'Água' },
+        { key: 'gas', emoji: '🔥', label: 'Gás' },
+        { key: 'telefone', emoji: '📱', label: 'Telefone' },
+        { key: 'internet', emoji: '🌐', label: 'Internet' },
+        { key: 'tv', emoji: '📺', label: 'TV' },
+        { key: 'aluguel', emoji: '🏠', label: 'Aluguel' },
+        { key: 'condominio', emoji: '🏢', label: 'Condom.' },
+        { key: 'iptu', emoji: '🏛️', label: 'IPTU' },
+        { key: 'escola', emoji: '🎓', label: 'Escola' },
+        { key: 'plano_saude', emoji: '🏥', label: 'Saúde' },
+        { key: 'academia', emoji: '💪', label: 'Academia' },
+        { key: 'assinatura', emoji: '🎬', label: 'Stream' },
+        { key: 'consorcio', emoji: '🚗', label: 'Consórcio' },
+        { key: 'emprestimo', emoji: '💸', label: 'Empréstimo' },
+        { key: 'financiamento', emoji: '🏦', label: 'Financ.' },
+        { key: 'pensao', emoji: '👨‍👩‍👧', label: 'Pensão' },
+        { key: 'outro', emoji: '📋', label: 'Outro' }
+      ];
+      html += tipos.map(t => `
+        <div class="ia-tipo-card" data-hint="${t.key}" onclick="selecionarHintIA('${t.key}')">
+          <div class="ia-tipo-emoji">${t.emoji}</div>
+          <div class="ia-tipo-label">${t.label}</div>
+        </div>
+      `).join('');
+    }
+    html += '</div>';
+    
+    document.getElementById('ia-tipos-area').innerHTML = html;
+    
+    document.getElementById('modal-ia').classList.add('show');
+  };
+  
+  window.selecionarHintIA = function(hint) {
+    iaHintTipo = hint;
+    document.querySelectorAll('.ia-tipo-card').forEach(el => el.classList.toggle('active', el.dataset.hint === hint));
+    document.getElementById('upload-area').classList.remove('disabled');
+    document.getElementById('upload-sub-texto').textContent = 'Toque aqui pra enviar foto/print';
+  };
+  
+  window.abrirInputIA = function() {
+    if (!iaHintTipo) {
+      alert('⚠️ Selecione primeiro o tipo da imagem.');
+      return;
+    }
+    document.getElementById('input-ia').click();
+  };
   
   window.processarIA = async function(e) {
     const file = e.target.files[0];
     if (!file) return;
+    if (!iaHintTipo) {
+      alert('⚠️ Selecione o tipo da imagem primeiro.');
+      return;
+    }
     
-    document.getElementById('ia-vazio').classList.add('hidden');
+    document.getElementById('ia-conteudo').classList.add('hidden');
     document.getElementById('ia-analisando-area').classList.remove('hidden');
+    document.getElementById('ia-loading-sub').textContent = iaModoAlvo === 'conta' ? 'Extraindo banco, saldo, datas' : 'Extraindo valor e vencimento';
     
     const base64 = await fileToBase64(file);
     
     try {
+      const tipoFn = iaModoAlvo === 'conta' ? 'analisar_conta' : 'analisar_compromisso';
+      
       const resp = await fetch(IA_FUNCTION_URL, {
         method: 'POST',
         headers: {
@@ -1492,8 +2190,9 @@
           'Authorization': 'Bearer ' + SUPABASE_KEY
         },
         body: JSON.stringify({
-          tipo: 'analisar_conta',
+          tipo: tipoFn,
           imagem_base64: base64,
+          hint_tipo: iaHintTipo,
           max_tokens: 1500
         })
       });
@@ -1503,7 +2202,8 @@
       if (data.resultado && !data.resultado.erro) {
         fecharModal('modal-ia');
         setTimeout(() => {
-          abrirFormularioComDadosIA(data.resultado);
+          if (iaModoAlvo === 'conta') abrirContaComDadosIA(data.resultado);
+          else abrirCompromissoComDadosIA(data.resultado);
         }, 200);
       } else if (data.resultado?.erro) {
         document.getElementById('ia-analisando-area').classList.add('hidden');
@@ -1511,7 +2211,7 @@
         fecharModal('modal-ia');
       } else {
         document.getElementById('ia-analisando-area').classList.add('hidden');
-        alert('⚠️ IA não conseguiu processar. Cadastra manual.');
+        alert('⚠️ IA não conseguiu processar.');
         fecharModal('modal-ia');
       }
     } catch (err) {
@@ -1522,253 +2222,148 @@
     }
   };
   
-  /**
-   * Calcula próxima data de vencimento da fatura baseado no dia.
-   * Se hoje é dia X e venc é dia Y:
-   *   - Se Y > hoje (ainda não venceu esse mês): venc desse mês
-   *   - Senão (já passou): venc do próximo mês
-   */
-  function calcularProximoVencimento(diaVencimento) {
-    if (!diaVencimento) return null;
-    const hoje = new Date();
-    const ano = hoje.getFullYear();
-    const mes = hoje.getMonth();
-    const diaHoje = hoje.getDate();
-    
-    let dataVenc;
-    if (diaVencimento > diaHoje) {
-      dataVenc = new Date(ano, mes, diaVencimento);
+  // ============== DETALHE ==============
+  window.abrirDetalhe = function(tipo, id) {
+    if (tipo === 'conta') {
+      const c = contas.find(x => x.id === id);
+      if (!c) return;
+      detalheAtual = { tipo: 'conta', dados: c };
+      renderDetalheConta(c);
     } else {
-      dataVenc = new Date(ano, mes + 1, diaVencimento);
+      const c = compromissos.find(x => x.id === id);
+      if (!c) return;
+      detalheAtual = { tipo: 'compromisso', dados: c };
+      renderDetalheCompromisso(c);
     }
-    return dataVenc.toISOString().split('T')[0];
-  }
-  
-  window.salvarConta = async function() {
-    const nome = document.getElementById('f-nome').value.trim();
-    
-    if (!nome) {
-      document.getElementById('msg-form').className = 'msg show msg-error';
-      document.getElementById('msg-form').textContent = 'Preencha o nome da conta';
-      return;
-    }
-    
-    const isCartao = tipoSelecionado === 'cartao_credito';
-    const saldoInicial = isCartao ? 0 : valorParaNumero(document.getElementById('f-saldo').value);
-    const limite = isCartao ? valorParaNumero(document.getElementById('f-limite').value) : null;
-    const fechamento = isCartao ? (parseInt(document.getElementById('f-fechamento').value) || null) : null;
-    const vencimento = isCartao ? (parseInt(document.getElementById('f-vencimento').value) || null) : null;
-    const valorFatura = isCartao ? valorParaNumero(document.getElementById('f-fatura').value) : 0;
-    
-    const btn = document.getElementById('btn-salvar');
-    btn.disabled = true;
-    btn.textContent = 'Salvando...';
-    
-    const dados = {
-      nome,
-      tipo: tipoSelecionado,
-      banco: bancoSelecionado,
-      cor: corSelecionada,
-      icone: emojiSelecionado,
-      saldo_inicial: saldoInicial,
-      limite,
-      dia_fechamento: fechamento,
-      dia_vencimento: vencimento,
-      atualizado_em: new Date().toISOString()
-    };
-    
-    let contaId;
-    let result;
-    
-    if (editandoId) {
-      result = await supabase.from('contas').update(dados).eq('id', editandoId);
-      contaId = editandoId;
-    } else {
-      if (contas.length === 0 && !isCartao) dados.padrao = true;
-      dados.user_id = usuario.id;
-      result = await supabase.from('contas').insert(dados).select().single();
-      contaId = result.data?.id;
-    }
-    
-    if (result.error) {
-      document.getElementById('msg-form').className = 'msg show msg-error';
-      document.getElementById('msg-form').textContent = 'Erro: ' + result.error.message;
-      btn.disabled = false;
-      btn.textContent = editandoId ? 'Salvar' : 'Cadastrar conta';
-      return;
-    }
-    
-    // 💳 SE FOR CARTÃO COM FATURA, CADASTRA A DÍVIDA AUTOMATICAMENTE
-    let dividaCadastrada = false;
-    if (!editandoId && isCartao && valorFatura > 0) {
-      const dataVencimentoFatura = calcularProximoVencimento(vencimento) || new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0];
-      
-      const dadosDivida = {
-        user_id: usuario.id,
-        credor: bancoSelecionado || nome,
-        tipo: 'cartao',
-        descricao: `Fatura do cartão ${nome}`,
-        valor_original: valorFatura,
-        valor_atual: valorFatura,
-        data_vencimento: dataVencimentoFatura,
-        data_inicio: new Date().toISOString().split('T')[0],
-        status: 'ativa',
-        prioridade: 1,
-        conta_id: contaId,
-        observacoes: 'Cadastrada automaticamente via IA ao adicionar a conta'
-      };
-      
-      const { error: errDiv } = await supabase.from('dividas').insert(dadosDivida);
-      if (!errDiv) {
-        dividaCadastrada = true;
-      } else {
-        console.error('Erro ao cadastrar dívida:', errDiv);
-      }
-    }
-    
-    if (!editandoId) {
-      let xp = veiodaIA ? 25 : 15;
-      let textoXP = veiodaIA ? '+25 XP ✨ IA' : '+15 XP 🏦';
-      
-      if (dividaCadastrada) {
-        xp += 15;
-        textoXP = '+40 XP ✨ Conta + Fatura!';
-        await darXP(15, 'fatura_via_ia', 'Fatura cadastrada via IA: ' + nome);
-      }
-      
-      await darXP(veiodaIA ? 25 : 15, veiodaIA ? 'conta_via_ia' : 'conta_cadastrada', 'Conta cadastrada: ' + nome);
-      mostrarToast(textoXP);
-      
-      // Se cadastrou dívida, mostra alert depois do toast
-      if (dividaCadastrada) {
-        setTimeout(() => {
-          if (confirm('✅ Conta + fatura cadastradas com sucesso!\n\nQuer ver a fatura cadastrada em Dívidas agora?')) {
-            window.location.href = 'dividas.html?v=1';
-            return;
-          }
-        }, 2500);
-      }
-    }
-    
-    veiodaIA = false;
-    fecharModal('modal-form');
-    await carregarContas();
-    render();
+    document.getElementById('modal-detalhe').classList.add('show');
   };
   
-  window.abrirDetalhe = function(id) {
-    const c = contas.find(x => x.id === id);
-    if (!c) return;
-    detalheAtual = c;
-    
+  function renderDetalheConta(c) {
     const saldo = saldosCalculados[c.id] || 0;
     const ehCartao = c.tipo === 'cartao_credito';
     
     document.getElementById('detalhe-titulo').textContent = `${c.icone} ${c.nome}`;
-    document.getElementById('detalhe-tipo').textContent = tiposLabel[c.tipo] || '—';
-    document.getElementById('detalhe-inicial').textContent = `R$ ${formatarMoeda(c.saldo_inicial || 0)}`;
-    document.getElementById('detalhe-status').textContent = c.ativa ? '✓ Ativa' : '✗ Inativa';
     
-    document.getElementById('btn-toggle-ativa').textContent = c.ativa ? 'Desativar' : 'Reativar';
+    let html = `
+      <div class="saldo-total" style="margin-bottom:16px;">
+        <div class="saldo-label">${ehCartao ? 'Limite total' : 'Saldo atual'}</div>
+        <div class="saldo-valor ${ehCartao ? 'positivo' : (saldo >= 0 ? 'positivo' : 'negativo')}" style="color:${c.cor};">R$ ${formatarMoeda(ehCartao ? (c.limite || 0) : saldo)}</div>
+        <div class="saldo-sub">${tiposContaLabel[c.tipo]}</div>
+      </div>
+      <div class="detalhe-card">
+        <div class="detalhe-linha"><div class="detalhe-label">Tipo</div><div class="detalhe-valor">${tiposContaLabel[c.tipo]}</div></div>
+        <div class="detalhe-linha"><div class="detalhe-label">Banco</div><div class="detalhe-valor">${c.banco || '—'}</div></div>
+        ${!ehCartao ? `<div class="detalhe-linha"><div class="detalhe-label">Saldo inicial</div><div class="detalhe-valor">R$ ${formatarMoeda(c.saldo_inicial || 0)}</div></div>` : ''}
+        ${ehCartao && c.dia_fechamento ? `<div class="detalhe-linha"><div class="detalhe-label">Fechamento</div><div class="detalhe-valor">Dia ${c.dia_fechamento}</div></div>` : ''}
+        ${ehCartao && c.dia_vencimento ? `<div class="detalhe-linha"><div class="detalhe-label">Vencimento</div><div class="detalhe-valor">Dia ${c.dia_vencimento}</div></div>` : ''}
+        <div class="detalhe-linha"><div class="detalhe-label">Status</div><div class="detalhe-valor">${c.ativa ? '✓ Ativa' : '✗ Inativa'}</div></div>
+      </div>
+    `;
     
-    document.getElementById('linha-limite').style.display = ehCartao ? 'flex' : 'none';
-    document.getElementById('linha-fechamento').style.display = ehCartao && c.dia_fechamento ? 'flex' : 'none';
-    document.getElementById('linha-vencimento').style.display = ehCartao && c.dia_vencimento ? 'flex' : 'none';
+    document.getElementById('detalhe-area').innerHTML = html;
+    document.getElementById('detalhe-footer').innerHTML = `
+      <button class="btn btn-primary" onclick="editarConta()">Editar</button>
+      <button class="btn btn-secondary" onclick="toggleAtivaConta()">${c.ativa ? 'Desativar' : 'Reativar'}</button>
+      <button class="btn btn-danger" onclick="excluirConta()">Excluir conta</button>
+    `;
+  }
+  
+  function renderDetalheCompromisso(c) {
+    const cat = categoriasCompromisso[c.categoria] || categoriasCompromisso['outro'];
+    document.getElementById('detalhe-titulo').textContent = `${c.icone} ${c.nome}`;
     
-    if (ehCartao) {
-      document.getElementById('detalhe-limite').textContent = `R$ ${formatarMoeda(c.limite || 0)}`;
-      if (c.dia_fechamento) document.getElementById('detalhe-fechamento').textContent = `Dia ${c.dia_fechamento}`;
-      if (c.dia_vencimento) document.getElementById('detalhe-vencimento').textContent = `Dia ${c.dia_vencimento}`;
-    }
+    let html = `
+      <div class="saldo-total" style="margin-bottom:16px;">
+        <div class="saldo-label">Valor mensal</div>
+        <div class="saldo-valor negativo" style="color:${c.cor};">R$ ${formatarMoeda(c.valor)}</div>
+        <div class="saldo-sub">${cat.label}${c.dia_vencimento ? ' • Vence dia ' + c.dia_vencimento : ''}</div>
+      </div>
+      <div class="detalhe-card">
+        <div class="detalhe-linha"><div class="detalhe-label">Categoria</div><div class="detalhe-valor">${cat.label}</div></div>
+        <div class="detalhe-linha"><div class="detalhe-label">Tipo</div><div class="detalhe-valor">${c.tipo === 'recorrente' ? '🔁 Mensal' : c.tipo === 'parcelado' ? '📊 Parcelado' : '📅 Anual'}</div></div>
+        ${c.tipo === 'parcelado' && c.parcelas_total ? `<div class="detalhe-linha"><div class="detalhe-label">Parcelas</div><div class="detalhe-valor">${c.parcelas_pagas || 0} / ${c.parcelas_total}</div></div>` : ''}
+        ${c.observacoes ? `<div class="detalhe-linha"><div class="detalhe-label">Obs.</div><div class="detalhe-valor" style="font-size:11px;">${c.observacoes}</div></div>` : ''}
+        <div class="detalhe-linha"><div class="detalhe-label">Status</div><div class="detalhe-valor">${c.ativo ? '✓ Ativo' : '✗ Inativo'}</div></div>
+      </div>
+    `;
     
-    const saldoArea = document.getElementById('detalhe-saldo-area');
-    if (ehCartao) {
-      saldoArea.innerHTML = `
-        <div class="saldo-total" style="margin-bottom:16px;">
-          <div class="saldo-label">Limite total</div>
-          <div class="saldo-valor positivo" style="color:${c.cor};">R$ ${formatarMoeda(c.limite || 0)}</div>
-          <div class="saldo-sub">Cartão de crédito</div>
-        </div>
-      `;
-    } else {
-      saldoArea.innerHTML = `
-        <div class="saldo-total" style="margin-bottom:16px;">
-          <div class="saldo-label">Saldo atual</div>
-          <div class="saldo-valor ${saldo >= 0 ? 'positivo' : 'negativo'}" style="${saldo >= 0 ? 'color:'+c.cor : ''}">R$ ${formatarMoeda(saldo)}</div>
-          <div class="saldo-sub">Inicial + entradas - saídas</div>
-        </div>
-      `;
-    }
-    
-    document.getElementById('modal-detalhe').classList.add('show');
-  };
+    document.getElementById('detalhe-area').innerHTML = html;
+    document.getElementById('detalhe-footer').innerHTML = `
+      <button class="btn btn-secondary" onclick="toggleAtivoComp()">${c.ativo ? 'Desativar' : 'Reativar'}</button>
+      <button class="btn btn-danger" onclick="excluirComp()">Excluir e cancelar previstas</button>
+    `;
+  }
   
   window.editarConta = function() {
-    if (!detalheAtual) return;
-    editandoId = detalheAtual.id;
+    const c = detalheAtual.dados;
+    editandoId = c.id;
     veiodaIA = false;
     
-    document.getElementById('modal-form-titulo').textContent = 'Editar conta';
-    document.getElementById('btn-salvar').textContent = 'Salvar';
-    document.getElementById('msg-form').className = 'msg';
+    document.getElementById('modal-conta-titulo').textContent = 'Editar conta';
+    const btn = document.getElementById('btn-salvar-conta');
+    btn.textContent = 'Salvar';
+    btn.disabled = false;
+    document.getElementById('msg-conta').className = 'msg';
     document.getElementById('fatura-aberta-section').classList.add('hidden');
     
-    document.getElementById('f-nome').value = detalheAtual.nome;
-    document.getElementById('f-saldo').value = formatarMoeda(detalheAtual.saldo_inicial || 0);
-    document.getElementById('f-limite').value = detalheAtual.limite ? formatarMoeda(detalheAtual.limite) : '';
-    document.getElementById('f-fatura').value = '';
-    document.getElementById('f-fechamento').value = detalheAtual.dia_fechamento || '';
-    document.getElementById('f-vencimento').value = detalheAtual.dia_vencimento || '';
+    document.getElementById('c-nome').value = c.nome;
+    document.getElementById('c-saldo').value = formatarMoeda(c.saldo_inicial || 0);
+    document.getElementById('c-limite').value = c.limite ? formatarMoeda(c.limite) : '';
+    document.getElementById('c-fatura').value = '';
+    document.getElementById('c-fechamento').value = c.dia_fechamento || '';
+    document.getElementById('c-vencimento').value = c.dia_vencimento || '';
     
-    tipoSelecionado = detalheAtual.tipo;
-    corSelecionada = detalheAtual.cor;
-    emojiSelecionado = detalheAtual.icone;
-    bancoSelecionado = detalheAtual.banco;
+    tipoSelecionado = c.tipo;
+    corSelecionada = c.cor;
+    emojiSelecionado = c.icone;
+    bancoSelecionado = c.banco;
     
-    trocarTipo(detalheAtual.tipo, true);
+    trocarTipoConta(c.tipo, true);
     renderCoresGrid();
     renderEmojisGrid();
-    
-    document.querySelectorAll('.banco-preset').forEach(el => {
-      el.classList.toggle('active', el.dataset.banco === detalheAtual.banco);
-    });
+    document.querySelectorAll('.banco-preset').forEach(el => el.classList.toggle('active', el.dataset.banco === c.banco));
     
     fecharModal('modal-detalhe');
-    document.getElementById('modal-form').classList.add('show');
+    document.getElementById('modal-conta').classList.add('show');
   };
   
-  window.toggleAtiva = async function() {
-    if (!detalheAtual) return;
-    
-    await supabase.from('contas').update({ 
-      ativa: !detalheAtual.ativa,
-      atualizado_em: new Date().toISOString()
-    }).eq('id', detalheAtual.id);
-    
+  window.toggleAtivaConta = async function() {
+    const c = detalheAtual.dados;
+    await supabase.from('contas').update({ ativa: !c.ativa, atualizado_em: new Date().toISOString() }).eq('id', c.id);
     fecharModal('modal-detalhe');
-    await carregarContas();
+    await carregarTudo();
     render();
   };
   
   window.excluirConta = async function() {
-    if (!detalheAtual) return;
-    
-    const { count } = await supabase
-      .from('transacoes')
-      .select('*', { count: 'exact', head: true })
-      .eq('conta_id', detalheAtual.id);
-    
-    let msg = `Excluir "${detalheAtual.nome}"?`;
-    if (count > 0) {
-      msg += `\n\n⚠️ ${count} transação(ões) ficarão SEM conta vinculada.`;
-    }
-    msg += '\n\nNão pode ser desfeito.';
-    
-    if (!confirm(msg)) return;
-    
-    await supabase.from('contas').delete().eq('id', detalheAtual.id);
+    const c = detalheAtual.dados;
+    const { count } = await supabase.from('transacoes').select('*', { count: 'exact', head: true }).eq('conta_id', c.id);
+    let msg = `Excluir "${c.nome}"?`;
+    if (count > 0) msg += `\n\n⚠️ ${count} transação(ões) ficarão SEM conta vinculada.`;
+    if (!confirm(msg + '\n\nNão pode ser desfeito.')) return;
+    await supabase.from('contas').delete().eq('id', c.id);
     fecharModal('modal-detalhe');
-    await carregarContas();
+    await carregarTudo();
+    render();
+  };
+  
+  window.toggleAtivoComp = async function() {
+    const c = detalheAtual.dados;
+    await supabase.from('compromissos').update({ ativo: !c.ativo, atualizado_em: new Date().toISOString() }).eq('id', c.id);
+    fecharModal('modal-detalhe');
+    await carregarTudo();
+    render();
+  };
+  
+  window.excluirComp = async function() {
+    const c = detalheAtual.dados;
+    if (!confirm(`Excluir "${c.nome}"?\n\n⚠️ Todas as transações previstas vinculadas serão CANCELADAS.\n\nNão pode ser desfeito.`)) return;
+    // Cancela previstas vinculadas
+    await supabase.from('transacoes').delete().eq('compromisso_id', c.id).eq('status', 'prevista');
+    // Exclui compromisso
+    await supabase.from('compromissos').delete().eq('id', c.id);
+    fecharModal('modal-detalhe');
+    await carregarTudo();
     render();
   };
   
@@ -1786,9 +2381,7 @@
   }
   
   async function darXP(xp, acao, descricao) {
-    await supabase.from('historico_xp').insert({
-      user_id: usuario.id, acao, xp_ganho: xp, descricao
-    });
+    await supabase.from('historico_xp').insert({ user_id: usuario.id, acao, xp_ganho: xp, descricao });
     const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).single();
     await supabase.from('gamificacao').update({
       xp_total: (g?.xp_total || 0) + xp,
