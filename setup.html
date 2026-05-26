@@ -44,7 +44,10 @@
   .step-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2; }
   .step-subtitulo { font-size: 14px; color: var(--text-mute); line-height: 1.5; margin-bottom: 24px; }
   
-  .bancos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .secao-bancos-titulo { display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--text-mute); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin: 4px 4px 10px; }
+  .secao-bancos-titulo:not(:first-of-type) { margin-top: 16px; }
+  
+  .bancos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 12px; }
   .banco-card { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 14px 8px; text-align: center; cursor: pointer; transition: all 0.15s; min-height: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
   .banco-card:active { transform: scale(0.95); }
   .banco-card.active { background: var(--brand-soft); border-color: var(--brand); }
@@ -172,6 +175,9 @@
   .restaurando-emoji { font-size: 20px; }
   .restaurando-texto { font-size: 12px; color: var(--text); line-height: 1.4; }
   .restaurando-texto strong { color: var(--brand); }
+  
+  .lista-cadastrados { margin-top: 20px; }
+  .lista-cadastrados-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--text-mute); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
 </style>
 </head>
 <body>
@@ -199,7 +205,8 @@
   
   const TOTAL_PASSOS = 9;
   
-  const BANCOS = [
+  // 🆕 v3.3: bancos BR + internacionais
+  const BANCOS_BR = [
     { id: 'nubank', nome: 'Nubank', cor: '#820AD1', sigla: 'NU' },
     { id: 'itau', nome: 'Itaú', cor: '#EC7000', sigla: 'IT' },
     { id: 'bradesco', nome: 'Bradesco', cor: '#CC092F', sigla: 'BR' },
@@ -217,9 +224,25 @@
     { id: 'xp', nome: 'XP', cor: '#000000', sigla: 'XP' },
     { id: 'btg', nome: 'BTG', cor: '#001E50', sigla: 'BT' },
     { id: 'original', nome: 'Original', cor: '#6BBB16', sigla: 'OR' },
+    { id: 'pan', nome: 'Pan', cor: '#0F4C81', sigla: 'PN' },
+    { id: 'will', nome: 'Will', cor: '#7B2FF6', sigla: 'WL' },
+    { id: 'next', nome: 'Next', cor: '#00FF5F', sigla: 'NX' },
+    { id: 'bmg', nome: 'BMG', cor: '#FF6900', sigla: 'BM' }
+  ];
+  
+  const BANCOS_INTL = [
+    { id: 'wise', nome: 'Wise', cor: '#9FE870', sigla: 'WS', intl: true },
+    { id: 'nomad', nome: 'Nomad', cor: '#0066FF', sigla: 'NM', intl: true },
+    { id: 'revolut', nome: 'Revolut', cor: '#191C1F', sigla: 'RV', intl: true },
+    { id: 'avenue', nome: 'Avenue', cor: '#000000', sigla: 'AV', intl: true }
+  ];
+  
+  const OUTROS = [
     { id: 'carteira', nome: 'Dinheiro', cor: '#84cc16', sigla: '💵' },
     { id: 'outro', nome: 'Outro', cor: '#555555', sigla: '?' }
   ];
+  
+  const BANCOS = [...BANCOS_BR, ...BANCOS_INTL, ...OUTROS];
   
   const INSTRUCOES_CONTA = {
     'nubank': ['Abre o app Nubank', 'Tela inicial mostra o saldo no topo', 'Tira print da tela'],
@@ -231,6 +254,14 @@
     'inter': ['Abre Inter', 'Saldo da conta principal', 'Print'],
     'c6': ['Abre C6 Bank', 'Saldo na home', 'Print'],
     'picpay': ['Abre PicPay', 'Saldo da carteira', 'Print'],
+    'pan': ['Abre app Pan', 'Saldo na home', 'Print'],
+    'will': ['Abre Will Bank', 'Saldo no topo', 'Print'],
+    'next': ['Abre Next', 'Saldo na tela inicial', 'Print'],
+    'bmg': ['Abre app BMG', 'Saldo na home', 'Print'],
+    'wise': ['Abre Wise', 'Saldo em conta multimoeda', 'Print'],
+    'nomad': ['Abre Nomad', 'Saldo em dólar', 'Print'],
+    'revolut': ['Abre Revolut', 'Saldo na home', 'Print'],
+    'avenue': ['Abre Avenue', 'Saldo em USD', 'Print'],
     'default': ['Abre o app do banco', 'Localiza o saldo', 'Tira print']
   };
   
@@ -242,6 +273,14 @@
     'bb': ['BB → Cartões → Fatura aberta', 'Print'],
     'inter': ['Inter → Cartão → Fatura atual', 'Print'],
     'c6': ['C6 → Cartões → Fatura', 'Print'],
+    'pan': ['Pan → Cartão de crédito', 'Fatura atual', 'Print'],
+    'will': ['Will → Cartão', 'Fatura', 'Print'],
+    'next': ['Next → Cartões', 'Fatura', 'Print'],
+    'bmg': ['BMG → Cartão de crédito', 'Fatura', 'Print'],
+    'wise': ['Wise → Card', 'Limite e fatura', 'Print'],
+    'nomad': ['Nomad → Cartão', 'Limite e fatura', 'Print'],
+    'revolut': ['Revolut → Card', 'Fatura mensal', 'Print'],
+    'avenue': ['Avenue → Cartão', 'Fatura', 'Print'],
     'default': ['App do banco → Cartões → Fatura atual', 'Print']
   };
   
@@ -281,22 +320,19 @@
     
     if (perfil.setup_concluido) { window.location.href = 'home.html?v=' + Date.now(); return; }
     
-    // 🔥 v3.2 FIX: RECONSTRÓI ESTADO DO BANCO
     await reconstruirEstadoCompleto();
     
     renderPasso();
   })();
   
   // ============================================
-  // 🔥 v3.2: RECONSTRÓI ESTADO PÓS-REFRESH
+  // 🔥 v3.3: RECONSTRÓI ESTADO MAS NÃO PULA PASSO
   // ============================================
   
   async function reconstruirEstadoCompleto() {
     try {
-      // Restaura objetivo
       objetivoPrincipal = perfil.objetivo_principal || null;
       
-      // Busca tudo que já foi cadastrado
       const [contasRes, cartoesRes, rendasRes, despRes, divsRes] = await Promise.all([
         supabase.from('contas').select('*').eq('user_id', usuario.id).neq('tipo', 'cartao_credito').eq('ativa', true),
         supabase.from('contas').select('*').eq('user_id', usuario.id).eq('tipo', 'cartao_credito').eq('ativa', true),
@@ -311,14 +347,14 @@
       despesasAdicionadas = despRes.data || [];
       dividasAdicionadas = divsRes.data || [];
       
-      // Reconstrói bancosSelecionados das contas reais
+      // Reconstrói bancosSelecionados das contas
       const bancosUsados = new Set();
       contasAdicionadas.forEach(c => {
         const banco = BANCOS.find(b => b.nome === c.banco || (c.tipo === 'carteira' && b.id === 'carteira'));
         if (banco) bancosUsados.add(banco.id);
       });
       
-      // Reconstrói bancosCartoes
+      // Reconstrói bancosCartoes e qtdPorBanco
       const bancosCart = new Set();
       const qtdCart = {};
       cartoesAdicionados.forEach(c => {
@@ -333,20 +369,21 @@
       qtdPorBanco = qtdCart;
       if (cartoesAdicionados.length > 0) temCartoes = true;
       
-      // Passo do banco: usa o que tá no perfil OU calcula pelo que já cadastrou
       passoAtual = perfil.setup_passo_atual || 0;
       
-      // Detecta se há restauração visual a fazer
+      // 🔥 v3.3: Reconstrói bancosSelecionados sempre que houver contas (independente do passo)
+      if (bancosUsados.size > 0) {
+        bancosSelecionados = Array.from(bancosUsados);
+      }
+      
+      // ❌ v3.3: NÃO calcula bancoIndexAtual aqui (era o bug do pular)
+      // Vamos deixar começar do 0, e o usuário decide se continua ou avança manualmente
+      bancoIndexAtual = 0;
+      
       if (contasAdicionadas.length > 0 || cartoesAdicionados.length > 0 || 
           rendasAdicionadas.length > 0 || despesasAdicionadas.length > 0 || 
           dividasAdicionadas.length > 0 || objetivoPrincipal) {
         restaurouEstado = true;
-      }
-      
-      // Lista de bancos selecionados precisa incluir os do passo 3 atual
-      // Se passou do passo 3, pega bancos que tem contas
-      if (passoAtual >= 3) {
-        bancosSelecionados = Array.from(bancosUsados);
       }
       
     } catch (e) {
@@ -376,7 +413,7 @@
     if (despesasAdicionadas.length > 0) itens.push(`${despesasAdicionadas.length} despesa${despesasAdicionadas.length === 1 ? '' : 's'}`);
     if (dividasAdicionadas.length > 0) itens.push(`${dividasAdicionadas.length} dívida${dividasAdicionadas.length === 1 ? '' : 's'}`);
     if (itens.length === 0) return '';
-    return `<div class="restaurando-banner"><div class="restaurando-emoji">🦔</div><div class="restaurando-texto">Continuando de onde você parou: <strong>${itens.join(', ')}</strong> já cadastrado${itens.length === 1 ? '' : 's'}. Pode continuar!</div></div>`;
+    return `<div class="restaurando-banner"><div class="restaurando-emoji">🦔</div><div class="restaurando-texto">Continuando de onde parou: <strong>${itens.join(', ')}</strong> já cadastrado${itens.length === 1 ? '' : 's'}.</div></div>`;
   }
   
   window.proximoPasso = function() {
@@ -384,7 +421,15 @@
   };
   
   window.voltarPasso = function() {
-    if (passoAtual > 0) { passoAtual--; renderPasso(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    if (passoAtual > 0) { 
+      passoAtual--; 
+      // Reseta índices ao voltar pra não pular automático
+      bancoIndexAtual = 0;
+      bancoCartaoIdx = 0;
+      cartaoIdx = 0;
+      renderPasso(); 
+      window.scrollTo({ top: 0, behavior: 'smooth' }); 
+    }
   };
   
   window.pularSetup = async function() {
@@ -403,14 +448,14 @@
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
           <div class="tatu-titulo">Tatu, seu consultor</div>
-          <div class="tatu-texto">Oi <strong>${pnome}</strong>! Eu sou o Tatu, vou te ajudar a configurar tudo.<br><br>Vamos passar uns <strong>20-40 minutos</strong> juntos pra eu te conhecer. No final, vou te entregar um <strong>plano financeiro personalizado</strong> pra sua vida.<br><br>Vai ser tipo uma <strong>consulta com um consultor</strong>: você para uma vez, alimenta tudo, depois nunca mais.</div>
+          <div class="tatu-texto">Oi <strong>${pnome}</strong>! Eu sou o Tatu, vou te ajudar a configurar tudo.<br><br>Vamos passar uns <strong>20-40 minutos</strong> juntos pra eu te conhecer. No final, vou te entregar um <strong>plano financeiro personalizado</strong>.</div>
         </div>
       </div>
       <div class="form-card" style="background:linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%);border-color:var(--brand);">
         <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;margin-bottom:10px;">📋 O que vamos cadastrar</div>
         <div style="display:grid;gap:8px;">
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>🎯</span> Seu objetivo financeiro</div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>🏦</span> Suas contas em bancos</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>🏦</span> Suas contas (BR + internacionais)</div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💳</span> Cartões de crédito + faturas</div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💰</span> Sua renda mensal</div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>📋</span> Despesas fixas (com foto do boleto!)</div>
@@ -430,7 +475,7 @@
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
           <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">Qual seu <strong>foco principal</strong> agora? Isso ajuda a direcionar tudo do app pra você.</div>
+          <div class="tatu-texto">Qual seu <strong>foco principal</strong> agora?</div>
         </div>
       </div>
       <div class="step-titulo">Qual seu foco agora?</div>
@@ -471,9 +516,9 @@
     proximoPasso();
   };
   
-  // ============ PASSO 3 ============
+  // ============ PASSO 3 — BANCOS ============
   function renderP3() {
-    // Se já tem contas cadastradas, pré-seleciona bancos delas
+    // Pré-seleciona bancos das contas já cadastradas
     if (bancosSelecionados.length === 0 && contasAdicionadas.length > 0) {
       contasAdicionadas.forEach(c => {
         const banco = BANCOS.find(b => b.nome === c.banco || (c.tipo === 'carteira' && b.id === 'carteira'));
@@ -487,15 +532,37 @@
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
           <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">Em quais bancos você tem <strong>conta</strong>? Toca em todos que usa.</div>
+          <div class="tatu-texto">Em quais bancos você tem <strong>conta</strong>? Marca todos que usa, inclusive contas internacionais.</div>
         </div>
       </div>
       <div class="step-titulo">Quais bancos você usa?</div>
       <div class="step-subtitulo">Toque pra selecionar. Pode ser mais de um.</div>
+      
+      <div class="secao-bancos-titulo">🇧🇷 Bancos brasileiros</div>
       <div class="bancos-grid">
-        ${BANCOS.map(b => `
+        ${BANCOS_BR.map(b => `
           <div class="banco-card ${bancosSelecionados.includes(b.id) ? 'active' : ''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')">
             <div class="banco-logo" style="background:${b.cor};${b.cor === '#FFEF38' ? 'color:#000;' : ''}">${b.sigla}</div>
+            <div class="banco-nome">${b.nome}</div>
+          </div>
+        `).join('')}
+      </div>
+      
+      <div class="secao-bancos-titulo">🌎 Contas internacionais</div>
+      <div class="bancos-grid">
+        ${BANCOS_INTL.map(b => `
+          <div class="banco-card ${bancosSelecionados.includes(b.id) ? 'active' : ''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')">
+            <div class="banco-logo" style="background:${b.cor};">${b.sigla}</div>
+            <div class="banco-nome">${b.nome}</div>
+          </div>
+        `).join('')}
+      </div>
+      
+      <div class="secao-bancos-titulo">💵 Outros</div>
+      <div class="bancos-grid">
+        ${OUTROS.map(b => `
+          <div class="banco-card ${bancosSelecionados.includes(b.id) ? 'active' : ''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')">
+            <div class="banco-logo" style="background:${b.cor};">${b.sigla}</div>
             <div class="banco-nome">${b.nome}</div>
           </div>
         `).join('')}
@@ -513,43 +580,35 @@
     if (btn) btn.disabled = bancosSelecionados.length === 0;
   };
   
-  // ============ PASSO 4 ============
+  // ============ PASSO 4 — CONTAS (FIX v3.3) ============
   function renderP4() {
     if (bancosSelecionados.length === 0) { proximoPasso(); return; }
-    
-    // Calcula o próximo banco que NÃO tem conta cadastrada
-    if (bancoIndexAtual === 0 && contasAdicionadas.length > 0) {
-      // Encontra primeiro banco selecionado que ainda não tem conta
-      for (let i = 0; i < bancosSelecionados.length; i++) {
-        const bId = bancosSelecionados[i];
-        const banco = BANCOS.find(b => b.id === bId);
-        const jaTem = contasAdicionadas.some(c => 
-          c.banco === banco.nome || (banco.id === 'carteira' && c.tipo === 'carteira')
-        );
-        if (!jaTem) { bancoIndexAtual = i; break; }
-        if (i === bancosSelecionados.length - 1) { bancoIndexAtual = bancosSelecionados.length; }
-      }
-    }
-    
     if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); return; }
     
     const bId = bancosSelecionados[bancoIndexAtual];
     const banco = BANCOS.find(b => b.id === bId);
+    if (!banco) { bancoIndexAtual++; renderP4(); return; }
+    
     const passos = INSTRUCOES_CONTA[bId] || INSTRUCOES_CONTA.default;
     const ehCart = bId === 'carteira';
+    
+    // Verifica se ESSE banco já tem conta cadastrada
+    const jaTemConta = contasAdicionadas.some(c => 
+      c.banco === banco.nome || (banco.id === 'carteira' && c.tipo === 'carteira')
+    );
     
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
           <div class="tatu-titulo">Tatu te ensina</div>
-          <div class="tatu-texto">Conta do <strong>${banco.nome}</strong>. ${ehCart ? 'Quanto tem em dinheiro vivo agora?' : 'Segue os passos pra pegar o saldo.'}</div>
+          <div class="tatu-texto">${jaTemConta ? `Você já cadastrou ${banco.nome}. Quer adicionar OUTRA conta desse banco ou ir pro próximo?` : `Conta do ${banco.nome}. ${ehCart ? 'Quanto tem em dinheiro vivo?' : 'Segue os passos pra pegar o saldo.'}`}</div>
         </div>
       </div>
       <div class="step-titulo" style="display:flex;align-items:center;gap:10px;">
         <div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>${banco.nome}
       </div>
-      <div class="step-subtitulo">Conta ${bancoIndexAtual + 1} de ${bancosSelecionados.length}</div>
+      <div class="step-subtitulo">Banco ${bancoIndexAtual + 1} de ${bancosSelecionados.length}${jaTemConta ? ' • já cadastrado' : ''}</div>
       
       ${!ehCart ? `
       <div class="instrucao-card">
@@ -559,12 +618,12 @@
       <div class="opcoes-acao">
         <div class="opcao-btn ia" onclick="abrirFoto('conta', '${bId}')">
           <div class="opcao-btn-icon">📸</div>
-          <div class="opcao-btn-titulo">Mandar foto</div>
+          <div class="opcao-btn-titulo">${jaTemConta ? 'Mais uma foto' : 'Mandar foto'}</div>
           <div class="opcao-btn-sub">IA lê o saldo</div>
         </div>
         <div class="opcao-btn" onclick="manualConta('${bId}')">
           <div class="opcao-btn-icon">✍️</div>
-          <div class="opcao-btn-titulo">Digitar manual</div>
+          <div class="opcao-btn-titulo">${jaTemConta ? 'Outra manual' : 'Digitar manual'}</div>
           <div class="opcao-btn-sub">Você preenche</div>
         </div>
       </div>
@@ -579,8 +638,8 @@
       `}
       
       ${contasAdicionadas.length > 0 ? `
-        <div style="margin-top:20px;">
-          <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;">✅ Já cadastradas (${contasAdicionadas.length})</div>
+        <div class="lista-cadastrados">
+          <div class="lista-cadastrados-titulo">✅ Todas cadastradas (${contasAdicionadas.length})</div>
           ${contasAdicionadas.map(c => `
             <div class="item-cadastrado">
               <div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">${c.icone}</div>
@@ -596,16 +655,33 @@
         </div>
       ` : ''}
     `;
+    
+    const ehUltimo = bancoIndexAtual + 1 === bancosSelecionados.length;
     document.getElementById('footer-content').innerHTML = `
-      <button class="btn btn-back" onclick="voltarPasso()">‹</button>
-      <button class="btn btn-primary" onclick="pularBanco()">${bancoIndexAtual + 1 === bancosSelecionados.length ? 'Próximo →' : 'Pular esse →'}</button>
+      <button class="btn btn-back" onclick="voltarBancoOuPasso()">‹</button>
+      <button class="btn btn-primary" onclick="proximoBancoOuPasso()">${ehUltimo ? 'Próximo passo →' : (jaTemConta ? 'Próximo banco →' : 'Pular esse →')}</button>
     `;
   }
   
-  window.pularBanco = function() {
+  window.voltarBancoOuPasso = function() {
+    if (bancoIndexAtual > 0) {
+      bancoIndexAtual--;
+      renderP4();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      voltarPasso();
+    }
+  };
+  
+  window.proximoBancoOuPasso = function() {
     bancoIndexAtual++;
-    if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); }
-    else { renderP4(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    if (bancoIndexAtual >= bancosSelecionados.length) { 
+      bancoIndexAtual = 0; 
+      proximoPasso(); 
+    } else { 
+      renderP4(); 
+      window.scrollTo({ top: 0, behavior: 'smooth' }); 
+    }
   };
   
   window.excluirConta = async function(id) {
@@ -646,7 +722,7 @@
     const tipo = document.getElementById('mc-tipo').value;
     const saldo = valorParaNumero(document.getElementById('mc-saldo').value);
     const banco = BANCOS.find(b => b.id === bId);
-    if (saldo === null || isNaN(saldo)) { alert('Informe o saldo (pode ser 0,00 ou negativo)'); return; }
+    if (saldo === null || isNaN(saldo)) { alert('Informe o saldo'); return; }
     const emojis = { 'conta_corrente': '🏦', 'poupanca': '🐷', 'investimento': '📈' };
     try {
       const { data, error } = await supabase.from('contas').insert({
@@ -657,11 +733,7 @@
       contasAdicionadas.push(data);
       await darXP(15, 'conta_setup', 'Setup: ' + banco.nome);
       toast('+15 XP 🏦 Conta salva!');
-      setTimeout(() => {
-        bancoIndexAtual++;
-        if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); }
-        else { renderP4(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-      }, 800);
+      setTimeout(() => renderP4(), 800);
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
@@ -677,39 +749,15 @@
       contasAdicionadas.push(data);
       await darXP(15, 'carteira_setup', 'Setup: Carteira');
       toast('+15 XP 💵 Carteira salva!');
-      setTimeout(() => {
-        bancoIndexAtual++;
-        if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); }
-        else { renderP4(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-      }, 800);
+      setTimeout(() => renderP4(), 800);
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  // ============ PASSO 5 ============
+  // ============ PASSO 5 — CARTÕES (FIX v3.3) ============
   function renderP5() {
     if (temCartoes === null) { renderP5_Pergunta(); return; }
     if (temCartoes === false) { proximoPasso(); return; }
     if (bancosCartoes.length === 0) { renderP5_SelBancos(); return; }
-    
-    // Calcula posição atual baseado em cartões já cadastrados
-    if (bancoCartaoIdx === 0 && cartaoIdx === 0 && cartoesAdicionados.length > 0) {
-      // Encontra primeiro banco/cartão que não foi cadastrado
-      let encontrou = false;
-      for (let i = 0; i < bancosCartoes.length; i++) {
-        const bId = bancosCartoes[i];
-        const banco = BANCOS.find(b => b.id === bId);
-        const qtdEsperada = qtdPorBanco[bId] || 0;
-        const qtdJa = cartoesAdicionados.filter(c => c.banco === banco.nome).length;
-        if (qtdJa < qtdEsperada) {
-          bancoCartaoIdx = i;
-          cartaoIdx = qtdJa;
-          encontrou = true;
-          break;
-        }
-      }
-      if (!encontrou) { bancoCartaoIdx = bancosCartoes.length; cartaoIdx = 0; }
-    }
-    
     if (bancoCartaoIdx >= bancosCartoes.length) { bancoCartaoIdx = 0; cartaoIdx = 0; renderP5_Resumo(); return; }
     
     const bId = bancosCartoes[bancoCartaoIdx];
@@ -724,7 +772,7 @@
       ${bannerRestauracao()}
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Agora os <strong>cartões de crédito</strong>. Você pode mandar foto da fatura OU preencher manual.</div></div>
+        <div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Agora os <strong>cartões de crédito</strong>. Pode mandar foto da fatura OU preencher manual.</div></div>
       </div>
       <div class="step-titulo">Você tem cartão de crédito?</div>
       <div class="step-subtitulo">Se tiver, vou pedir limite, dias e fatura.</div>
@@ -733,14 +781,16 @@
         <div class="sim-nao-btn nao" onclick="respCartoes(false)"><div class="sim-nao-btn-emoji">🚫</div>Não tenho</div>
       </div>
       ${cartoesAdicionados.length > 0 ? `
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:20px 0 10px;">✅ Já cadastrados (${cartoesAdicionados.length})</div>
-        ${cartoesAdicionados.map(c => `
-          <div class="item-cadastrado">
-            <div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div>
-            <div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)}</div></div>
-            <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div>
-          </div>
-        `).join('')}
+        <div class="lista-cadastrados">
+          <div class="lista-cadastrados-titulo">✅ Já cadastrados (${cartoesAdicionados.length})</div>
+          ${cartoesAdicionados.map(c => `
+            <div class="item-cadastrado">
+              <div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div>
+              <div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)}</div></div>
+              <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div>
+            </div>
+          `).join('')}
+        </div>
       ` : ''}
     `;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()" ${cartoesAdicionados.length === 0 ? 'disabled' : ''}>Continuar →</button>`;
@@ -749,35 +799,38 @@
   window.respCartoes = function(r) { temCartoes = r; if (r) renderP5_SelBancos(); else proximoPasso(); };
   
   window.excluirCartao = async function(id) {
-    if (!confirm('Excluir esse cartão e fatura vinculada?')) return;
+    if (!confirm('Excluir esse cartão e fatura?')) return;
     try {
       await supabase.from('transacoes').delete().eq('conta_id', id);
       await supabase.from('dividas').delete().eq('conta_id', id);
       await supabase.from('contas').delete().eq('id', id);
       cartoesAdicionados = cartoesAdicionados.filter(c => c.id !== id);
       dividasAdicionadas = dividasAdicionadas.filter(d => d.conta_id !== id);
-      
-      // Reconta qtdPorBanco
-      const novoQtd = {};
-      cartoesAdicionados.forEach(c => {
-        const banco = BANCOS.find(b => b.nome === c.banco);
-        if (banco) novoQtd[banco.id] = (novoQtd[banco.id] || 0) + 1;
-      });
-      // Mantém qtd original ou ajusta
-      
       renderP5();
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
   function renderP5_SelBancos() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">De quais bancos são seus cartões? Marca todos.</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">De quais bancos são seus cartões?</div></div></div>
       <div class="step-titulo">Bancos dos cartões</div>
       <div class="step-subtitulo">Toque nos bancos onde tem cartão.</div>
+      
+      <div class="secao-bancos-titulo">🇧🇷 Bancos brasileiros</div>
       <div class="bancos-grid">
-        ${BANCOS.filter(b => b.id !== 'carteira').map(b => `
+        ${BANCOS_BR.map(b => `
           <div class="banco-card ${bancosCartoes.includes(b.id) ? 'active' : ''}" data-bc="${b.id}" onclick="togBC('${b.id}')">
             <div class="banco-logo" style="background:${b.cor};${b.cor === '#FFEF38' ? 'color:#000;' : ''}">${b.sigla}</div>
+            <div class="banco-nome">${b.nome}</div>
+          </div>
+        `).join('')}
+      </div>
+      
+      <div class="secao-bancos-titulo">🌎 Internacionais</div>
+      <div class="bancos-grid">
+        ${BANCOS_INTL.map(b => `
+          <div class="banco-card ${bancosCartoes.includes(b.id) ? 'active' : ''}" data-bc="${b.id}" onclick="togBC('${b.id}')">
+            <div class="banco-logo" style="background:${b.cor};">${b.sigla}</div>
             <div class="banco-nome">${b.nome}</div>
           </div>
         `).join('')}
@@ -858,8 +911,8 @@
       </div>
       
       ${cartoesAdicionados.length > 0 ? `
-        <div style="margin-top:20px;">
-          <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;">✅ Já cadastrados (${cartoesAdicionados.length})</div>
+        <div class="lista-cadastrados">
+          <div class="lista-cadastrados-titulo">✅ Já cadastrados (${cartoesAdicionados.length})</div>
           ${cartoesAdicionados.map(c => `
             <div class="item-cadastrado">
               <div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div>
@@ -917,7 +970,7 @@
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">O cartão <strong>${cartaoTemp.nome}</strong> tem fatura em aberto?</div></div></div>
       <div class="step-titulo">Tem fatura em aberto?</div>
-      <div class="step-subtitulo">Pode ser aberta (consumindo) ou fechada (aguardando pagar).</div>
+      <div class="step-subtitulo">Pode ser aberta ou fechada.</div>
       <div class="sim-nao-grid">
         <div class="sim-nao-btn sim" onclick="respFat(true)"><div class="sim-nao-btn-emoji">💸</div>Sim, tem</div>
         <div class="sim-nao-btn nao" onclick="respFat(false)"><div class="sim-nao-btn-emoji">✨</div>Não, zerada</div>
@@ -1021,12 +1074,12 @@
     const totalDiv = dividasAdicionadas.filter(d => d.tipo === 'cartao').reduce((a, d) => a + Number(d.valor_atual || 0), 0);
     const atrasadas = dividasAdicionadas.filter(d => d.tipo === 'cartao' && d.prioridade === 1).length;
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🎉</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Pronto! <strong>${cartoesAdicionados.length} cartões</strong> cadastrados. ${totalDiv > 0 ? `Total fatura: <strong>R$ ${formatarMoeda(totalDiv)}</strong>.` : ''} ${atrasadas > 0 ? `<br><br>⚠️ <strong>${atrasadas} fatura${atrasadas > 1 ? 's' : ''} atrasada${atrasadas > 1 ? 's' : ''}</strong>! Te ajudo a negociar depois.` : ''}</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🎉</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Pronto! <strong>${cartoesAdicionados.length} cartões</strong>. ${totalDiv > 0 ? `Total fatura: <strong>R$ ${formatarMoeda(totalDiv)}</strong>.` : ''} ${atrasadas > 0 ? `<br>⚠️ <strong>${atrasadas} atrasada${atrasadas > 1 ? 's' : ''}</strong>!` : ''}</div></div></div>
       <div class="step-titulo">Cartões cadastrados</div>
       ${cartoesAdicionados.map(c => `
         <div class="item-cadastrado">
           <div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div>
-          <div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)} ${c.dia_vencimento ? `• Vence dia ${c.dia_vencimento}` : ''}</div></div>
+          <div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)}</div></div>
           <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div>
         </div>
       `).join('')}
@@ -1034,11 +1087,11 @@
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">Próximo →</button>`;
   }
   
-  // ============ PASSO 6 ============
+  // ============ PASSO 6 — RENDA ============
   function renderP6() {
     document.getElementById('container').innerHTML = `
       ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Sua <strong>renda mensal</strong>. Tudo que entra todo mês: salário, freela, aluguel recebido.</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Sua <strong>renda mensal</strong>. Tudo que entra todo mês.</div></div></div>
       <div class="step-titulo">Sua renda mensal</div>
       <div class="step-subtitulo">Adicione todas as fontes.</div>
       <div class="opcoes-acao">
@@ -1049,21 +1102,23 @@
         </div>
       </div>
       ${rendasAdicionadas.length > 0 ? `
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:20px 0 10px;">✅ Cadastradas (${rendasAdicionadas.length})</div>
-        ${rendasAdicionadas.map(r => `
-          <div class="item-cadastrado">
-            <div class="item-icone-mini" style="background:${r.cor || '#00d97e'}30;color:${r.cor || '#00d97e'};">${r.icone || '💰'}</div>
-            <div class="item-info-mini"><div class="item-nome-mini">${r.nome}</div><div class="item-valor-mini positivo">+R$ ${formatarMoeda(r.valor)}/mês</div></div>
-            <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirRenda('${r.id}')">✕</div></div>
-          </div>
-        `).join('')}
+        <div class="lista-cadastrados">
+          <div class="lista-cadastrados-titulo">✅ Cadastradas (${rendasAdicionadas.length})</div>
+          ${rendasAdicionadas.map(r => `
+            <div class="item-cadastrado">
+              <div class="item-icone-mini" style="background:${r.cor || '#00d97e'}30;color:${r.cor || '#00d97e'};">${r.icone || '💰'}</div>
+              <div class="item-info-mini"><div class="item-nome-mini">${r.nome}</div><div class="item-valor-mini positivo">+R$ ${formatarMoeda(r.valor)}/mês</div></div>
+              <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirRenda('${r.id}')">✕</div></div>
+            </div>
+          `).join('')}
+        </div>
       ` : `<div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;"><div style="font-size:36px;margin-bottom:10px;">💰</div><div style="font-size:13px;color:var(--text-mute);">Nenhuma renda ainda</div></div>`}
     `;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${rendasAdicionadas.length > 0 ? 'Continuar →' : 'Pular →'}</button>`;
   }
   
   window.excluirRenda = async function(id) {
-    if (!confirm('Excluir essa renda e transações previstas?')) return;
+    if (!confirm('Excluir essa renda?')) return;
     try {
       await supabase.from('transacoes').delete().eq('renda_id', id);
       await supabase.from('rendas').delete().eq('id', id);
@@ -1074,7 +1129,7 @@
   
   window.manualRenda = function() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Cadastra a fonte de renda. Vou gerar entradas previstas todo mês!</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Cadastra a fonte de renda.</div></div></div>
       <div class="step-titulo">Nova renda</div>
       <div class="form-card">
         <div class="field">
@@ -1132,11 +1187,11 @@
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  // ============ PASSO 7 ============
+  // ============ PASSO 7 — DESPESAS ============
   function renderP7() {
     document.getElementById('container').innerHTML = `
       ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>Despesas fixas</strong>: luz, água, internet, aluguel, streaming. Pode <strong>tirar foto do boleto</strong> que eu cadastro!</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>Despesas fixas</strong>: luz, água, internet, aluguel. Tira foto do boleto!</div></div></div>
       <div class="step-titulo">Despesas fixas mensais</div>
       <div class="step-subtitulo">Tudo que vence todo mês.</div>
       <div class="opcoes-acao">
@@ -1152,21 +1207,23 @@
         </div>
       </div>
       ${despesasAdicionadas.length > 0 ? `
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:20px 0 10px;">✅ Cadastradas (${despesasAdicionadas.length})</div>
-        ${despesasAdicionadas.map(d => `
-          <div class="item-cadastrado">
-            <div class="item-icone-mini" style="background:${d.cor || '#ffb800'}30;color:${d.cor || '#ffb800'};">${d.icone || '📋'}</div>
-            <div class="item-info-mini"><div class="item-nome-mini">${d.nome}</div><div class="item-valor-mini danger">-R$ ${formatarMoeda(d.valor)}/mês</div></div>
-            <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDesp('${d.id}')">✕</div></div>
-          </div>
-        `).join('')}
+        <div class="lista-cadastrados">
+          <div class="lista-cadastrados-titulo">✅ Cadastradas (${despesasAdicionadas.length})</div>
+          ${despesasAdicionadas.map(d => `
+            <div class="item-cadastrado">
+              <div class="item-icone-mini" style="background:${d.cor || '#ffb800'}30;color:${d.cor || '#ffb800'};">${d.icone || '📋'}</div>
+              <div class="item-info-mini"><div class="item-nome-mini">${d.nome}</div><div class="item-valor-mini danger">-R$ ${formatarMoeda(d.valor)}/mês</div></div>
+              <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDesp('${d.id}')">✕</div></div>
+            </div>
+          `).join('')}
+        </div>
       ` : `<div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;"><div style="font-size:36px;margin-bottom:10px;">📋</div><div style="font-size:13px;color:var(--text-mute);">Nenhuma despesa ainda</div></div>`}
     `;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${despesasAdicionadas.length > 0 ? 'Continuar →' : 'Pular →'}</button>`;
   }
   
   window.excluirDesp = async function(id) {
-    if (!confirm('Excluir essa despesa e transações previstas?')) return;
+    if (!confirm('Excluir essa despesa?')) return;
     try {
       await supabase.from('transacoes').delete().eq('compromisso_id', id);
       await supabase.from('compromissos').delete().eq('id', id);
@@ -1177,7 +1234,7 @@
   
   window.manualDesp = function() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Preenche os dados. Vou gerar contas previstas pros próximos 12 meses!</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Preenche os dados.</div></div></div>
       <div class="step-titulo">Nova despesa fixa</div>
       <div class="form-card">
         <div class="field">
@@ -1254,12 +1311,12 @@
     } catch (e) { alert('Erro: ' + e.message); }
   }
   
-  // ============ PASSO 8 ============
+  // ============ PASSO 8 — DÍVIDAS ============
   function renderP8() {
     const outrasDivs = dividasAdicionadas.filter(d => d.tipo !== 'cartao');
     document.getElementById('container').innerHTML = `
       ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Tem <strong>outras dívidas</strong>? Empréstimo, financiamento, loja, cheque especial? Pode tirar foto do contrato ou print de negociação!</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Tem <strong>outras dívidas</strong>? Empréstimo, financiamento, loja?</div></div></div>
       <div class="step-titulo">Outras dívidas?</div>
       <div class="step-subtitulo">Empréstimos, financiamentos, cheque especial...</div>
       <div class="opcoes-acao">
@@ -1275,15 +1332,17 @@
         </div>
       </div>
       ${outrasDivs.length > 0 ? `
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:20px 0 10px;">✅ Cadastradas (${outrasDivs.length})</div>
-        ${outrasDivs.map(d => `
-          <div class="item-cadastrado" style="border-color:var(--danger);">
-            <div class="item-icone-mini" style="background:var(--danger-soft);color:var(--danger);">💸</div>
-            <div class="item-info-mini"><div class="item-nome-mini">${d.credor}</div><div class="item-valor-mini danger">R$ ${formatarMoeda(d.valor_atual)}</div></div>
-            <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDiv('${d.id}')">✕</div></div>
-          </div>
-        `).join('')}
-      ` : `<div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;"><div style="font-size:36px;margin-bottom:10px;">🎉</div><div style="font-size:13px;color:var(--text-mute);">Sem outras dívidas? Que ótimo!</div></div>`}
+        <div class="lista-cadastrados">
+          <div class="lista-cadastrados-titulo">✅ Cadastradas (${outrasDivs.length})</div>
+          ${outrasDivs.map(d => `
+            <div class="item-cadastrado" style="border-color:var(--danger);">
+              <div class="item-icone-mini" style="background:var(--danger-soft);color:var(--danger);">💸</div>
+              <div class="item-info-mini"><div class="item-nome-mini">${d.credor}</div><div class="item-valor-mini danger">R$ ${formatarMoeda(d.valor_atual)}</div></div>
+              <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDiv('${d.id}')">✕</div></div>
+            </div>
+          `).join('')}
+        </div>
+      ` : `<div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;"><div style="font-size:36px;margin-bottom:10px;">🎉</div><div style="font-size:13px;color:var(--text-mute);">Sem outras dívidas?</div></div>`}
     `;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${outrasDivs.length > 0 ? 'Continuar →' : 'Não tenho →'}</button>`;
   }
@@ -1299,10 +1358,10 @@
   
   window.manualDiv = function() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Preenche os dados. Depois te ajudo a negociar!</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Preenche os dados.</div></div></div>
       <div class="step-titulo">Nova dívida</div>
       <div class="form-card">
-        <div class="field"><label>Credor (quem você deve)</label><input type="text" id="mdv-cred" placeholder="Digite o nome"></div>
+        <div class="field"><label>Credor</label><input type="text" id="mdv-cred" placeholder="Digite o nome"></div>
         <div class="field">
           <label>Tipo</label>
           <select id="mdv-tipo">
@@ -1342,7 +1401,7 @@
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  // ============ PASSO 9 ============
+  // ============ PASSO 9 — ANÁLISE ============
   async function renderP9() {
     document.getElementById('container').innerHTML = `
       <div class="ia-loading">
@@ -1381,12 +1440,10 @@
   
   async function salvarTudo() {
     await supabase.from('perfis').update({
-      setup_concluido: true,
-      setup_concluido_em: new Date().toISOString(),
-      analise_setup: analiseIA,
-      nivel_jornada: analiseIA?.situacao?.nivel_recomendado || 1
+      setup_concluido: true, setup_concluido_em: new Date().toISOString(),
+      analise_setup: analiseIA, nivel_jornada: analiseIA?.situacao?.nivel_recomendado || 1
     }).eq('id', usuario.id);
-    await darXP(100, 'setup_concluido', 'Modo Setup completo!');
+    await darXP(100, 'setup_concluido', 'Setup completo!');
   }
   
   async function salvarSemAnalise() {
@@ -1405,13 +1462,11 @@
     
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble"><div class="tatu-emoji">🎉</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Analisei tudo! Aqui vai sua <strong>análise personalizada</strong>:</div></div></div>
-      
       <div class="nivel-card">
         <div class="nivel-label">Seu nível</div>
         <div class="nivel-numero">${nivel}</div>
         <div class="nivel-nome">${s.nivel_nome}</div>
       </div>
-      
       <div class="jornada-card">
         <div class="jornada-titulo">Sua jornada</div>
         <div class="jornada-pontos">
@@ -1423,7 +1478,6 @@
           `).join('')}
         </div>
       </div>
-      
       <div class="analise-card">
         <div class="analise-titulo">📊 Sua situação</div>
         <div class="situacao-grid">
@@ -1433,348 +1487,5 @@
           <div class="situacao-item"><div class="situacao-label">Total dívidas</div><div class="situacao-valor" style="color:${s.total_dividas > 0 ? 'var(--danger)' : 'var(--brand)'};">R$ ${formatarMoeda(s.total_dividas)}</div></div>
         </div>
       </div>
-      
       <div class="analise-card"><div class="analise-titulo">🦔 Diagnóstico do Tatu</div><div class="diagnostico-texto">${a.diagnostico}</div></div>
-      
-      ${a.alertas && a.alertas.length > 0 ? `<div class="analise-card"><div class="analise-titulo">⚠️ Pontos de atenção</div>${a.alertas.map(al => `<div class="alerta-item"><span style="flex-shrink:0;">⚠️</span><span>${al}</span></div>`).join('')}</div>` : ''}
-      
-      ${a.primeira_meta ? `
-        <div class="meta-card">
-          <div class="meta-titulo-card">🎯 Sua primeira meta</div>
-          <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px;">${a.primeira_meta.titulo}</div>
-          <div class="meta-info-row">
-            <span class="meta-pill">💰 R$ ${formatarMoeda(a.primeira_meta.valor_alvo)}</span>
-            <span class="meta-pill">📅 ${a.primeira_meta.prazo_meses} meses</span>
-          </div>
-          <div class="meta-explicacao">${a.primeira_meta.explicacao}</div>
-        </div>
-      ` : ''}
-      
-      ${a.mensagem_motivacional ? `<div class="tatu-bubble"><div class="tatu-emoji">💚</div><div class="tatu-content"><div class="tatu-titulo">Mensagem do Tatu</div><div class="tatu-texto">${a.mensagem_motivacional}</div></div></div>` : ''}
-    `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="irHome()">🚀 Bora começar minha jornada!</button>`;
-    toast('+100 XP 🎉 Setup completo!');
-  }
-  
-  function renderErro() {
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Setup completo! Tive um problema gerando a análise, mas teus dados estão salvos.</div></div></div>
-      <div class="form-card" style="text-align:center;padding:30px 20px;">
-        <div style="font-size:48px;margin-bottom:12px;">✅</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px;">Tudo cadastrado!</div>
-        <div style="font-size:13px;color:var(--text-mute);">${contasAdicionadas.length} contas, ${cartoesAdicionados.length} cartões, ${rendasAdicionadas.length} rendas, ${despesasAdicionadas.length} despesas, ${dividasAdicionadas.length} dívidas</div>
-      </div>
-    `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="irHome()">🚀 Ir para o app</button>`;
-  }
-  
-  window.irHome = function() { window.location.href = 'home.html?v=' + Date.now(); };
-  
-  // ============ FOTO + IA ============
-  
-  window.abrirFoto = function(modo, alvo) {
-    modoFoto = modo;
-    alvoFoto = alvo;
-    document.getElementById('input-foto').click();
-  };
-  
-  window.processarFoto = async function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    e.target.value = '';
-    
-    document.getElementById('container').innerHTML = `
-      <div class="ia-loading">
-        <div class="ia-spinner"></div>
-        <div class="ia-loading-titulo">📸 Preparando foto...</div>
-        <div class="ia-loading-sub">Comprimindo + lendo com IA Claude</div>
-        <div class="ia-loading-passo" id="p-foto">Comprimindo imagem...</div>
-      </div>
-    `;
-    
-    let base64;
-    try {
-      base64 = await comprimirImagem(file, 1600, 0.85);
-      const el = document.getElementById('p-foto');
-      if (el) el.textContent = 'IA Claude lendo a foto...';
-    } catch (err) {
-      alert('⚠️ Não consegui processar essa foto.');
-      voltarAposFoto();
-      return;
-    }
-    
-    let tipoFn;
-    if (modoFoto === 'conta') tipoFn = 'analisar_conta';
-    else if (modoFoto === 'fatura') tipoFn = 'analisar_fatura_cartao';
-    else if (modoFoto === 'boleto') tipoFn = 'analisar_boleto';
-    else if (modoFoto === 'contrato') tipoFn = 'analisar_contrato';
-    
-    try {
-      const r = await fetch(IA_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
-        body: JSON.stringify({ tipo: tipoFn, imagem_base64: base64, max_tokens: 1500 })
-      });
-      const d = await r.json();
-      
-      if (d.resultado && !d.resultado.erro) {
-        if (modoFoto === 'conta') await checarDivergenciaConta(d.resultado);
-        else if (modoFoto === 'fatura') await checarDivergenciaCartao(d.resultado);
-        else if (modoFoto === 'boleto') await processarBoleto(d.resultado);
-        else if (modoFoto === 'contrato') await processarContrato(d.resultado);
-      } else {
-        alert('⚠️ IA não conseguiu: ' + (d.resultado?.erro || 'erro'));
-        voltarAposFoto();
-      }
-    } catch (err) {
-      alert('Erro: ' + err.message);
-      voltarAposFoto();
-    }
-  };
-  
-  function voltarAposFoto() {
-    if (modoFoto === 'conta') renderP4();
-    else if (modoFoto === 'fatura') renderP5();
-    else if (modoFoto === 'boleto') renderP7();
-    else if (modoFoto === 'contrato') renderP8();
-  }
-  
-  async function comprimirImagem(file, maxW = 1600, q = 0.85) {
-    return new Promise((res, rej) => {
-      const r = new FileReader();
-      r.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          let w = img.width, h = img.height;
-          if (w > maxW) { h = Math.round((h * maxW) / w); w = maxW; }
-          const c = document.createElement('canvas');
-          c.width = w; c.height = h;
-          const ctx = c.getContext('2d');
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = 'high';
-          ctx.drawImage(img, 0, 0, w, h);
-          let b64 = c.toDataURL('image/jpeg', q);
-          const kb = Math.round((b64.length * 0.75) / 1024);
-          if (kb > 4000 && q > 0.5) b64 = c.toDataURL('image/jpeg', 0.7);
-          res(b64);
-        };
-        img.onerror = () => rej(new Error('Erro'));
-        img.src = e.target.result;
-      };
-      r.onerror = () => rej(new Error('Erro'));
-      r.readAsDataURL(file);
-    });
-  }
-  
-  async function checarDivergenciaConta(r) {
-    const bancoSelecionado = BANCOS.find(b => b.id === alvoFoto);
-    const bancoDetectado = (r.banco_detectado || '').toLowerCase();
-    const nomeSelecionado = bancoSelecionado.nome.toLowerCase();
-    const houveDivergencia = bancoDetectado && 
-      !bancoDetectado.includes(nomeSelecionado) && 
-      !nomeSelecionado.includes(bancoDetectado);
-    
-    if (houveDivergencia) {
-      dadosIAPendentes = r;
-      document.getElementById('container').innerHTML = `
-        <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu detectou algo</div><div class="tatu-texto">Você escolheu <strong>${bancoSelecionado.nome}</strong>, mas a foto parece ser <strong>${r.banco_detectado}</strong>.</div></div></div>
-        <div class="aviso-divergencia">
-          <div class="aviso-titulo">⚠️ Banco diferente detectado</div>
-          <div class="aviso-texto">A IA leu como <strong>${r.banco_detectado}</strong>, mas você selecionou <strong>${bancoSelecionado.nome}</strong>.<br><br>O que prefere fazer?</div>
-        </div>
-        <div class="form-card">
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <button class="btn btn-primary" onclick="usarBancoSelecionado()">✅ Usar ${bancoSelecionado.nome} mesmo</button>
-            <button class="btn" style="background:var(--warning-soft);color:var(--warning);border:1px solid var(--warning);" onclick="cancelarFoto()">🔄 Cancelar e mandar outra</button>
-          </div>
-        </div>
-      `;
-      document.getElementById('footer-content').innerHTML = '';
-      return;
-    }
-    
-    await processarContaFinal(r, bancoSelecionado);
-  }
-  
-  window.usarBancoSelecionado = async function() {
-    const bancoSelecionado = BANCOS.find(b => b.id === alvoFoto);
-    await processarContaFinal(dadosIAPendentes, bancoSelecionado);
-    dadosIAPendentes = null;
-  };
-  
-  window.cancelarFoto = function() {
-    dadosIAPendentes = null;
-    voltarAposFoto();
-  };
-  
-  async function processarContaFinal(r, banco) {
-    const dados = {
-      user_id: usuario.id,
-      nome: banco.nome,
-      tipo: r.tipo_conta || 'conta_corrente',
-      banco: banco.nome,
-      cor: banco.cor,
-      icone: r.tipo_conta === 'poupanca' ? '🐷' : r.tipo_conta === 'investimento' ? '📈' : '🏦',
-      saldo_inicial: r.saldo_atual || 0,
-      padrao: contasAdicionadas.length === 0
-    };
-    try {
-      const { data, error } = await supabase.from('contas').insert(dados).select().single();
-      if (error) throw error;
-      contasAdicionadas.push(data);
-      await darXP(25, 'conta_ia', 'Setup IA: ' + banco.nome);
-      toast(`+25 XP ✨ ${banco.nome} cadastrado!`);
-      setTimeout(() => {
-        bancoIndexAtual++;
-        if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); }
-        else renderP4();
-      }, 1000);
-    } catch (e) { alert('Erro: ' + e.message); renderP4(); }
-  }
-  
-  async function checarDivergenciaCartao(r) {
-    const bId = alvoFoto;
-    const bancoSelecionado = BANCOS.find(b => b.id === bId);
-    const bancoDetectado = (r.banco_detectado || '').toLowerCase();
-    const nomeSelecionado = bancoSelecionado.nome.toLowerCase();
-    const houveDivergencia = bancoDetectado && 
-      !bancoDetectado.includes(nomeSelecionado) && 
-      !nomeSelecionado.includes(bancoDetectado);
-    
-    if (houveDivergencia) {
-      dadosIAPendentes = r;
-      document.getElementById('container').innerHTML = `
-        <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu detectou algo</div><div class="tatu-texto">Você está cadastrando cartão do <strong>${bancoSelecionado.nome}</strong>, mas a foto parece ser do <strong>${r.banco_detectado}</strong>.</div></div></div>
-        <div class="aviso-divergencia">
-          <div class="aviso-titulo">⚠️ Banco diferente na foto</div>
-          <div class="aviso-texto">A IA leu como <strong>${r.banco_detectado}</strong>, mas você selecionou <strong>${bancoSelecionado.nome}</strong>.</div>
-        </div>
-        <div class="form-card">
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <button class="btn btn-primary" onclick="usarBancoCartaoSelecionado()">✅ Usar ${bancoSelecionado.nome} mesmo</button>
-            <button class="btn" style="background:var(--warning-soft);color:var(--warning);border:1px solid var(--warning);" onclick="cancelarFoto()">🔄 Cancelar</button>
-          </div>
-        </div>
-      `;
-      document.getElementById('footer-content').innerHTML = '';
-      return;
-    }
-    
-    await processarFaturaFinal(r, bancoSelecionado);
-  }
-  
-  window.usarBancoCartaoSelecionado = async function() {
-    const bId = alvoFoto;
-    const bancoSelecionado = BANCOS.find(b => b.id === bId);
-    await processarFaturaFinal(dadosIAPendentes, bancoSelecionado);
-    dadosIAPendentes = null;
-  };
-  
-  async function processarFaturaFinal(r, banco) {
-    const qtd = qtdPorBanco[banco.id];
-    const nomeBase = qtd === 1 ? banco.nome : `${banco.nome} ${cartaoIdx + 1}`;
-    const nome = r.nome_sugerido ? `${banco.nome} (${r.nome_sugerido})` : nomeBase;
-    const limite = r.limite_total || 0;
-    const fec = r.dia_fechamento || null;
-    const ven = r.dia_vencimento || null;
-    const valor = r.valor_fatura || 0;
-    const atrasada = r.esta_atrasada || false;
-    
-    cartaoTemp = { bancoId: banco.id, nome, limite, fechamento: fec, vencimento: ven };
-    
-    if (valor > 0) await salvarCartaoFinal({ valor, paga: false, atrasada });
-    else await salvarCartaoFinal({ valor: 0, paga: true, atrasada: false });
-  }
-  
-  async function processarBoleto(r) {
-    const nome = r.nome_sugerido || 'Despesa';
-    const cat = r.categoria || 'outro';
-    const val = r.valor || 0;
-    const dia = r.dia_vencimento || null;
-    if (val <= 0) {
-      alert('⚠️ IA não conseguiu ler o valor. Tenta manual.');
-      renderP7();
-      return;
-    }
-    await salvarDespesaNoBanco(nome, cat, val, dia);
-  }
-  
-  async function processarContrato(r) {
-    const cred = r.credor || 'Credor';
-    const tipo = r.tipo || 'outro';
-    const val = r.valor_total || 0;
-    if (val <= 0) {
-      alert('⚠️ IA não conseguiu ler o valor. Tenta manual.');
-      renderP8();
-      return;
-    }
-    const dv = new Date();
-    if (r.data_vencimento_proxima) dv.setTime(new Date(r.data_vencimento_proxima).getTime());
-    else dv.setDate(dv.getDate() + 30);
-    try {
-      const { data, error } = await supabase.from('dividas').insert({
-        user_id: usuario.id, credor: cred, tipo, descricao: `Dívida ${cred}`,
-        valor_original: val, valor_atual: val,
-        data_vencimento: dv.toISOString().split('T')[0], data_inicio: new Date().toISOString().split('T')[0],
-        status: 'ativa', prioridade: r.esta_atrasada ? 1 : 2,
-        juros_mensal: r.juros_mensal || null
-      }).select().single();
-      if (error) throw error;
-      dividasAdicionadas.push(data);
-      await darXP(25, 'divida_ia', 'Setup IA: ' + cred);
-      toast('+25 XP ✨ Dívida lida!');
-      setTimeout(() => renderP8(), 1000);
-    } catch (e) { alert('Erro: ' + e.message); renderP8(); }
-  }
-  
-  // ============ UTILS ============
-  
-  window.formatarValor = function(input) {
-    let v = input.value.replace(/\D/g, '');
-    if (!v) { input.value = ''; return; }
-    v = (parseInt(v) / 100).toFixed(2);
-    input.value = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-  };
-  
-  window.formatarValorComSinal = function(input) {
-    const ehNeg = input.value.trim().startsWith('-');
-    let v = input.value.replace(/[^0-9]/g, '');
-    if (!v) { input.value = ''; return; }
-    v = (parseInt(v) / 100).toFixed(2);
-    const formatado = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-    input.value = (ehNeg ? '-' : '') + formatado;
-  };
-  
-  function valorParaNumero(str) {
-    if (!str) return 0;
-    const ehNeg = str.trim().startsWith('-');
-    const limpo = str.replace(/[^0-9,\.]/g, '').replace(/\./g, '').replace(',', '.');
-    const num = Number(limpo) || 0;
-    return ehNeg ? -num : num;
-  }
-  
-  function formatarMoeda(v) {
-    return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-  
-  async function darXP(xp, acao, descricao) {
-    try {
-      await supabase.from('historico_xp').insert({ user_id: usuario.id, acao, xp_ganho: xp, descricao });
-      const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).maybeSingle();
-      await supabase.from('gamificacao').update({
-        xp_total: (g?.xp_total || 0) + xp,
-        ultima_atividade: new Date().toISOString().split('T')[0]
-      }).eq('user_id', usuario.id);
-    } catch (e) { console.error('XP:', e); }
-  }
-  
-  function toast(texto) {
-    const t = document.getElementById('xp-toast');
-    t.textContent = texto;
-    t.style.display = 'block';
-    setTimeout(() => { t.style.display = 'none'; }, 2500);
-  }
-</script>
-
-</body>
-</html>
+      ${a.alertas && a.alertas.length > 0 
