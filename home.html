@@ -111,9 +111,7 @@
     padding: 20px;
   }
   
-  .saudacao {
-    margin-bottom: 16px;
-  }
+  .saudacao { margin-bottom: 16px; }
   
   .saudacao-titulo {
     font-family: 'Space Grotesk', sans-serif;
@@ -123,10 +121,7 @@
     margin-bottom: 2px;
   }
   
-  .saudacao-sub {
-    font-size: 13px;
-    color: var(--text-mute);
-  }
+  .saudacao-sub { font-size: 13px; color: var(--text-mute); }
   
   .level-card {
     background: linear-gradient(135deg, var(--brand) 0%, #00a85f 100%);
@@ -198,7 +193,6 @@
     height: 100%;
     background: #001a0e;
     border-radius: 100px;
-    transition: width 0.5s cubic-bezier(0.34, 1.4, 0.64, 1);
   }
   
   .level-meta {
@@ -209,7 +203,6 @@
     position: relative;
   }
   
-  /* RESUMO MÊS */
   .resumo-mes {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -279,12 +272,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
   }
   
-  .resumo-saldo-realizado {
-    font-size: 11px;
-    color: var(--text-mute);
-  }
+  .resumo-saldo-realizado { font-size: 11px; color: var(--text-mute); }
   
   .resumo-saldo-realizado strong {
     font-family: 'Space Grotesk', sans-serif;
@@ -297,7 +288,6 @@
   .resumo-saldo-realizado strong.positivo { color: var(--brand); }
   .resumo-saldo-realizado strong.negativo { color: var(--danger); }
   
-  /* PRÓXIMAS CONTAS */
   .secao-titulo {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 12px;
@@ -344,10 +334,7 @@
     margin-bottom: 2px;
   }
   
-  .alerta-vencidas-sub {
-    font-size: 12px;
-    color: var(--text-mute);
-  }
+  .alerta-vencidas-sub { font-size: 12px; color: var(--text-mute); }
   
   .vencimento-card {
     background: var(--bg-card);
@@ -367,13 +354,8 @@
     background: linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%);
   }
   
-  .vencimento-card.proximo {
-    border-left-color: var(--warning);
-  }
-  
-  .vencimento-card.longe {
-    border-left-color: var(--info);
-  }
+  .vencimento-card.proximo { border-left-color: var(--warning); }
+  .vencimento-card.longe { border-left-color: var(--info); }
   
   .vencimento-emoji {
     width: 40px; height: 40px;
@@ -426,7 +408,6 @@
     flex-shrink: 0;
   }
   
-  /* INSIGHT */
   .insight-card {
     background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%);
     border: 1px solid rgba(168, 85, 247, 0.3);
@@ -460,7 +441,6 @@
   
   .insight-texto strong { color: var(--text); }
   
-  /* MENU GRID */
   .menu-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -486,10 +466,7 @@
   
   .menu-item:active { transform: scale(0.97); }
   
-  .menu-item-icon {
-    font-size: 28px;
-    margin-bottom: 2px;
-  }
+  .menu-item-icon { font-size: 28px; margin-bottom: 2px; }
   
   .menu-item-titulo {
     font-family: 'Space Grotesk', sans-serif;
@@ -517,12 +494,9 @@
   
   .menu-item.dividas { border-color: rgba(255, 71, 87, 0.2); }
   .menu-item.dividas .menu-item-icon { color: var(--danger); }
-  
   .menu-item.contas { border-color: rgba(0, 217, 126, 0.2); }
-  
   .menu-item.transacoes { border-color: rgba(168, 85, 247, 0.2); }
   
-  /* FAB CHAT */
   .fab-chat {
     position: fixed;
     bottom: 20px;
@@ -543,29 +517,6 @@
   
   .fab-chat:active { background: #9333ea; transform: scale(0.95); }
   
-  .empty-bloco {
-    background: var(--bg-card);
-    border: 1px dashed var(--border-strong);
-    border-radius: 14px;
-    padding: 24px 16px;
-    text-align: center;
-  }
-  
-  .empty-bloco-emoji { font-size: 36px; margin-bottom: 8px; }
-  
-  .empty-bloco-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-  
-  .empty-bloco-desc {
-    font-size: 11px;
-    color: var(--text-mute);
-    line-height: 1.4;
-  }
-  
   .loader-circle {
     width: 32px; height: 32px;
     border: 3px solid var(--border);
@@ -577,7 +528,34 @@
   
   @keyframes spin { to { transform: rotate(360deg); } }
   
-  .hidden { display: none !important; }
+  .error-box {
+    background: var(--danger-soft);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    border-radius: 14px;
+    padding: 16px;
+    margin: 20px 0;
+    color: var(--danger);
+    font-size: 13px;
+    text-align: center;
+  }
+  
+  .error-box .err-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  
+  .error-box button {
+    margin-top: 12px;
+    background: var(--danger);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
@@ -596,7 +574,7 @@
 
   <div class="saudacao">
     <div class="saudacao-titulo" id="saudacao-titulo">Olá!</div>
-    <div class="saudacao-sub" id="saudacao-sub">Bem-vindo de volta ao GuardaAí</div>
+    <div class="saudacao-sub" id="saudacao-sub">Carregando...</div>
   </div>
 
   <div id="conteudo">
@@ -612,7 +590,6 @@
   
   const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
-  const IA_FUNCTION_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
   
   const niveis = [
@@ -627,30 +604,49 @@
   let stats = {};
   
   (async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      window.location.href = 'index.html?v=1';
-      return;
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        window.location.href = 'index.html?v=1';
+        return;
+      }
+      usuario = session.user;
+      
+      await carregarDados();
+      render();
+    } catch (e) {
+      console.error('Erro fatal home:', e);
+      mostrarErro(e.message);
     }
-    usuario = session.user;
-    
-    await carregarDados();
-    render();
   })();
   
+  function mostrarErro(msg) {
+    document.getElementById('conteudo').innerHTML = `
+      <div class="error-box">
+        <div class="err-titulo">⚠️ Algo deu errado</div>
+        <div>${msg || 'Erro desconhecido'}</div>
+        <button onclick="location.reload()">Tentar de novo</button>
+      </div>
+    `;
+  }
+  
   async function carregarDados() {
-    // Carrega perfil + gamificação em paralelo
+    // CORREÇÃO: perfis usa .id (não user_id)
     const [perfilRes, gameRes] = await Promise.all([
-      supabase.from('perfis').select('*').eq('user_id', usuario.id).single(),
-      supabase.from('gamificacao').select('*').eq('user_id', usuario.id).single()
+      supabase.from('perfis').select('*').eq('id', usuario.id).maybeSingle(),
+      supabase.from('gamificacao').select('*').eq('user_id', usuario.id).maybeSingle()
     ]);
     
     perfil = perfilRes.data;
     gamificacao = gameRes.data;
     
-    if (!perfil || !gamificacao) {
-      window.location.href = 'diagnostico.html?v=1';
-      return;
+    // CORREÇÃO: NÃO redireciona automaticamente em loop.
+    // Se faltar dado, cria valor padrão pra não quebrar.
+    if (!perfil) {
+      perfil = { nome: 'Aí', email: usuario.email, nivel_jornada: 1 };
+    }
+    if (!gamificacao) {
+      gamificacao = { xp_total: 0, streak_atual: 0, nivel_personagem: 1 };
     }
     
     // Dados do mês atual
@@ -662,30 +658,38 @@
     proximos30.setDate(proximos30.getDate() + 30);
     const proximos30Str = proximos30.toISOString().split('T')[0];
     
-    const [transMes, previstasProx30, dividasAtivas, contasAtivas, comprsAtivos] = await Promise.all([
+    // OTIMIZAÇÃO: 1 query única pra tudo
+    const [transMes, previstasProx30, dividasAtivas, contasAtivas, comprsAtivos, transContas] = await Promise.all([
       supabase.from('transacoes')
         .select('valor, tipo, status, data')
         .eq('user_id', usuario.id)
         .gte('data', inicio)
         .lte('data', fim),
       supabase.from('transacoes')
-        .select('*, categorias(nome, icone)')
+        .select('id, valor, descricao, data, categorias(nome, icone)')
         .eq('user_id', usuario.id)
         .eq('status', 'prevista')
         .lte('data', proximos30Str)
-        .order('data', { ascending: true }),
+        .order('data', { ascending: true })
+        .limit(10),
       supabase.from('dividas')
         .select('valor_atual')
         .eq('user_id', usuario.id)
         .eq('status', 'ativa'),
       supabase.from('contas')
-        .select('*')
+        .select('id, tipo, saldo_inicial, limite')
         .eq('user_id', usuario.id)
         .eq('ativa', true),
       supabase.from('compromissos')
         .select('id')
         .eq('user_id', usuario.id)
-        .eq('ativo', true)
+        .eq('ativo', true),
+      // 1 query única pra todas transações realizadas vinculadas a contas
+      supabase.from('transacoes')
+        .select('valor, tipo, conta_id')
+        .eq('user_id', usuario.id)
+        .eq('status', 'realizada')
+        .not('conta_id', 'is', null)
     ]);
     
     const trans = transMes.data || [];
@@ -710,17 +714,14 @@
     stats.qtdContas = stats.contas.filter(c => c.tipo !== 'cartao_credito').length;
     stats.qtdCartoes = stats.contas.filter(c => c.tipo === 'cartao_credito').length;
     
-    // Calcula patrimônio das contas (saldo realizado)
+    // OTIMIZAÇÃO: calcula patrimônio em memória (sem 1 query por conta)
+    const contasReais = stats.contas.filter(c => c.tipo !== 'cartao_credito');
     let patrimonio = 0;
-    for (const c of stats.contas.filter(x => x.tipo !== 'cartao_credito')) {
-      const { data: t } = await supabase
-        .from('transacoes')
-        .select('valor, tipo')
-        .eq('user_id', usuario.id)
-        .eq('conta_id', c.id)
-        .eq('status', 'realizada');
+    for (const c of contasReais) {
       let s = Number(c.saldo_inicial || 0);
-      (t || []).forEach(tx => { s += tx.tipo === 'entrada' ? Number(tx.valor) : -Number(tx.valor); });
+      (transContas.data || [])
+        .filter(t => t.conta_id === c.id)
+        .forEach(t => { s += t.tipo === 'entrada' ? Number(t.valor) : -Number(t.valor); });
       patrimonio += s;
     }
     stats.patrimonio = patrimonio;
@@ -756,6 +757,7 @@
     const hojeStr = new Date().toISOString().split('T')[0];
     const mesAtual = new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
     
+    // CORREÇÃO: usa streak_atual (não streak_dias)
     let html = `
       <div class="level-card" onclick="window.location.href='educacao.html?v=1'">
         <div class="level-top">
@@ -773,12 +775,11 @@
         </div>
         <div class="level-meta">
           <span>${xpNivel} / ${xpTotal} XP</span>
-          <span>🔥 ${gamificacao.streak_dias || 0} dias</span>
+          <span>🔥 ${gamificacao.streak_atual || 0} dias</span>
         </div>
       </div>
     `;
     
-    // RESUMO DO MÊS
     html += `
       <div class="resumo-mes">
         <div class="resumo-mes-titulo">
@@ -810,7 +811,6 @@
       </div>
     `;
     
-    // ALERTA DE VENCIDAS
     if (stats.vencidasHoje.length > 0) {
       html += `
         <div class="alerta-vencidas" onclick="window.location.href='transacoes.html?v=3'">
@@ -823,7 +823,6 @@
       `;
     }
     
-    // PRÓXIMAS CONTAS A VENCER
     if (stats.proximasContas.length > 0) {
       html += `
         <div class="secao-titulo">
@@ -842,7 +841,7 @@
         if (t.data < hojeStr) {
           classe = 'vencida';
           badge = '⚠️ VENCIDA';
-          badgeClass = 'hoje'; // verde forte pra chamar atenção
+          badgeClass = 'hoje';
         } else if (t.data === hojeStr) {
           classe = 'hoje';
           badge = 'HOJE';
@@ -873,13 +872,12 @@
       });
     }
     
-    // INSIGHT IA (se tem transações suficientes)
     const totalTrans = stats.entradaRealizada + stats.saidaRealizada;
     if (totalTrans > 0 && (stats.qtdDividas > 0 || stats.proximasContas.length > 0)) {
       let insightTexto;
       if (stats.totalVencidas > 0) {
         insightTexto = `Você tem <strong>R$ ${formatarMoeda(stats.totalVencidas)}</strong> em contas vencidas. Resolver isso primeiro libera espaço mental e evita juros. Eu te ajudo a negociar! 🦔`;
-      } else if (stats.totalDividas > stats.entradaRealizada * 0.3) {
+      } else if (stats.totalDividas > stats.entradaRealizada * 0.3 && stats.entradaRealizada > 0) {
         insightTexto = `Suas dívidas (<strong>R$ ${formatarMoeda(stats.totalDividas)}</strong>) representam mais de 30% da sua renda mensal. Toca em "Dívidas" e usa o Negociador IA — descontos de 30-70% são comuns! 🦔`;
       } else if (stats.saldoPrevisto < 0) {
         insightTexto = `Cuidado! Com as contas previstas, você vai fechar o mês negativo em <strong>R$ ${formatarMoeda(Math.abs(stats.saldoPrevisto))}</strong>. Tem como negociar alguma despesa ou aumentar entrada? 🦔`;
@@ -898,7 +896,6 @@
       `;
     }
     
-    // MENU GRID
     html += `
       <div class="secao-titulo" style="margin-top:20px;">Atalhos</div>
       <div class="menu-grid">
@@ -914,7 +911,7 @@
           <div class="menu-item-sub">Entradas e saídas</div>
           <div class="menu-item-stat ${stats.saldoRealizado >= 0 ? 'brand' : 'danger'}">${stats.saldoRealizado >= 0 ? '+' : ''}R$ ${formatarMoeda(Math.abs(stats.saldoRealizado))}</div>
         </div>
-        <div class="menu-item dividas" onclick="window.location.href='dividas.html?v=1'">
+        <div class="menu-item dividas" onclick="window.location.href='dividas.html?v=2'">
           <div class="menu-item-icon">💳</div>
           <div class="menu-item-titulo">Dívidas</div>
           <div class="menu-item-sub">Negociador IA</div>
