@@ -34,703 +34,129 @@
     --text-faint: #525252;
   }
   
-  html, body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', -apple-system, sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  html, body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh; overflow-x: hidden; }
   
-  input, textarea, select {
-    color: #fff !important;
-    -webkit-text-fill-color: #fff !important;
-    caret-color: var(--brand);
-  }
-  input:-webkit-autofill, textarea:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px var(--bg-input) inset !important;
-    -webkit-text-fill-color: #fff !important;
-  }
+  input, textarea, select { color: #fff !important; -webkit-text-fill-color: #fff !important; caret-color: var(--brand); }
+  input:-webkit-autofill, textarea:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px var(--bg-input) inset !important; -webkit-text-fill-color: #fff !important; }
   
-  .header {
-    padding: 16px 20px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  
-  .header-skip {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-mute);
-    padding: 8px 14px;
-    border-radius: 10px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  
+  .header { padding: 16px 20px; background: var(--bg); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 12px; }
+  .header-skip { background: transparent; border: 1px solid var(--border); color: var(--text-mute); padding: 8px 14px; border-radius: 10px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; cursor: pointer; }
   .header-skip:active { background: var(--bg-card); }
+  .progress-wrapper { flex: 1; height: 6px; background: var(--bg-card); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--brand) 0%, var(--brand-hover) 100%); border-radius: 100px; transition: width 0.4s cubic-bezier(0.34, 1.4, 0.64, 1); }
+  .progress-num { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; color: var(--text-mute); flex-shrink: 0; }
   
-  .progress-wrapper {
-    flex: 1;
-    height: 6px;
-    background: var(--bg-card);
-    border-radius: 100px;
-    overflow: hidden;
-  }
+  .container { max-width: 480px; margin: 0 auto; padding: 20px; padding-bottom: 120px; }
   
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--brand) 0%, var(--brand-hover) 100%);
-    border-radius: 100px;
-    transition: width 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
-  }
-  
-  .progress-num {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text-mute);
-    flex-shrink: 0;
-  }
-  
-  .container {
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 20px;
-    padding-bottom: 120px;
-  }
-  
-  .tatu-bubble {
-    background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%);
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    border-radius: 18px;
-    padding: 16px;
-    margin-bottom: 20px;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    animation: fadeIn 0.4s ease;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  .tatu-emoji {
-    font-size: 36px;
-    flex-shrink: 0;
-    line-height: 1;
-  }
-  
+  .tatu-bubble { background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 18px; padding: 16px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .tatu-emoji { font-size: 36px; flex-shrink: 0; line-height: 1; }
   .tatu-content { flex: 1; min-width: 0; }
-  
-  .tatu-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--ia);
-    margin-bottom: 4px;
-  }
-  
-  .tatu-texto {
-    font-size: 14px;
-    line-height: 1.55;
-    color: var(--text);
-  }
-  
+  .tatu-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: var(--ia); margin-bottom: 4px; }
+  .tatu-texto { font-size: 14px; line-height: 1.55; color: var(--text); }
   .tatu-texto strong { color: var(--text); font-weight: 700; }
   
-  .step-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: 8px;
-    line-height: 1.2;
-  }
+  .step-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2; }
+  .step-subtitulo { font-size: 14px; color: var(--text-mute); line-height: 1.5; margin-bottom: 24px; }
   
-  .step-subtitulo {
-    font-size: 14px;
-    color: var(--text-mute);
-    line-height: 1.5;
-    margin-bottom: 24px;
-  }
-  
-  .bancos-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .banco-card {
-    background: var(--bg-card);
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 8px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.15s;
-    min-height: 90px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-  
+  .bancos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .banco-card { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 14px 8px; text-align: center; cursor: pointer; transition: all 0.15s; min-height: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
   .banco-card:active { transform: scale(0.95); }
+  .banco-card.active { background: var(--brand-soft); border-color: var(--brand); }
+  .banco-logo { width: 44px; height: 44px; border-radius: 10px; color: white; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; }
+  .banco-nome { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--text); line-height: 1.2; }
   
-  .banco-card.active {
-    background: var(--brand-soft);
-    border-color: var(--brand);
-  }
+  .instrucao-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+  .instrucao-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; color: var(--brand); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+  .passo-lista { list-style: none; margin: 0; padding: 0; }
+  .passo-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; font-size: 13px; line-height: 1.5; color: var(--text); }
+  .passo-num { background: var(--brand-soft); color: var(--brand); width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; flex-shrink: 0; }
   
-  .banco-logo {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-  }
-  
-  .banco-nome {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1.2;
-  }
-  
-  .instrucao-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-  
-  .instrucao-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--brand);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  
-  .passo-lista {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .passo-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 8px 0;
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--text);
-  }
-  
-  .passo-num {
-    background: var(--brand-soft);
-    color: var(--brand);
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-  
-  .opcoes-acao {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  
-  .opcao-btn {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px 12px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.15s;
-    color: var(--text);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    min-height: 90px;
-    justify-content: center;
-  }
-  
+  .opcoes-acao { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .opcao-btn { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 16px 12px; text-align: center; cursor: pointer; transition: all 0.15s; color: var(--text); display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 90px; justify-content: center; }
   .opcao-btn:active { transform: scale(0.97); }
-  
-  .opcao-btn.ia {
-    background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%);
-    border-color: rgba(168, 85, 247, 0.3);
-  }
-  
+  .opcao-btn.ia { background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%); border-color: rgba(168, 85, 247, 0.3); }
   .opcao-btn-icon { font-size: 28px; }
-  
-  .opcao-btn-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-  }
-  
+  .opcao-btn-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; }
   .opcao-btn.ia .opcao-btn-titulo { color: var(--ia); }
+  .opcao-btn-sub { font-size: 10px; color: var(--text-mute); line-height: 1.2; }
   
-  .opcao-btn-sub {
-    font-size: 10px;
-    color: var(--text-mute);
-    line-height: 1.2;
-  }
-  
-  .item-cadastrado {
-    background: var(--bg-card);
-    border: 1px solid var(--brand);
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  
-  .item-icone-mini {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-  
+  .item-cadastrado { background: var(--bg-card); border: 1px solid var(--brand); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+  .item-icone-mini { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
   .item-info-mini { flex: 1; min-width: 0; }
-  
-  .item-nome-mini {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  .item-valor-mini {
-    font-size: 11px;
-    color: var(--text-mute);
-  }
-  
+  .item-nome-mini { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .item-valor-mini { font-size: 11px; color: var(--text-mute); }
   .item-valor-mini.positivo { color: var(--brand); }
   .item-valor-mini.danger { color: var(--danger); }
+  .item-check { color: var(--brand); font-size: 18px; font-weight: 700; }
   
-  .item-check {
-    color: var(--brand);
-    font-size: 18px;
-    font-weight: 700;
-  }
-  
-  .form-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-  
+  .form-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
   .field { margin-bottom: 14px; }
-  
   .field:last-child { margin-bottom: 0; }
+  .field label { display: block; font-size: 12px; color: var(--text-mute); margin-bottom: 6px; font-weight: 500; }
+  .field input, .field select { width: 100%; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; padding: 14px; color: var(--text); font-size: 16px; font-family: 'Inter', sans-serif; min-height: 48px; }
+  .field input:focus, .field select:focus { outline: none; border-color: var(--brand); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   
-  .field label {
-    display: block;
-    font-size: 12px;
-    color: var(--text-mute);
-    margin-bottom: 6px;
-    font-weight: 500;
-  }
-  
-  .field input, .field select {
-    width: 100%;
-    background: var(--bg-input);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px;
-    color: var(--text);
-    font-size: 16px;
-    font-family: 'Inter', sans-serif;
-    min-height: 48px;
-  }
-  
-  .field input:focus, .field select:focus {
-    outline: none;
-    border-color: var(--brand);
-  }
-  
-  .valor-input-wrapper {
-    display: flex;
-    align-items: center;
-    background: var(--bg-input);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 16px;
-  }
-  
+  .valor-input-wrapper { display: flex; align-items: center; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
   .valor-input-wrapper:focus-within { border-color: var(--brand); }
+  .valor-prefix { color: var(--text-mute); font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; margin-right: 6px; }
+  .valor-input-wrapper input { background: transparent; border: none; flex: 1; text-align: right; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; padding: 0; min-height: 0; }
   
-  .valor-prefix {
-    color: var(--text-mute);
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    margin-right: 6px;
-  }
+  .sim-nao-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .sim-nao-btn { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 20px 16px; cursor: pointer; transition: all 0.15s; color: var(--text); text-align: center; font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+  .sim-nao-btn:active { transform: scale(0.97); }
+  .sim-nao-btn.sim { border-color: var(--brand); color: var(--brand); }
+  .sim-nao-btn.sim:active { background: var(--brand-soft); }
+  .sim-nao-btn.nao { border-color: var(--text-faint); }
+  .sim-nao-btn-emoji { font-size: 28px; }
   
-  .valor-input-wrapper input {
-    background: transparent;
-    border: none;
-    flex: 1;
-    text-align: right;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 22px;
-    padding: 0;
-    min-height: 0;
-  }
+  .qtd-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+  .qtd-btn { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 18px 4px; cursor: pointer; text-align: center; transition: all 0.15s; font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: var(--text); }
+  .qtd-btn:active { transform: scale(0.95); }
+  .qtd-btn.active { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
   
-  .tipo-tabs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-    margin-bottom: 14px;
-    background: var(--bg-input);
-    padding: 4px;
-    border-radius: 12px;
-  }
+  .footer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg); border-top: 1px solid var(--border); padding: 16px 20px; padding-bottom: max(16px, env(safe-area-inset-bottom)); z-index: 80; }
+  .footer-content { max-width: 480px; margin: 0 auto; display: flex; gap: 10px; }
   
-  .tipo-tab {
-    padding: 12px;
-    border-radius: 10px;
-    text-align: center;
-    cursor: pointer;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-mute);
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .tipo-tab.active.entrada { background: var(--brand); color: #001a0e; }
-  .tipo-tab.active.saida { background: var(--danger); color: white; }
-  
-  .footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-    padding: 16px 20px;
-    padding-bottom: max(16px, env(safe-area-inset-bottom));
-    z-index: 80;
-  }
-  
-  .footer-content {
-    max-width: 480px;
-    margin: 0 auto;
-    display: flex;
-    gap: 10px;
-  }
-  
-  .btn {
-    padding: 16px;
-    border-radius: 14px;
-    border: none;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: 'Space Grotesk', sans-serif;
-    min-height: 56px;
-    flex: 1;
-  }
-  
+  .btn { padding: 16px; border-radius: 14px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Space Grotesk', sans-serif; min-height: 56px; flex: 1; }
   .btn-primary { background: var(--brand); color: #001a0e; }
   .btn-primary:active { background: var(--brand-hover); transform: scale(0.985); }
-  .btn-primary:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    background: var(--bg-elev);
-    color: var(--text-faint);
-  }
-  
-  .btn-back {
-    background: var(--bg-card);
-    color: var(--text);
-    border: 1px solid var(--border);
-    flex: 0 0 56px;
-    min-width: 56px;
-  }
-  
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; background: var(--bg-elev); color: var(--text-faint); }
+  .btn-back { background: var(--bg-card); color: var(--text); border: 1px solid var(--border); flex: 0 0 56px; min-width: 56px; }
   .btn-back:active { background: var(--bg-elev); }
   
-  .msg {
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 13px;
-    margin-bottom: 14px;
-    display: none;
-    font-weight: 500;
-    line-height: 1.4;
-  }
+  .analise-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+  .analise-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--text-mute); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; }
+  .situacao-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .situacao-item { background: var(--bg-input); border-radius: 10px; padding: 10px; }
+  .situacao-label { font-size: 10px; color: var(--text-mute); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .situacao-valor { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; }
   
-  .msg.show { display: block; }
-  .msg-error { background: var(--danger-soft); border: 1px solid rgba(255, 71, 87, 0.3); color: #ff6b78; }
-  .msg-ia { background: var(--ia-soft); border: 1px solid rgba(168, 85, 247, 0.3); color: var(--ia); }
+  .nivel-card { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-hover) 100%); border-radius: 16px; padding: 20px; text-align: center; color: #001a0e; margin-bottom: 16px; }
+  .nivel-label { font-family: 'Space Grotesk', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; opacity: 0.8; margin-bottom: 4px; }
+  .nivel-numero { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
+  .nivel-nome { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; }
+  .diagnostico-texto { font-size: 14px; line-height: 1.6; color: var(--text); white-space: pre-line; }
+  .alerta-item { background: var(--warning-soft); border: 1px solid rgba(255, 184, 0, 0.3); border-radius: 10px; padding: 12px; margin-bottom: 8px; font-size: 13px; color: var(--warning); display: flex; align-items: flex-start; gap: 8px; }
+  .meta-card { background: linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%); border: 1px solid var(--brand); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+  .meta-titulo-card { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: var(--brand); margin-bottom: 6px; }
+  .meta-info-row { display: flex; gap: 10px; margin: 10px 0; }
+  .meta-pill { background: var(--bg-elev); border-radius: 100px; padding: 4px 10px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--text); }
+  .meta-explicacao { font-size: 13px; line-height: 1.5; color: var(--text-mute); }
   
-  .analise-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
-  }
-  
-  .analise-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    color: var(--text-mute);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 14px;
-  }
-  
-  .situacao-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-  
-  .situacao-item {
-    background: var(--bg-input);
-    border-radius: 10px;
-    padding: 10px;
-  }
-  
-  .situacao-label {
-    font-size: 10px;
-    color: var(--text-mute);
-    margin-bottom: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  
-  .situacao-valor {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-  }
-  
-  .nivel-card {
-    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-hover) 100%);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-    color: #001a0e;
-    margin-bottom: 16px;
-  }
-  
-  .nivel-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-weight: 700;
-    opacity: 0.8;
-    margin-bottom: 4px;
-  }
-  
-  .nivel-numero {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 2px;
-  }
-  
-  .nivel-nome {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-  }
-  
-  .diagnostico-texto {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--text);
-    white-space: pre-line;
-  }
-  
-  .alerta-item {
-    background: var(--warning-soft);
-    border: 1px solid rgba(255, 184, 0, 0.3);
-    border-radius: 10px;
-    padding: 12px;
-    margin-bottom: 8px;
-    font-size: 13px;
-    color: var(--warning);
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  
-  .meta-card {
-    background: linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%);
-    border: 1px solid var(--brand);
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-  
-  .meta-titulo-card {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--brand);
-    margin-bottom: 6px;
-  }
-  
-  .meta-info-row {
-    display: flex;
-    gap: 10px;
-    margin: 10px 0;
-  }
-  
-  .meta-pill {
-    background: var(--bg-elev);
-    border-radius: 100px;
-    padding: 4px 10px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text);
-  }
-  
-  .meta-explicacao {
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--text-mute);
-  }
-  
-  .ia-loading {
-    text-align: center;
-    padding: 60px 20px;
-  }
-  
-  .ia-spinner {
-    width: 60px;
-    height: 60px;
-    border: 4px solid var(--ia-soft);
-    border-top-color: var(--ia);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 20px;
-  }
-  
+  .ia-loading { text-align: center; padding: 60px 20px; }
+  .ia-spinner { width: 60px; height: 60px; border: 4px solid var(--ia-soft); border-top-color: var(--ia); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  
-  .ia-loading-titulo {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--ia);
-    margin-bottom: 6px;
-  }
-  
-  .ia-loading-sub {
-    font-size: 13px;
-    color: var(--text-mute);
-    line-height: 1.5;
-  }
-  
-  .ia-loading-passo {
-    font-size: 12px;
-    color: var(--text-faint);
-    margin-top: 16px;
-    font-style: italic;
-  }
+  .ia-loading-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--ia); margin-bottom: 6px; }
+  .ia-loading-sub { font-size: 13px; color: var(--text-mute); line-height: 1.5; }
+  .ia-loading-passo { font-size: 12px; color: var(--text-faint); margin-top: 16px; font-style: italic; }
   
   .upload-hidden { display: none; }
+  .loader-circle { width: 32px; height: 32px; border: 3px solid var(--border); border-radius: 50%; border-top-color: var(--brand); animation: spin 0.8s linear infinite; margin: 40px auto; }
   
-  .loader-circle {
-    width: 32px; height: 32px;
-    border: 3px solid var(--border);
-    border-radius: 50%;
-    border-top-color: var(--brand);
-    animation: spin 0.8s linear infinite;
-    margin: 40px auto;
-  }
-  
-  .xp-toast {
-    position: fixed;
-    top: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--brand);
-    color: #001a0e;
-    padding: 12px 20px;
-    border-radius: 100px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    z-index: 200;
-    box-shadow: 0 8px 32px rgba(0, 217, 126, 0.4);
-    display: none;
-    animation: toastIn 0.4s cubic-bezier(0.34, 1.5, 0.64, 1);
-    max-width: 90%;
-    text-align: center;
-  }
-  
-  @keyframes toastIn {
-    0% { transform: translateX(-50%) translateY(-20px); opacity: 0; }
-    100% { transform: translateX(-50%) translateY(0); opacity: 1; }
-  }
-  
-  .hidden { display: none !important; }
+  .xp-toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #001a0e; padding: 12px 20px; border-radius: 100px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 14px; z-index: 200; box-shadow: 0 8px 32px rgba(0, 217, 126, 0.4); display: none; animation: toastIn 0.4s cubic-bezier(0.34, 1.5, 0.64, 1); max-width: 90%; text-align: center; }
+  @keyframes toastIn { 0% { transform: translateX(-50%) translateY(-20px); opacity: 0; } 100% { transform: translateX(-50%) translateY(0); opacity: 1; } }
 </style>
 </head>
 <body>
@@ -787,7 +213,7 @@
     { id: 'outro', nome: 'Outro', cor: '#555555', sigla: '?' }
   ];
   
-  const INSTRUCOES_BANCO = {
+  const INSTRUCOES_BANCO_CONTA = {
     'nubank': ['Abre o app Nubank', 'Faz login', 'Na tela inicial, vê o saldo no topo', 'Tira print da tela e me manda'],
     'itau': ['Abre o app Itaú', 'Faz login com biometria', 'Na home, vê "Saldo em conta"', 'Tira print e me manda'],
     'bradesco': ['Abre o app Bradesco', 'Faz login', 'Toca em "Saldo e Extrato"', 'Tira print e me manda'],
@@ -798,6 +224,19 @@
     'c6': ['Abre o app C6 Bank', 'Faz login', 'Vê o saldo na home', 'Tira print e me manda'],
     'picpay': ['Abre o app PicPay', 'Vê o saldo da carteira', 'Tira print e me manda'],
     'default': ['Abre o app do banco', 'Faz login', 'Localiza o saldo da conta', 'Tira print da tela', 'Me manda a foto']
+  };
+  
+  const INSTRUCOES_BANCO_CARTAO = {
+    'nubank': ['Abre o app Nubank', 'Toca em "Cartão de crédito"', 'Vê o limite total e a fatura atual', 'Anota: limite, dia fechamento, dia vencimento'],
+    'itau': ['Abre o app Itaú', 'Menu → Cartões', 'Seleciona o cartão', 'Toca em "Detalhes da fatura"', 'Anota: limite, dias'],
+    'bradesco': ['Abre o app Bradesco', 'Menu → Cartões', 'Faturas', 'Anota: limite, dia fechamento e vencimento'],
+    'santander': ['Abre o app Santander', 'Menu → Cartões', 'Fatura em aberto', 'Anota: limite total e dias'],
+    'bb': ['Abre o app BB', 'Cartões → Fatura aberta', 'Anota: limite, dia fechamento, vencimento'],
+    'caixa': ['Abre o app Caixa', 'Cartões → Fatura atual', 'Anota: limite e dias'],
+    'inter': ['Abre o app Inter', 'Cartão → Fatura atual', 'Anota: limite, fechamento, vencimento'],
+    'c6': ['Abre o app C6 Bank', 'Cartões → Fatura', 'Anota: limite e dias'],
+    'picpay': ['Abre o app PicPay', 'Cartão PicPay → Fatura', 'Anota: limite e vencimento'],
+    'default': ['Abre o app do banco', 'Vai em Cartões → Fatura', 'Anota: limite, dia fechamento, dia vencimento']
   };
   
   let usuario;
@@ -812,6 +251,15 @@
   let despesasAdicionadas = [];
   let dividasAdicionadas = [];
   let analiseIA = null;
+  
+  // NOVO v2.0: Estado dos cartões
+  let temCartoes = null;
+  let bancosCartoes = [];
+  let bancoCartaoIndexAtual = 0;
+  let qtdCartoesPorBanco = {};
+  let cartaoIndexAtual = 0;
+  let cartaoTemFatura = null;
+  let cartaoSalvandoTemp = null;
   
   let modoFoto = null;
   let alvoFotoAtual = null;
@@ -843,19 +291,13 @@
     
     salvarProgresso();
     
-    const passos = [
-      renderPasso1, renderPasso2, renderPasso3, renderPasso4,
-      renderPasso5, renderPasso6, renderPasso7, renderPasso8
-    ];
-    
+    const passos = [renderPasso1, renderPasso2, renderPasso3, renderPasso4, renderPasso5, renderPasso6, renderPasso7, renderPasso8];
     passos[passoAtual]();
   }
   
   async function salvarProgresso() {
     try {
-      await supabase.from('perfis').update({
-        setup_passo_atual: passoAtual
-      }).eq('id', usuario.id);
+      await supabase.from('perfis').update({ setup_passo_atual: passoAtual }).eq('id', usuario.id);
     } catch (e) { console.error(e); }
   }
   
@@ -877,12 +319,7 @@
   
   window.pularSetup = async function() {
     if (!confirm('Tem certeza que quer pular?\n\nVocê pode fazer o Setup depois pelo menu lateral. Mas perde a análise personalizada do Tatu! 🦔')) return;
-    
-    await supabase.from('perfis').update({
-      setup_concluido: true,
-      setup_concluido_em: new Date().toISOString()
-    }).eq('id', usuario.id);
-    
+    await supabase.from('perfis').update({ setup_concluido: true, setup_concluido_em: new Date().toISOString() }).eq('id', usuario.id);
     window.location.href = 'home.html?v=' + Date.now();
   };
   
@@ -904,25 +341,20 @@
           </div>
         </div>
       </div>
-      
       <div class="form-card" style="background:linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%);border-color:var(--brand);">
         <div style="display:flex;align-items:center;gap:12px;">
           <div style="font-size:32px;">💡</div>
           <div>
             <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;margin-bottom:4px;">Como vai ser</div>
-            <div style="font-size:12px;color:var(--text-mute);line-height:1.5;">
-              Vou te ensinar passo a passo como cadastrar contas, cartões, renda e despesas. 
-              Você manda print e a IA cadastra sozinha! 
-            </div>
+            <div style="font-size:12px;color:var(--text-mute);line-height:1.5;">Vou te ensinar passo a passo como cadastrar contas, cartões, renda e despesas.</div>
           </div>
         </div>
       </div>
-      
       <div class="form-card" style="margin-bottom:0;">
         <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;margin-bottom:10px;">📋 O que vamos cadastrar</div>
         <div style="display:grid;gap:8px;">
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>🏦</span> Suas contas em bancos</div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💳</span> Cartões de crédito</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💳</span> Cartões de crédito + faturas</div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💰</span> Sua renda mensal</div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>📋</span> Despesas fixas</div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💸</span> Dívidas em aberto</div>
@@ -930,28 +362,21 @@
         </div>
       </div>
     `;
-    
-    document.getElementById('footer-content').innerHTML = `
-      <button class="btn btn-primary" onclick="proximoPasso()">🚀 Bora começar!</button>
-    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="proximoPasso()">🚀 Bora começar!</button>`;
   }
   
   function renderPasso2() {
-    const html = `
+    document.getElementById('container').innerHTML = `
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
           <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">
-            Em quais bancos você tem conta? Toca em todos que usa. Pode marcar quantos quiser!
-          </div>
+          <div class="tatu-texto">Em quais bancos você tem conta? Toca em todos que usa. Pode marcar quantos quiser!</div>
         </div>
       </div>
-      
       <div class="step-titulo">Quais bancos você usa?</div>
       <div class="step-subtitulo">Toque pra selecionar. Pode ser mais de um.</div>
-      
-      <div class="bancos-grid" id="bancos-grid">
+      <div class="bancos-grid">
         ${BANCOS.map(b => `
           <div class="banco-card ${bancosSelecionados.includes(b.id) ? 'active' : ''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')">
             <div class="banco-logo" style="background:${b.cor};${b.cor === '#FFEF38' ? 'color:#000;' : ''}">${b.sigla}</div>
@@ -960,8 +385,6 @@
         `).join('')}
       </div>
     `;
-    
-    document.getElementById('container').innerHTML = html;
     renderFooterPadrao(true, bancosSelecionados.length > 0);
   }
   
@@ -969,40 +392,27 @@
     const idx = bancosSelecionados.indexOf(id);
     if (idx >= 0) bancosSelecionados.splice(idx, 1);
     else bancosSelecionados.push(id);
-    
     document.querySelector(`[data-banco="${id}"]`).classList.toggle('active');
     renderFooterPadrao(true, bancosSelecionados.length > 0);
   };
   
   function renderPasso3() {
-    if (bancosSelecionados.length === 0) {
-      proximoPasso();
-      return;
-    }
-    
-    if (bancoIndexAtual >= bancosSelecionados.length) {
-      bancoIndexAtual = 0;
-      proximoPasso();
-      return;
-    }
+    if (bancosSelecionados.length === 0) { proximoPasso(); return; }
+    if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); return; }
     
     const bancoId = bancosSelecionados[bancoIndexAtual];
     const banco = BANCOS.find(b => b.id === bancoId);
-    const passos = INSTRUCOES_BANCO[bancoId] || INSTRUCOES_BANCO.default;
+    const passos = INSTRUCOES_BANCO_CONTA[bancoId] || INSTRUCOES_BANCO_CONTA.default;
     const ehCarteira = bancoId === 'carteira';
     
-    const html = `
+    document.getElementById('container').innerHTML = `
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
           <div class="tatu-titulo">Tatu te ensina</div>
-          <div class="tatu-texto">
-            Vamos cadastrar sua conta do <strong>${banco.nome}</strong> agora.
-            ${ehCarteira ? 'Quanto tem em dinheiro vivo na carteira agora?' : 'Segue os passos pra eu te ajudar a pegar o saldo.'}
-          </div>
+          <div class="tatu-texto">Vamos cadastrar sua conta do <strong>${banco.nome}</strong>. ${ehCarteira ? 'Quanto tem em dinheiro vivo agora?' : 'Segue os passos pra pegar o saldo.'}</div>
         </div>
       </div>
-      
       <div class="step-titulo" style="display:flex;align-items:center;gap:10px;">
         <div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>
         ${banco.nome}
@@ -1013,15 +423,9 @@
       <div class="instrucao-card">
         <div class="instrucao-titulo">📱 Passo a passo</div>
         <ol class="passo-lista">
-          ${passos.map((p, i) => `
-            <li class="passo-item">
-              <div class="passo-num">${i + 1}</div>
-              <div>${p}</div>
-            </li>
-          `).join('')}
+          ${passos.map((p, i) => `<li class="passo-item"><div class="passo-num">${i + 1}</div><div>${p}</div></li>`).join('')}
         </ol>
       </div>
-      
       <div class="opcoes-acao">
         <div class="opcao-btn ia" onclick="abrirFotoConta('${bancoId}')">
           <div class="opcao-btn-icon">📸</div>
@@ -1038,10 +442,7 @@
       <div class="form-card">
         <div class="field">
           <label>Quanto tem em dinheiro vivo?</label>
-          <div class="valor-input-wrapper">
-            <span class="valor-prefix">R$</span>
-            <input type="text" inputmode="decimal" id="carteira-valor" placeholder="0,00" oninput="formatarValor(this)">
-          </div>
+          <div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="carteira-valor" placeholder="0,00" oninput="formatarValor(this)"></div>
         </div>
         <button class="btn btn-primary" onclick="salvarCarteira()">Salvar carteira</button>
       </div>
@@ -1064,8 +465,6 @@
       ` : ''}
     `;
     
-    document.getElementById('container').innerHTML = html;
-    
     document.getElementById('footer-content').innerHTML = `
       <button class="btn btn-back" onclick="voltarPasso()">‹</button>
       <button class="btn btn-primary" onclick="pularBancoOuSeguir()">${bancoIndexAtual + 1 === bancosSelecionados.length ? 'Próximo →' : 'Pular esse →'}</button>
@@ -1074,36 +473,18 @@
   
   window.pularBancoOuSeguir = function() {
     bancoIndexAtual++;
-    if (bancoIndexAtual >= bancosSelecionados.length) {
-      bancoIndexAtual = 0;
-      proximoPasso();
-    } else {
-      renderPasso3();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); }
+    else { renderPasso3(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
   };
   
-  window.abrirFotoConta = function(bancoId) {
-    modoFoto = 'conta';
-    alvoFotoAtual = bancoId;
-    document.getElementById('input-foto').click();
-  };
+  window.abrirFotoConta = function(bancoId) { modoFoto = 'conta'; alvoFotoAtual = bancoId; document.getElementById('input-foto').click(); };
   
   window.abrirManualConta = function(bancoId) {
     const banco = BANCOS.find(b => b.id === bancoId);
-    
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">Beleza, vamos preencher manualmente. Só precisa do saldo atual da conta.</div>
-        </div>
-      </div>
-      
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Beleza, vamos preencher manualmente. Só precisa do saldo atual da conta.</div></div></div>
       <div class="step-titulo">${banco.nome}</div>
       <div class="step-subtitulo">Preencha os dados da conta</div>
-      
       <div class="form-card">
         <div class="field">
           <label>Tipo</label>
@@ -1115,130 +496,115 @@
         </div>
         <div class="field">
           <label>Saldo atual</label>
-          <div class="valor-input-wrapper">
-            <span class="valor-prefix">R$</span>
-            <input type="text" inputmode="decimal" id="m-saldo" placeholder="0,00" oninput="formatarValor(this)">
-          </div>
+          <div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="m-saldo" placeholder="0,00" oninput="formatarValor(this)"></div>
         </div>
         <button class="btn btn-primary" onclick="salvarContaManual('${bancoId}')">Salvar conta</button>
       </div>
     `;
-    document.getElementById('footer-content').innerHTML = `
-      <button class="btn btn-back" onclick="renderPasso3()">‹</button>
-      <button class="btn btn-primary" style="opacity:0.5;" disabled>Cadastre acima</button>
-    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderPasso3()">‹</button><button class="btn btn-primary" style="opacity:0.5;" disabled>Cadastre acima</button>`;
   };
   
   window.salvarContaManual = async function(bancoId) {
     const tipo = document.getElementById('m-tipo').value;
     const saldo = valorParaNumero(document.getElementById('m-saldo').value);
     const banco = BANCOS.find(b => b.id === bancoId);
-    
-    if (saldo === null || isNaN(saldo)) {
-      alert('Informe o saldo (pode ser 0,00)');
-      return;
-    }
-    
+    if (saldo === null || isNaN(saldo)) { alert('Informe o saldo (pode ser 0,00)'); return; }
     const emojis = { 'conta_corrente': '🏦', 'poupanca': '🐷', 'investimento': '📈' };
-    
-    const { data, error } = await supabase.from('contas').insert({
-      user_id: usuario.id,
-      nome: banco.nome,
-      tipo,
-      banco: banco.nome,
-      cor: banco.cor,
-      icone: emojis[tipo] || '🏦',
-      saldo_inicial: saldo,
-      padrao: contasAdicionadas.length === 0
-    }).select().single();
-    
-    if (error) {
-      alert('Erro: ' + error.message);
-      return;
-    }
-    
-    contasAdicionadas.push(data);
-    await darXP(15, 'conta_setup', 'Setup: ' + banco.nome);
-    mostrarToast('+15 XP 🏦 Conta salva!');
-    
-    setTimeout(() => {
-      bancoIndexAtual++;
-      if (bancoIndexAtual >= bancosSelecionados.length) {
-        bancoIndexAtual = 0;
-        proximoPasso();
-      } else {
-        renderPasso3();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    }, 800);
+    try {
+      const { data, error } = await supabase.from('contas').insert({
+        user_id: usuario.id, nome: banco.nome, tipo, banco: banco.nome, cor: banco.cor,
+        icone: emojis[tipo] || '🏦', saldo_inicial: saldo, padrao: contasAdicionadas.length === 0
+      }).select().single();
+      if (error) throw error;
+      contasAdicionadas.push(data);
+      await darXP(15, 'conta_setup', 'Setup: ' + banco.nome);
+      mostrarToast('+15 XP 🏦 Conta salva!');
+      setTimeout(() => {
+        bancoIndexAtual++;
+        if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); }
+        else { renderPasso3(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      }, 800);
+    } catch (e) { alert('Erro: ' + e.message); }
   };
   
   window.salvarCarteira = async function() {
     const valor = valorParaNumero(document.getElementById('carteira-valor').value);
-    if (valor === null || isNaN(valor)) {
-      alert('Informe o valor (pode ser 0,00)');
-      return;
-    }
-    
-    const { data, error } = await supabase.from('contas').insert({
-      user_id: usuario.id,
-      nome: 'Carteira',
-      tipo: 'carteira',
-      cor: '#84cc16',
-      icone: '💵',
-      saldo_inicial: valor,
-      padrao: contasAdicionadas.length === 0
-    }).select().single();
-    
-    if (error) {
-      alert('Erro: ' + error.message);
-      return;
-    }
-    
-    contasAdicionadas.push(data);
-    await darXP(15, 'carteira_setup', 'Setup: Carteira');
-    mostrarToast('+15 XP 💵 Carteira salva!');
-    
-    setTimeout(() => {
-      bancoIndexAtual++;
-      if (bancoIndexAtual >= bancosSelecionados.length) {
-        bancoIndexAtual = 0;
-        proximoPasso();
-      } else {
-        renderPasso3();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    }, 800);
+    if (valor === null || isNaN(valor)) { alert('Informe o valor (pode ser 0,00)'); return; }
+    try {
+      const { data, error } = await supabase.from('contas').insert({
+        user_id: usuario.id, nome: 'Carteira', tipo: 'carteira', cor: '#84cc16',
+        icone: '💵', saldo_inicial: valor, padrao: contasAdicionadas.length === 0
+      }).select().single();
+      if (error) throw error;
+      contasAdicionadas.push(data);
+      await darXP(15, 'carteira_setup', 'Setup: Carteira');
+      mostrarToast('+15 XP 💵 Carteira salva!');
+      setTimeout(() => {
+        bancoIndexAtual++;
+        if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); }
+        else { renderPasso3(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      }, 800);
+    } catch (e) { alert('Erro: ' + e.message); }
   };
   
+  // ============================================
+  // PASSO 4 - CARTÕES v2.0 (REFEITO)
+  // ============================================
+  
   function renderPasso4() {
+    // Sub-estado: temCartoes null = pergunta inicial
+    if (temCartoes === null) { renderPasso4_Pergunta(); return; }
+    if (temCartoes === false) { proximoPasso(); return; }
+    
+    // Se já tem bancos selecionados, segue o fluxo
+    if (bancosCartoes.length === 0) { renderPasso4_SelecionarBancos(); return; }
+    
+    // Itera pelos bancos
+    if (bancoCartaoIndexAtual >= bancosCartoes.length) {
+      bancoCartaoIndexAtual = 0;
+      cartaoIndexAtual = 0;
+      renderPasso4_Resumo();
+      return;
+    }
+    
+    const bancoId = bancosCartoes[bancoCartaoIndexAtual];
+    const qtd = qtdCartoesPorBanco[bancoId];
+    
+    // Se ainda não escolheu qtd
+    if (!qtd) { renderPasso4_QtdCartoes(bancoId); return; }
+    
+    // Itera pelos cartões desse banco
+    if (cartaoIndexAtual >= qtd) {
+      cartaoIndexAtual = 0;
+      bancoCartaoIndexAtual++;
+      renderPasso4();
+      return;
+    }
+    
+    renderPasso4_CadastrarCartao(bancoId);
+  }
+  
+  function renderPasso4_Pergunta() {
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
           <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">
-            Agora os <strong>cartões de crédito</strong>. Vou pedir o limite total e a fatura atual (se tiver). Adiciona quantos quiser!
-          </div>
+          <div class="tatu-texto">Agora os <strong>cartões de crédito</strong>. Vou te perguntar quais bancos têm cartão seu, quantos cartões de cada banco, e os dados de cada um.</div>
         </div>
       </div>
-      
-      <div class="step-titulo">Tem cartões de crédito?</div>
-      <div class="step-subtitulo">Adicione um por um. Se não tem, é só seguir.</div>
-      
-      <div class="opcoes-acao">
-        <div class="opcao-btn ia" onclick="abrirFotoCartao()">
-          <div class="opcao-btn-icon">📸</div>
-          <div class="opcao-btn-titulo">Foto da fatura</div>
-          <div class="opcao-btn-sub">IA lê limite e valor</div>
+      <div class="step-titulo">Você tem cartão de crédito?</div>
+      <div class="step-subtitulo">Se tiver, vou pedir o limite, dias e fatura atual.</div>
+      <div class="sim-nao-grid">
+        <div class="sim-nao-btn sim" onclick="responderTemCartoes(true)">
+          <div class="sim-nao-btn-emoji">💳</div>
+          Sim, tenho
         </div>
-        <div class="opcao-btn" onclick="abrirManualCartao()">
-          <div class="opcao-btn-icon">✍️</div>
-          <div class="opcao-btn-titulo">Digitar manual</div>
-          <div class="opcao-btn-sub">Você preenche</div>
+        <div class="sim-nao-btn nao" onclick="responderTemCartoes(false)">
+          <div class="sim-nao-btn-emoji">🚫</div>
+          Não tenho
         </div>
       </div>
-      
       ${cartoesAdicionados.length > 0 ? `
         <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:20px 0 10px;">✅ Já cadastrados (${cartoesAdicionados.length})</div>
         ${cartoesAdicionados.map(c => `
@@ -1251,202 +617,438 @@
             <div class="item-check">✓</div>
           </div>
         `).join('')}
-      ` : `
-        <div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;">
-          <div style="font-size:36px;margin-bottom:10px;">💳</div>
-          <div style="font-size:13px;color:var(--text-mute);">Nenhum cartão ainda</div>
-        </div>
-      `}
+      ` : ''}
     `;
-    
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()" ${cartoesAdicionados.length === 0 ? 'disabled' : ''}>Continuar →</button>`;
+  }
+  
+  window.responderTemCartoes = function(resp) {
+    temCartoes = resp;
+    if (resp) renderPasso4_SelecionarBancos();
+    else proximoPasso();
+  };
+  
+  function renderPasso4_SelecionarBancos() {
+    document.getElementById('container').innerHTML = `
+      <div class="tatu-bubble">
+        <div class="tatu-emoji">🦔</div>
+        <div class="tatu-content">
+          <div class="tatu-titulo">Tatu</div>
+          <div class="tatu-texto">De quais bancos são seus cartões? Marca todos. Depois vou perguntar quantos cartões de cada banco você tem.</div>
+        </div>
+      </div>
+      <div class="step-titulo">Bancos dos cartões</div>
+      <div class="step-subtitulo">Toque nos bancos onde tem cartão de crédito.</div>
+      <div class="bancos-grid">
+        ${BANCOS.filter(b => b.id !== 'carteira').map(b => `
+          <div class="banco-card ${bancosCartoes.includes(b.id) ? 'active' : ''}" data-bcart="${b.id}" onclick="toggleBancoCartao('${b.id}')">
+            <div class="banco-logo" style="background:${b.cor};${b.cor === '#FFEF38' ? 'color:#000;' : ''}">${b.sigla}</div>
+            <div class="banco-nome">${b.nome}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
     document.getElementById('footer-content').innerHTML = `
-      <button class="btn btn-back" onclick="voltarPasso()">‹</button>
-      <button class="btn btn-primary" onclick="proximoPasso()">${cartoesAdicionados.length > 0 ? 'Continuar →' : 'Pular →'}</button>
+      <button class="btn btn-back" onclick="temCartoes = null; renderPasso4_Pergunta();">‹</button>
+      <button class="btn btn-primary" onclick="confirmarBancosCartoes()" ${bancosCartoes.length === 0 ? 'disabled' : ''}>Continuar →</button>
     `;
   }
   
-  window.abrirFotoCartao = function() {
-    modoFoto = 'cartao';
-    document.getElementById('input-foto').click();
+  window.toggleBancoCartao = function(id) {
+    const idx = bancosCartoes.indexOf(id);
+    if (idx >= 0) bancosCartoes.splice(idx, 1);
+    else bancosCartoes.push(id);
+    document.querySelector(`[data-bcart="${id}"]`).classList.toggle('active');
+    document.querySelector('.footer-content .btn-primary').disabled = bancosCartoes.length === 0;
   };
   
-  window.abrirManualCartao = function() {
+  window.confirmarBancosCartoes = function() {
+    if (bancosCartoes.length === 0) return;
+    bancoCartaoIndexAtual = 0;
+    cartaoIndexAtual = 0;
+    renderPasso4();
+  };
+  
+  function renderPasso4_QtdCartoes(bancoId) {
+    const banco = BANCOS.find(b => b.id === bancoId);
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
           <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">Preenche os dados do cartão.</div>
+          <div class="tatu-texto">Quantos cartões do <strong>${banco.nome}</strong> você tem?</div>
         </div>
       </div>
+      <div class="step-titulo" style="display:flex;align-items:center;gap:10px;">
+        <div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>
+        ${banco.nome}
+      </div>
+      <div class="step-subtitulo">Banco ${bancoCartaoIndexAtual + 1} de ${bancosCartoes.length}</div>
+      <div class="qtd-grid">
+        <div class="qtd-btn" onclick="selecionarQtd('${bancoId}', 1)">1</div>
+        <div class="qtd-btn" onclick="selecionarQtd('${bancoId}', 2)">2</div>
+        <div class="qtd-btn" onclick="selecionarQtd('${bancoId}', 3)">3</div>
+        <div class="qtd-btn" onclick="selecionarQtd('${bancoId}', 4)">4+</div>
+      </div>
+    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarBancoCartao()">‹</button><button class="btn btn-primary" disabled>Escolha acima</button>`;
+  }
+  
+  window.selecionarQtd = function(bancoId, qtd) {
+    qtdCartoesPorBanco[bancoId] = qtd;
+    cartaoIndexAtual = 0;
+    renderPasso4();
+  };
+  
+  window.voltarBancoCartao = function() {
+    if (bancoCartaoIndexAtual > 0) {
+      bancoCartaoIndexAtual--;
+      cartaoIndexAtual = 0;
+      // Remove qtd do banco atual pra pedir de novo
+      delete qtdCartoesPorBanco[bancosCartoes[bancoCartaoIndexAtual]];
+    } else {
+      renderPasso4_SelecionarBancos();
+    }
+    renderPasso4();
+  };
+  
+  function renderPasso4_CadastrarCartao(bancoId) {
+    const banco = BANCOS.find(b => b.id === bancoId);
+    const qtd = qtdCartoesPorBanco[bancoId];
+    const passos = INSTRUCOES_BANCO_CARTAO[bancoId] || INSTRUCOES_BANCO_CARTAO.default;
+    const numCartao = cartaoIndexAtual + 1;
+    const sugestaoNome = qtd === 1 ? banco.nome : `${banco.nome} ${numCartao}`;
+    
+    document.getElementById('container').innerHTML = `
+      <div class="tatu-bubble">
+        <div class="tatu-emoji">🦔</div>
+        <div class="tatu-content">
+          <div class="tatu-titulo">Tatu te ensina</div>
+          <div class="tatu-texto">Vamos cadastrar o cartão <strong>${numCartao} de ${qtd}</strong> do ${banco.nome}. Pega o limite e os dias de fechamento/vencimento.</div>
+        </div>
+      </div>
+      <div class="step-titulo" style="display:flex;align-items:center;gap:10px;">
+        <div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>
+        ${banco.nome}
+      </div>
+      <div class="step-subtitulo">Cartão ${numCartao} de ${qtd} • Banco ${bancoCartaoIndexAtual + 1}/${bancosCartoes.length}</div>
       
-      <div class="step-titulo">Novo cartão</div>
-      <div class="step-subtitulo">Dados do cartão de crédito</div>
+      <div class="instrucao-card">
+        <div class="instrucao-titulo">📱 Onde achar no app ${banco.nome}</div>
+        <ol class="passo-lista">
+          ${passos.map((p, i) => `<li class="passo-item"><div class="passo-num">${i + 1}</div><div>${p}</div></li>`).join('')}
+        </ol>
+      </div>
       
       <div class="form-card">
         <div class="field">
-          <label>Nome do cartão</label>
-          <input type="text" id="m-cart-nome" placeholder="Digite o nome">
-        </div>
-        <div class="field">
-          <label>Banco</label>
-          <select id="m-cart-banco">
-            <option value="">Selecione</option>
-            ${BANCOS.filter(b => b.id !== 'carteira' && b.id !== 'outro').map(b => `<option value="${b.id}">${b.nome}</option>`).join('')}
-          </select>
+          <label>Apelido do cartão</label>
+          <input type="text" id="c-nome" placeholder="${sugestaoNome}" value="${sugestaoNome}">
         </div>
         <div class="field">
           <label>Limite total</label>
-          <div class="valor-input-wrapper">
-            <span class="valor-prefix">R$</span>
-            <input type="text" inputmode="decimal" id="m-cart-limite" placeholder="0,00" oninput="formatarValor(this)">
+          <div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="c-limite" placeholder="0,00" oninput="formatarValor(this)"></div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Dia fechamento</label>
+            <input type="number" id="c-fechamento" placeholder="20" min="1" max="31">
+          </div>
+          <div class="field">
+            <label>Dia vencimento</label>
+            <input type="number" id="c-vencimento" placeholder="10" min="1" max="31">
           </div>
         </div>
-        <div class="field">
-          <label>Fatura em aberto (opcional)</label>
-          <div class="valor-input-wrapper">
-            <span class="valor-prefix">R$</span>
-            <input type="text" inputmode="decimal" id="m-cart-fatura" placeholder="0,00" oninput="formatarValor(this)">
-          </div>
-        </div>
-        <button class="btn btn-primary" onclick="salvarCartaoManual()">Salvar cartão</button>
+        <button class="btn btn-primary" onclick="confirmarDadosCartao('${bancoId}')">Continuar →</button>
       </div>
     `;
-    
-    document.getElementById('footer-content').innerHTML = `
-      <button class="btn btn-back" onclick="renderPasso4()">‹</button>
-      <button class="btn btn-primary" style="opacity:0.5;" disabled>Cadastre acima</button>
-    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarCartao()">‹</button><button class="btn btn-primary" disabled>Preencha acima</button>`;
+  }
+  
+  window.voltarCartao = function() {
+    if (cartaoIndexAtual > 0) {
+      cartaoIndexAtual--;
+      renderPasso4();
+    } else if (bancoCartaoIndexAtual > 0) {
+      voltarBancoCartao();
+    } else {
+      renderPasso4_SelecionarBancos();
+    }
   };
   
-  window.salvarCartaoManual = async function() {
-    const nome = document.getElementById('m-cart-nome').value.trim();
-    const bancoId = document.getElementById('m-cart-banco').value;
-    const limite = valorParaNumero(document.getElementById('m-cart-limite').value);
-    const fatura = valorParaNumero(document.getElementById('m-cart-fatura').value) || 0;
+  window.confirmarDadosCartao = function(bancoId) {
+    const nome = document.getElementById('c-nome').value.trim();
+    const limite = valorParaNumero(document.getElementById('c-limite').value);
+    const fechamento = parseInt(document.getElementById('c-fechamento').value) || null;
+    const vencimento = parseInt(document.getElementById('c-vencimento').value) || null;
     
-    if (!nome) { alert('Digite o nome'); return; }
+    if (!nome) { alert('Digite o apelido'); return; }
     if (!limite || limite <= 0) { alert('Informe o limite'); return; }
     
-    const banco = BANCOS.find(b => b.id === bancoId);
-    const cor = banco ? banco.cor : '#820AD1';
-    
-    const { data, error } = await supabase.from('contas').insert({
-      user_id: usuario.id,
-      nome,
-      tipo: 'cartao_credito',
-      banco: banco ? banco.nome : null,
-      cor,
-      icone: '💳',
-      limite,
-      saldo_inicial: 0
-    }).select().single();
-    
-    if (error) { alert('Erro: ' + error.message); return; }
-    
-    cartoesAdicionados.push(data);
-    
-    if (fatura > 0) {
-      const dataVenc = new Date();
-      dataVenc.setDate(10);
-      if (dataVenc < new Date()) dataVenc.setMonth(dataVenc.getMonth() + 1);
-      const dataVencStr = dataVenc.toISOString().split('T')[0];
-      
-      const { data: divida } = await supabase.from('dividas').insert({
-        user_id: usuario.id,
-        credor: banco ? banco.nome : nome,
-        tipo: 'cartao',
-        descricao: `Fatura do cartão ${nome}`,
-        valor_original: fatura,
-        valor_atual: fatura,
-        data_vencimento: dataVencStr,
-        data_inicio: new Date().toISOString().split('T')[0],
-        status: 'ativa',
-        prioridade: 1,
-        conta_id: data.id
-      }).select().single();
-      
-      if (divida) {
-        await supabase.from('transacoes').insert({
-          user_id: usuario.id,
-          valor: fatura,
-          descricao: `Fatura ${nome}`,
-          data: dataVencStr,
-          tipo: 'saida',
-          conta_id: data.id,
-          divida_id: divida.id,
-          status: 'prevista'
-        });
-      }
-    }
-    
-    await darXP(20, 'cartao_setup', 'Setup cartão: ' + nome);
-    mostrarToast(`+20 XP 💳 Cartão salvo!`);
-    
-    setTimeout(() => renderPasso4(), 800);
+    // Salva dados temporários e pergunta sobre fatura
+    cartaoSalvandoTemp = { bancoId, nome, limite, fechamento, vencimento };
+    renderPasso4_PerguntaFatura();
   };
   
-  function renderPasso5() {
+  function renderPasso4_PerguntaFatura() {
+    const banco = BANCOS.find(b => b.id === cartaoSalvandoTemp.bancoId);
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
           <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">
-            Agora me conta sua <strong>renda mensal</strong>. Salário, freelance, aluguel recebido, comissões — adiciona tudo que entra na sua conta todo mês.
-          </div>
+          <div class="tatu-texto">Esse cartão <strong>${cartaoSalvandoTemp.nome}</strong> tem fatura em aberto agora? (a fatura atual, fechada ou aberta, que você precisa pagar)</div>
         </div>
       </div>
+      <div class="step-titulo">Tem fatura em aberto?</div>
+      <div class="step-subtitulo">Pode ser fatura fechada esperando vencer, ou aberta consumindo limite.</div>
+      <div class="sim-nao-grid">
+        <div class="sim-nao-btn sim" onclick="responderTemFatura(true)">
+          <div class="sim-nao-btn-emoji">💸</div>
+          Sim, tem
+        </div>
+        <div class="sim-nao-btn nao" onclick="responderTemFatura(false)">
+          <div class="sim-nao-btn-emoji">✨</div>
+          Não, zerada
+        </div>
+      </div>
+    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderPasso4_CadastrarCartao('${cartaoSalvandoTemp.bancoId}')">‹</button><button class="btn btn-primary" disabled>Escolha acima</button>`;
+  }
+  
+  window.responderTemFatura = function(temFatura) {
+    if (!temFatura) {
+      // Salva cartão sem fatura
+      salvarCartaoFinal({ valor: 0, paga: true, atrasada: false });
+    } else {
+      renderPasso4_DadosFatura();
+    }
+  };
+  
+  function renderPasso4_DadosFatura() {
+    document.getElementById('container').innerHTML = `
+      <div class="tatu-bubble">
+        <div class="tatu-emoji">🦔</div>
+        <div class="tatu-content">
+          <div class="tatu-titulo">Tatu</div>
+          <div class="tatu-texto">Beleza! Me conta da fatura do <strong>${cartaoSalvandoTemp.nome}</strong>:</div>
+        </div>
+      </div>
+      <div class="step-titulo">Dados da fatura</div>
+      <div class="step-subtitulo">Valor atual + se está paga ou atrasada</div>
       
+      <div class="form-card">
+        <div class="field">
+          <label>Valor da fatura atual</label>
+          <div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="f-valor" placeholder="0,00" oninput="formatarValor(this)"></div>
+        </div>
+        
+        <div class="field">
+          <label>Status</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+            <div class="qtd-btn" data-status="aberta" onclick="selecionarStatusFatura('aberta')" style="font-size:11px;padding:14px 4px;line-height:1.3;">📅<br>Aberta<br><span style="font-size:9px;opacity:0.7;">vence depois</span></div>
+            <div class="qtd-btn" data-status="paga" onclick="selecionarStatusFatura('paga')" style="font-size:11px;padding:14px 4px;line-height:1.3;">✅<br>Paga<br><span style="font-size:9px;opacity:0.7;">já quitei</span></div>
+            <div class="qtd-btn" data-status="atrasada" onclick="selecionarStatusFatura('atrasada')" style="font-size:11px;padding:14px 4px;line-height:1.3;">⚠️<br>Atrasada<br><span style="font-size:9px;opacity:0.7;">já venceu</span></div>
+          </div>
+        </div>
+        
+        <button class="btn btn-primary" onclick="confirmarFatura()">Salvar cartão →</button>
+      </div>
+    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderPasso4_PerguntaFatura()">‹</button><button class="btn btn-primary" disabled>Preencha acima</button>`;
+  }
+  
+  let statusFaturaTemp = null;
+  
+  window.selecionarStatusFatura = function(status) {
+    statusFaturaTemp = status;
+    document.querySelectorAll('[data-status]').forEach(el => el.classList.remove('active'));
+    document.querySelector(`[data-status="${status}"]`).classList.add('active');
+  };
+  
+  window.confirmarFatura = function() {
+    const valor = valorParaNumero(document.getElementById('f-valor').value);
+    if (!valor || valor <= 0) { alert('Informe o valor da fatura'); return; }
+    if (!statusFaturaTemp) { alert('Selecione o status'); return; }
+    
+    const paga = statusFaturaTemp === 'paga';
+    const atrasada = statusFaturaTemp === 'atrasada';
+    
+    salvarCartaoFinal({ valor, paga, atrasada });
+  };
+  
+  async function salvarCartaoFinal({ valor, paga, atrasada }) {
+    const { bancoId, nome, limite, fechamento, vencimento } = cartaoSalvandoTemp;
+    const banco = BANCOS.find(b => b.id === bancoId);
+    
+    try {
+      // 1. Salva o CARTÃO (conta tipo cartao_credito)
+      const { data: cartao, error: errCartao } = await supabase.from('contas').insert({
+        user_id: usuario.id,
+        nome,
+        tipo: 'cartao_credito',
+        banco: banco.nome,
+        cor: banco.cor,
+        icone: '💳',
+        limite,
+        saldo_inicial: 0,
+        dia_fechamento: fechamento,
+        dia_vencimento: vencimento
+      }).select().single();
+      
+      if (errCartao) throw errCartao;
+      cartoesAdicionados.push(cartao);
+      
+      // 2. Se tem fatura COM VALOR, cria as integrações
+      if (valor > 0) {
+        // Calcula data de vencimento
+        let dataVencStr;
+        if (atrasada) {
+          // Atrasada: usa data passada (vencimento mês passado)
+          const dataVenc = new Date();
+          dataVenc.setMonth(dataVenc.getMonth() - 1);
+          if (vencimento) dataVenc.setDate(vencimento);
+          dataVencStr = dataVenc.toISOString().split('T')[0];
+        } else {
+          // Aberta ou paga: usa vencimento próximo
+          const dataVenc = new Date();
+          if (vencimento) {
+            dataVenc.setDate(vencimento);
+            if (dataVenc < new Date()) dataVenc.setMonth(dataVenc.getMonth() + 1);
+          } else {
+            dataVenc.setDate(dataVenc.getDate() + 30);
+          }
+          dataVencStr = dataVenc.toISOString().split('T')[0];
+        }
+        
+        // Se NÃO está paga, cria dívida + transação prevista
+        if (!paga) {
+          const { data: divida, error: errDiv } = await supabase.from('dividas').insert({
+            user_id: usuario.id,
+            credor: banco.nome,
+            tipo: 'cartao',
+            descricao: `Fatura do cartão ${nome}`,
+            valor_original: valor,
+            valor_atual: valor,
+            data_vencimento: dataVencStr,
+            data_inicio: new Date().toISOString().split('T')[0],
+            status: 'ativa',
+            prioridade: atrasada ? 1 : 2,
+            conta_id: cartao.id
+          }).select().single();
+          
+          if (!errDiv && divida) {
+            dividasAdicionadas.push(divida);
+            
+            // Cria transação prevista
+            await supabase.from('transacoes').insert({
+              user_id: usuario.id,
+              valor,
+              descricao: `Fatura ${nome}`,
+              data: dataVencStr,
+              tipo: 'saida',
+              conta_id: cartao.id,
+              divida_id: divida.id,
+              status: 'prevista'
+            });
+          }
+        } else {
+          // Se está paga, cria transação como realizada
+          await supabase.from('transacoes').insert({
+            user_id: usuario.id,
+            valor,
+            descricao: `Fatura ${nome} (paga)`,
+            data: dataVencStr,
+            tipo: 'saida',
+            conta_id: cartao.id,
+            status: 'realizada'
+          });
+        }
+      }
+      
+      await darXP(25, 'cartao_setup', 'Setup cartão: ' + nome);
+      mostrarToast(`+25 XP 💳 Cartão ${nome} salvo!`);
+      
+      // Reset estados temporários
+      cartaoSalvandoTemp = null;
+      statusFaturaTemp = null;
+      
+      // Próximo cartão ou banco
+      setTimeout(() => {
+        cartaoIndexAtual++;
+        renderPasso4();
+      }, 800);
+    } catch (e) {
+      alert('Erro salvando cartão: ' + e.message);
+      console.error(e);
+    }
+  }
+  
+  function renderPasso4_Resumo() {
+    const totalDivida = dividasAdicionadas
+      .filter(d => d.tipo === 'cartao')
+      .reduce((a, d) => a + Number(d.valor_atual || 0), 0);
+    const atrasadas = dividasAdicionadas.filter(d => d.tipo === 'cartao' && d.prioridade === 1).length;
+    
+    document.getElementById('container').innerHTML = `
+      <div class="tatu-bubble">
+        <div class="tatu-emoji">🎉</div>
+        <div class="tatu-content">
+          <div class="tatu-titulo">Tatu</div>
+          <div class="tatu-texto">Pronto! Cadastrei <strong>${cartoesAdicionados.length} cartões</strong>. ${totalDivida > 0 ? `Total de fatura: <strong>R$ ${formatarMoeda(totalDivida)}</strong>.` : ''} ${atrasadas > 0 ? `<br><br>⚠️ Você tem <strong>${atrasadas} fatura${atrasadas > 1 ? 's' : ''} atrasada${atrasadas > 1 ? 's' : ''}</strong>! Vou te ajudar a negociar depois!` : ''}</div>
+        </div>
+      </div>
+      <div class="step-titulo">Cartões cadastrados</div>
+      <div class="step-subtitulo">${cartoesAdicionados.length} cartões no total</div>
+      
+      ${cartoesAdicionados.map(c => `
+        <div class="item-cadastrado">
+          <div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div>
+          <div class="item-info-mini">
+            <div class="item-nome-mini">${c.nome}</div>
+            <div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)} ${c.dia_vencimento ? `• Vence dia ${c.dia_vencimento}` : ''}</div>
+          </div>
+          <div class="item-check">✓</div>
+        </div>
+      `).join('')}
+    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">Próximo →</button>`;
+  }
+  
+  // ============================================
+  // PASSOS 5-8 (inalterados do v1.2)
+  // ============================================
+  
+  function renderPasso5() {
+    document.getElementById('container').innerHTML = `
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Agora me conta sua <strong>renda mensal</strong>. Salário, freelance, aluguel recebido — tudo que entra todo mês.</div></div></div>
       <div class="step-titulo">Sua renda mensal</div>
-      <div class="step-subtitulo">Tudo que entra todo mês. Pode adicionar várias fontes.</div>
-      
+      <div class="step-subtitulo">Tudo que entra todo mês.</div>
       <div class="opcoes-acao">
         <div class="opcao-btn" onclick="abrirManualRenda()" style="grid-column:1/-1;">
           <div class="opcao-btn-icon">✍️</div>
           <div class="opcao-btn-titulo">Adicionar renda</div>
-          <div class="opcao-btn-sub">Salário, comissão, aluguel recebido</div>
+          <div class="opcao-btn-sub">Salário, comissão, aluguel</div>
         </div>
       </div>
-      
       ${rendasAdicionadas.length > 0 ? `
         <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:20px 0 10px;">✅ Cadastradas (${rendasAdicionadas.length})</div>
         ${rendasAdicionadas.map(r => `
           <div class="item-cadastrado">
             <div class="item-icone-mini" style="background:${r.cor || '#00d97e'}30;color:${r.cor || '#00d97e'};">${r.icone || '💰'}</div>
-            <div class="item-info-mini">
-              <div class="item-nome-mini">${r.nome}</div>
-              <div class="item-valor-mini positivo">+R$ ${formatarMoeda(r.valor)}/mês</div>
-            </div>
+            <div class="item-info-mini"><div class="item-nome-mini">${r.nome}</div><div class="item-valor-mini positivo">+R$ ${formatarMoeda(r.valor)}/mês</div></div>
             <div class="item-check">✓</div>
           </div>
         `).join('')}
-      ` : `
-        <div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;">
-          <div style="font-size:36px;margin-bottom:10px;">💰</div>
-          <div style="font-size:13px;color:var(--text-mute);">Nenhuma renda ainda</div>
-        </div>
-      `}
+      ` : `<div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;"><div style="font-size:36px;margin-bottom:10px;">💰</div><div style="font-size:13px;color:var(--text-mute);">Nenhuma renda ainda</div></div>`}
     `;
-    
-    document.getElementById('footer-content').innerHTML = `
-      <button class="btn btn-back" onclick="voltarPasso()">‹</button>
-      <button class="btn btn-primary" onclick="proximoPasso()">${rendasAdicionadas.length > 0 ? 'Continuar →' : 'Pular →'}</button>
-    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${rendasAdicionadas.length > 0 ? 'Continuar →' : 'Pular →'}</button>`;
   }
   
   window.abrirManualRenda = function() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">Cadastra a fonte de renda. Vou gerar entradas previstas todo mês pra você só marcar como recebido!</div>
-        </div>
-      </div>
-      
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Cadastra a fonte de renda. Vou gerar entradas previstas todo mês!</div></div></div>
       <div class="step-titulo">Nova renda</div>
-      
       <div class="form-card">
         <div class="field">
           <label>Tipo</label>
@@ -1462,29 +1064,13 @@
             <option value="outro">📌 Outro</option>
           </select>
         </div>
-        <div class="field">
-          <label>Nome</label>
-          <input type="text" id="m-r-nome" placeholder="Digite o nome">
-        </div>
-        <div class="field">
-          <label>Valor mensal</label>
-          <div class="valor-input-wrapper">
-            <span class="valor-prefix">R$</span>
-            <input type="text" inputmode="decimal" id="m-r-valor" placeholder="0,00" oninput="formatarValor(this)">
-          </div>
-        </div>
-        <div class="field">
-          <label>Dia que recebe (1-31)</label>
-          <input type="number" id="m-r-dia" placeholder="5" min="1" max="31">
-        </div>
+        <div class="field"><label>Nome</label><input type="text" id="m-r-nome" placeholder="Digite o nome"></div>
+        <div class="field"><label>Valor mensal</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="m-r-valor" placeholder="0,00" oninput="formatarValor(this)"></div></div>
+        <div class="field"><label>Dia que recebe (1-31)</label><input type="number" id="m-r-dia" placeholder="5" min="1" max="31"></div>
         <button class="btn btn-primary" onclick="salvarRendaManual()">Salvar renda</button>
       </div>
     `;
-    
-    document.getElementById('footer-content').innerHTML = `
-      <button class="btn btn-back" onclick="renderPasso5()">‹</button>
-      <button class="btn btn-primary" style="opacity:0.5;" disabled>Cadastre acima</button>
-    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderPasso5()">‹</button><button class="btn btn-primary" disabled>Cadastre acima</button>`;
   };
   
   window.salvarRendaManual = async function() {
@@ -1492,72 +1078,36 @@
     const nome = document.getElementById('m-r-nome').value.trim();
     const valor = valorParaNumero(document.getElementById('m-r-valor').value);
     const dia = parseInt(document.getElementById('m-r-dia').value) || null;
-    
     if (!nome) { alert('Digite o nome'); return; }
     if (!valor || valor <= 0) { alert('Informe o valor'); return; }
-    
-    const emojis = {
-      'salario_clt': '💼', 'salario': '💼', 'autonomo': '🛠️',
-      'comissao': '🎯', 'freelance': '💻', 'aluguel_recebido': '🏠',
-      'dividendos': '📈', 'bonus': '🎁', 'outro': '📌'
-    };
-    
-    const { data, error } = await supabase.from('rendas').insert({
-      user_id: usuario.id,
-      nome,
-      categoria,
-      valor,
-      dia_recebimento: dia,
-      cor: '#00d97e',
-      icone: emojis[categoria] || '💰'
-    }).select().single();
-    
-    if (error) { alert('Erro: ' + error.message); return; }
-    
-    rendasAdicionadas.push(data);
-    
-    const hoje = new Date();
-    const diaUsar = dia || hoje.getDate();
-    let mesInicial = hoje.getMonth();
-    if (diaUsar <= hoje.getDate()) mesInicial++;
-    
-    const trans = [];
-    for (let i = 0; i < 12; i++) {
-      const d = new Date(hoje.getFullYear(), mesInicial + i, diaUsar);
-      trans.push({
-        user_id: usuario.id,
-        valor,
-        descricao: nome,
-        data: d.toISOString().split('T')[0],
-        tipo: 'entrada',
-        renda_id: data.id,
-        status: 'prevista',
-        recorrente: true
-      });
-    }
-    await supabase.from('transacoes').insert(trans);
-    
-    await darXP(20, 'renda_setup', 'Setup renda: ' + nome);
-    mostrarToast(`+20 XP 💰 Renda salva!`);
-    
-    setTimeout(() => renderPasso5(), 800);
+    const emojis = { 'salario_clt': '💼', 'salario': '💼', 'autonomo': '🛠️', 'comissao': '🎯', 'freelance': '💻', 'aluguel_recebido': '🏠', 'dividendos': '📈', 'bonus': '🎁', 'outro': '📌' };
+    try {
+      const { data, error } = await supabase.from('rendas').insert({
+        user_id: usuario.id, nome, categoria, valor, dia_recebimento: dia, cor: '#00d97e', icone: emojis[categoria] || '💰'
+      }).select().single();
+      if (error) throw error;
+      rendasAdicionadas.push(data);
+      const hoje = new Date();
+      const diaUsar = dia || hoje.getDate();
+      let mesInicial = hoje.getMonth();
+      if (diaUsar <= hoje.getDate()) mesInicial++;
+      const trans = [];
+      for (let i = 0; i < 12; i++) {
+        const d = new Date(hoje.getFullYear(), mesInicial + i, diaUsar);
+        trans.push({ user_id: usuario.id, valor, descricao: nome, data: d.toISOString().split('T')[0], tipo: 'entrada', renda_id: data.id, status: 'prevista', recorrente: true });
+      }
+      await supabase.from('transacoes').insert(trans);
+      await darXP(20, 'renda_setup', 'Setup renda: ' + nome);
+      mostrarToast(`+20 XP 💰 Renda salva!`);
+      setTimeout(() => renderPasso5(), 800);
+    } catch (e) { alert('Erro: ' + e.message); }
   };
   
   function renderPasso6() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">
-            <strong>Despesas fixas</strong> são as contas que vencem todo mês: aluguel, luz, água, internet, streaming, escola. Tudo certinho aqui.
-          </div>
-        </div>
-      </div>
-      
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>Despesas fixas</strong>: aluguel, luz, água, internet, streaming, escola.</div></div></div>
       <div class="step-titulo">Despesas fixas mensais</div>
       <div class="step-subtitulo">Aluguel, luz, água, internet, streaming...</div>
-      
       <div class="opcoes-acao">
         <div class="opcao-btn" onclick="abrirManualDespesa()" style="grid-column:1/-1;">
           <div class="opcao-btn-icon">✍️</div>
@@ -1565,45 +1115,24 @@
           <div class="opcao-btn-sub">Você preenche</div>
         </div>
       </div>
-      
       ${despesasAdicionadas.length > 0 ? `
         <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:20px 0 10px;">✅ Cadastradas (${despesasAdicionadas.length})</div>
         ${despesasAdicionadas.map(d => `
           <div class="item-cadastrado">
             <div class="item-icone-mini" style="background:${d.cor || '#ffb800'}30;color:${d.cor || '#ffb800'};">${d.icone || '📋'}</div>
-            <div class="item-info-mini">
-              <div class="item-nome-mini">${d.nome}</div>
-              <div class="item-valor-mini danger">-R$ ${formatarMoeda(d.valor)}/mês</div>
-            </div>
+            <div class="item-info-mini"><div class="item-nome-mini">${d.nome}</div><div class="item-valor-mini danger">-R$ ${formatarMoeda(d.valor)}/mês</div></div>
             <div class="item-check">✓</div>
           </div>
         `).join('')}
-      ` : `
-        <div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;">
-          <div style="font-size:36px;margin-bottom:10px;">📋</div>
-          <div style="font-size:13px;color:var(--text-mute);">Nenhuma despesa ainda</div>
-        </div>
-      `}
+      ` : `<div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;"><div style="font-size:36px;margin-bottom:10px;">📋</div><div style="font-size:13px;color:var(--text-mute);">Nenhuma despesa ainda</div></div>`}
     `;
-    
-    document.getElementById('footer-content').innerHTML = `
-      <button class="btn btn-back" onclick="voltarPasso()">‹</button>
-      <button class="btn btn-primary" onclick="proximoPasso()">${despesasAdicionadas.length > 0 ? 'Continuar →' : 'Pular →'}</button>
-    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${despesasAdicionadas.length > 0 ? 'Continuar →' : 'Pular →'}</button>`;
   }
   
   window.abrirManualDespesa = function() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">Preenche os dados da despesa fixa. Vou gerar as contas previstas pros próximos 12 meses!</div>
-        </div>
-      </div>
-      
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Preenche os dados. Vou gerar as contas previstas pros próximos 12 meses!</div></div></div>
       <div class="step-titulo">Nova despesa fixa</div>
-      
       <div class="form-card">
         <div class="field">
           <label>Categoria</label>
@@ -1625,29 +1154,13 @@
             <option value="outro">📌 Outro</option>
           </select>
         </div>
-        <div class="field">
-          <label>Nome</label>
-          <input type="text" id="m-d-nome" placeholder="Digite o nome">
-        </div>
-        <div class="field">
-          <label>Valor mensal</label>
-          <div class="valor-input-wrapper">
-            <span class="valor-prefix">R$</span>
-            <input type="text" inputmode="decimal" id="m-d-valor" placeholder="0,00" oninput="formatarValor(this)">
-          </div>
-        </div>
-        <div class="field">
-          <label>Dia do vencimento (1-31)</label>
-          <input type="number" id="m-d-dia" placeholder="10" min="1" max="31">
-        </div>
+        <div class="field"><label>Nome</label><input type="text" id="m-d-nome" placeholder="Digite o nome"></div>
+        <div class="field"><label>Valor mensal</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="m-d-valor" placeholder="0,00" oninput="formatarValor(this)"></div></div>
+        <div class="field"><label>Dia do vencimento (1-31)</label><input type="number" id="m-d-dia" placeholder="10" min="1" max="31"></div>
         <button class="btn btn-primary" onclick="salvarDespesaManual()">Salvar despesa</button>
       </div>
     `;
-    
-    document.getElementById('footer-content').innerHTML = `
-      <button class="btn btn-back" onclick="renderPasso6()">‹</button>
-      <button class="btn btn-primary" style="opacity:0.5;" disabled>Cadastre acima</button>
-    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderPasso6()">‹</button><button class="btn btn-primary" disabled>Cadastre acima</button>`;
   };
   
   window.salvarDespesaManual = async function() {
@@ -1655,86 +1168,43 @@
     const nome = document.getElementById('m-d-nome').value.trim();
     const valor = valorParaNumero(document.getElementById('m-d-valor').value);
     const dia = parseInt(document.getElementById('m-d-dia').value) || null;
-    
     if (!nome) { alert('Digite o nome'); return; }
     if (!valor || valor <= 0) { alert('Informe o valor'); return; }
-    
     const emojiCor = {
-      'aluguel': { e: '🏠', c: '#00d97e' },
-      'condominio': { e: '🏢', c: '#14b8a6' },
-      'luz': { e: '💡', c: '#ffb800' },
-      'agua': { e: '💧', c: '#38bdf8' },
-      'gas': { e: '🔥', c: '#ff6b35' },
-      'internet': { e: '🌐', c: '#a855f7' },
-      'telefone': { e: '📱', c: '#a855f7' },
-      'streaming': { e: '🎬', c: '#8b5cf6' },
-      'academia': { e: '💪', c: '#f59e0b' },
-      'plano_saude': { e: '🏥', c: '#ef4444' },
-      'escola': { e: '🎓', c: '#3b82f6' },
-      'seguro': { e: '🛡️', c: '#6366f1' },
-      'iptu': { e: '🏛️', c: '#f59e0b' },
-      'assinatura': { e: '📺', c: '#8b5cf6' },
-      'outro': { e: '📋', c: '#38bdf8' }
+      'aluguel': { e: '🏠', c: '#00d97e' }, 'condominio': { e: '🏢', c: '#14b8a6' }, 'luz': { e: '💡', c: '#ffb800' },
+      'agua': { e: '💧', c: '#38bdf8' }, 'gas': { e: '🔥', c: '#ff6b35' }, 'internet': { e: '🌐', c: '#a855f7' },
+      'telefone': { e: '📱', c: '#a855f7' }, 'streaming': { e: '🎬', c: '#8b5cf6' }, 'academia': { e: '💪', c: '#f59e0b' },
+      'plano_saude': { e: '🏥', c: '#ef4444' }, 'escola': { e: '🎓', c: '#3b82f6' }, 'seguro': { e: '🛡️', c: '#6366f1' },
+      'iptu': { e: '🏛️', c: '#f59e0b' }, 'assinatura': { e: '📺', c: '#8b5cf6' }, 'outro': { e: '📋', c: '#38bdf8' }
     };
     const ec = emojiCor[categoria] || { e: '📋', c: '#38bdf8' };
-    
-    const { data, error } = await supabase.from('compromissos').insert({
-      user_id: usuario.id,
-      nome,
-      categoria,
-      tipo: 'recorrente',
-      valor,
-      dia_vencimento: dia,
-      cor: ec.c,
-      icone: ec.e
-    }).select().single();
-    
-    if (error) { alert('Erro: ' + error.message); return; }
-    
-    despesasAdicionadas.push(data);
-    
-    const hoje = new Date();
-    const diaUsar = dia || hoje.getDate();
-    let mesInicial = hoje.getMonth();
-    if (diaUsar <= hoje.getDate()) mesInicial++;
-    
-    const trans = [];
-    for (let i = 0; i < 12; i++) {
-      const d = new Date(hoje.getFullYear(), mesInicial + i, diaUsar);
-      trans.push({
-        user_id: usuario.id,
-        valor,
-        descricao: nome,
-        data: d.toISOString().split('T')[0],
-        tipo: 'saida',
-        compromisso_id: data.id,
-        status: 'prevista',
-        recorrente: true
-      });
-    }
-    await supabase.from('transacoes').insert(trans);
-    
-    await darXP(15, 'despesa_setup', 'Setup despesa: ' + nome);
-    mostrarToast(`+15 XP 📋 Despesa salva!`);
-    
-    setTimeout(() => renderPasso6(), 800);
+    try {
+      const { data, error } = await supabase.from('compromissos').insert({
+        user_id: usuario.id, nome, categoria, tipo: 'recorrente', valor, dia_vencimento: dia, cor: ec.c, icone: ec.e
+      }).select().single();
+      if (error) throw error;
+      despesasAdicionadas.push(data);
+      const hoje = new Date();
+      const diaUsar = dia || hoje.getDate();
+      let mesInicial = hoje.getMonth();
+      if (diaUsar <= hoje.getDate()) mesInicial++;
+      const trans = [];
+      for (let i = 0; i < 12; i++) {
+        const d = new Date(hoje.getFullYear(), mesInicial + i, diaUsar);
+        trans.push({ user_id: usuario.id, valor, descricao: nome, data: d.toISOString().split('T')[0], tipo: 'saida', compromisso_id: data.id, status: 'prevista', recorrente: true });
+      }
+      await supabase.from('transacoes').insert(trans);
+      await darXP(15, 'despesa_setup', 'Setup despesa: ' + nome);
+      mostrarToast(`+15 XP 📋 Despesa salva!`);
+      setTimeout(() => renderPasso6(), 800);
+    } catch (e) { alert('Erro: ' + e.message); }
   };
   
   function renderPasso7() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">
-            Tem alguma <strong>dívida em aberto</strong>? Empréstimo, financiamento, cartão atrasado... Sem julgamento, é pra eu te ajudar a resolver!
-          </div>
-        </div>
-      </div>
-      
-      <div class="step-titulo">Tem dívidas?</div>
-      <div class="step-subtitulo">Cadastre pra eu te ajudar com o Negociador IA depois</div>
-      
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Além dos cartões, tem <strong>outras dívidas</strong>? Empréstimo, financiamento, loja, cheque especial? Sem julgamento!</div></div></div>
+      <div class="step-titulo">Outras dívidas?</div>
+      <div class="step-subtitulo">Empréstimos, financiamentos, cheque especial...</div>
       <div class="opcoes-acao">
         <div class="opcao-btn" onclick="abrirManualDivida()" style="grid-column:1/-1;">
           <div class="opcao-btn-icon">✍️</div>
@@ -1742,54 +1212,29 @@
           <div class="opcao-btn-sub">Preenche os dados</div>
         </div>
       </div>
-      
-      ${dividasAdicionadas.length > 0 ? `
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:20px 0 10px;">✅ Cadastradas (${dividasAdicionadas.length})</div>
-        ${dividasAdicionadas.map(d => `
+      ${dividasAdicionadas.filter(d => d.tipo !== 'cartao').length > 0 ? `
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:20px 0 10px;">✅ Cadastradas</div>
+        ${dividasAdicionadas.filter(d => d.tipo !== 'cartao').map(d => `
           <div class="item-cadastrado" style="border-color:var(--danger);">
             <div class="item-icone-mini" style="background:var(--danger-soft);color:var(--danger);">💸</div>
-            <div class="item-info-mini">
-              <div class="item-nome-mini">${d.credor}</div>
-              <div class="item-valor-mini danger">R$ ${formatarMoeda(d.valor_atual)}</div>
-            </div>
+            <div class="item-info-mini"><div class="item-nome-mini">${d.credor}</div><div class="item-valor-mini danger">R$ ${formatarMoeda(d.valor_atual)}</div></div>
             <div class="item-check">✓</div>
           </div>
         `).join('')}
-      ` : `
-        <div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;">
-          <div style="font-size:36px;margin-bottom:10px;">🎉</div>
-          <div style="font-size:13px;color:var(--text-mute);">Sem dívidas? Que ótimo!</div>
-        </div>
-      `}
+      ` : `<div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;"><div style="font-size:36px;margin-bottom:10px;">🎉</div><div style="font-size:13px;color:var(--text-mute);">Sem outras dívidas? Que ótimo!</div></div>`}
     `;
-    
-    document.getElementById('footer-content').innerHTML = `
-      <button class="btn btn-back" onclick="voltarPasso()">‹</button>
-      <button class="btn btn-primary" onclick="proximoPasso()">${dividasAdicionadas.length > 0 ? 'Continuar →' : 'Não tenho →'}</button>
-    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${dividasAdicionadas.filter(d => d.tipo !== 'cartao').length > 0 ? 'Continuar →' : 'Não tenho →'}</button>`;
   }
   
   window.abrirManualDivida = function() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">Preenche os dados da dívida. Depois te ajudo a negociar!</div>
-        </div>
-      </div>
-      
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Preenche os dados. Depois te ajudo a negociar!</div></div></div>
       <div class="step-titulo">Nova dívida</div>
-      
       <div class="form-card">
-        <div class="field">
-          <label>Credor (quem você deve)</label>
-          <input type="text" id="m-dv-credor" placeholder="Digite o nome">
-        </div>
+        <div class="field"><label>Credor (quem você deve)</label><input type="text" id="m-dv-credor" placeholder="Digite o nome"></div>
         <div class="field">
           <label>Tipo</label>
           <select id="m-dv-tipo">
-            <option value="cartao">💳 Cartão de crédito</option>
             <option value="emprestimo">💸 Empréstimo</option>
             <option value="financiamento">🏦 Financiamento</option>
             <option value="cheque_especial">🆘 Cheque especial</option>
@@ -1797,54 +1242,35 @@
             <option value="outro">📌 Outro</option>
           </select>
         </div>
-        <div class="field">
-          <label>Valor total em aberto</label>
-          <div class="valor-input-wrapper">
-            <span class="valor-prefix">R$</span>
-            <input type="text" inputmode="decimal" id="m-dv-valor" placeholder="0,00" oninput="formatarValor(this)">
-          </div>
-        </div>
+        <div class="field"><label>Valor total em aberto</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="m-dv-valor" placeholder="0,00" oninput="formatarValor(this)"></div></div>
         <button class="btn btn-primary" onclick="salvarDividaManual()">Salvar dívida</button>
       </div>
     `;
-    
-    document.getElementById('footer-content').innerHTML = `
-      <button class="btn btn-back" onclick="renderPasso7()">‹</button>
-      <button class="btn btn-primary" style="opacity:0.5;" disabled>Cadastre acima</button>
-    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderPasso7()">‹</button><button class="btn btn-primary" disabled>Cadastre acima</button>`;
   };
   
   window.salvarDividaManual = async function() {
     const credor = document.getElementById('m-dv-credor').value.trim();
     const tipo = document.getElementById('m-dv-tipo').value;
     const valor = valorParaNumero(document.getElementById('m-dv-valor').value);
-    
     if (!credor) { alert('Digite o credor'); return; }
     if (!valor || valor <= 0) { alert('Informe o valor'); return; }
-    
     const dataVenc = new Date();
     dataVenc.setDate(dataVenc.getDate() + 30);
-    
-    const { data, error } = await supabase.from('dividas').insert({
-      user_id: usuario.id,
-      credor,
-      tipo,
-      descricao: `Dívida ${credor}`,
-      valor_original: valor,
-      valor_atual: valor,
-      data_vencimento: dataVenc.toISOString().split('T')[0],
-      data_inicio: new Date().toISOString().split('T')[0],
-      status: 'ativa',
-      prioridade: 1
-    }).select().single();
-    
-    if (error) { alert('Erro: ' + error.message); return; }
-    
-    dividasAdicionadas.push(data);
-    await darXP(15, 'divida_setup', 'Setup dívida: ' + credor);
-    mostrarToast(`+15 XP 💸 Dívida salva!`);
-    
-    setTimeout(() => renderPasso7(), 800);
+    try {
+      const { data, error } = await supabase.from('dividas').insert({
+        user_id: usuario.id, credor, tipo, descricao: `Dívida ${credor}`,
+        valor_original: valor, valor_atual: valor,
+        data_vencimento: dataVenc.toISOString().split('T')[0],
+        data_inicio: new Date().toISOString().split('T')[0],
+        status: 'ativa', prioridade: 1
+      }).select().single();
+      if (error) throw error;
+      dividasAdicionadas.push(data);
+      await darXP(15, 'divida_setup', 'Setup dívida: ' + credor);
+      mostrarToast(`+15 XP 💸 Dívida salva!`);
+      setTimeout(() => renderPasso7(), 800);
+    } catch (e) { alert('Erro: ' + e.message); }
   };
   
   async function renderPasso8() {
@@ -1858,18 +1284,9 @@
     `;
     document.getElementById('footer-content').innerHTML = '';
     
-    setTimeout(() => { 
-      const el = document.getElementById('ia-passo');
-      if (el) el.textContent = 'Identificando seu nível financeiro...';
-    }, 1500);
-    setTimeout(() => { 
-      const el = document.getElementById('ia-passo');
-      if (el) el.textContent = 'Definindo primeira meta...';
-    }, 3500);
-    setTimeout(() => { 
-      const el = document.getElementById('ia-passo');
-      if (el) el.textContent = 'Montando plano de 12 meses...';
-    }, 5500);
+    setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Identificando seu nível financeiro...'; }, 1500);
+    setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Definindo primeira meta...'; }, 3500);
+    setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Montando plano de 12 meses...'; }, 5500);
     
     const dados = {
       contas: contasAdicionadas.map(c => ({ nome: c.nome, tipo: c.tipo, saldo: c.saldo_inicial })),
@@ -1882,20 +1299,10 @@
     try {
       const resp = await fetch(IA_FUNCTION_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_KEY,
-          'Authorization': 'Bearer ' + SUPABASE_KEY
-        },
-        body: JSON.stringify({
-          tipo: 'analisar_situacao_financeira',
-          dados_financeiros: dados,
-          max_tokens: 2500
-        })
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
+        body: JSON.stringify({ tipo: 'analisar_situacao_financeira', dados_financeiros: dados, max_tokens: 2500 })
       });
-      
       const data = await resp.json();
-      
       if (data.resultado && !data.resultado.erro) {
         analiseIA = data.resultado;
         await salvarAnaliseEFinalizar();
@@ -1912,84 +1319,36 @@
   }
   
   async function salvarAnaliseEFinalizar() {
-    await supabase.from('perfis').update({
-      setup_concluido: true,
-      setup_concluido_em: new Date().toISOString(),
-      analise_setup: analiseIA
-    }).eq('id', usuario.id);
-    
+    await supabase.from('perfis').update({ setup_concluido: true, setup_concluido_em: new Date().toISOString(), analise_setup: analiseIA }).eq('id', usuario.id);
     await darXP(100, 'setup_concluido', 'Modo Setup completo!');
   }
   
   async function salvarSetupSemAnalise() {
-    await supabase.from('perfis').update({
-      setup_concluido: true,
-      setup_concluido_em: new Date().toISOString()
-    }).eq('id', usuario.id);
-    
+    await supabase.from('perfis').update({ setup_concluido: true, setup_concluido_em: new Date().toISOString() }).eq('id', usuario.id);
     await darXP(50, 'setup_concluido_parcial', 'Setup sem análise IA');
   }
   
   function renderResultadoAnalise() {
     const a = analiseIA;
     const s = a.situacao;
-    
-    let html = `
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🎉</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">
-            Analisei tudo! Aqui vai sua <strong>análise personalizada</strong>:
-          </div>
-        </div>
-      </div>
-      
+    document.getElementById('container').innerHTML = `
+      <div class="tatu-bubble"><div class="tatu-emoji">🎉</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Analisei tudo! Aqui vai sua <strong>análise personalizada</strong>:</div></div></div>
       <div class="nivel-card">
         <div class="nivel-label">Seu nível</div>
         <div class="nivel-numero">${s.nivel_recomendado}</div>
         <div class="nivel-nome">${s.nivel_nome}</div>
       </div>
-      
       <div class="analise-card">
         <div class="analise-titulo">📊 Sua situação</div>
         <div class="situacao-grid">
-          <div class="situacao-item">
-            <div class="situacao-label">Renda mensal</div>
-            <div class="situacao-valor" style="color:var(--brand);">R$ ${formatarMoeda(s.renda_mensal)}</div>
-          </div>
-          <div class="situacao-item">
-            <div class="situacao-label">Despesa fixa</div>
-            <div class="situacao-valor" style="color:var(--warning);">R$ ${formatarMoeda(s.despesa_fixa_mensal)}</div>
-          </div>
-          <div class="situacao-item">
-            <div class="situacao-label">Patrimônio</div>
-            <div class="situacao-valor" style="color:${s.patrimonio_liquido >= 0 ? 'var(--brand)' : 'var(--danger)'};">R$ ${formatarMoeda(s.patrimonio_liquido)}</div>
-          </div>
-          <div class="situacao-item">
-            <div class="situacao-label">Total dívidas</div>
-            <div class="situacao-valor" style="color:${s.total_dividas > 0 ? 'var(--danger)' : 'var(--brand)'};">R$ ${formatarMoeda(s.total_dividas)}</div>
-          </div>
+          <div class="situacao-item"><div class="situacao-label">Renda mensal</div><div class="situacao-valor" style="color:var(--brand);">R$ ${formatarMoeda(s.renda_mensal)}</div></div>
+          <div class="situacao-item"><div class="situacao-label">Despesa fixa</div><div class="situacao-valor" style="color:var(--warning);">R$ ${formatarMoeda(s.despesa_fixa_mensal)}</div></div>
+          <div class="situacao-item"><div class="situacao-label">Patrimônio</div><div class="situacao-valor" style="color:${s.patrimonio_liquido >= 0 ? 'var(--brand)' : 'var(--danger)'};">R$ ${formatarMoeda(s.patrimonio_liquido)}</div></div>
+          <div class="situacao-item"><div class="situacao-label">Total dívidas</div><div class="situacao-valor" style="color:${s.total_dividas > 0 ? 'var(--danger)' : 'var(--brand)'};">R$ ${formatarMoeda(s.total_dividas)}</div></div>
         </div>
       </div>
-      
-      <div class="analise-card">
-        <div class="analise-titulo">🦔 Diagnóstico do Tatu</div>
-        <div class="diagnostico-texto">${a.diagnostico}</div>
-      </div>
-      
-      ${a.alertas && a.alertas.length > 0 ? `
-        <div class="analise-card">
-          <div class="analise-titulo">⚠️ Pontos de atenção</div>
-          ${a.alertas.map(alerta => `
-            <div class="alerta-item">
-              <span style="flex-shrink:0;">⚠️</span>
-              <span>${alerta}</span>
-            </div>
-          `).join('')}
-        </div>
-      ` : ''}
-      
+      <div class="analise-card"><div class="analise-titulo">🦔 Diagnóstico do Tatu</div><div class="diagnostico-texto">${a.diagnostico}</div></div>
+      ${a.alertas && a.alertas.length > 0 ? `<div class="analise-card"><div class="analise-titulo">⚠️ Pontos de atenção</div>${a.alertas.map(al => `<div class="alerta-item"><span style="flex-shrink:0;">⚠️</span><span>${al}</span></div>`).join('')}</div>` : ''}
       ${a.primeira_meta ? `
         <div class="meta-card">
           <div class="meta-titulo-card">🎯 Sua primeira meta</div>
@@ -2001,63 +1360,33 @@
           <div class="meta-explicacao">${a.primeira_meta.explicacao}</div>
         </div>
       ` : ''}
-      
-      ${a.mensagem_motivacional ? `
-        <div class="tatu-bubble">
-          <div class="tatu-emoji">💚</div>
-          <div class="tatu-content">
-            <div class="tatu-titulo">Mensagem do Tatu</div>
-            <div class="tatu-texto">${a.mensagem_motivacional}</div>
-          </div>
-        </div>
-      ` : ''}
+      ${a.mensagem_motivacional ? `<div class="tatu-bubble"><div class="tatu-emoji">💚</div><div class="tatu-content"><div class="tatu-titulo">Mensagem do Tatu</div><div class="tatu-texto">${a.mensagem_motivacional}</div></div></div>` : ''}
     `;
-    
-    document.getElementById('container').innerHTML = html;
-    document.getElementById('footer-content').innerHTML = `
-      <button class="btn btn-primary" onclick="irParaHome()">🚀 Bora começar minha jornada!</button>
-    `;
-    
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="irParaHome()">🚀 Bora começar minha jornada!</button>`;
     mostrarToast('+100 XP 🎉 Setup completo!');
   }
   
   function renderErroAnalise() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">
-            Setup completo! Tive um problema gerando a análise agora, mas teus dados estão salvos. Você pode fazer a análise depois pelo chat.
-          </div>
-        </div>
-      </div>
-      
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Setup completo! Tive um problema gerando a análise agora, mas teus dados estão salvos. Você pode fazer a análise depois pelo chat.</div></div></div>
       <div class="form-card" style="text-align:center;padding:30px 20px;">
         <div style="font-size:48px;margin-bottom:12px;">✅</div>
         <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px;">Tudo cadastrado!</div>
         <div style="font-size:13px;color:var(--text-mute);">${contasAdicionadas.length} contas, ${cartoesAdicionados.length} cartões, ${rendasAdicionadas.length} rendas, ${despesasAdicionadas.length} despesas, ${dividasAdicionadas.length} dívidas</div>
       </div>
     `;
-    
-    document.getElementById('footer-content').innerHTML = `
-      <button class="btn btn-primary" onclick="irParaHome()">🚀 Ir para o app</button>
-    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="irParaHome()">🚀 Ir para o app</button>`;
   }
   
-  window.irParaHome = function() {
-    window.location.href = 'home.html?v=' + Date.now();
-  };
+  window.irParaHome = function() { window.location.href = 'home.html?v=' + Date.now(); };
   
   // ============================================
-  // FIX v1.2: Compressão de imagem antes da IA
+  // FOTO + COMPRESSÃO (v1.2)
   // ============================================
   
   window.processarFoto = async function(e) {
     const file = e.target.files[0];
     if (!file) return;
-    
-    // Reset do input pra permitir mandar a mesma foto de novo
     e.target.value = '';
     
     document.getElementById('container').innerHTML = `
@@ -2071,115 +1400,68 @@
     
     let base64;
     try {
-      // FIX v1.2: comprime imagem antes de mandar (resolve "image exceeds 5MB")
       base64 = await comprimirImagem(file, 1600, 0.85);
-      
       const elPasso = document.getElementById('passo-foto');
       if (elPasso) elPasso.textContent = 'IA Claude lendo a foto...';
     } catch (err) {
       console.error('Erro comprimindo:', err);
       alert('⚠️ Não consegui processar essa foto. Tenta outra ou usa o cadastro manual.');
       if (modoFoto === 'conta') renderPasso3();
-      else if (modoFoto === 'cartao') renderPasso4();
       return;
     }
     
     try {
-      const tipoFn = modoFoto === 'conta' ? 'analisar_conta' : modoFoto === 'cartao' ? 'analisar_conta' : 'analisar_compromisso';
-      const hint = modoFoto === 'cartao' ? 'cartao_credito' : (alvoFotoAtual ? 'conta_corrente' : null);
+      const tipoFn = 'analisar_conta';
+      const hint = alvoFotoAtual ? 'conta_corrente' : null;
       
       const resp = await fetch(IA_FUNCTION_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_KEY,
-          'Authorization': 'Bearer ' + SUPABASE_KEY
-        },
-        body: JSON.stringify({
-          tipo: tipoFn,
-          imagem_base64: base64,
-          hint_tipo: hint,
-          max_tokens: 1500
-        })
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
+        body: JSON.stringify({ tipo: tipoFn, imagem_base64: base64, hint_tipo: hint, max_tokens: 1500 })
       });
-      
       const data = await resp.json();
       
       if (data.resultado && !data.resultado.erro) {
-        if (modoFoto === 'conta') await processarResultadoContaIA(data.resultado);
-        else if (modoFoto === 'cartao') await processarResultadoCartaoIA(data.resultado);
+        await processarResultadoContaIA(data.resultado);
       } else {
         const erro = data.resultado?.erro || 'Erro desconhecido';
         alert('⚠️ IA não conseguiu processar: ' + erro);
-        if (modoFoto === 'conta') renderPasso3();
-        else if (modoFoto === 'cartao') renderPasso4();
+        renderPasso3();
       }
     } catch (err) {
       console.error(err);
       alert('Erro de conexão: ' + err.message);
-      if (modoFoto === 'conta') renderPasso3();
-      else if (modoFoto === 'cartao') renderPasso4();
+      renderPasso3();
     }
   };
   
-  /**
-   * Comprime uma imagem antes de mandar pra IA.
-   * Resolve o bug "image exceeds 5MB maximum" da Anthropic Claude.
-   * 
-   * @param {File} file - Arquivo de imagem do input
-   * @param {number} maxWidth - Largura máxima em pixels (padrão 1600px)
-   * @param {number} qualidade - Qualidade JPEG entre 0 e 1 (padrão 0.85)
-   * @returns {Promise<string>} - Base64 da imagem comprimida (data:image/jpeg;base64,...)
-   */
   async function comprimirImagem(file, maxWidth = 1600, qualidade = 0.85) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      
       reader.onload = (e) => {
         const img = new Image();
-        
         img.onload = () => {
-          // Calcula tamanho proporcional
           let largura = img.width;
           let altura = img.height;
-          
-          if (largura > maxWidth) {
-            altura = Math.round((altura * maxWidth) / largura);
-            largura = maxWidth;
-          }
-          
-          // Cria canvas e redimensiona
+          if (largura > maxWidth) { altura = Math.round((altura * maxWidth) / largura); largura = maxWidth; }
           const canvas = document.createElement('canvas');
           canvas.width = largura;
           canvas.height = altura;
-          
           const ctx = canvas.getContext('2d');
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = 'high';
           ctx.drawImage(img, 0, 0, largura, altura);
-          
-          // Converte pra JPEG comprimido (sempre JPEG pra menor tamanho)
           const base64 = canvas.toDataURL('image/jpeg', qualidade);
-          
-          // Calcula tamanho aproximado
           const tamanhoKB = Math.round((base64.length * 0.75) / 1024);
           console.log(`📸 Imagem comprimida: ${largura}x${altura} ≈ ${tamanhoKB}KB`);
-          
-          // Se ainda passou de 4MB, comprime mais
           if (tamanhoKB > 4000 && qualidade > 0.5) {
-            console.log('🔄 Comprimindo mais...');
-            // Tenta de novo com qualidade menor
             const base64Menor = canvas.toDataURL('image/jpeg', 0.7);
             resolve(base64Menor);
-          } else {
-            resolve(base64);
-          }
+          } else { resolve(base64); }
         };
-        
         img.onerror = () => reject(new Error('Erro carregando imagem'));
         img.src = e.target.result;
       };
-      
       reader.onerror = () => reject(new Error('Erro lendo arquivo'));
       reader.readAsDataURL(file);
     });
@@ -2187,116 +1469,32 @@
   
   async function processarResultadoContaIA(r) {
     const banco = BANCOS.find(b => b.id === alvoFotoAtual);
-    
     const dados = {
       user_id: usuario.id,
       nome: r.nome_sugerido || banco.nome,
       tipo: r.tipo_conta || 'conta_corrente',
-      banco: banco.nome,
-      cor: banco.cor,
+      banco: banco.nome, cor: banco.cor,
       icone: r.tipo_conta === 'poupanca' ? '🐷' : r.tipo_conta === 'investimento' ? '📈' : '🏦',
       saldo_inicial: r.saldo_atual || 0,
       padrao: contasAdicionadas.length === 0
     };
-    
-    const { data, error } = await supabase.from('contas').insert(dados).select().single();
-    
-    if (error) {
-      alert('Erro salvando: ' + error.message);
-      renderPasso3();
-      return;
-    }
-    
-    contasAdicionadas.push(data);
-    await darXP(25, 'conta_via_ia_setup', 'Setup IA: ' + banco.nome);
-    mostrarToast('+25 XP ✨ IA cadastrou!');
-    
-    setTimeout(() => {
-      bancoIndexAtual++;
-      if (bancoIndexAtual >= bancosSelecionados.length) {
-        bancoIndexAtual = 0;
-        proximoPasso();
-      } else {
-        renderPasso3();
-      }
-    }, 1000);
-  }
-  
-  async function processarResultadoCartaoIA(r) {
-    const nome = r.nome_sugerido || (r.banco_detectado ? r.banco_detectado + ' Cartão' : 'Cartão');
-    const banco = BANCOS.find(b => b.nome.toLowerCase() === (r.banco_detectado || '').toLowerCase());
-    const cor = banco ? banco.cor : (r.cor_sugerida || '#820AD1');
-    
-    const { data, error } = await supabase.from('contas').insert({
-      user_id: usuario.id,
-      nome,
-      tipo: 'cartao_credito',
-      banco: banco ? banco.nome : r.banco_detectado,
-      cor,
-      icone: '💳',
-      limite: r.limite_total || 0,
-      saldo_inicial: 0,
-      dia_fechamento: r.dia_fechamento,
-      dia_vencimento: r.dia_vencimento
-    }).select().single();
-    
-    if (error) {
-      alert('Erro: ' + error.message);
-      renderPasso4();
-      return;
-    }
-    
-    cartoesAdicionados.push(data);
-    
-    if (r.tem_divida && r.valor_divida > 0) {
-      const dataVenc = r.dia_vencimento ? calcularProxVenc(r.dia_vencimento) : (new Date(Date.now() + 30*24*60*60*1000)).toISOString().split('T')[0];
-      
-      const { data: divida } = await supabase.from('dividas').insert({
-        user_id: usuario.id,
-        credor: banco ? banco.nome : nome,
-        tipo: 'cartao',
-        descricao: `Fatura do cartão ${nome}`,
-        valor_original: r.valor_divida,
-        valor_atual: r.valor_divida,
-        data_vencimento: dataVenc,
-        data_inicio: new Date().toISOString().split('T')[0],
-        status: 'ativa',
-        prioridade: 1,
-        conta_id: data.id
-      }).select().single();
-      
-      if (divida) {
-        await supabase.from('transacoes').insert({
-          user_id: usuario.id,
-          valor: r.valor_divida,
-          descricao: `Fatura ${nome}`,
-          data: dataVenc,
-          tipo: 'saida',
-          conta_id: data.id,
-          divida_id: divida.id,
-          status: 'prevista'
-        });
-      }
-    }
-    
-    await darXP(30, 'cartao_via_ia_setup', 'Setup IA cartão: ' + nome);
-    mostrarToast('+30 XP ✨ Cartão + fatura!');
-    
-    setTimeout(() => renderPasso4(), 1000);
-  }
-  
-  function calcularProxVenc(dia) {
-    const hoje = new Date();
-    let d = new Date(hoje.getFullYear(), hoje.getMonth(), dia);
-    if (d < hoje) d = new Date(hoje.getFullYear(), hoje.getMonth() + 1, dia);
-    return d.toISOString().split('T')[0];
+    try {
+      const { data, error } = await supabase.from('contas').insert(dados).select().single();
+      if (error) throw error;
+      contasAdicionadas.push(data);
+      await darXP(25, 'conta_via_ia_setup', 'Setup IA: ' + banco.nome);
+      mostrarToast('+25 XP ✨ IA cadastrou!');
+      setTimeout(() => {
+        bancoIndexAtual++;
+        if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); }
+        else { renderPasso3(); }
+      }, 1000);
+    } catch (e) { alert('Erro salvando: ' + e.message); renderPasso3(); }
   }
   
   function renderFooterPadrao(temVoltar, podeAvancar) {
     let html = '';
-    if (temVoltar) {
-      html += `<button class="btn btn-back" onclick="voltarPasso()">‹</button>`;
-    }
+    if (temVoltar) html += `<button class="btn btn-back" onclick="voltarPasso()">‹</button>`;
     html += `<button class="btn btn-primary" ${podeAvancar ? '' : 'disabled'} onclick="proximoPasso()">Continuar →</button>`;
     document.getElementById('footer-content').innerHTML = html;
   }
