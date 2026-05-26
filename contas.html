@@ -109,10 +109,9 @@
     padding: 16px 20px 20px;
   }
   
-  /* TABS DE NAVEGAÇÃO */
   .tabs-nav {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 4px;
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -122,7 +121,7 @@
   }
   
   .tab-nav {
-    padding: 12px 6px;
+    padding: 10px 4px;
     border-radius: 10px;
     text-align: center;
     cursor: pointer;
@@ -130,15 +129,15 @@
     color: var(--text-mute);
   }
   
-  .tab-nav.active {
-    background: var(--brand-soft);
-    color: var(--brand);
-  }
+  .tab-nav.active.contas { background: var(--brand-soft); color: var(--brand); }
+  .tab-nav.active.despesas { background: var(--warning-soft); color: var(--warning); }
+  .tab-nav.active.compromissos { background: var(--danger-soft); color: var(--danger); }
+  .tab-nav.active.rendas { background: var(--brand-soft); color: var(--brand); }
   
   .tab-nav-emoji { font-size: 18px; }
   .tab-nav-label {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
     margin-top: 2px;
     text-transform: uppercase;
@@ -795,6 +794,12 @@
     line-height: 1.5;
   }
   
+  .info-box.brand {
+    background: var(--brand-soft);
+    border-color: rgba(0, 217, 126, 0.3);
+    color: var(--brand);
+  }
+  
   .upload-area {
     background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-input) 100%);
     border: 2px dashed rgba(168, 85, 247, 0.4);
@@ -837,7 +842,6 @@
     margin: 0 auto 14px;
   }
   
-  /* SELETOR DE TIPO IA (novo fluxo - escolhe ANTES) */
   .ia-tipos-titulo {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 12px;
@@ -887,26 +891,29 @@
 <body>
 
 <div class="header">
-  <button class="back-btn" onclick="window.location.href='home.html?v=1'">‹</button>
+  <button class="back-btn" onclick="window.location.href='home.html?v=3'">‹</button>
   <div class="header-title">Vida Financeira</div>
-  <div class="brand-mark-mini" onclick="window.location.href='home.html?v=1'"></div>
+  <div class="brand-mark-mini" onclick="window.location.href='home.html?v=3'"></div>
 </div>
 
 <div class="container">
 
-  <!-- TABS DE NAVEGAÇÃO -->
   <div class="tabs-nav">
-    <div class="tab-nav active" data-aba="contas" onclick="trocarAba('contas')">
+    <div class="tab-nav active contas" data-aba="contas" onclick="trocarAba('contas')">
       <div class="tab-nav-emoji">🏦</div>
       <div class="tab-nav-label">Contas</div>
     </div>
-    <div class="tab-nav" data-aba="despesas" onclick="trocarAba('despesas')">
+    <div class="tab-nav rendas" data-aba="rendas" onclick="trocarAba('rendas')">
+      <div class="tab-nav-emoji">💰</div>
+      <div class="tab-nav-label">Rendas</div>
+    </div>
+    <div class="tab-nav despesas" data-aba="despesas" onclick="trocarAba('despesas')">
       <div class="tab-nav-emoji">📋</div>
       <div class="tab-nav-label">Fixas</div>
     </div>
-    <div class="tab-nav" data-aba="compromissos" onclick="trocarAba('compromissos')">
+    <div class="tab-nav compromissos" data-aba="compromissos" onclick="trocarAba('compromissos')">
       <div class="tab-nav-emoji">📄</div>
-      <div class="tab-nav-label">Parcelados</div>
+      <div class="tab-nav-label">Parc.</div>
     </div>
   </div>
 
@@ -918,7 +925,7 @@
 
 <input type="file" id="input-ia" class="input-hidden" accept="image/*,application/pdf" onchange="processarIA(event)">
 
-<!-- MODAL CONTA (cartão/conta/poupança/etc) -->
+<!-- MODAL CONTA -->
 <div class="modal-overlay" id="modal-conta">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -992,7 +999,7 @@
         </div>
         <div id="fatura-aberta-section" class="hidden" style="margin-top:14px;">
           <div class="info-box" style="background:rgba(255,184,0,0.1);border-color:rgba(255,184,0,0.3);color:var(--warning);">
-            ⚠️ <strong>Fatura aberta detectada!</strong> Ao salvar, vou cadastrar essa fatura como dívida + transação prevista automaticamente.
+            ⚠️ <strong>Fatura aberta detectada!</strong> Vou cadastrar como dívida + transação prevista.
           </div>
           <div class="field">
             <label>Valor da fatura</label>
@@ -1005,11 +1012,11 @@
         <div class="field-row">
           <div class="field">
             <label>Fechamento (dia)</label>
-            <input type="number" id="c-fechamento" placeholder="Ex: 25" min="1" max="31">
+            <input type="number" id="c-fechamento" placeholder="25" min="1" max="31">
           </div>
           <div class="field">
             <label>Vencimento (dia)</label>
-            <input type="number" id="c-vencimento" placeholder="Ex: 5" min="1" max="31">
+            <input type="number" id="c-vencimento" placeholder="5" min="1" max="31">
           </div>
         </div>
       </div>
@@ -1022,7 +1029,61 @@
   </div>
 </div>
 
-<!-- MODAL DESPESA FIXA / COMPROMISSO -->
+<!-- MODAL RENDA -->
+<div class="modal-overlay" id="modal-renda">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="modal-renda-titulo">Nova renda</div>
+      <button class="modal-close" onclick="fecharModal('modal-renda')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msg" id="msg-renda"></div>
+      
+      <div class="secao-titulo" style="margin-top:0;">Tipo de renda</div>
+      <div class="tipo-grid-3" id="categorias-renda"></div>
+      
+      <div class="field">
+        <label>Nome</label>
+        <input type="text" id="r-nome" placeholder="Ex: Salário CLT, Aluguel apto">
+      </div>
+      
+      <div class="field">
+        <label>Fonte/Empresa (opcional)</label>
+        <input type="text" id="r-fonte" placeholder="Ex: Agroplay, Cliente X">
+      </div>
+      
+      <div class="secao-titulo">Valor mensal</div>
+      <div class="valor-input-wrapper">
+        <span class="valor-prefix">R$</span>
+        <input type="text" inputmode="decimal" id="r-valor" placeholder="0,00" oninput="formatarValor(this)">
+      </div>
+      
+      <div class="field">
+        <label>Dia que recebe (1-31)</label>
+        <input type="number" id="r-dia" placeholder="5" min="1" max="31">
+      </div>
+      
+      <div class="field">
+        <label>Cai em qual conta?</label>
+        <select id="r-conta">
+          <option value="">Sem conta vinculada</option>
+        </select>
+      </div>
+      
+      <div class="info-box brand">
+        🦔 <strong>Vou gerar 12 transações previstas de entrada</strong> (uma por mês). Quando o dinheiro cair na conta, marca como recebido — aí soma no saldo. Nunca soma antes!
+      </div>
+      
+      <div style="height:20px;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="btn-salvar-renda" onclick="salvarRenda()">Cadastrar renda</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL COMPROMISSO/DESPESA -->
 <div class="modal-overlay" id="modal-compromisso">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -1054,7 +1115,7 @@
       
       <div class="field">
         <label>Dia do vencimento (1-31)</label>
-        <input type="number" id="k-vencimento" placeholder="Ex: 10" min="1" max="31">
+        <input type="number" id="k-vencimento" placeholder="10" min="1" max="31">
       </div>
       
       <div class="secao-titulo">Tipo de compromisso</div>
@@ -1077,11 +1138,11 @@
         <div class="field-row">
           <div class="field">
             <label>Total de parcelas</label>
-            <input type="number" id="k-parcelas-total" placeholder="Ex: 60" min="1">
+            <input type="number" id="k-parcelas-total" placeholder="60" min="1">
           </div>
           <div class="field">
             <label>Pagas até hoje</label>
-            <input type="number" id="k-parcelas-pagas" placeholder="Ex: 12" min="0">
+            <input type="number" id="k-parcelas-pagas" placeholder="12" min="0">
           </div>
         </div>
       </div>
@@ -1105,7 +1166,7 @@
   </div>
 </div>
 
-<!-- MODAL IA (com seletor de tipo ANTES) -->
+<!-- MODAL IA -->
 <div class="modal-overlay" id="modal-ia">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -1174,28 +1235,48 @@
     'outro': '📌 Outro'
   };
   
+  const categoriasRenda = {
+    'salario_clt': { label: 'Salário CLT', icone: '💼', cor: '#00d97e' },
+    'salario': { label: 'Salário', icone: '💼', cor: '#00d97e' },
+    'autonomo': { label: 'Autônomo', icone: '🛠️', cor: '#14b8a6' },
+    'comissao': { label: 'Comissão', icone: '🎯', cor: '#f59e0b' },
+    'bonus': { label: 'Bônus', icone: '🎁', cor: '#a855f7' },
+    'aluguel_recebido': { label: 'Aluguel', icone: '🏠', cor: '#38bdf8' },
+    'dividendos': { label: 'Dividendos', icone: '📈', cor: '#22c55e' },
+    'rendimento_aplicacao': { label: 'Aplicação', icone: '💎', cor: '#3b82f6' },
+    'pensao_recebida': { label: 'Pensão', icone: '👨‍👩‍👧', cor: '#ec4899' },
+    'aposentadoria': { label: 'Aposent.', icone: '👴', cor: '#8b5cf6' },
+    'beneficio': { label: 'Benefício', icone: '🤝', cor: '#10b981' },
+    'venda_servico': { label: 'Venda Serv.', icone: '🛎️', cor: '#06b6d4' },
+    'venda_produto': { label: 'Venda Prod.', icone: '📦', cor: '#f97316' },
+    'freelance': { label: 'Freelance', icone: '💻', cor: '#6366f1' },
+    'mesada': { label: 'Mesada', icone: '👨‍👦', cor: '#ec4899' },
+    'doacao': { label: 'Doação', icone: '❤️', cor: '#ef4444' },
+    'outro': { label: 'Outro', icone: '💰', cor: '#00d97e' }
+  };
+  
   const categoriasCompromisso = {
-    'luz': { label: 'Luz', icone: '💡', cor: '#ffb800', grupo: 'fixa' },
-    'agua': { label: 'Água', icone: '💧', cor: '#38bdf8', grupo: 'fixa' },
-    'gas': { label: 'Gás', icone: '🔥', cor: '#ff6b35', grupo: 'fixa' },
-    'telefone': { label: 'Telefone', icone: '📱', cor: '#a855f7', grupo: 'fixa' },
-    'internet': { label: 'Internet', icone: '🌐', cor: '#a855f7', grupo: 'fixa' },
-    'tv': { label: 'TV', icone: '📺', cor: '#a855f7', grupo: 'fixa' },
-    'streaming': { label: 'Streaming', icone: '🎬', cor: '#8b5cf6', grupo: 'fixa' },
-    'aluguel': { label: 'Aluguel', icone: '🏠', cor: '#00d97e', grupo: 'fixa' },
-    'condominio': { label: 'Condomínio', icone: '🏢', cor: '#14b8a6', grupo: 'fixa' },
-    'iptu': { label: 'IPTU', icone: '🏛️', cor: '#f59e0b', grupo: 'fixa' },
-    'escola': { label: 'Escola', icone: '🎓', cor: '#3b82f6', grupo: 'fixa' },
-    'mensalidade': { label: 'Mensalidade', icone: '📚', cor: '#3b82f6', grupo: 'fixa' },
-    'plano_saude': { label: 'Plano Saúde', icone: '🏥', cor: '#ef4444', grupo: 'fixa' },
-    'academia': { label: 'Academia', icone: '💪', cor: '#f59e0b', grupo: 'fixa' },
-    'assinatura': { label: 'Assinatura', icone: '🎬', cor: '#8b5cf6', grupo: 'fixa' },
-    'seguro': { label: 'Seguro', icone: '🛡️', cor: '#6366f1', grupo: 'fixa' },
-    'pensao': { label: 'Pensão', icone: '👨‍👩‍👧', cor: '#ec4899', grupo: 'fixa' },
-    'consorcio': { label: 'Consórcio', icone: '🚗', cor: '#ff4757', grupo: 'parcelado' },
-    'emprestimo': { label: 'Empréstimo', icone: '💸', cor: '#ff4757', grupo: 'parcelado' },
-    'financiamento': { label: 'Financiamento', icone: '🏦', cor: '#ff4757', grupo: 'parcelado' },
-    'outro': { label: 'Outro', icone: '📋', cor: '#38bdf8', grupo: 'fixa' }
+    'luz': { label: 'Luz', icone: '💡', cor: '#ffb800' },
+    'agua': { label: 'Água', icone: '💧', cor: '#38bdf8' },
+    'gas': { label: 'Gás', icone: '🔥', cor: '#ff6b35' },
+    'telefone': { label: 'Telefone', icone: '📱', cor: '#a855f7' },
+    'internet': { label: 'Internet', icone: '🌐', cor: '#a855f7' },
+    'tv': { label: 'TV', icone: '📺', cor: '#a855f7' },
+    'streaming': { label: 'Streaming', icone: '🎬', cor: '#8b5cf6' },
+    'aluguel': { label: 'Aluguel', icone: '🏠', cor: '#00d97e' },
+    'condominio': { label: 'Condomínio', icone: '🏢', cor: '#14b8a6' },
+    'iptu': { label: 'IPTU', icone: '🏛️', cor: '#f59e0b' },
+    'escola': { label: 'Escola', icone: '🎓', cor: '#3b82f6' },
+    'mensalidade': { label: 'Mensalid.', icone: '📚', cor: '#3b82f6' },
+    'plano_saude': { label: 'P. Saúde', icone: '🏥', cor: '#ef4444' },
+    'academia': { label: 'Academia', icone: '💪', cor: '#f59e0b' },
+    'assinatura': { label: 'Assinatura', icone: '🎬', cor: '#8b5cf6' },
+    'seguro': { label: 'Seguro', icone: '🛡️', cor: '#6366f1' },
+    'pensao': { label: 'Pensão', icone: '👨‍👩‍👧', cor: '#ec4899' },
+    'consorcio': { label: 'Consórcio', icone: '🚗', cor: '#ff4757' },
+    'emprestimo': { label: 'Empréstimo', icone: '💸', cor: '#ff4757' },
+    'financiamento': { label: 'Financ.', icone: '🏦', cor: '#ff4757' },
+    'outro': { label: 'Outro', icone: '📋', cor: '#38bdf8' }
   };
   
   const bancosPresets = [
@@ -1223,10 +1304,10 @@
   let usuario;
   let contas = [];
   let compromissos = [];
+  let rendas = [];
   let saldosCalculados = {};
   let abaAtiva = 'contas';
   
-  // Estado modal conta
   let tipoSelecionado = 'conta_corrente';
   let corSelecionada = '#00d97e';
   let emojiSelecionado = '🏦';
@@ -1235,14 +1316,15 @@
   let detalheAtual = null;
   let veiodaIA = false;
   
-  // Estado modal compromisso
   let categoriaComp = 'luz';
   let tipoComp = 'recorrente';
   let editandoComp = null;
   
-  // Estado modal IA
+  let categoriaRendaSel = 'salario_clt';
+  let editandoRenda = null;
+  
   let iaHintTipo = null;
-  let iaModoAlvo = 'conta'; // 'conta' ou 'compromisso'
+  let iaModoAlvo = 'conta';
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -1256,13 +1338,14 @@
     renderCoresGrid();
     renderEmojisGrid();
     renderCategoriasCompromisso();
+    renderCategoriasRenda();
     
     await carregarTudo();
     render();
   })();
   
   async function carregarTudo() {
-    const [contasRes, compromissosRes] = await Promise.all([
+    const [contasRes, compromissosRes, rendasRes, transContasRes] = await Promise.all([
       supabase.from('contas')
         .select('*')
         .eq('user_id', usuario.id)
@@ -1272,38 +1355,47 @@
         .select('*')
         .eq('user_id', usuario.id)
         .order('ativo', { ascending: false })
-        .order('dia_vencimento', { ascending: true })
+        .order('dia_vencimento', { ascending: true }),
+      supabase.from('rendas')
+        .select('*')
+        .eq('user_id', usuario.id)
+        .order('ativo', { ascending: false })
+        .order('dia_recebimento', { ascending: true }),
+      supabase.from('transacoes')
+        .select('valor, tipo, conta_id')
+        .eq('user_id', usuario.id)
+        .eq('status', 'realizada')
+        .not('conta_id', 'is', null)
     ]);
     
     contas = contasRes.data || [];
     compromissos = compromissosRes.data || [];
+    rendas = rendasRes.data || [];
     
-    // Calcula saldos das contas (apenas realizadas)
+    // Calcula saldos otimizado (1 query única)
     saldosCalculados = {};
+    const transContas = transContasRes.data || [];
     for (const c of contas) {
-      const { data: trans } = await supabase
-        .from('transacoes')
-        .select('valor, tipo')
-        .eq('user_id', usuario.id)
-        .eq('conta_id', c.id)
-        .eq('status', 'realizada');
-      
-      let saldo = Number(c.saldo_inicial || 0);
-      (trans || []).forEach(t => {
-        saldo += t.tipo === 'entrada' ? Number(t.valor) : -Number(t.valor);
-      });
-      saldosCalculados[c.id] = saldo;
+      let s = Number(c.saldo_inicial || 0);
+      transContas
+        .filter(t => t.conta_id === c.id)
+        .forEach(t => { s += t.tipo === 'entrada' ? Number(t.valor) : -Number(t.valor); });
+      saldosCalculados[c.id] = s;
     }
   }
   
   window.trocarAba = function(aba) {
     abaAtiva = aba;
-    document.querySelectorAll('.tab-nav').forEach(t => t.classList.toggle('active', t.dataset.aba === aba));
+    document.querySelectorAll('.tab-nav').forEach(t => {
+      t.classList.remove('active');
+      if (t.dataset.aba === aba) t.classList.add('active');
+    });
     render();
   };
   
   function render() {
     if (abaAtiva === 'contas') renderAbaContas();
+    else if (abaAtiva === 'rendas') renderAbaRendas();
     else if (abaAtiva === 'despesas') renderAbaDespesas();
     else if (abaAtiva === 'compromissos') renderAbaCompromissos();
   }
@@ -1431,6 +1523,72 @@
     `;
   }
   
+  // ============== ABA RENDAS ==============
+  function renderAbaRendas() {
+    const ativas = rendas.filter(r => r.ativo);
+    const totalMes = ativas.reduce((a, r) => a + Number(r.valor || 0), 0);
+    
+    let saldoHTML = `
+      <div class="saldo-total">
+        <div class="saldo-label">Renda mensal total</div>
+        <div class="saldo-valor ${totalMes > 0 ? 'positivo' : ''}">R$ ${formatarMoeda(totalMes)}</div>
+        <div class="saldo-sub">${ativas.length} fonte${ativas.length === 1 ? '' : 's'} de renda</div>
+      </div>
+    `;
+    
+    let tatuTexto = ativas.length === 0
+      ? '🦔 Cadastre <strong>salário, comissões, aluguel recebido</strong>. Vira transação prevista de entrada mensal!'
+      : `🦔 <strong>R$ ${formatarMoeda(totalMes)}/mês</strong> de renda. Quando o dinheiro cair, marca como recebido pra somar no saldo.`;
+    
+    let listaHTML = '';
+    if (ativas.length === 0) {
+      listaHTML = `
+        <div class="empty">
+          <div class="empty-emoji">💰</div>
+          <div class="empty-title">Sem rendas cadastradas</div>
+          <div class="empty-desc">Cadastre seu salário, comissões, alugueis recebidos. Cada um vira transação prevista de entrada pro mês inteiro!</div>
+        </div>
+      `;
+    } else {
+      listaHTML = '<div class="secao-titulo" style="margin-top:0;">Suas fontes de renda</div>';
+      listaHTML += ativas.map(r => rendaHTML(r)).join('');
+    }
+    
+    document.getElementById('conteudo-aba').innerHTML = `
+      ${saldoHTML}
+      <div class="tatu-tip">
+        <div class="tatu-tip-emoji">🦔</div>
+        <div class="tatu-tip-texto">${tatuTexto}</div>
+      </div>
+      <div class="quick-actions">
+        <div class="quick-btn" onclick="abrirModalNovaRenda()" style="grid-column:1/-1;">
+          <div class="quick-btn-icon">💰</div>
+          <div class="quick-btn-label">Cadastrar renda</div>
+          <div class="quick-btn-sub">Salário, comissão, aluguel</div>
+        </div>
+      </div>
+      ${listaHTML}
+    `;
+  }
+  
+  function rendaHTML(r) {
+    const cat = categoriasRenda[r.categoria] || categoriasRenda['outro'];
+    return `
+      <div class="item-card ${!r.ativo ? 'inativa' : ''}" onclick="abrirDetalhe('renda', '${r.id}')">
+        <div class="item-icone" style="background:${r.cor || cat.cor}30;border:2px solid ${r.cor || cat.cor}66;color:${r.cor || cat.cor};">${r.icone || cat.icone}</div>
+        <div class="item-info">
+          <div class="item-nome">${r.nome}</div>
+          <div class="item-tipo">${cat.label}${r.dia_recebimento ? ' • Cai dia ' + r.dia_recebimento : ''}${r.fonte ? ' • ' + r.fonte : ''}</div>
+          <div class="item-tag">🔁 Mensal</div>
+        </div>
+        <div class="item-valor">
+          <div class="item-valor-label">Mensal</div>
+          <div class="item-valor-num positivo">+R$ ${formatarMoeda(r.valor)}</div>
+        </div>
+      </div>
+    `;
+  }
+  
   // ============== ABA DESPESAS FIXAS ==============
   function renderAbaDespesas() {
     const fixas = compromissos.filter(c => c.ativo && c.tipo === 'recorrente');
@@ -1440,7 +1598,7 @@
       <div class="saldo-total">
         <div class="saldo-label">Despesas fixas mensais</div>
         <div class="saldo-valor ${totalMes > 0 ? 'warning' : ''}">R$ ${formatarMoeda(totalMes)}</div>
-        <div class="saldo-sub">${fixas.length} despesa${fixas.length === 1 ? '' : 's'} fixa${fixas.length === 1 ? '' : 's'} cadastrada${fixas.length === 1 ? '' : 's'}</div>
+        <div class="saldo-sub">${fixas.length} despesa${fixas.length === 1 ? '' : 's'} fixa${fixas.length === 1 ? '' : 's'}</div>
       </div>
     `;
     
@@ -1596,9 +1754,23 @@
     `).join('');
   }
   
+  function renderCategoriasRenda() {
+    document.getElementById('categorias-renda').innerHTML = Object.entries(categoriasRenda).map(([key, cat]) => `
+      <div class="tipo-opcao ${key === categoriaRendaSel ? 'active' : ''}" data-catr="${key}" onclick="selecionarCategoriaRenda('${key}')">
+        <div class="tipo-emoji">${cat.icone}</div>
+        <div class="tipo-label">${cat.label}</div>
+      </div>
+    `).join('');
+  }
+  
   window.selecionarCategoriaComp = function(key) {
     categoriaComp = key;
     document.querySelectorAll('#categorias-compromisso .tipo-opcao').forEach(el => el.classList.toggle('active', el.dataset.cat === key));
+  };
+  
+  window.selecionarCategoriaRenda = function(key) {
+    categoriaRendaSel = key;
+    document.querySelectorAll('#categorias-renda .tipo-opcao').forEach(el => el.classList.toggle('active', el.dataset.catr === key));
   };
   
   window.trocarTipoConta = function(tipo, manterEmoji) {
@@ -1676,7 +1848,7 @@
     document.getElementById('modal-conta-titulo').textContent = 'Nova conta';
     const btn = document.getElementById('btn-salvar-conta');
     btn.textContent = 'Cadastrar conta';
-    btn.disabled = false; // BUG FIX: garantir botão habilitado
+    btn.disabled = false;
     
     document.getElementById('c-nome').value = '';
     document.getElementById('c-saldo').value = '';
@@ -1787,6 +1959,17 @@
     return dataVenc.toISOString().split('T')[0];
   }
   
+  // FIX BUG DUPLICAÇÃO: calcula mês inicial correto sem duplicar Junho
+  function calcularMesInicial(diaVencimento) {
+    const hoje = new Date();
+    const diaHoje = hoje.getDate();
+    // Se o dia já passou no mês atual, começa no próximo mês
+    if (diaVencimento <= diaHoje) {
+      return hoje.getMonth() + 1;
+    }
+    return hoje.getMonth();
+  }
+  
   window.salvarConta = async function() {
     const btn = document.getElementById('btn-salvar-conta');
     const nome = document.getElementById('c-nome').value.trim();
@@ -1831,7 +2014,6 @@
       
       if (result.error) throw result.error;
       
-      // Se cartão com fatura, cria dívida + transação prevista
       let dividaCadastrada = false;
       if (!editandoId && isCartao && valorFatura > 0) {
         const dataVencFatura = calcularProximoVencimento(vencimento) || new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0];
@@ -1853,7 +2035,6 @@
         
         if (!errDiv && divida) {
           dividaCadastrada = true;
-          // Cria transação prevista vinculada à dívida
           await supabase.from('transacoes').insert({
             user_id: usuario.id,
             valor: valorFatura,
@@ -1880,7 +2061,7 @@
       }
       
       veiodaIA = false;
-      btn.disabled = false; // BUG FIX
+      btn.disabled = false;
       btn.textContent = editandoId ? 'Salvar' : 'Cadastrar conta';
       fecharModal('modal-conta');
       await carregarTudo();
@@ -1890,6 +2071,114 @@
       document.getElementById('msg-conta').textContent = 'Erro: ' + (e.message || e);
       btn.disabled = false;
       btn.textContent = editandoId ? 'Salvar' : 'Cadastrar conta';
+    }
+  };
+  
+  // ============== MODAL RENDA ==============
+  window.abrirModalNovaRenda = function() {
+    editandoRenda = null;
+    
+    document.getElementById('modal-renda-titulo').textContent = 'Nova renda';
+    const btn = document.getElementById('btn-salvar-renda');
+    btn.textContent = 'Cadastrar renda';
+    btn.disabled = false;
+    
+    document.getElementById('r-nome').value = '';
+    document.getElementById('r-fonte').value = '';
+    document.getElementById('r-valor').value = '';
+    document.getElementById('r-dia').value = '';
+    document.getElementById('msg-renda').className = 'msg';
+    
+    categoriaRendaSel = 'salario_clt';
+    renderCategoriasRenda();
+    
+    const sel = document.getElementById('r-conta');
+    const ativas = contas.filter(c => c.ativa && c.tipo !== 'cartao_credito');
+    sel.innerHTML = '<option value="">Sem conta vinculada</option>' + 
+      ativas.map(c => `<option value="${c.id}">${c.icone} ${c.nome}</option>`).join('');
+    
+    document.getElementById('modal-renda').classList.add('show');
+  };
+  
+  window.salvarRenda = async function() {
+    const btn = document.getElementById('btn-salvar-renda');
+    const nome = document.getElementById('r-nome').value.trim();
+    const valor = valorParaNumero(document.getElementById('r-valor').value);
+    const dia = parseInt(document.getElementById('r-dia').value) || null;
+    const contaId = document.getElementById('r-conta').value || null;
+    const fonte = document.getElementById('r-fonte').value.trim();
+    
+    if (!nome) {
+      document.getElementById('msg-renda').className = 'msg show msg-error';
+      document.getElementById('msg-renda').textContent = 'Preencha o nome';
+      return;
+    }
+    if (!valor || valor <= 0) {
+      document.getElementById('msg-renda').className = 'msg show msg-error';
+      document.getElementById('msg-renda').textContent = 'Informe o valor';
+      return;
+    }
+    
+    const cat = categoriasRenda[categoriaRendaSel];
+    
+    btn.disabled = true;
+    btn.textContent = 'Salvando...';
+    
+    try {
+      const { data: renda, error } = await supabase.from('rendas').insert({
+        user_id: usuario.id,
+        nome,
+        categoria: categoriaRendaSel,
+        valor,
+        dia_recebimento: dia,
+        conta_destino_id: contaId,
+        fonte: fonte || null,
+        cor: cat.cor,
+        icone: cat.icone
+      }).select().single();
+      
+      if (error) throw error;
+      
+      // Gera 12 transações PREVISTAS (não realizadas!) de entrada
+      const hoje = new Date();
+      const trans = [];
+      const diaUsar = dia || hoje.getDate();
+      
+      // FIX: calcula mês inicial sem duplicar
+      const mesInicial = calcularMesInicial(diaUsar);
+      
+      for (let i = 0; i < 12; i++) {
+        const dataRec = new Date(hoje.getFullYear(), mesInicial + i, diaUsar);
+        trans.push({
+          user_id: usuario.id,
+          valor,
+          descricao: nome,
+          data: dataRec.toISOString().split('T')[0],
+          tipo: 'entrada',
+          conta_id: contaId,
+          renda_id: renda.id,
+          status: 'prevista',
+          recorrente: true
+        });
+      }
+      
+      if (trans.length > 0) {
+        await supabase.from('transacoes').insert(trans);
+      }
+      
+      await darXP(20, 'renda_cadastrada', 'Renda: ' + nome);
+      mostrarToast(`+20 XP 💰 ${trans.length} entradas previstas`);
+      
+      btn.disabled = false;
+      btn.textContent = 'Cadastrar renda';
+      fecharModal('modal-renda');
+      await carregarTudo();
+      render();
+    } catch (e) {
+      document.getElementById('msg-renda').className = 'msg show msg-error';
+      document.getElementById('msg-renda').textContent = 'Erro: ' + (e.message || e);
+      btn.disabled = false;
+      btn.textContent = 'Cadastrar renda';
     }
   };
   
@@ -1916,7 +2205,6 @@
     renderCategoriasCompromisso();
     trocarTipoComp(tipoComp);
     
-    // Preenche dropdown de contas
     const sel = document.getElementById('k-conta');
     const ativas = contas.filter(c => c.ativa && c.tipo !== 'cartao_credito');
     sel.innerHTML = '<option value="">Sem conta vinculada</option>' + 
@@ -2005,19 +2293,16 @@
       const { data: comp, error } = await supabase.from('compromissos').insert(dados).select().single();
       if (error) throw error;
       
-      // Gera transações previstas
+      // Gera transações previstas - COM FIX DE DUPLICAÇÃO
       const hoje = new Date();
       const trans = [];
+      const diaUsar = dia || hoje.getDate();
       
       if (tipoComp === 'recorrente') {
-        // 12 meses pra frente
+        // FIX: calcula mês inicial correto
+        const mesInicial = calcularMesInicial(diaUsar);
         for (let i = 0; i < 12; i++) {
-          const dataVenc = new Date(hoje.getFullYear(), hoje.getMonth() + i, dia || hoje.getDate());
-          // Pula meses já passados
-          if (dataVenc < hoje && i === 0) {
-            // próximo mês
-            dataVenc.setMonth(dataVenc.getMonth() + 1);
-          }
+          const dataVenc = new Date(hoje.getFullYear(), mesInicial + i, diaUsar);
           trans.push({
             user_id: usuario.id,
             valor,
@@ -2032,11 +2317,9 @@
         }
       } else if (tipoComp === 'parcelado' && parcelasTotal) {
         const restantes = parcelasTotal - parcelasPagas;
+        const mesInicial = calcularMesInicial(diaUsar);
         for (let i = 0; i < restantes; i++) {
-          const dataVenc = new Date(hoje.getFullYear(), hoje.getMonth() + i, dia || hoje.getDate());
-          if (dataVenc < hoje && i === 0) {
-            dataVenc.setMonth(dataVenc.getMonth() + 1);
-          }
+          const dataVenc = new Date(hoje.getFullYear(), mesInicial + i, diaUsar);
           trans.push({
             user_id: usuario.id,
             valor,
@@ -2052,8 +2335,7 @@
           });
         }
       } else if (tipoComp === 'fixo') {
-        // Anual - 1 transação
-        const dataVenc = new Date(hoje.getFullYear(), hoje.getMonth(), dia || hoje.getDate());
+        const dataVenc = new Date(hoje.getFullYear(), hoje.getMonth(), diaUsar);
         if (dataVenc < hoje) dataVenc.setFullYear(dataVenc.getFullYear() + 1);
         trans.push({
           user_id: usuario.id,
@@ -2097,7 +2379,6 @@
     document.getElementById('upload-area').classList.add('disabled');
     document.getElementById('upload-sub-texto').textContent = 'Depois toque aqui pra enviar foto/print';
     
-    // Renderiza os tipos disponíveis pra cada modo
     let html = '<div class="ia-tipos-titulo">📌 Tipo da imagem</div><div class="ia-tipos-grid">';
     
     if (modo === 'conta') {
@@ -2146,7 +2427,6 @@
     html += '</div>';
     
     document.getElementById('ia-tipos-area').innerHTML = html;
-    
     document.getElementById('modal-ia').classList.add('show');
   };
   
@@ -2229,11 +2509,16 @@
       if (!c) return;
       detalheAtual = { tipo: 'conta', dados: c };
       renderDetalheConta(c);
-    } else {
+    } else if (tipo === 'compromisso') {
       const c = compromissos.find(x => x.id === id);
       if (!c) return;
       detalheAtual = { tipo: 'compromisso', dados: c };
       renderDetalheCompromisso(c);
+    } else if (tipo === 'renda') {
+      const r = rendas.find(x => x.id === id);
+      if (!r) return;
+      detalheAtual = { tipo: 'renda', dados: r };
+      renderDetalheRenda(r);
     }
     document.getElementById('modal-detalhe').classList.add('show');
   };
@@ -2291,6 +2576,34 @@
     document.getElementById('detalhe-footer').innerHTML = `
       <button class="btn btn-secondary" onclick="toggleAtivoComp()">${c.ativo ? 'Desativar' : 'Reativar'}</button>
       <button class="btn btn-danger" onclick="excluirComp()">Excluir e cancelar previstas</button>
+    `;
+  }
+  
+  function renderDetalheRenda(r) {
+    const cat = categoriasRenda[r.categoria] || categoriasRenda['outro'];
+    document.getElementById('detalhe-titulo').textContent = `${r.icone || cat.icone} ${r.nome}`;
+    
+    let html = `
+      <div class="saldo-total" style="margin-bottom:16px;">
+        <div class="saldo-label">Valor mensal</div>
+        <div class="saldo-valor positivo" style="color:${r.cor || cat.cor};">+R$ ${formatarMoeda(r.valor)}</div>
+        <div class="saldo-sub">${cat.label}${r.dia_recebimento ? ' • Cai dia ' + r.dia_recebimento : ''}</div>
+      </div>
+      <div class="detalhe-card">
+        <div class="detalhe-linha"><div class="detalhe-label">Categoria</div><div class="detalhe-valor">${cat.label}</div></div>
+        ${r.fonte ? `<div class="detalhe-linha"><div class="detalhe-label">Fonte</div><div class="detalhe-valor">${r.fonte}</div></div>` : ''}
+        ${r.dia_recebimento ? `<div class="detalhe-linha"><div class="detalhe-label">Recebe dia</div><div class="detalhe-valor">${r.dia_recebimento}</div></div>` : ''}
+        <div class="detalhe-linha"><div class="detalhe-label">Status</div><div class="detalhe-valor">${r.ativo ? '✓ Ativo' : '✗ Inativo'}</div></div>
+      </div>
+      <div class="info-box brand">
+        🦔 <strong>Gerou 12 transações previstas</strong> de entrada vinculadas a essa renda. Quando o dinheiro cair, marca como recebido em Transações.
+      </div>
+    `;
+    
+    document.getElementById('detalhe-area').innerHTML = html;
+    document.getElementById('detalhe-footer').innerHTML = `
+      <button class="btn btn-secondary" onclick="toggleAtivoRenda()">${r.ativo ? 'Desativar' : 'Reativar'}</button>
+      <button class="btn btn-danger" onclick="excluirRenda()">Excluir e cancelar previstas</button>
     `;
   }
   
@@ -2358,10 +2671,26 @@
   window.excluirComp = async function() {
     const c = detalheAtual.dados;
     if (!confirm(`Excluir "${c.nome}"?\n\n⚠️ Todas as transações previstas vinculadas serão CANCELADAS.\n\nNão pode ser desfeito.`)) return;
-    // Cancela previstas vinculadas
     await supabase.from('transacoes').delete().eq('compromisso_id', c.id).eq('status', 'prevista');
-    // Exclui compromisso
     await supabase.from('compromissos').delete().eq('id', c.id);
+    fecharModal('modal-detalhe');
+    await carregarTudo();
+    render();
+  };
+  
+  window.toggleAtivoRenda = async function() {
+    const r = detalheAtual.dados;
+    await supabase.from('rendas').update({ ativo: !r.ativo, atualizado_em: new Date().toISOString() }).eq('id', r.id);
+    fecharModal('modal-detalhe');
+    await carregarTudo();
+    render();
+  };
+  
+  window.excluirRenda = async function() {
+    const r = detalheAtual.dados;
+    if (!confirm(`Excluir "${r.nome}"?\n\n⚠️ Todas as transações previstas vinculadas serão CANCELADAS.\n\nNão pode ser desfeito.`)) return;
+    await supabase.from('transacoes').delete().eq('renda_id', r.id).eq('status', 'prevista');
+    await supabase.from('rendas').delete().eq('id', r.id);
     fecharModal('modal-detalhe');
     await carregarTudo();
     render();
