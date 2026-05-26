@@ -133,12 +133,8 @@
   }
   
   .nav-btn:active { background: var(--brand-soft); }
-  .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   
-  .nav-mes-info {
-    flex: 1;
-    text-align: center;
-  }
+  .nav-mes-info { flex: 1; text-align: center; }
   
   .nav-mes-titulo {
     font-family: 'Space Grotesk', sans-serif;
@@ -172,7 +168,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
   }
   
   .resumo-card {
@@ -183,7 +179,7 @@
   }
   
   .resumo-label {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text-mute);
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -193,13 +189,14 @@
   
   .resumo-valor {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     letter-spacing: -0.01em;
   }
   
   .resumo-valor.brand { color: var(--brand); }
   .resumo-valor.danger { color: var(--danger); }
+  .resumo-valor.warning { color: var(--warning); }
   
   .saldo-card {
     background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elev) 100%);
@@ -211,7 +208,7 @@
   }
   
   .saldo-label {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text-mute);
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -221,13 +218,19 @@
   
   .saldo-valor {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
     letter-spacing: -0.02em;
   }
   
   .saldo-valor.positivo { color: var(--brand); }
   .saldo-valor.negativo { color: var(--danger); }
+  
+  .saldo-sub {
+    font-size: 10px;
+    color: var(--text-mute);
+    margin-top: 4px;
+  }
   
   .quick-actions {
     display: grid;
@@ -271,6 +274,43 @@
     line-height: 1.2;
   }
   
+  /* FILTRO STATUS */
+  .filtro-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 4px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 4px;
+    margin-bottom: 14px;
+  }
+  
+  .filtro-opt {
+    padding: 10px 6px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text-mute);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .filtro-opt.active.todas { background: var(--brand-soft); color: var(--brand); }
+  .filtro-opt.active.realizadas { background: var(--brand-soft); color: var(--brand); }
+  .filtro-opt.active.previstas { background: var(--warning-soft); color: var(--warning); }
+  
+  .filtro-count {
+    display: block;
+    font-size: 9px;
+    margin-top: 2px;
+    opacity: 0.7;
+  }
+  
   .secao-titulo {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 11px;
@@ -300,9 +340,22 @@
     align-items: center;
     gap: 12px;
     cursor: pointer;
+    position: relative;
   }
   
   .trans-card:active { transform: scale(0.99); }
+  
+  .trans-card.prevista {
+    background: linear-gradient(135deg, rgba(255, 184, 0, 0.05) 0%, var(--bg-card) 100%);
+    border-color: rgba(255, 184, 0, 0.25);
+    border-left: 3px solid var(--warning);
+  }
+  
+  .trans-card.vencida {
+    background: linear-gradient(135deg, rgba(255, 71, 87, 0.05) 0%, var(--bg-card) 100%);
+    border-color: rgba(255, 71, 87, 0.3);
+    border-left: 3px solid var(--danger);
+  }
   
   .trans-icone {
     width: 42px; height: 42px;
@@ -324,10 +377,12 @@
     color: var(--danger);
   }
   
-  .trans-info {
-    flex: 1;
-    min-width: 0;
+  .trans-icone.prevista {
+    background: var(--warning-soft);
+    color: var(--warning);
   }
+  
+  .trans-info { flex: 1; min-width: 0; }
   
   .trans-desc {
     font-family: 'Space Grotesk', sans-serif;
@@ -368,12 +423,25 @@
     font-size: 15px;
     font-weight: 700;
     white-space: nowrap;
+    text-align: right;
+    flex-shrink: 0;
   }
   
   .trans-valor.entrada { color: var(--brand); }
   .trans-valor.saida { color: var(--danger); }
+  .trans-valor.prevista { color: var(--warning); }
   
-  .badge-recorrente, .badge-parcela {
+  .trans-prev-label {
+    display: block;
+    font-size: 9px;
+    color: var(--text-mute);
+    font-weight: 600;
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .badge-recorrente, .badge-parcela, .badge-prevista, .badge-vencida {
     font-size: 9px;
     padding: 2px 5px;
     border-radius: 4px;
@@ -382,15 +450,10 @@
     letter-spacing: 0.05em;
   }
   
-  .badge-recorrente {
-    background: var(--info-soft);
-    color: var(--info);
-  }
-  
-  .badge-parcela {
-    background: var(--warning-soft);
-    color: var(--warning);
-  }
+  .badge-recorrente { background: var(--info-soft); color: var(--info); }
+  .badge-parcela { background: var(--warning-soft); color: var(--warning); }
+  .badge-prevista { background: rgba(255,184,0,0.15); color: var(--warning); }
+  .badge-vencida { background: var(--danger-soft); color: var(--danger); }
   
   .empty {
     background: var(--bg-card);
@@ -442,7 +505,6 @@
     background: var(--brand-hover);
   }
   
-  /* MODAL - sempre footer visível */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -615,7 +677,6 @@
     border-color: var(--brand);
   }
   
-  /* SELETOR DE CONTAS */
   .contas-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -652,10 +713,7 @@
     flex-shrink: 0;
   }
   
-  .conta-opcao-info {
-    flex: 1;
-    min-width: 0;
-  }
+  .conta-opcao-info { flex: 1; min-width: 0; }
   
   .conta-opcao-nome {
     font-family: 'Space Grotesk', sans-serif;
@@ -827,6 +885,12 @@
     margin-top: 8px;
   }
   
+  .btn-warning {
+    background: var(--warning);
+    color: #1a1500;
+    margin-top: 8px;
+  }
+  
   .msg {
     padding: 12px;
     border-radius: 10px;
@@ -842,12 +906,6 @@
     background: var(--danger-soft);
     border: 1px solid rgba(255, 71, 87, 0.3);
     color: #ff6b78;
-  }
-  
-  .msg-success {
-    background: var(--brand-soft);
-    border: 1px solid rgba(0, 217, 126, 0.3);
-    color: var(--brand);
   }
   
   .msg-ia {
@@ -972,13 +1030,13 @@
 <div class="container">
 
   <div class="nav-mes">
-    <button class="nav-btn" id="btn-mes-anterior" onclick="navegarMes(-1)">‹</button>
+    <button class="nav-btn" onclick="navegarMes(-1)">‹</button>
     <div class="nav-mes-info">
       <div class="nav-mes-titulo" id="nav-mes-titulo">—</div>
       <div class="nav-mes-sub" id="nav-mes-sub">—</div>
     </div>
     <button class="btn-hoje" id="btn-hoje" onclick="irParaHoje()">Hoje</button>
-    <button class="nav-btn" id="btn-mes-proximo" onclick="navegarMes(1)">›</button>
+    <button class="nav-btn" onclick="navegarMes(1)">›</button>
   </div>
 
   <div class="resumo-cards">
@@ -992,9 +1050,21 @@
     </div>
   </div>
   
+  <div class="resumo-cards" id="previstas-cards" style="display:none;">
+    <div class="resumo-card" style="border-color:rgba(255,184,0,0.3);">
+      <div class="resumo-label">📅 Previstas</div>
+      <div class="resumo-valor warning" id="total-previstas">R$ 0,00</div>
+    </div>
+    <div class="resumo-card" style="border-color:rgba(255,71,87,0.3);">
+      <div class="resumo-label">⚠️ Vencidas</div>
+      <div class="resumo-valor danger" id="total-vencidas">R$ 0,00</div>
+    </div>
+  </div>
+  
   <div class="saldo-card">
-    <div class="saldo-label">Saldo do mês</div>
+    <div class="saldo-label">Saldo realizado</div>
     <div class="saldo-valor" id="saldo-mes">R$ 0,00</div>
+    <div class="saldo-sub" id="saldo-previsto-sub" style="display:none;"></div>
   </div>
   
   <div class="quick-actions">
@@ -1007,6 +1077,18 @@
       <div class="quick-btn-icon">✨</div>
       <div class="quick-btn-label">Foto do cupom</div>
       <div class="quick-btn-sub">IA preenche</div>
+    </div>
+  </div>
+  
+  <div class="filtro-status">
+    <div class="filtro-opt active todas" data-filtro="todas" onclick="trocarFiltro('todas')">
+      Todas <span class="filtro-count" id="count-todas">0</span>
+    </div>
+    <div class="filtro-opt previstas" data-filtro="previstas" onclick="trocarFiltro('previstas')">
+      📅 Previstas <span class="filtro-count" id="count-previstas">0</span>
+    </div>
+    <div class="filtro-opt realizadas" data-filtro="realizadas" onclick="trocarFiltro('realizadas')">
+      ✅ Realizadas <span class="filtro-count" id="count-realizadas">0</span>
     </div>
   </div>
   
@@ -1046,7 +1128,6 @@
         <input type="text" id="f-descricao" placeholder="Ex: Mercado, Salário">
       </div>
       
-      <!-- SELETOR DE CONTAS -->
       <div id="contas-section">
         <div class="secao-titulo" style="margin-top:0;">Em qual conta?</div>
         <div id="contas-area"></div>
@@ -1060,7 +1141,6 @@
         <input type="date" id="f-data">
       </div>
       
-      <!-- RECORRENTE -->
       <div class="toggle-section">
         <div class="toggle-row">
           <div>
@@ -1077,7 +1157,6 @@
         </div>
       </div>
       
-      <!-- PARCELADO -->
       <div class="toggle-section">
         <div class="toggle-row">
           <div>
@@ -1101,7 +1180,6 @@
       </div>
       
       <div style="height:20px;"></div>
-      
     </div>
     <div class="modal-footer">
       <button class="btn btn-primary" id="btn-salvar" onclick="salvarTransacao()">Salvar transação</button>
@@ -1138,8 +1216,7 @@
       </div>
       
     </div>
-    <div class="modal-footer">
-    </div>
+    <div class="modal-footer"></div>
   </div>
 </div>
 
@@ -1154,10 +1231,7 @@
     <div class="modal-body">
       <div id="detalhe-area"></div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-primary" onclick="editarTransacao()">Editar</button>
-      <button class="btn btn-danger" onclick="excluirTransacao()">Excluir</button>
-    </div>
+    <div class="modal-footer" id="detalhe-footer"></div>
   </div>
 </div>
 
@@ -1177,6 +1251,7 @@
   let categorias = [];
   let contas = [];
   let saldosContas = {};
+  let filtroAtivo = 'todas';
   
   let tipoSelecionado = 'saida';
   let categoriaSelecionada = null;
@@ -1209,7 +1284,7 @@
         .eq('user_id', usuario.id)
         .gte('data', inicio)
         .lte('data', fim)
-        .order('data', { ascending: false }),
+        .order('data', { ascending: true }),
       supabase.from('categorias')
         .select('*')
         .or(`user_id.eq.${usuario.id},padrao.eq.true`)
@@ -1226,15 +1301,15 @@
     categorias = catRes.data || [];
     contas = contasRes.data || [];
     
-    // Calcula saldo de cada conta
+    // Calcula saldo de cada conta (só realizadas)
     saldosContas = {};
     for (const c of contas) {
       const { data: t } = await supabase
         .from('transacoes')
         .select('valor, tipo')
         .eq('user_id', usuario.id)
-        .eq('conta_id', c.id);
-      
+        .eq('conta_id', c.id)
+        .eq('status', 'realizada');
       let s = Number(c.saldo_inicial || 0);
       (t || []).forEach(tx => {
         s += tx.tipo === 'entrada' ? Number(tx.valor) : -Number(tx.valor);
@@ -1246,16 +1321,13 @@
   function render() {
     renderNavMes();
     renderResumo();
+    renderFiltroCounts();
     renderLista();
   }
   
   function renderNavMes() {
-    const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-    const mes = meses[mesAtual.getMonth()];
-    const ano = mesAtual.getFullYear();
-    
-    document.getElementById('nav-mes-titulo').textContent = `${mes} ${ano}`;
-    
+    const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    document.getElementById('nav-mes-titulo').textContent = `${meses[mesAtual.getMonth()]} ${mesAtual.getFullYear()}`;
     const hoje = new Date();
     const ehHoje = mesAtual.getMonth() === hoje.getMonth() && mesAtual.getFullYear() === hoje.getFullYear();
     document.getElementById('nav-mes-sub').textContent = ehHoje ? 'Mês atual' : '';
@@ -1263,9 +1335,17 @@
   }
   
   function renderResumo() {
-    const entrada = transacoes.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
-    const saida = transacoes.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
+    const hoje = new Date().toISOString().split('T')[0];
+    const realizadas = transacoes.filter(t => (t.status || 'realizada') === 'realizada');
+    const previstas = transacoes.filter(t => t.status === 'prevista');
+    
+    const entrada = realizadas.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
+    const saida = realizadas.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
     const saldo = entrada - saida;
+    
+    const previsto = previstas.reduce((a, t) => a + (t.tipo === 'entrada' ? Number(t.valor) : -Number(t.valor)), 0);
+    const vencidas = previstas.filter(t => t.data < hoje).reduce((a, t) => a + Number(t.valor), 0);
+    const previstasNaoVencidas = previstas.filter(t => t.data >= hoje).reduce((a, t) => a + Number(t.valor), 0);
     
     document.getElementById('total-entrada').textContent = `R$ ${formatarMoeda(entrada)}`;
     document.getElementById('total-saida').textContent = `R$ ${formatarMoeda(saida)}`;
@@ -1273,91 +1353,155 @@
     const saldoEl = document.getElementById('saldo-mes');
     saldoEl.textContent = `R$ ${formatarMoeda(saldo)}`;
     saldoEl.className = 'saldo-valor ' + (saldo >= 0 ? 'positivo' : 'negativo');
+    
+    if (previstas.length > 0) {
+      document.getElementById('previstas-cards').style.display = 'grid';
+      document.getElementById('total-previstas').textContent = `R$ ${formatarMoeda(previstasNaoVencidas)}`;
+      document.getElementById('total-vencidas').textContent = `R$ ${formatarMoeda(vencidas)}`;
+      
+      const saldoPrevisto = saldo + previsto;
+      document.getElementById('saldo-previsto-sub').style.display = 'block';
+      document.getElementById('saldo-previsto-sub').innerHTML = `Saldo previsto fim do mês: <strong style="color:${saldoPrevisto >= 0 ? 'var(--brand)' : 'var(--danger)'}">R$ ${formatarMoeda(saldoPrevisto)}</strong>`;
+    } else {
+      document.getElementById('previstas-cards').style.display = 'none';
+      document.getElementById('saldo-previsto-sub').style.display = 'none';
+    }
   }
+  
+  function renderFiltroCounts() {
+    const realizadas = transacoes.filter(t => (t.status || 'realizada') === 'realizada').length;
+    const previstas = transacoes.filter(t => t.status === 'prevista').length;
+    
+    document.getElementById('count-todas').textContent = transacoes.length;
+    document.getElementById('count-realizadas').textContent = realizadas;
+    document.getElementById('count-previstas').textContent = previstas;
+  }
+  
+  window.trocarFiltro = function(f) {
+    filtroAtivo = f;
+    document.querySelectorAll('.filtro-opt').forEach(el => el.classList.toggle('active', el.dataset.filtro === f));
+    renderLista();
+  };
   
   function renderLista() {
     const lista = document.getElementById('lista');
     
-    if (transacoes.length === 0) {
+    let filtradas = transacoes;
+    if (filtroAtivo === 'realizadas') filtradas = transacoes.filter(t => (t.status || 'realizada') === 'realizada');
+    if (filtroAtivo === 'previstas') filtradas = transacoes.filter(t => t.status === 'prevista');
+    
+    if (filtradas.length === 0) {
       lista.innerHTML = `
         <div class="empty">
           <div class="empty-emoji">💸</div>
-          <div class="empty-title">Sem transações esse mês</div>
-          <div class="empty-desc">Comece cadastrando suas entradas e saídas. Use a IA pra ler cupons!</div>
+          <div class="empty-title">${filtroAtivo === 'previstas' ? 'Sem previstas' : filtroAtivo === 'realizadas' ? 'Sem realizadas' : 'Sem transações'}</div>
+          <div class="empty-desc">${filtroAtivo === 'previstas' ? 'Cadastre despesas fixas em "Vida Financeira" pra ver previstas aqui.' : 'Comece cadastrando suas entradas e saídas.'}</div>
         </div>
       `;
       return;
     }
     
-    // Agrupa por data
+    const hoje = new Date().toISOString().split('T')[0];
     const grupos = {};
-    transacoes.forEach(t => {
+    filtradas.forEach(t => {
       const data = t.data;
       if (!grupos[data]) grupos[data] = [];
       grupos[data].push(t);
     });
     
-    const datasOrdenadas = Object.keys(grupos).sort((a, b) => b.localeCompare(a));
+    const datasOrdenadas = Object.keys(grupos).sort((a, b) => {
+      // Previstas: ordem crescente (próximas primeiro)
+      // Realizadas: ordem decrescente (recentes primeiro)
+      if (filtroAtivo === 'previstas') return a.localeCompare(b);
+      return b.localeCompare(a);
+    });
     
     let html = '';
     datasOrdenadas.forEach(data => {
       const trans = grupos[data];
-      const total = trans.reduce((a, t) => a + (t.tipo === 'entrada' ? Number(t.valor) : -Number(t.valor)), 0);
+      const realizadasGrupo = trans.filter(t => (t.status || 'realizada') === 'realizada');
+      const totalRealizadas = realizadasGrupo.reduce((a, t) => a + (t.tipo === 'entrada' ? Number(t.valor) : -Number(t.valor)), 0);
+      
       const dataObj = new Date(data + 'T12:00:00');
       const dataFormatada = dataObj.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'short' });
+      const ehFutura = data > hoje;
+      const ehHojeFlag = data === hoje;
       
-      html += `
-        <div class="secao-titulo">
-          <span>${dataFormatada}</span>
-          <span class="secao-count" style="color:${total >= 0 ? 'var(--brand)' : 'var(--danger)'}">${total >= 0 ? '+' : ''}R$ ${formatarMoeda(Math.abs(total))}</span>
-        </div>
-      `;
+      let labelData = dataFormatada;
+      if (ehHojeFlag) labelData = '🟢 HOJE - ' + dataFormatada;
+      else if (ehFutura) {
+        const dias = Math.ceil((new Date(data) - new Date(hoje)) / (1000*60*60*24));
+        labelData = `📅 Em ${dias} dia${dias === 1 ? '' : 's'} - ${dataFormatada}`;
+      }
+      
+      let totalLabel = '';
+      if (realizadasGrupo.length > 0) {
+        totalLabel = `<span class="secao-count" style="color:${totalRealizadas >= 0 ? 'var(--brand)' : 'var(--danger)'}">${totalRealizadas >= 0 ? '+' : ''}R$ ${formatarMoeda(Math.abs(totalRealizadas))}</span>`;
+      }
+      
+      html += `<div class="secao-titulo"><span>${labelData}</span>${totalLabel}</div>`;
       
       trans.forEach(t => {
-        const cat = t.categorias;
-        const conta = contas.find(c => c.id === t.conta_id);
-        const contaTag = conta ? `
-          <span class="trans-conta-tag" style="color:${conta.cor}">
-            <span class="trans-conta-dot" style="background:${conta.cor}"></span>
-            ${conta.nome}
-          </span>
-        ` : '';
-        
-        const recorrenteBadge = t.recorrente ? '<span class="badge-recorrente">🔁 Mensal</span>' : '';
-        const parceladoBadge = t.parcelado ? `<span class="badge-parcela">💳 ${t.numero_parcela}/${t.total_parcelas}</span>` : '';
-        
-        html += `
-          <div class="trans-card" onclick="abrirDetalhe('${t.id}')">
-            <div class="trans-icone ${t.tipo}">
-              ${cat?.icone || (t.tipo === 'entrada' ? '↓' : '↑')}
-            </div>
-            <div class="trans-info">
-              <div class="trans-desc">${t.descricao}</div>
-              <div class="trans-meta">
-                <span>${cat?.nome || 'Sem categoria'}</span>
-                ${contaTag ? '<span>•</span>' + contaTag : ''}
-                ${recorrenteBadge}
-                ${parceladoBadge}
-              </div>
-            </div>
-            <div class="trans-valor ${t.tipo}">
-              ${t.tipo === 'entrada' ? '+' : '-'}R$ ${formatarMoeda(t.valor)}
-            </div>
-          </div>
-        `;
+        html += transHTML(t, hoje);
       });
     });
     
     lista.innerHTML = html;
   }
   
+  function transHTML(t, hoje) {
+    const cat = t.categorias;
+    const conta = contas.find(c => c.id === t.conta_id);
+    const ehPrevista = t.status === 'prevista';
+    const ehVencida = ehPrevista && t.data < hoje;
+    
+    const contaTag = conta ? `
+      <span class="trans-conta-tag" style="color:${conta.cor}">
+        <span class="trans-conta-dot" style="background:${conta.cor}"></span>
+        ${conta.nome}
+      </span>
+    ` : '';
+    
+    let badges = '';
+    if (ehVencida) badges += '<span class="badge-vencida">⚠️ VENCIDA</span>';
+    else if (ehPrevista) badges += '<span class="badge-prevista">📅 PREVISTA</span>';
+    if (t.recorrente) badges += '<span class="badge-recorrente">🔁</span>';
+    if (t.parcelado) badges += `<span class="badge-parcela">💳 ${t.numero_parcela}/${t.total_parcelas}</span>`;
+    
+    const cardClass = ehVencida ? 'vencida' : (ehPrevista ? 'prevista' : '');
+    const iconeClass = ehPrevista ? 'prevista' : t.tipo;
+    const valorClass = ehPrevista ? 'prevista' : t.tipo;
+    
+    const valorLabel = ehPrevista ? '<span class="trans-prev-label">A pagar</span>' : '';
+    const sinal = ehPrevista ? '' : (t.tipo === 'entrada' ? '+' : '-');
+    
+    return `
+      <div class="trans-card ${cardClass}" onclick="abrirDetalhe('${t.id}')">
+        <div class="trans-icone ${iconeClass}">
+          ${ehPrevista ? '📅' : (cat?.icone || (t.tipo === 'entrada' ? '↓' : '↑'))}
+        </div>
+        <div class="trans-info">
+          <div class="trans-desc">${t.descricao}</div>
+          <div class="trans-meta">
+            ${cat ? `<span>${cat.nome}</span>` : ''}
+            ${conta ? '<span>•</span>' + contaTag : ''}
+            ${badges}
+          </div>
+        </div>
+        <div>
+          <div class="trans-valor ${valorClass}">${sinal}R$ ${formatarMoeda(t.valor)}</div>
+          ${valorLabel}
+        </div>
+      </div>
+    `;
+  }
+  
   function renderContasSelector() {
     const area = document.getElementById('contas-area');
-    
     if (contas.length === 0) {
       area.innerHTML = `
         <div class="sem-conta-aviso">
-          🏦 Você ainda não cadastrou nenhuma conta. <a href="contas.html?v=1">Cadastrar agora →</a><br>
+          🏦 Você não tem conta cadastrada. <a href="contas.html?v=2">Cadastrar agora →</a><br>
           <small style="color:var(--text-mute);">A transação será salva sem vincular conta.</small>
         </div>
       `;
@@ -1368,15 +1512,11 @@
     contas.forEach(c => {
       const saldo = saldosContas[c.id] || 0;
       const ehCartao = c.tipo === 'cartao_credito';
-      const saldoTxt = ehCartao ? 
-        `Limite: R$ ${formatarMoeda(c.limite || 0)}` :
-        `R$ ${formatarMoeda(saldo)}`;
+      const saldoTxt = ehCartao ? `Limite: R$ ${formatarMoeda(c.limite || 0)}` : `R$ ${formatarMoeda(saldo)}`;
       const saldoClass = ehCartao ? 'neutro' : (saldo >= 0 ? 'positivo' : 'negativo');
       
       html += `
-        <div class="conta-opcao ${c.id === contaSelecionada ? 'active' : ''}" 
-             data-conta="${c.id}" 
-             onclick="selecionarConta('${c.id}')">
+        <div class="conta-opcao ${c.id === contaSelecionada ? 'active' : ''}" data-conta="${c.id}" onclick="selecionarConta('${c.id}')">
           <div class="conta-opcao-icon" style="background:${c.cor}30;color:${c.cor};">${c.icone}</div>
           <div class="conta-opcao-info">
             <div class="conta-opcao-nome">${c.nome}</div>
@@ -1392,19 +1532,12 @@
   function renderCategorias(tipo) {
     const grid = document.getElementById('categorias-grid');
     const cats = categorias.filter(c => c.tipo === tipo);
-    
-    let html = '';
-    cats.forEach(c => {
-      html += `
-        <div class="cat-opcao ${c.id === categoriaSelecionada ? 'active' : ''}" 
-             data-cat="${c.id}" 
-             onclick="selecionarCategoria('${c.id}')">
-          <div class="cat-emoji">${c.icone || '📌'}</div>
-          <div class="cat-nome">${c.nome}</div>
-        </div>
-      `;
-    });
-    grid.innerHTML = html;
+    grid.innerHTML = cats.map(c => `
+      <div class="cat-opcao ${c.id === categoriaSelecionada ? 'active' : ''}" data-cat="${c.id}" onclick="selecionarCategoria('${c.id}')">
+        <div class="cat-emoji">${c.icone || '📌'}</div>
+        <div class="cat-nome">${c.nome}</div>
+      </div>
+    `).join('');
   }
   
   window.navegarMes = function(delta) {
@@ -1476,13 +1609,15 @@
     isParcelado = false;
     
     document.getElementById('modal-form-titulo').textContent = 'Nova transação';
-    document.getElementById('btn-salvar').textContent = 'Salvar transação';
+    const btn = document.getElementById('btn-salvar');
+    btn.textContent = 'Salvar transação';
+    btn.disabled = false;
+    
     document.getElementById('f-valor').value = '';
     document.getElementById('f-descricao').value = '';
     document.getElementById('f-data').value = new Date().toISOString().split('T')[0];
     document.getElementById('f-valor-total').value = '';
     document.getElementById('msg-form').className = 'msg';
-    
     document.getElementById('toggle-recorrente').classList.remove('active');
     document.getElementById('toggle-parcelado').classList.remove('active');
     document.getElementById('extras-recorrente').classList.remove('show');
@@ -1490,8 +1625,6 @@
     
     tipoSelecionado = 'saida';
     categoriaSelecionada = null;
-    
-    // Pré-seleciona conta padrão
     const padrao = contas.find(c => c.padrao);
     contaSelecionada = padrao ? padrao.id : (contas[0]?.id || null);
     
@@ -1543,9 +1676,7 @@
       
       if (data.resultado && !data.resultado.erro) {
         fecharModal('modal-ia');
-        setTimeout(() => {
-          abrirFormularioComDadosIA(data.resultado);
-        }, 200);
+        setTimeout(() => abrirFormularioComDadosIA(data.resultado), 200);
       } else if (data.resultado?.erro) {
         document.getElementById('ia-analisando-area').classList.add('hidden');
         alert('⚠️ ' + data.resultado.erro);
@@ -1570,83 +1701,64 @@
     isParcelado = false;
     
     document.getElementById('modal-form-titulo').textContent = '✨ Cupom detectado pela IA';
-    document.getElementById('btn-salvar').textContent = 'Salvar transação';
+    const btn = document.getElementById('btn-salvar');
+    btn.textContent = 'Salvar transação';
+    btn.disabled = false;
     document.getElementById('msg-form').className = 'msg';
-    
     document.getElementById('toggle-recorrente').classList.remove('active');
     document.getElementById('toggle-parcelado').classList.remove('active');
     document.getElementById('extras-recorrente').classList.remove('show');
     document.getElementById('extras-parcelado').classList.remove('show');
     
-    // Tipo (cupom = sempre saída)
     tipoSelecionado = 'saida';
     document.getElementById('tab-entrada').classList.remove('active');
     document.getElementById('tab-saida').classList.add('active');
     
-    // Valor
-    if (r.valor) {
-      document.getElementById('f-valor').value = formatarMoeda(r.valor);
-    } else {
-      document.getElementById('f-valor').value = '';
-    }
+    if (r.valor) document.getElementById('f-valor').value = formatarMoeda(r.valor);
+    else document.getElementById('f-valor').value = '';
     
-    // Descrição
     document.getElementById('f-descricao').value = r.descricao || '';
-    
-    // Data
     document.getElementById('f-data').value = r.data || new Date().toISOString().split('T')[0];
-    
     document.getElementById('f-valor-total').value = '';
     
-    // Categoria - tenta achar pelo sugerido
     categoriaSelecionada = null;
     if (r.categoria_sugerida) {
       const mapeamento = {
-        'mercado': ['mercado', 'supermercado'],
-        'alimentacao': ['alimentação', 'alimentacao', 'restaurante'],
-        'delivery': ['delivery', 'ifood'],
-        'transporte': ['transporte', 'uber', 'combustível'],
-        'saude': ['saúde', 'saude', 'farmácia'],
-        'educacao': ['educação', 'educacao'],
-        'vestuario': ['vestuário', 'vestuario', 'roupa'],
+        'mercado': ['mercado','supermercado'],
+        'alimentacao': ['alimentação','alimentacao','restaurante'],
+        'delivery': ['delivery','ifood'],
+        'transporte': ['transporte','uber','combustível'],
+        'saude': ['saúde','saude','farmácia'],
+        'educacao': ['educação','educacao'],
+        'vestuario': ['vestuário','vestuario','roupa'],
         'lazer': ['lazer'],
         'outros': ['outros']
       };
       const palavras = mapeamento[r.categoria_sugerida] || [r.categoria_sugerida];
-      const cat = categorias.find(c => 
-        c.tipo === 'saida' && 
-        palavras.some(p => c.nome.toLowerCase().includes(p))
-      );
+      const cat = categorias.find(c => c.tipo === 'saida' && palavras.some(p => c.nome.toLowerCase().includes(p)));
       if (cat) categoriaSelecionada = cat.id;
     }
     
-    // Conta - se IA detectou forma_pagamento, tenta achar conta compatível
     contaSelecionada = null;
     if (r.forma_pagamento && contas.length > 0) {
       if (r.forma_pagamento === 'credito') {
-        // Crédito → procura cartão
         const cartao = contas.find(c => c.tipo === 'cartao_credito');
         if (cartao) contaSelecionada = cartao.id;
       } else if (r.forma_pagamento === 'dinheiro') {
-        // Dinheiro → procura carteira
         const carteira = contas.find(c => c.tipo === 'carteira');
         if (carteira) contaSelecionada = carteira.id;
       }
     }
-    
-    // Se não detectou, usa a padrão
     if (!contaSelecionada) {
       const padrao = contas.find(c => c.padrao);
       contaSelecionada = padrao ? padrao.id : (contas[0]?.id || null);
     }
     
-    // Se é parcelado, marca o toggle
     if (r.parcelado && r.num_parcelas > 1) {
       isParcelado = true;
       document.getElementById('toggle-parcelado').classList.add('active');
       document.getElementById('extras-parcelado').classList.add('show');
       document.getElementById('f-parcelas').value = r.num_parcelas;
-      // valor_total = valor * num_parcelas se IA não mandou
       document.getElementById('f-valor-total').value = formatarMoeda(r.valor * r.num_parcelas);
     }
     
@@ -1656,15 +1768,14 @@
     const conf = r.confianca || 'média';
     let msg = `✨ <strong>IA preencheu tudo!</strong> Confiança: ${conf}. Revise e ajuste.`;
     if (r.observacao) msg += '<br>💡 ' + r.observacao;
-    if (r.moeda_origem && r.moeda_origem !== 'BRL') msg += `<br>💱 Detectada moeda ${r.moeda_origem}, valor convertido pro real.`;
     
     document.getElementById('msg-form').className = 'msg msg-ia show';
     document.getElementById('msg-form').innerHTML = msg;
-    
     document.getElementById('modal-form').classList.add('show');
   }
   
   window.salvarTransacao = async function() {
+    const btn = document.getElementById('btn-salvar');
     const valor = valorParaNumero(document.getElementById('f-valor').value);
     const descricao = document.getElementById('f-descricao').value.trim();
     const data = document.getElementById('f-data').value;
@@ -1674,151 +1785,110 @@
       document.getElementById('msg-form').textContent = 'Informe o valor';
       return;
     }
-    
     if (!descricao) {
       document.getElementById('msg-form').className = 'msg show msg-error';
       document.getElementById('msg-form').textContent = 'Informe a descrição';
       return;
     }
-    
     if (!data) {
       document.getElementById('msg-form').className = 'msg show msg-error';
       document.getElementById('msg-form').textContent = 'Informe a data';
       return;
     }
-    
-    // 🎯 VALIDAÇÃO DE CONTA: obrigatório SE tiver conta cadastrada
     if (contas.length > 0 && !contaSelecionada) {
       document.getElementById('msg-form').className = 'msg show msg-error';
-      document.getElementById('msg-form').textContent = 'Escolha em qual conta foi a transação';
-      // Rola até o seletor de contas
+      document.getElementById('msg-form').textContent = 'Escolha a conta';
       document.getElementById('contas-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
     
-    const btn = document.getElementById('btn-salvar');
     btn.disabled = true;
     btn.textContent = 'Salvando...';
     
-    if (editandoId) {
-      // Editando uma transação só
-      const dados = {
-        valor,
-        descricao,
-        data,
-        tipo: tipoSelecionado,
-        categoria_id: categoriaSelecionada,
-        conta_id: contaSelecionada
-      };
-      
-      const { error } = await supabase.from('transacoes').update(dados).eq('id', editandoId);
-      
-      if (error) {
-        document.getElementById('msg-form').className = 'msg show msg-error';
-        document.getElementById('msg-form').textContent = 'Erro: ' + error.message;
-        btn.disabled = false;
-        btn.textContent = 'Salvar';
-        return;
-      }
-    } else if (isParcelado) {
-      // PARCELADO
-      const nParcelas = parseInt(document.getElementById('f-parcelas').value) || 2;
-      const valorTotal = valorParaNumero(document.getElementById('f-valor-total').value) || (valor * nParcelas);
-      const valorParcela = valorTotal / nParcelas;
-      const grupoId = crypto.randomUUID();
-      
-      const dataInicio = new Date(data + 'T12:00:00');
-      const lancamentos = [];
-      
-      for (let i = 0; i < nParcelas; i++) {
-        const d = new Date(dataInicio);
-        d.setMonth(d.getMonth() + i);
-        lancamentos.push({
+    try {
+      if (editandoId) {
+        await supabase.from('transacoes').update({
+          valor, descricao, data,
+          tipo: tipoSelecionado,
+          categoria_id: categoriaSelecionada,
+          conta_id: contaSelecionada
+        }).eq('id', editandoId);
+      } else if (isParcelado) {
+        const nParcelas = parseInt(document.getElementById('f-parcelas').value) || 2;
+        const valorTotal = valorParaNumero(document.getElementById('f-valor-total').value) || (valor * nParcelas);
+        const valorParcela = valorTotal / nParcelas;
+        const grupoId = crypto.randomUUID();
+        const dataInicio = new Date(data + 'T12:00:00');
+        const lanc = [];
+        for (let i = 0; i < nParcelas; i++) {
+          const d = new Date(dataInicio);
+          d.setMonth(d.getMonth() + i);
+          lanc.push({
+            user_id: usuario.id,
+            valor: valorParcela,
+            descricao: `${descricao} (${i+1}/${nParcelas})`,
+            data: d.toISOString().split('T')[0],
+            tipo: tipoSelecionado,
+            categoria_id: categoriaSelecionada,
+            conta_id: contaSelecionada,
+            parcelado: true,
+            grupo_parcela: grupoId,
+            numero_parcela: i + 1,
+            total_parcelas: nParcelas,
+            status: 'realizada'
+          });
+        }
+        await supabase.from('transacoes').insert(lanc);
+      } else if (isRecorrente) {
+        const meses = parseInt(document.getElementById('f-recorrencia-meses').value) || 12;
+        const grupoId = crypto.randomUUID();
+        const dataInicio = new Date(data + 'T12:00:00');
+        const lanc = [];
+        for (let i = 0; i < meses; i++) {
+          const d = new Date(dataInicio);
+          d.setMonth(d.getMonth() + i);
+          lanc.push({
+            user_id: usuario.id,
+            valor, descricao,
+            data: d.toISOString().split('T')[0],
+            tipo: tipoSelecionado,
+            categoria_id: categoriaSelecionada,
+            conta_id: contaSelecionada,
+            recorrente: true,
+            grupo_recorrencia: grupoId,
+            status: 'realizada'
+          });
+        }
+        await supabase.from('transacoes').insert(lanc);
+      } else {
+        await supabase.from('transacoes').insert({
           user_id: usuario.id,
-          valor: valorParcela,
-          descricao: `${descricao} (${i+1}/${nParcelas})`,
-          data: d.toISOString().split('T')[0],
+          valor, descricao, data,
           tipo: tipoSelecionado,
           categoria_id: categoriaSelecionada,
           conta_id: contaSelecionada,
-          parcelado: true,
-          grupo_parcela: grupoId,
-          numero_parcela: i + 1,
-          total_parcelas: nParcelas
+          status: 'realizada'
         });
       }
       
-      const { error } = await supabase.from('transacoes').insert(lancamentos);
-      if (error) {
-        document.getElementById('msg-form').className = 'msg show msg-error';
-        document.getElementById('msg-form').textContent = 'Erro: ' + error.message;
-        btn.disabled = false;
-        btn.textContent = 'Salvar';
-        return;
-      }
-    } else if (isRecorrente) {
-      // RECORRENTE
-      const meses = parseInt(document.getElementById('f-recorrencia-meses').value) || 12;
-      const grupoId = crypto.randomUUID();
-      const dataInicio = new Date(data + 'T12:00:00');
-      const lancamentos = [];
-      
-      for (let i = 0; i < meses; i++) {
-        const d = new Date(dataInicio);
-        d.setMonth(d.getMonth() + i);
-        lancamentos.push({
-          user_id: usuario.id,
-          valor,
-          descricao,
-          data: d.toISOString().split('T')[0],
-          tipo: tipoSelecionado,
-          categoria_id: categoriaSelecionada,
-          conta_id: contaSelecionada,
-          recorrente: true,
-          grupo_recorrencia: grupoId
-        });
+      if (!editandoId) {
+        const xp = veiodaIA ? 20 : 10;
+        await darXP(xp, veiodaIA ? 'trans_via_ia' : 'transacao_cadastrada', 'Transação: ' + descricao);
+        mostrarToast(`+${xp} XP ${veiodaIA ? '✨ IA' : '💸'}`);
       }
       
-      const { error } = await supabase.from('transacoes').insert(lancamentos);
-      if (error) {
-        document.getElementById('msg-form').className = 'msg show msg-error';
-        document.getElementById('msg-form').textContent = 'Erro: ' + error.message;
-        btn.disabled = false;
-        btn.textContent = 'Salvar';
-        return;
-      }
-    } else {
-      // SIMPLES
-      const dados = {
-        user_id: usuario.id,
-        valor,
-        descricao,
-        data,
-        tipo: tipoSelecionado,
-        categoria_id: categoriaSelecionada,
-        conta_id: contaSelecionada
-      };
-      
-      const { error } = await supabase.from('transacoes').insert(dados);
-      if (error) {
-        document.getElementById('msg-form').className = 'msg show msg-error';
-        document.getElementById('msg-form').textContent = 'Erro: ' + error.message;
-        btn.disabled = false;
-        btn.textContent = 'Salvar';
-        return;
-      }
+      veiodaIA = false;
+      btn.disabled = false;
+      btn.textContent = 'Salvar';
+      fecharModal('modal-form');
+      await carregarDados();
+      render();
+    } catch (e) {
+      document.getElementById('msg-form').className = 'msg show msg-error';
+      document.getElementById('msg-form').textContent = 'Erro: ' + (e.message || e);
+      btn.disabled = false;
+      btn.textContent = 'Salvar';
     }
-    
-    if (!editandoId) {
-      const xp = veiodaIA ? 20 : 10;
-      await darXP(xp, veiodaIA ? 'trans_via_ia' : 'transacao_cadastrada', 'Transação: ' + descricao);
-      mostrarToast(`+${xp} XP ${veiodaIA ? '✨ IA' : '💸'}`);
-    }
-    
-    veiodaIA = false;
-    fecharModal('modal-form');
-    await carregarDados();
-    render();
   };
   
   window.abrirDetalhe = function(id) {
@@ -1827,47 +1897,85 @@
     detalheAtual = t;
     
     const conta = contas.find(c => c.id === t.conta_id);
+    const ehPrevista = t.status === 'prevista';
     
     document.getElementById('detalhe-titulo').textContent = t.descricao;
     
     let html = `
-      <div class="saldo-card" style="background:${t.tipo === 'entrada' ? 'var(--brand-soft)' : 'var(--danger-soft)'};border-color:${t.tipo === 'entrada' ? 'var(--brand)' : 'var(--danger)'};">
-        <div class="saldo-label" style="color:${t.tipo === 'entrada' ? 'var(--brand)' : 'var(--danger)'};">${t.tipo === 'entrada' ? '↓ Entrada' : '↑ Saída'}</div>
-        <div class="saldo-valor ${t.tipo === 'entrada' ? 'positivo' : 'negativo'}">R$ ${formatarMoeda(t.valor)}</div>
+      <div class="saldo-card" style="background:${ehPrevista ? 'rgba(255,184,0,0.1)' : (t.tipo === 'entrada' ? 'var(--brand-soft)' : 'var(--danger-soft)')};border-color:${ehPrevista ? 'var(--warning)' : (t.tipo === 'entrada' ? 'var(--brand)' : 'var(--danger)')};">
+        <div class="saldo-label" style="color:${ehPrevista ? 'var(--warning)' : (t.tipo === 'entrada' ? 'var(--brand)' : 'var(--danger)')};">${ehPrevista ? '📅 PREVISTA' : (t.tipo === 'entrada' ? '↓ Entrada' : '↑ Saída')}</div>
+        <div class="saldo-valor ${ehPrevista ? '' : (t.tipo === 'entrada' ? 'positivo' : 'negativo')}" style="${ehPrevista ? 'color:var(--warning)' : ''}">R$ ${formatarMoeda(t.valor)}</div>
       </div>
-      
       <div class="detalhe-card">
-        <div class="detalhe-linha">
-          <div class="detalhe-label">Data</div>
-          <div class="detalhe-valor">${new Date(t.data + 'T12:00:00').toLocaleDateString('pt-BR')}</div>
-        </div>
-        <div class="detalhe-linha">
-          <div class="detalhe-label">Categoria</div>
-          <div class="detalhe-valor">${t.categorias?.icone || ''} ${t.categorias?.nome || 'Sem categoria'}</div>
-        </div>
-        ${conta ? `
-        <div class="detalhe-linha">
-          <div class="detalhe-label">Conta</div>
-          <div class="detalhe-valor" style="color:${conta.cor};">${conta.icone} ${conta.nome}</div>
-        </div>
-        ` : ''}
-        ${t.recorrente ? `
-        <div class="detalhe-linha">
-          <div class="detalhe-label">Tipo</div>
-          <div class="detalhe-valor">🔁 Recorrente</div>
-        </div>
-        ` : ''}
-        ${t.parcelado ? `
-        <div class="detalhe-linha">
-          <div class="detalhe-label">Parcela</div>
-          <div class="detalhe-valor">💳 ${t.numero_parcela} de ${t.total_parcelas}</div>
-        </div>
-        ` : ''}
+        <div class="detalhe-linha"><div class="detalhe-label">Data</div><div class="detalhe-valor">${new Date(t.data + 'T12:00:00').toLocaleDateString('pt-BR')}</div></div>
+        <div class="detalhe-linha"><div class="detalhe-label">Categoria</div><div class="detalhe-valor">${t.categorias?.icone || ''} ${t.categorias?.nome || 'Sem categoria'}</div></div>
+        ${conta ? `<div class="detalhe-linha"><div class="detalhe-label">Conta</div><div class="detalhe-valor" style="color:${conta.cor};">${conta.icone} ${conta.nome}</div></div>` : ''}
+        ${t.recorrente ? `<div class="detalhe-linha"><div class="detalhe-label">Tipo</div><div class="detalhe-valor">🔁 Recorrente</div></div>` : ''}
+        ${t.parcelado ? `<div class="detalhe-linha"><div class="detalhe-label">Parcela</div><div class="detalhe-valor">💳 ${t.numero_parcela}/${t.total_parcelas}</div></div>` : ''}
+        ${t.divida_id ? `<div class="detalhe-linha"><div class="detalhe-label">Vinculo</div><div class="detalhe-valor">💳 Fatura cartão</div></div>` : ''}
+        ${t.compromisso_id ? `<div class="detalhe-linha"><div class="detalhe-label">Vinculo</div><div class="detalhe-valor">📋 Compromisso fixo</div></div>` : ''}
+        <div class="detalhe-linha"><div class="detalhe-label">Status</div><div class="detalhe-valor">${ehPrevista ? '📅 Prevista' : '✅ Realizada'}</div></div>
       </div>
     `;
     
     document.getElementById('detalhe-area').innerHTML = html;
+    
+    let footerHTML = '';
+    if (ehPrevista) {
+      footerHTML = `
+        <button class="btn btn-warning" onclick="marcarComoPago()">💸 Marcar como pago</button>
+        <button class="btn btn-secondary" onclick="editarTransacao()">Editar</button>
+        <button class="btn btn-danger" onclick="excluirTransacao()">Excluir prevista</button>
+      `;
+    } else {
+      footerHTML = `
+        <button class="btn btn-primary" onclick="editarTransacao()">Editar</button>
+        <button class="btn btn-danger" onclick="excluirTransacao()">Excluir</button>
+      `;
+    }
+    document.getElementById('detalhe-footer').innerHTML = footerHTML;
+    
     document.getElementById('modal-detalhe').classList.add('show');
+  };
+  
+  window.marcarComoPago = async function() {
+    if (!detalheAtual) return;
+    if (!confirm(`Marcar "${detalheAtual.descricao}" como pago?\n\nO valor R$ ${formatarMoeda(detalheAtual.valor)} vai ser debitado da conta vinculada.`)) return;
+    
+    await supabase.from('transacoes').update({
+      status: 'realizada',
+      data: new Date().toISOString().split('T')[0] // marca com data de hoje
+    }).eq('id', detalheAtual.id);
+    
+    // Se está vinculada a dívida, atualiza dívida
+    if (detalheAtual.divida_id) {
+      const { data: divida } = await supabase.from('dividas').select('*').eq('id', detalheAtual.divida_id).single();
+      if (divida) {
+        const novoValor = Number(divida.valor_atual) - Number(detalheAtual.valor);
+        if (novoValor <= 0.01) {
+          await supabase.from('dividas').update({ status: 'quitada', valor_atual: 0 }).eq('id', divida.id);
+        } else {
+          await supabase.from('dividas').update({ valor_atual: novoValor }).eq('id', divida.id);
+        }
+      }
+    }
+    
+    // Se está vinculada a compromisso parcelado, incrementa parcelas pagas
+    if (detalheAtual.compromisso_id && detalheAtual.parcelado) {
+      const { data: comp } = await supabase.from('compromissos').select('*').eq('id', detalheAtual.compromisso_id).single();
+      if (comp && comp.tipo === 'parcelado') {
+        await supabase.from('compromissos').update({ 
+          parcelas_pagas: (comp.parcelas_pagas || 0) + 1 
+        }).eq('id', comp.id);
+      }
+    }
+    
+    await darXP(5, 'pagamento', 'Marcou como pago: ' + detalheAtual.descricao);
+    mostrarToast('+5 XP ✅ Pago!');
+    
+    fecharModal('modal-detalhe');
+    await carregarDados();
+    render();
   };
   
   window.editarTransacao = function() {
@@ -1878,9 +1986,10 @@
     isParcelado = false;
     
     document.getElementById('modal-form-titulo').textContent = 'Editar transação';
-    document.getElementById('btn-salvar').textContent = 'Salvar';
+    const btn = document.getElementById('btn-salvar');
+    btn.textContent = 'Salvar';
+    btn.disabled = false;
     document.getElementById('msg-form').className = 'msg';
-    
     document.getElementById('toggle-recorrente').classList.remove('active');
     document.getElementById('toggle-parcelado').classList.remove('active');
     document.getElementById('extras-recorrente').classList.remove('show');
@@ -1909,12 +2018,8 @@
     if (!detalheAtual) return;
     
     let msg = `Excluir "${detalheAtual.descricao}"?`;
-    if (detalheAtual.recorrente) {
-      msg += '\n\n⚠️ Essa transação é RECORRENTE. Excluindo, vai excluir TODAS as repetições futuras também.';
-    }
-    if (detalheAtual.parcelado) {
-      msg += '\n\n⚠️ Essa transação é PARCELADA. Excluindo, vai excluir TODAS as parcelas.';
-    }
+    if (detalheAtual.recorrente) msg += '\n\n⚠️ Vai excluir TODAS as repetições.';
+    if (detalheAtual.parcelado) msg += '\n\n⚠️ Vai excluir TODAS as parcelas.';
     
     if (!confirm(msg)) return;
     
@@ -1945,9 +2050,7 @@
   }
   
   async function darXP(xp, acao, descricao) {
-    await supabase.from('historico_xp').insert({
-      user_id: usuario.id, acao, xp_ganho: xp, descricao
-    });
+    await supabase.from('historico_xp').insert({ user_id: usuario.id, acao, xp_ganho: xp, descricao });
     const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).single();
     await supabase.from('gamificacao').update({
       xp_total: (g?.xp_total || 0) + xp,
