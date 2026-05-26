@@ -10,32 +10,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
-  
   :root {
-    --bg: #0a0a0a;
-    --bg-card: #141414;
-    --bg-elev: #1c1c1c;
-    --bg-input: #181818;
-    --border: #252525;
-    --border-strong: #353535;
-    --brand: #00d97e;
-    --brand-hover: #00ba6b;
-    --brand-soft: rgba(0, 217, 126, 0.1);
-    --danger: #ff4757;
-    --danger-soft: rgba(255, 71, 87, 0.1);
-    --warning: #ffb800;
-    --warning-soft: rgba(255, 184, 0, 0.1);
-    --info: #38bdf8;
-    --info-soft: rgba(56, 189, 248, 0.1);
-    --ia: #a855f7;
-    --ia-soft: rgba(168, 85, 247, 0.1);
-    --text: #ffffff;
-    --text-mute: #a3a3a3;
-    --text-faint: #525252;
+    --bg: #0a0a0a; --bg-card: #141414; --bg-elev: #1c1c1c; --bg-input: #181818;
+    --border: #252525; --border-strong: #353535;
+    --brand: #00d97e; --brand-hover: #00ba6b; --brand-soft: rgba(0, 217, 126, 0.1);
+    --danger: #ff4757; --danger-soft: rgba(255, 71, 87, 0.1);
+    --warning: #ffb800; --warning-soft: rgba(255, 184, 0, 0.1);
+    --info: #38bdf8; --info-soft: rgba(56, 189, 248, 0.1);
+    --ia: #a855f7; --ia-soft: rgba(168, 85, 247, 0.1);
+    --text: #ffffff; --text-mute: #a3a3a3; --text-faint: #525252;
   }
-  
   html, body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh; overflow-x: hidden; }
-  
   input, textarea, select { color: #fff !important; -webkit-text-fill-color: #fff !important; caret-color: var(--brand); }
   input:-webkit-autofill, textarea:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px var(--bg-input) inset !important; -webkit-text-fill-color: #fff !important; }
   
@@ -88,7 +73,10 @@
   .item-valor-mini { font-size: 11px; color: var(--text-mute); }
   .item-valor-mini.positivo { color: var(--brand); }
   .item-valor-mini.danger { color: var(--danger); }
-  .item-check { color: var(--brand); font-size: 18px; font-weight: 700; }
+  .item-acoes { display: flex; gap: 4px; flex-shrink: 0; }
+  .item-acao-btn { width: 28px; height: 28px; border-radius: 8px; background: var(--bg-elev); border: 1px solid var(--border); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; }
+  .item-acao-btn:active { transform: scale(0.92); }
+  .item-acao-btn.danger { color: var(--danger); }
   
   .form-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
   .field { margin-bottom: 14px; }
@@ -115,6 +103,15 @@
   .qtd-btn { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 18px 4px; cursor: pointer; text-align: center; transition: all 0.15s; font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: var(--text); }
   .qtd-btn:active { transform: scale(0.95); }
   .qtd-btn.active { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
+  
+  .objetivo-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+  .objetivo-card { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 16px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 14px; }
+  .objetivo-card:active { transform: scale(0.98); }
+  .objetivo-card.selected { background: var(--brand-soft); border-color: var(--brand); }
+  .objetivo-emoji { font-size: 28px; flex-shrink: 0; }
+  .objetivo-info { flex: 1; }
+  .objetivo-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+  .objetivo-desc { font-size: 13px; color: var(--text-mute); }
   
   .footer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg); border-top: 1px solid var(--border); padding: 16px 20px; padding-bottom: max(16px, env(safe-area-inset-bottom)); z-index: 80; }
   .footer-content { max-width: 480px; margin: 0 auto; display: flex; gap: 10px; }
@@ -145,6 +142,16 @@
   .meta-pill { background: var(--bg-elev); border-radius: 100px; padding: 4px 10px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--text); }
   .meta-explicacao { font-size: 13px; line-height: 1.5; color: var(--text-mute); }
   
+  .jornada-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+  .jornada-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; text-align: center; }
+  .jornada-pontos { display: flex; justify-content: space-between; align-items: center; gap: 4px; }
+  .ponto { flex: 1; text-align: center; }
+  .ponto-circle { width: 32px; height: 32px; border-radius: 50%; background: var(--bg-elev); border: 1px solid var(--border); margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: var(--text-faint); font-family: 'Space Grotesk', sans-serif; }
+  .ponto.atual .ponto-circle { background: var(--brand); border-color: var(--brand); color: #001a0e; box-shadow: 0 0 20px rgba(0, 217, 126, 0.5); }
+  .ponto.passou .ponto-circle { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
+  .ponto-label { font-size: 9px; color: var(--text-faint); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+  .ponto.atual .ponto-label { color: var(--brand); }
+  
   .ia-loading { text-align: center; padding: 60px 20px; }
   .ia-spinner { width: 60px; height: 60px; border: 4px solid var(--ia-soft); border-top-color: var(--ia); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -155,27 +162,19 @@
   .upload-hidden { display: none; }
   .loader-circle { width: 32px; height: 32px; border: 3px solid var(--border); border-radius: 50%; border-top-color: var(--brand); animation: spin 0.8s linear infinite; margin: 40px auto; }
   
-  .xp-toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #001a0e; padding: 12px 20px; border-radius: 100px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 14px; z-index: 200; box-shadow: 0 8px 32px rgba(0, 217, 126, 0.4); display: none; animation: toastIn 0.4s cubic-bezier(0.34, 1.5, 0.64, 1); max-width: 90%; text-align: center; }
-  @keyframes toastIn { 0% { transform: translateX(-50%) translateY(-20px); opacity: 0; } 100% { transform: translateX(-50%) translateY(0); opacity: 1; } }
+  .xp-toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #001a0e; padding: 12px 20px; border-radius: 100px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 14px; z-index: 200; box-shadow: 0 8px 32px rgba(0, 217, 126, 0.4); display: none; max-width: 90%; text-align: center; }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <button class="header-skip" id="btn-skip" onclick="pularSetup()">Pular agora</button>
-  <div class="progress-wrapper">
-    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
-  </div>
-  <div class="progress-num" id="progress-num">1/8</div>
+  <button class="header-skip" onclick="pularSetup()">Pular agora</button>
+  <div class="progress-wrapper"><div class="progress-fill" id="progress-fill" style="width: 0%"></div></div>
+  <div class="progress-num" id="progress-num">1/9</div>
 </div>
 
-<div class="container" id="container">
-  <div class="loader-circle"></div>
-</div>
-
-<div class="footer" id="footer">
-  <div class="footer-content" id="footer-content"></div>
-</div>
+<div class="container" id="container"><div class="loader-circle"></div></div>
+<div class="footer" id="footer"><div class="footer-content" id="footer-content"></div></div>
 
 <input type="file" id="input-foto" class="upload-hidden" accept="image/*" onchange="processarFoto(event)">
 
@@ -186,10 +185,10 @@
   
   const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
-  const IA_FUNCTION_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
+  const IA_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
   
-  const TOTAL_PASSOS = 8;
+  const TOTAL_PASSOS = 9;
   
   const BANCOS = [
     { id: 'nubank', nome: 'Nubank', cor: '#820AD1', sigla: 'NU' },
@@ -213,36 +212,35 @@
     { id: 'outro', nome: 'Outro', cor: '#555555', sigla: '?' }
   ];
   
-  const INSTRUCOES_BANCO_CONTA = {
-    'nubank': ['Abre o app Nubank', 'Faz login', 'Na tela inicial, vê o saldo no topo', 'Tira print da tela e me manda'],
-    'itau': ['Abre o app Itaú', 'Faz login com biometria', 'Na home, vê "Saldo em conta"', 'Tira print e me manda'],
-    'bradesco': ['Abre o app Bradesco', 'Faz login', 'Toca em "Saldo e Extrato"', 'Tira print e me manda'],
-    'santander': ['Abre o app Santander', 'Faz login', 'Vê o saldo na tela inicial', 'Tira print e me manda'],
-    'bb': ['Abre o app Banco do Brasil', 'Faz login', 'Toca em "Saldo"', 'Tira print e me manda'],
-    'caixa': ['Abre o app Caixa', 'Faz login', 'Vê o saldo na home', 'Tira print e me manda'],
-    'inter': ['Abre o app Inter', 'Faz login', 'Vê o saldo da conta principal', 'Tira print e me manda'],
-    'c6': ['Abre o app C6 Bank', 'Faz login', 'Vê o saldo na home', 'Tira print e me manda'],
-    'picpay': ['Abre o app PicPay', 'Vê o saldo da carteira', 'Tira print e me manda'],
-    'default': ['Abre o app do banco', 'Faz login', 'Localiza o saldo da conta', 'Tira print da tela', 'Me manda a foto']
+  const INSTRUCOES_CONTA = {
+    'nubank': ['Abre o app Nubank', 'Tela inicial mostra o saldo no topo', 'Tira print da tela'],
+    'itau': ['Abre o app Itaú', 'Home mostra "Saldo em conta"', 'Tira print'],
+    'bradesco': ['Abre Bradesco', 'Toca em "Saldo e Extrato"', 'Print da tela'],
+    'santander': ['Abre Santander', 'Saldo aparece na tela inicial', 'Print'],
+    'bb': ['Abre BB', 'Toca em "Saldo"', 'Print'],
+    'caixa': ['Abre Caixa', 'Saldo na home', 'Print'],
+    'inter': ['Abre Inter', 'Saldo da conta principal', 'Print'],
+    'c6': ['Abre C6 Bank', 'Saldo na home', 'Print'],
+    'picpay': ['Abre PicPay', 'Saldo da carteira', 'Print'],
+    'default': ['Abre o app do banco', 'Localiza o saldo', 'Tira print']
   };
   
-  const INSTRUCOES_BANCO_CARTAO = {
-    'nubank': ['Abre o app Nubank', 'Toca em "Cartão de crédito"', 'Vê o limite total e a fatura atual', 'Anota: limite, dia fechamento, dia vencimento'],
-    'itau': ['Abre o app Itaú', 'Menu → Cartões', 'Seleciona o cartão', 'Toca em "Detalhes da fatura"', 'Anota: limite, dias'],
-    'bradesco': ['Abre o app Bradesco', 'Menu → Cartões', 'Faturas', 'Anota: limite, dia fechamento e vencimento'],
-    'santander': ['Abre o app Santander', 'Menu → Cartões', 'Fatura em aberto', 'Anota: limite total e dias'],
-    'bb': ['Abre o app BB', 'Cartões → Fatura aberta', 'Anota: limite, dia fechamento, vencimento'],
-    'caixa': ['Abre o app Caixa', 'Cartões → Fatura atual', 'Anota: limite e dias'],
-    'inter': ['Abre o app Inter', 'Cartão → Fatura atual', 'Anota: limite, fechamento, vencimento'],
-    'c6': ['Abre o app C6 Bank', 'Cartões → Fatura', 'Anota: limite e dias'],
-    'picpay': ['Abre o app PicPay', 'Cartão PicPay → Fatura', 'Anota: limite e vencimento'],
-    'default': ['Abre o app do banco', 'Vai em Cartões → Fatura', 'Anota: limite, dia fechamento, dia vencimento']
+  const INSTRUCOES_CARTAO = {
+    'nubank': ['Abre app Nubank', 'Toca em "Cartão de crédito"', 'Vê limite + fatura atual', 'Print'],
+    'itau': ['Itaú → Menu → Cartões', 'Seleciona o cartão', 'Detalhes da fatura', 'Print'],
+    'bradesco': ['Bradesco → Cartões', 'Faturas', 'Print'],
+    'santander': ['Santander → Cartões', 'Fatura em aberto', 'Print'],
+    'bb': ['BB → Cartões → Fatura aberta', 'Print'],
+    'inter': ['Inter → Cartão → Fatura atual', 'Print'],
+    'c6': ['C6 → Cartões → Fatura', 'Print'],
+    'default': ['App do banco → Cartões → Fatura atual', 'Print']
   };
   
-  let usuario;
-  let perfil;
+  let usuario, perfil;
   let passoAtual = 0;
   
+  // Estados gerais
+  let objetivoPrincipal = null;
   let bancosSelecionados = [];
   let bancoIndexAtual = 0;
   let contasAdicionadas = [];
@@ -252,33 +250,28 @@
   let dividasAdicionadas = [];
   let analiseIA = null;
   
-  // NOVO v2.0: Estado dos cartões
+  // Estados de cartões
   let temCartoes = null;
   let bancosCartoes = [];
-  let bancoCartaoIndexAtual = 0;
-  let qtdCartoesPorBanco = {};
-  let cartaoIndexAtual = 0;
-  let cartaoTemFatura = null;
-  let cartaoSalvandoTemp = null;
+  let bancoCartaoIdx = 0;
+  let qtdPorBanco = {};
+  let cartaoIdx = 0;
+  let cartaoTemp = null;
+  let statusFaturaTemp = null;
   
+  // Foto
   let modoFoto = null;
-  let alvoFotoAtual = null;
+  let alvoFoto = null;
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      window.location.href = 'index.html?v=' + Date.now();
-      return;
-    }
+    if (!session) { window.location.href = 'index.html?v=' + Date.now(); return; }
     usuario = session.user;
     
     const { data: p } = await supabase.from('perfis').select('*').eq('id', usuario.id).maybeSingle();
     perfil = p || {};
     
-    if (perfil.setup_concluido) {
-      window.location.href = 'home.html?v=' + Date.now();
-      return;
-    }
+    if (perfil.setup_concluido) { window.location.href = 'home.html?v=' + Date.now(); return; }
     
     passoAtual = perfil.setup_passo_atual || 0;
     renderPasso();
@@ -288,90 +281,126 @@
     const pct = ((passoAtual + 1) / TOTAL_PASSOS) * 100;
     document.getElementById('progress-fill').style.width = pct + '%';
     document.getElementById('progress-num').textContent = `${passoAtual + 1}/${TOTAL_PASSOS}`;
-    
     salvarProgresso();
-    
-    const passos = [renderPasso1, renderPasso2, renderPasso3, renderPasso4, renderPasso5, renderPasso6, renderPasso7, renderPasso8];
+    const passos = [renderP1, renderP2, renderP3, renderP4, renderP5, renderP6, renderP7, renderP8, renderP9];
     passos[passoAtual]();
   }
   
   async function salvarProgresso() {
-    try {
-      await supabase.from('perfis').update({ setup_passo_atual: passoAtual }).eq('id', usuario.id);
-    } catch (e) { console.error(e); }
+    try { await supabase.from('perfis').update({ setup_passo_atual: passoAtual }).eq('id', usuario.id); } catch (e) {}
   }
   
   window.proximoPasso = function() {
-    if (passoAtual < TOTAL_PASSOS - 1) {
-      passoAtual++;
-      renderPasso();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    if (passoAtual < TOTAL_PASSOS - 1) { passoAtual++; renderPasso(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
   };
   
   window.voltarPasso = function() {
-    if (passoAtual > 0) {
-      passoAtual--;
-      renderPasso();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    if (passoAtual > 0) { passoAtual--; renderPasso(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
   };
   
   window.pularSetup = async function() {
-    if (!confirm('Tem certeza que quer pular?\n\nVocê pode fazer o Setup depois pelo menu lateral. Mas perde a análise personalizada do Tatu! 🦔')) return;
+    if (!confirm('Tem certeza que quer pular?\n\nVocê pode fazer depois pelo menu. Mas perde a análise IA! 🦔')) return;
     await supabase.from('perfis').update({ setup_concluido: true, setup_concluido_em: new Date().toISOString() }).eq('id', usuario.id);
     window.location.href = 'home.html?v=' + Date.now();
   };
   
-  function renderPasso1() {
-    const nome = perfil.nome || perfil.full_name || usuario.email?.split('@')[0] || 'amigo';
-    const primeiroNome = nome.split(' ')[0];
-    
+  // ============ PASSO 1: BOAS-VINDAS ============
+  function renderP1() {
+    const nome = perfil.nome || usuario.email?.split('@')[0] || 'amigo';
+    const pnome = nome.split(' ')[0];
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
           <div class="tatu-titulo">Tatu, seu consultor</div>
-          <div class="tatu-texto">
-            Oi <strong>${primeiroNome}</strong>! Eu sou o Tatu, vou te ajudar a configurar tudo. 
-            <br><br>
-            Vamos passar uns <strong>15-30 minutos</strong> juntos pra eu te conhecer. No final, vou te entregar um <strong>plano financeiro personalizado</strong> pra sua vida. 
-            <br><br>
-            Bora começar?
-          </div>
+          <div class="tatu-texto">Oi <strong>${pnome}</strong>! Eu sou o Tatu, vou te ajudar a configurar tudo.<br><br>Vamos passar uns <strong>20-40 minutos</strong> juntos pra eu te conhecer. No final, vou te entregar um <strong>plano financeiro personalizado</strong> pra sua vida.<br><br>Vai ser tipo uma <strong>consulta com um consultor</strong>: você para uma vez, alimenta tudo, depois nunca mais.</div>
         </div>
       </div>
       <div class="form-card" style="background:linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%);border-color:var(--brand);">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="font-size:32px;">💡</div>
-          <div>
-            <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;margin-bottom:4px;">Como vai ser</div>
-            <div style="font-size:12px;color:var(--text-mute);line-height:1.5;">Vou te ensinar passo a passo como cadastrar contas, cartões, renda e despesas.</div>
-          </div>
-        </div>
-      </div>
-      <div class="form-card" style="margin-bottom:0;">
         <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;margin-bottom:10px;">📋 O que vamos cadastrar</div>
         <div style="display:grid;gap:8px;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>🎯</span> Seu objetivo financeiro</div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>🏦</span> Suas contas em bancos</div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💳</span> Cartões de crédito + faturas</div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💰</span> Sua renda mensal</div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>📋</span> Despesas fixas</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>📋</span> Despesas fixas (com foto do boleto!)</div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💸</span> Dívidas em aberto</div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--brand);font-weight:700;"><span>🎯</span> Análise + plano personalizado!</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--brand);font-weight:700;"><span>🎯</span> Análise IA + plano personalizado!</div>
         </div>
       </div>
     `;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="proximoPasso()">🚀 Bora começar!</button>`;
   }
   
-  function renderPasso2() {
+  // ============ PASSO 2: OBJETIVO ============
+  function renderP2() {
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
           <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">Em quais bancos você tem conta? Toca em todos que usa. Pode marcar quantos quiser!</div>
+          <div class="tatu-texto">Qual seu <strong>foco principal</strong> agora? Isso ajuda a direcionar tudo do app pra você.</div>
+        </div>
+      </div>
+      <div class="step-titulo">Qual seu foco agora?</div>
+      <div class="step-subtitulo">O que você mais quer resolver primeiro?</div>
+      <div class="objetivo-list">
+        <div class="objetivo-card ${objetivoPrincipal === 'sair_dividas' ? 'selected' : ''}" data-val="sair_dividas" onclick="selObj('sair_dividas')">
+          <div class="objetivo-emoji">🚨</div>
+          <div class="objetivo-info">
+            <div class="objetivo-titulo">Sair das dívidas</div>
+            <div class="objetivo-desc">Quitar tudo e limpar o nome</div>
+          </div>
+        </div>
+        <div class="objetivo-card ${objetivoPrincipal === 'criar_reserva' ? 'selected' : ''}" data-val="criar_reserva" onclick="selObj('criar_reserva')">
+          <div class="objetivo-emoji">🛡️</div>
+          <div class="objetivo-info">
+            <div class="objetivo-titulo">Criar minha reserva</div>
+            <div class="objetivo-desc">Parar de viver no aperto</div>
+          </div>
+        </div>
+        <div class="objetivo-card ${objetivoPrincipal === 'investir' ? 'selected' : ''}" data-val="investir" onclick="selObj('investir')">
+          <div class="objetivo-emoji">📈</div>
+          <div class="objetivo-info">
+            <div class="objetivo-titulo">Começar a investir</div>
+            <div class="objetivo-desc">Fazer o dinheiro trabalhar</div>
+          </div>
+        </div>
+        <div class="objetivo-card ${objetivoPrincipal === 'liberdade' ? 'selected' : ''}" data-val="liberdade" onclick="selObj('liberdade')">
+          <div class="objetivo-emoji">🚀</div>
+          <div class="objetivo-info">
+            <div class="objetivo-titulo">Liberdade financeira</div>
+            <div class="objetivo-desc">Otimizar e crescer patrimônio</div>
+          </div>
+        </div>
+      </div>
+    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" id="btn-obj" onclick="confirmarObjetivo()" ${!objetivoPrincipal ? 'disabled' : ''}>Continuar →</button>`;
+  }
+  
+  window.selObj = function(val) {
+    objetivoPrincipal = val;
+    document.querySelectorAll('.objetivo-card').forEach(c => c.classList.remove('selected'));
+    document.querySelector(`[data-val="${val}"]`).classList.add('selected');
+    document.getElementById('btn-obj').disabled = false;
+  };
+  
+  window.confirmarObjetivo = async function() {
+    if (!objetivoPrincipal) return;
+    try {
+      await supabase.from('perfis').update({ objetivo_principal: objetivoPrincipal }).eq('id', usuario.id);
+    } catch (e) { console.error(e); }
+    proximoPasso();
+  };
+  
+  // ============ PASSO 3: BANCOS DAS CONTAS ============
+  function renderP3() {
+    document.getElementById('container').innerHTML = `
+      <div class="tatu-bubble">
+        <div class="tatu-emoji">🦔</div>
+        <div class="tatu-content">
+          <div class="tatu-titulo">Tatu</div>
+          <div class="tatu-texto">Em quais bancos você tem <strong>conta</strong>? Toca em todos que usa.</div>
         </div>
       </div>
       <div class="step-titulo">Quais bancos você usa?</div>
@@ -385,7 +414,7 @@
         `).join('')}
       </div>
     `;
-    renderFooterPadrao(true, bancosSelecionados.length > 0);
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" id="btn-bancos" onclick="proximoPasso()" ${bancosSelecionados.length === 0 ? 'disabled' : ''}>Continuar →</button>`;
   }
   
   window.toggleBanco = function(id) {
@@ -393,46 +422,45 @@
     if (idx >= 0) bancosSelecionados.splice(idx, 1);
     else bancosSelecionados.push(id);
     document.querySelector(`[data-banco="${id}"]`).classList.toggle('active');
-    renderFooterPadrao(true, bancosSelecionados.length > 0);
+    const btn = document.getElementById('btn-bancos');
+    if (btn) btn.disabled = bancosSelecionados.length === 0;
   };
   
-  function renderPasso3() {
+  // ============ PASSO 4: CONTAS (cada banco) ============
+  function renderP4() {
     if (bancosSelecionados.length === 0) { proximoPasso(); return; }
     if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); return; }
     
-    const bancoId = bancosSelecionados[bancoIndexAtual];
-    const banco = BANCOS.find(b => b.id === bancoId);
-    const passos = INSTRUCOES_BANCO_CONTA[bancoId] || INSTRUCOES_BANCO_CONTA.default;
-    const ehCarteira = bancoId === 'carteira';
+    const bId = bancosSelecionados[bancoIndexAtual];
+    const banco = BANCOS.find(b => b.id === bId);
+    const passos = INSTRUCOES_CONTA[bId] || INSTRUCOES_CONTA.default;
+    const ehCart = bId === 'carteira';
     
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
           <div class="tatu-titulo">Tatu te ensina</div>
-          <div class="tatu-texto">Vamos cadastrar sua conta do <strong>${banco.nome}</strong>. ${ehCarteira ? 'Quanto tem em dinheiro vivo agora?' : 'Segue os passos pra pegar o saldo.'}</div>
+          <div class="tatu-texto">Conta do <strong>${banco.nome}</strong>. ${ehCart ? 'Quanto tem em dinheiro vivo agora?' : 'Segue os passos pra pegar o saldo.'}</div>
         </div>
       </div>
       <div class="step-titulo" style="display:flex;align-items:center;gap:10px;">
-        <div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>
-        ${banco.nome}
+        <div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>${banco.nome}
       </div>
       <div class="step-subtitulo">Conta ${bancoIndexAtual + 1} de ${bancosSelecionados.length}</div>
       
-      ${!ehCarteira ? `
+      ${!ehCart ? `
       <div class="instrucao-card">
         <div class="instrucao-titulo">📱 Passo a passo</div>
-        <ol class="passo-lista">
-          ${passos.map((p, i) => `<li class="passo-item"><div class="passo-num">${i + 1}</div><div>${p}</div></li>`).join('')}
-        </ol>
+        <ol class="passo-lista">${passos.map((p, i) => `<li class="passo-item"><div class="passo-num">${i + 1}</div><div>${p}</div></li>`).join('')}</ol>
       </div>
       <div class="opcoes-acao">
-        <div class="opcao-btn ia" onclick="abrirFotoConta('${bancoId}')">
+        <div class="opcao-btn ia" onclick="abrirFoto('conta', '${bId}')">
           <div class="opcao-btn-icon">📸</div>
           <div class="opcao-btn-titulo">Mandar foto</div>
           <div class="opcao-btn-sub">IA lê pra você</div>
         </div>
-        <div class="opcao-btn" onclick="abrirManualConta('${bancoId}')">
+        <div class="opcao-btn" onclick="manualConta('${bId}')">
           <div class="opcao-btn-icon">✍️</div>
           <div class="opcao-btn-titulo">Digitar manual</div>
           <div class="opcao-btn-sub">Você preenche</div>
@@ -442,9 +470,9 @@
       <div class="form-card">
         <div class="field">
           <label>Quanto tem em dinheiro vivo?</label>
-          <div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="carteira-valor" placeholder="0,00" oninput="formatarValor(this)"></div>
+          <div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="cart-val" placeholder="0,00" oninput="formatarValor(this)"></div>
         </div>
-        <button class="btn btn-primary" onclick="salvarCarteira()">Salvar carteira</button>
+        <button class="btn btn-primary" onclick="salvarCart()">Salvar carteira</button>
       </div>
       `}
       
@@ -458,37 +486,44 @@
                 <div class="item-nome-mini">${c.nome}</div>
                 <div class="item-valor-mini positivo">R$ ${formatarMoeda(c.saldo_inicial || 0)}</div>
               </div>
-              <div class="item-check">✓</div>
+              <div class="item-acoes">
+                <div class="item-acao-btn danger" onclick="excluirConta('${c.id}')">✕</div>
+              </div>
             </div>
           `).join('')}
         </div>
       ` : ''}
     `;
-    
     document.getElementById('footer-content').innerHTML = `
       <button class="btn btn-back" onclick="voltarPasso()">‹</button>
-      <button class="btn btn-primary" onclick="pularBancoOuSeguir()">${bancoIndexAtual + 1 === bancosSelecionados.length ? 'Próximo →' : 'Pular esse →'}</button>
+      <button class="btn btn-primary" onclick="pularBanco()">${bancoIndexAtual + 1 === bancosSelecionados.length ? 'Próximo →' : 'Pular esse →'}</button>
     `;
   }
   
-  window.pularBancoOuSeguir = function() {
+  window.pularBanco = function() {
     bancoIndexAtual++;
     if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); }
-    else { renderPasso3(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    else { renderP4(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
   };
   
-  window.abrirFotoConta = function(bancoId) { modoFoto = 'conta'; alvoFotoAtual = bancoId; document.getElementById('input-foto').click(); };
+  window.excluirConta = async function(id) {
+    if (!confirm('Excluir essa conta?')) return;
+    try {
+      await supabase.from('contas').delete().eq('id', id);
+      contasAdicionadas = contasAdicionadas.filter(c => c.id !== id);
+      renderP4();
+    } catch (e) { alert('Erro: ' + e.message); }
+  };
   
-  window.abrirManualConta = function(bancoId) {
-    const banco = BANCOS.find(b => b.id === bancoId);
+  window.manualConta = function(bId) {
+    const banco = BANCOS.find(b => b.id === bId);
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Beleza, vamos preencher manualmente. Só precisa do saldo atual da conta.</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Preenche os dados da conta ${banco.nome}.</div></div></div>
       <div class="step-titulo">${banco.nome}</div>
-      <div class="step-subtitulo">Preencha os dados da conta</div>
       <div class="form-card">
         <div class="field">
           <label>Tipo</label>
-          <select id="m-tipo">
+          <select id="mc-tipo">
             <option value="conta_corrente">🏦 Conta Corrente</option>
             <option value="poupanca">🐷 Poupança</option>
             <option value="investimento">📈 Investimento</option>
@@ -496,18 +531,18 @@
         </div>
         <div class="field">
           <label>Saldo atual</label>
-          <div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="m-saldo" placeholder="0,00" oninput="formatarValor(this)"></div>
+          <div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mc-saldo" placeholder="0,00" oninput="formatarValor(this)"></div>
         </div>
-        <button class="btn btn-primary" onclick="salvarContaManual('${bancoId}')">Salvar conta</button>
+        <button class="btn btn-primary" onclick="salvarContaManual('${bId}')">Salvar conta</button>
       </div>
     `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderPasso3()">‹</button><button class="btn btn-primary" style="opacity:0.5;" disabled>Cadastre acima</button>`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP4()">‹</button><button class="btn btn-primary" disabled>Cadastre acima</button>`;
   };
   
-  window.salvarContaManual = async function(bancoId) {
-    const tipo = document.getElementById('m-tipo').value;
-    const saldo = valorParaNumero(document.getElementById('m-saldo').value);
-    const banco = BANCOS.find(b => b.id === bancoId);
+  window.salvarContaManual = async function(bId) {
+    const tipo = document.getElementById('mc-tipo').value;
+    const saldo = valorParaNumero(document.getElementById('mc-saldo').value);
+    const banco = BANCOS.find(b => b.id === bId);
     if (saldo === null || isNaN(saldo)) { alert('Informe o saldo (pode ser 0,00)'); return; }
     const emojis = { 'conta_corrente': '🏦', 'poupanca': '🐷', 'investimento': '📈' };
     try {
@@ -518,103 +553,68 @@
       if (error) throw error;
       contasAdicionadas.push(data);
       await darXP(15, 'conta_setup', 'Setup: ' + banco.nome);
-      mostrarToast('+15 XP 🏦 Conta salva!');
+      toast('+15 XP 🏦 Conta salva!');
       setTimeout(() => {
         bancoIndexAtual++;
         if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); }
-        else { renderPasso3(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        else { renderP4(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
       }, 800);
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  window.salvarCarteira = async function() {
-    const valor = valorParaNumero(document.getElementById('carteira-valor').value);
-    if (valor === null || isNaN(valor)) { alert('Informe o valor (pode ser 0,00)'); return; }
+  window.salvarCart = async function() {
+    const valor = valorParaNumero(document.getElementById('cart-val').value);
+    if (valor === null || isNaN(valor)) { alert('Informe o valor'); return; }
     try {
       const { data, error } = await supabase.from('contas').insert({
-        user_id: usuario.id, nome: 'Carteira', tipo: 'carteira', cor: '#84cc16',
-        icone: '💵', saldo_inicial: valor, padrao: contasAdicionadas.length === 0
+        user_id: usuario.id, nome: 'Carteira', tipo: 'carteira', cor: '#84cc16', icone: '💵',
+        saldo_inicial: valor, padrao: contasAdicionadas.length === 0
       }).select().single();
       if (error) throw error;
       contasAdicionadas.push(data);
       await darXP(15, 'carteira_setup', 'Setup: Carteira');
-      mostrarToast('+15 XP 💵 Carteira salva!');
+      toast('+15 XP 💵 Carteira salva!');
       setTimeout(() => {
         bancoIndexAtual++;
         if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); }
-        else { renderPasso3(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        else { renderP4(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
       }, 800);
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  // ============================================
-  // PASSO 4 - CARTÕES v2.0 (REFEITO)
-  // ============================================
-  
-  function renderPasso4() {
-    // Sub-estado: temCartoes null = pergunta inicial
-    if (temCartoes === null) { renderPasso4_Pergunta(); return; }
+  // ============ PASSO 5: CARTÕES ============
+  function renderP5() {
+    if (temCartoes === null) { renderP5_Pergunta(); return; }
     if (temCartoes === false) { proximoPasso(); return; }
+    if (bancosCartoes.length === 0) { renderP5_SelBancos(); return; }
+    if (bancoCartaoIdx >= bancosCartoes.length) { bancoCartaoIdx = 0; cartaoIdx = 0; renderP5_Resumo(); return; }
     
-    // Se já tem bancos selecionados, segue o fluxo
-    if (bancosCartoes.length === 0) { renderPasso4_SelecionarBancos(); return; }
-    
-    // Itera pelos bancos
-    if (bancoCartaoIndexAtual >= bancosCartoes.length) {
-      bancoCartaoIndexAtual = 0;
-      cartaoIndexAtual = 0;
-      renderPasso4_Resumo();
-      return;
-    }
-    
-    const bancoId = bancosCartoes[bancoCartaoIndexAtual];
-    const qtd = qtdCartoesPorBanco[bancoId];
-    
-    // Se ainda não escolheu qtd
-    if (!qtd) { renderPasso4_QtdCartoes(bancoId); return; }
-    
-    // Itera pelos cartões desse banco
-    if (cartaoIndexAtual >= qtd) {
-      cartaoIndexAtual = 0;
-      bancoCartaoIndexAtual++;
-      renderPasso4();
-      return;
-    }
-    
-    renderPasso4_CadastrarCartao(bancoId);
+    const bId = bancosCartoes[bancoCartaoIdx];
+    const qtd = qtdPorBanco[bId];
+    if (!qtd) { renderP5_Qtd(bId); return; }
+    if (cartaoIdx >= qtd) { cartaoIdx = 0; bancoCartaoIdx++; renderP5(); return; }
+    renderP5_CadCartao(bId);
   }
   
-  function renderPasso4_Pergunta() {
+  function renderP5_Pergunta() {
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">Agora os <strong>cartões de crédito</strong>. Vou te perguntar quais bancos têm cartão seu, quantos cartões de cada banco, e os dados de cada um.</div>
-        </div>
+        <div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Agora os <strong>cartões de crédito</strong>. Você pode mandar foto da fatura OU preencher manual.</div></div>
       </div>
       <div class="step-titulo">Você tem cartão de crédito?</div>
-      <div class="step-subtitulo">Se tiver, vou pedir o limite, dias e fatura atual.</div>
+      <div class="step-subtitulo">Se tiver, vou pedir limite, dias e fatura.</div>
       <div class="sim-nao-grid">
-        <div class="sim-nao-btn sim" onclick="responderTemCartoes(true)">
-          <div class="sim-nao-btn-emoji">💳</div>
-          Sim, tenho
-        </div>
-        <div class="sim-nao-btn nao" onclick="responderTemCartoes(false)">
-          <div class="sim-nao-btn-emoji">🚫</div>
-          Não tenho
-        </div>
+        <div class="sim-nao-btn sim" onclick="respCartoes(true)"><div class="sim-nao-btn-emoji">💳</div>Sim, tenho</div>
+        <div class="sim-nao-btn nao" onclick="respCartoes(false)"><div class="sim-nao-btn-emoji">🚫</div>Não tenho</div>
       </div>
       ${cartoesAdicionados.length > 0 ? `
         <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:20px 0 10px;">✅ Já cadastrados (${cartoesAdicionados.length})</div>
         ${cartoesAdicionados.map(c => `
           <div class="item-cadastrado">
             <div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div>
-            <div class="item-info-mini">
-              <div class="item-nome-mini">${c.nome}</div>
-              <div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)}</div>
-            </div>
-            <div class="item-check">✓</div>
+            <div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)}</div></div>
+            <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div>
           </div>
         `).join('')}
       ` : ''}
@@ -622,410 +622,281 @@
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()" ${cartoesAdicionados.length === 0 ? 'disabled' : ''}>Continuar →</button>`;
   }
   
-  window.responderTemCartoes = function(resp) {
-    temCartoes = resp;
-    if (resp) renderPasso4_SelecionarBancos();
-    else proximoPasso();
+  window.respCartoes = function(r) { temCartoes = r; if (r) renderP5_SelBancos(); else proximoPasso(); };
+  
+  window.excluirCartao = async function(id) {
+    if (!confirm('Excluir esse cartão e fatura vinculada?')) return;
+    try {
+      await supabase.from('transacoes').delete().eq('conta_id', id);
+      await supabase.from('dividas').delete().eq('conta_id', id);
+      await supabase.from('contas').delete().eq('id', id);
+      cartoesAdicionados = cartoesAdicionados.filter(c => c.id !== id);
+      dividasAdicionadas = dividasAdicionadas.filter(d => d.conta_id !== id);
+      renderP5();
+    } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  function renderPasso4_SelecionarBancos() {
+  function renderP5_SelBancos() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">De quais bancos são seus cartões? Marca todos. Depois vou perguntar quantos cartões de cada banco você tem.</div>
-        </div>
-      </div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">De quais bancos são seus cartões? Marca todos.</div></div></div>
       <div class="step-titulo">Bancos dos cartões</div>
-      <div class="step-subtitulo">Toque nos bancos onde tem cartão de crédito.</div>
+      <div class="step-subtitulo">Toque nos bancos onde tem cartão.</div>
       <div class="bancos-grid">
         ${BANCOS.filter(b => b.id !== 'carteira').map(b => `
-          <div class="banco-card ${bancosCartoes.includes(b.id) ? 'active' : ''}" data-bcart="${b.id}" onclick="toggleBancoCartao('${b.id}')">
+          <div class="banco-card ${bancosCartoes.includes(b.id) ? 'active' : ''}" data-bc="${b.id}" onclick="togBC('${b.id}')">
             <div class="banco-logo" style="background:${b.cor};${b.cor === '#FFEF38' ? 'color:#000;' : ''}">${b.sigla}</div>
             <div class="banco-nome">${b.nome}</div>
           </div>
         `).join('')}
       </div>
     `;
-    document.getElementById('footer-content').innerHTML = `
-      <button class="btn btn-back" onclick="temCartoes = null; renderPasso4_Pergunta();">‹</button>
-      <button class="btn btn-primary" onclick="confirmarBancosCartoes()" ${bancosCartoes.length === 0 ? 'disabled' : ''}>Continuar →</button>
-    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="temCartoes = null; renderP5_Pergunta();">‹</button><button class="btn btn-primary" id="btn-bc" onclick="confBC()" ${bancosCartoes.length === 0 ? 'disabled' : ''}>Continuar →</button>`;
   }
   
-  window.toggleBancoCartao = function(id) {
-    const idx = bancosCartoes.indexOf(id);
-    if (idx >= 0) bancosCartoes.splice(idx, 1);
+  window.togBC = function(id) {
+    const i = bancosCartoes.indexOf(id);
+    if (i >= 0) bancosCartoes.splice(i, 1);
     else bancosCartoes.push(id);
-    document.querySelector(`[data-bcart="${id}"]`).classList.toggle('active');
-    document.querySelector('.footer-content .btn-primary').disabled = bancosCartoes.length === 0;
+    document.querySelector(`[data-bc="${id}"]`).classList.toggle('active');
+    document.getElementById('btn-bc').disabled = bancosCartoes.length === 0;
   };
   
-  window.confirmarBancosCartoes = function() {
+  window.confBC = function() {
     if (bancosCartoes.length === 0) return;
-    bancoCartaoIndexAtual = 0;
-    cartaoIndexAtual = 0;
-    renderPasso4();
+    bancoCartaoIdx = 0; cartaoIdx = 0;
+    renderP5();
   };
   
-  function renderPasso4_QtdCartoes(bancoId) {
-    const banco = BANCOS.find(b => b.id === bancoId);
+  function renderP5_Qtd(bId) {
+    const banco = BANCOS.find(b => b.id === bId);
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">Quantos cartões do <strong>${banco.nome}</strong> você tem?</div>
-        </div>
-      </div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Quantos cartões do <strong>${banco.nome}</strong> você tem?</div></div></div>
       <div class="step-titulo" style="display:flex;align-items:center;gap:10px;">
-        <div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>
-        ${banco.nome}
+        <div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>${banco.nome}
       </div>
-      <div class="step-subtitulo">Banco ${bancoCartaoIndexAtual + 1} de ${bancosCartoes.length}</div>
+      <div class="step-subtitulo">Banco ${bancoCartaoIdx + 1} de ${bancosCartoes.length}</div>
       <div class="qtd-grid">
-        <div class="qtd-btn" onclick="selecionarQtd('${bancoId}', 1)">1</div>
-        <div class="qtd-btn" onclick="selecionarQtd('${bancoId}', 2)">2</div>
-        <div class="qtd-btn" onclick="selecionarQtd('${bancoId}', 3)">3</div>
-        <div class="qtd-btn" onclick="selecionarQtd('${bancoId}', 4)">4+</div>
+        <div class="qtd-btn" onclick="selQtd('${bId}', 1)">1</div>
+        <div class="qtd-btn" onclick="selQtd('${bId}', 2)">2</div>
+        <div class="qtd-btn" onclick="selQtd('${bId}', 3)">3</div>
+        <div class="qtd-btn" onclick="selQtd('${bId}', 4)">4+</div>
       </div>
     `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarBancoCartao()">‹</button><button class="btn btn-primary" disabled>Escolha acima</button>`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltBC()">‹</button><button class="btn btn-primary" disabled>Escolha acima</button>`;
   }
   
-  window.selecionarQtd = function(bancoId, qtd) {
-    qtdCartoesPorBanco[bancoId] = qtd;
-    cartaoIndexAtual = 0;
-    renderPasso4();
+  window.selQtd = function(bId, qtd) { qtdPorBanco[bId] = qtd; cartaoIdx = 0; renderP5(); };
+  
+  window.voltBC = function() {
+    if (bancoCartaoIdx > 0) { bancoCartaoIdx--; cartaoIdx = 0; delete qtdPorBanco[bancosCartoes[bancoCartaoIdx]]; }
+    else { renderP5_SelBancos(); return; }
+    renderP5();
   };
   
-  window.voltarBancoCartao = function() {
-    if (bancoCartaoIndexAtual > 0) {
-      bancoCartaoIndexAtual--;
-      cartaoIndexAtual = 0;
-      // Remove qtd do banco atual pra pedir de novo
-      delete qtdCartoesPorBanco[bancosCartoes[bancoCartaoIndexAtual]];
-    } else {
-      renderPasso4_SelecionarBancos();
-    }
-    renderPasso4();
-  };
-  
-  function renderPasso4_CadastrarCartao(bancoId) {
-    const banco = BANCOS.find(b => b.id === bancoId);
-    const qtd = qtdCartoesPorBanco[bancoId];
-    const passos = INSTRUCOES_BANCO_CARTAO[bancoId] || INSTRUCOES_BANCO_CARTAO.default;
-    const numCartao = cartaoIndexAtual + 1;
-    const sugestaoNome = qtd === 1 ? banco.nome : `${banco.nome} ${numCartao}`;
+  function renderP5_CadCartao(bId) {
+    const banco = BANCOS.find(b => b.id === bId);
+    const qtd = qtdPorBanco[bId];
+    const passos = INSTRUCOES_CARTAO[bId] || INSTRUCOES_CARTAO.default;
+    const numC = cartaoIdx + 1;
+    const sugNome = qtd === 1 ? banco.nome : `${banco.nome} ${numC}`;
     
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu te ensina</div>
-          <div class="tatu-texto">Vamos cadastrar o cartão <strong>${numCartao} de ${qtd}</strong> do ${banco.nome}. Pega o limite e os dias de fechamento/vencimento.</div>
-        </div>
-      </div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu te ensina</div><div class="tatu-texto">Cartão <strong>${numC} de ${qtd}</strong> do ${banco.nome}.</div></div></div>
       <div class="step-titulo" style="display:flex;align-items:center;gap:10px;">
-        <div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>
-        ${banco.nome}
+        <div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>${banco.nome}
       </div>
-      <div class="step-subtitulo">Cartão ${numCartao} de ${qtd} • Banco ${bancoCartaoIndexAtual + 1}/${bancosCartoes.length}</div>
+      <div class="step-subtitulo">Cartão ${numC}/${qtd} • Banco ${bancoCartaoIdx + 1}/${bancosCartoes.length}</div>
       
       <div class="instrucao-card">
         <div class="instrucao-titulo">📱 Onde achar no app ${banco.nome}</div>
-        <ol class="passo-lista">
-          ${passos.map((p, i) => `<li class="passo-item"><div class="passo-num">${i + 1}</div><div>${p}</div></li>`).join('')}
-        </ol>
+        <ol class="passo-lista">${passos.map((p, i) => `<li class="passo-item"><div class="passo-num">${i + 1}</div><div>${p}</div></li>`).join('')}</ol>
       </div>
       
+      <div class="opcoes-acao">
+        <div class="opcao-btn ia" onclick="abrirFoto('fatura', '${bId}')">
+          <div class="opcao-btn-icon">📸</div>
+          <div class="opcao-btn-titulo">Foto da fatura</div>
+          <div class="opcao-btn-sub">IA lê tudo</div>
+        </div>
+        <div class="opcao-btn" onclick="manualCartao('${bId}')">
+          <div class="opcao-btn-icon">✍️</div>
+          <div class="opcao-btn-titulo">Digitar manual</div>
+          <div class="opcao-btn-sub">Você preenche</div>
+        </div>
+      </div>
+    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltCartao()">‹</button><button class="btn btn-primary" onclick="pulaCartao()">Pular esse →</button>`;
+  }
+  
+  window.voltCartao = function() {
+    if (cartaoIdx > 0) { cartaoIdx--; renderP5(); }
+    else if (bancoCartaoIdx > 0) { voltBC(); }
+    else { renderP5_SelBancos(); }
+  };
+  
+  window.pulaCartao = function() { cartaoIdx++; renderP5(); };
+  
+  window.manualCartao = function(bId) {
+    const banco = BANCOS.find(b => b.id === bId);
+    const qtd = qtdPorBanco[bId];
+    const sugNome = qtd === 1 ? banco.nome : `${banco.nome} ${cartaoIdx + 1}`;
+    
+    document.getElementById('container').innerHTML = `
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Preenche dados do cartão ${banco.nome}.</div></div></div>
+      <div class="step-titulo">${banco.nome}</div>
       <div class="form-card">
-        <div class="field">
-          <label>Apelido do cartão</label>
-          <input type="text" id="c-nome" placeholder="${sugestaoNome}" value="${sugestaoNome}">
-        </div>
-        <div class="field">
-          <label>Limite total</label>
-          <div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="c-limite" placeholder="0,00" oninput="formatarValor(this)"></div>
-        </div>
+        <div class="field"><label>Apelido</label><input type="text" id="c-nome" value="${sugNome}"></div>
+        <div class="field"><label>Limite total</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="c-lim" placeholder="0,00" oninput="formatarValor(this)"></div></div>
         <div class="field-row">
-          <div class="field">
-            <label>Dia fechamento</label>
-            <input type="number" id="c-fechamento" placeholder="20" min="1" max="31">
-          </div>
-          <div class="field">
-            <label>Dia vencimento</label>
-            <input type="number" id="c-vencimento" placeholder="10" min="1" max="31">
-          </div>
+          <div class="field"><label>Dia fechamento</label><input type="number" id="c-fec" placeholder="20" min="1" max="31"></div>
+          <div class="field"><label>Dia vencimento</label><input type="number" id="c-ven" placeholder="10" min="1" max="31"></div>
         </div>
-        <button class="btn btn-primary" onclick="confirmarDadosCartao('${bancoId}')">Continuar →</button>
+        <button class="btn btn-primary" onclick="confDadosCart('${bId}')">Continuar →</button>
       </div>
     `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarCartao()">‹</button><button class="btn btn-primary" disabled>Preencha acima</button>`;
-  }
-  
-  window.voltarCartao = function() {
-    if (cartaoIndexAtual > 0) {
-      cartaoIndexAtual--;
-      renderPasso4();
-    } else if (bancoCartaoIndexAtual > 0) {
-      voltarBancoCartao();
-    } else {
-      renderPasso4_SelecionarBancos();
-    }
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP5_CadCartao('${bId}')">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
   };
   
-  window.confirmarDadosCartao = function(bancoId) {
+  window.confDadosCart = function(bId) {
     const nome = document.getElementById('c-nome').value.trim();
-    const limite = valorParaNumero(document.getElementById('c-limite').value);
-    const fechamento = parseInt(document.getElementById('c-fechamento').value) || null;
-    const vencimento = parseInt(document.getElementById('c-vencimento').value) || null;
-    
+    const lim = valorParaNumero(document.getElementById('c-lim').value);
+    const fec = parseInt(document.getElementById('c-fec').value) || null;
+    const ven = parseInt(document.getElementById('c-ven').value) || null;
     if (!nome) { alert('Digite o apelido'); return; }
-    if (!limite || limite <= 0) { alert('Informe o limite'); return; }
-    
-    // Salva dados temporários e pergunta sobre fatura
-    cartaoSalvandoTemp = { bancoId, nome, limite, fechamento, vencimento };
-    renderPasso4_PerguntaFatura();
+    if (!lim || lim <= 0) { alert('Informe o limite'); return; }
+    cartaoTemp = { bancoId: bId, nome, limite: lim, fechamento: fec, vencimento: ven };
+    renderP5_PergFatura();
   };
   
-  function renderPasso4_PerguntaFatura() {
-    const banco = BANCOS.find(b => b.id === cartaoSalvandoTemp.bancoId);
+  function renderP5_PergFatura() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">Esse cartão <strong>${cartaoSalvandoTemp.nome}</strong> tem fatura em aberto agora? (a fatura atual, fechada ou aberta, que você precisa pagar)</div>
-        </div>
-      </div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">O cartão <strong>${cartaoTemp.nome}</strong> tem fatura em aberto?</div></div></div>
       <div class="step-titulo">Tem fatura em aberto?</div>
-      <div class="step-subtitulo">Pode ser fatura fechada esperando vencer, ou aberta consumindo limite.</div>
+      <div class="step-subtitulo">Pode ser aberta (consumindo) ou fechada (aguardando pagar).</div>
       <div class="sim-nao-grid">
-        <div class="sim-nao-btn sim" onclick="responderTemFatura(true)">
-          <div class="sim-nao-btn-emoji">💸</div>
-          Sim, tem
-        </div>
-        <div class="sim-nao-btn nao" onclick="responderTemFatura(false)">
-          <div class="sim-nao-btn-emoji">✨</div>
-          Não, zerada
-        </div>
+        <div class="sim-nao-btn sim" onclick="respFat(true)"><div class="sim-nao-btn-emoji">💸</div>Sim, tem</div>
+        <div class="sim-nao-btn nao" onclick="respFat(false)"><div class="sim-nao-btn-emoji">✨</div>Não, zerada</div>
       </div>
     `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderPasso4_CadastrarCartao('${cartaoSalvandoTemp.bancoId}')">‹</button><button class="btn btn-primary" disabled>Escolha acima</button>`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="manualCartao('${cartaoTemp.bancoId}')">‹</button><button class="btn btn-primary" disabled>Escolha acima</button>`;
   }
   
-  window.responderTemFatura = function(temFatura) {
-    if (!temFatura) {
-      // Salva cartão sem fatura
-      salvarCartaoFinal({ valor: 0, paga: true, atrasada: false });
-    } else {
-      renderPasso4_DadosFatura();
-    }
+  window.respFat = function(tem) {
+    if (!tem) salvarCartaoFinal({ valor: 0, paga: true, atrasada: false });
+    else renderP5_DadosFat();
   };
   
-  function renderPasso4_DadosFatura() {
+  function renderP5_DadosFat() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">Beleza! Me conta da fatura do <strong>${cartaoSalvandoTemp.nome}</strong>:</div>
-        </div>
-      </div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Dados da fatura do <strong>${cartaoTemp.nome}</strong>:</div></div></div>
       <div class="step-titulo">Dados da fatura</div>
-      <div class="step-subtitulo">Valor atual + se está paga ou atrasada</div>
-      
       <div class="form-card">
-        <div class="field">
-          <label>Valor da fatura atual</label>
-          <div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="f-valor" placeholder="0,00" oninput="formatarValor(this)"></div>
-        </div>
-        
+        <div class="field"><label>Valor da fatura</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="f-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
         <div class="field">
           <label>Status</label>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-            <div class="qtd-btn" data-status="aberta" onclick="selecionarStatusFatura('aberta')" style="font-size:11px;padding:14px 4px;line-height:1.3;">📅<br>Aberta<br><span style="font-size:9px;opacity:0.7;">vence depois</span></div>
-            <div class="qtd-btn" data-status="paga" onclick="selecionarStatusFatura('paga')" style="font-size:11px;padding:14px 4px;line-height:1.3;">✅<br>Paga<br><span style="font-size:9px;opacity:0.7;">já quitei</span></div>
-            <div class="qtd-btn" data-status="atrasada" onclick="selecionarStatusFatura('atrasada')" style="font-size:11px;padding:14px 4px;line-height:1.3;">⚠️<br>Atrasada<br><span style="font-size:9px;opacity:0.7;">já venceu</span></div>
+            <div class="qtd-btn" data-st="aberta" onclick="selStat('aberta')" style="font-size:11px;padding:14px 4px;line-height:1.3;">📅<br>Aberta</div>
+            <div class="qtd-btn" data-st="paga" onclick="selStat('paga')" style="font-size:11px;padding:14px 4px;line-height:1.3;">✅<br>Paga</div>
+            <div class="qtd-btn" data-st="atrasada" onclick="selStat('atrasada')" style="font-size:11px;padding:14px 4px;line-height:1.3;">⚠️<br>Atrasada</div>
           </div>
         </div>
-        
-        <button class="btn btn-primary" onclick="confirmarFatura()">Salvar cartão →</button>
+        <button class="btn btn-primary" onclick="confFat()">Salvar cartão →</button>
       </div>
     `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderPasso4_PerguntaFatura()">‹</button><button class="btn btn-primary" disabled>Preencha acima</button>`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP5_PergFatura()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
   }
   
-  let statusFaturaTemp = null;
-  
-  window.selecionarStatusFatura = function(status) {
-    statusFaturaTemp = status;
-    document.querySelectorAll('[data-status]').forEach(el => el.classList.remove('active'));
-    document.querySelector(`[data-status="${status}"]`).classList.add('active');
+  window.selStat = function(s) {
+    statusFaturaTemp = s;
+    document.querySelectorAll('[data-st]').forEach(el => el.classList.remove('active'));
+    document.querySelector(`[data-st="${s}"]`).classList.add('active');
   };
   
-  window.confirmarFatura = function() {
-    const valor = valorParaNumero(document.getElementById('f-valor').value);
-    if (!valor || valor <= 0) { alert('Informe o valor da fatura'); return; }
+  window.confFat = function() {
+    const valor = valorParaNumero(document.getElementById('f-val').value);
+    if (!valor || valor <= 0) { alert('Informe o valor'); return; }
     if (!statusFaturaTemp) { alert('Selecione o status'); return; }
-    
-    const paga = statusFaturaTemp === 'paga';
-    const atrasada = statusFaturaTemp === 'atrasada';
-    
-    salvarCartaoFinal({ valor, paga, atrasada });
+    salvarCartaoFinal({ valor, paga: statusFaturaTemp === 'paga', atrasada: statusFaturaTemp === 'atrasada' });
   };
   
   async function salvarCartaoFinal({ valor, paga, atrasada }) {
-    const { bancoId, nome, limite, fechamento, vencimento } = cartaoSalvandoTemp;
+    const { bancoId, nome, limite, fechamento, vencimento } = cartaoTemp;
     const banco = BANCOS.find(b => b.id === bancoId);
-    
     try {
-      // 1. Salva o CARTÃO (conta tipo cartao_credito)
-      const { data: cartao, error: errCartao } = await supabase.from('contas').insert({
-        user_id: usuario.id,
-        nome,
-        tipo: 'cartao_credito',
-        banco: banco.nome,
-        cor: banco.cor,
-        icone: '💳',
-        limite,
-        saldo_inicial: 0,
-        dia_fechamento: fechamento,
-        dia_vencimento: vencimento
+      const { data: cart, error: e1 } = await supabase.from('contas').insert({
+        user_id: usuario.id, nome, tipo: 'cartao_credito', banco: banco.nome, cor: banco.cor,
+        icone: '💳', limite, saldo_inicial: 0, dia_fechamento: fechamento, dia_vencimento: vencimento
       }).select().single();
+      if (e1) throw e1;
+      cartoesAdicionados.push(cart);
       
-      if (errCartao) throw errCartao;
-      cartoesAdicionados.push(cartao);
-      
-      // 2. Se tem fatura COM VALOR, cria as integrações
       if (valor > 0) {
-        // Calcula data de vencimento
-        let dataVencStr;
+        let dVenc;
         if (atrasada) {
-          // Atrasada: usa data passada (vencimento mês passado)
-          const dataVenc = new Date();
-          dataVenc.setMonth(dataVenc.getMonth() - 1);
-          if (vencimento) dataVenc.setDate(vencimento);
-          dataVencStr = dataVenc.toISOString().split('T')[0];
+          const d = new Date(); d.setMonth(d.getMonth() - 1);
+          if (vencimento) d.setDate(vencimento);
+          dVenc = d.toISOString().split('T')[0];
         } else {
-          // Aberta ou paga: usa vencimento próximo
-          const dataVenc = new Date();
-          if (vencimento) {
-            dataVenc.setDate(vencimento);
-            if (dataVenc < new Date()) dataVenc.setMonth(dataVenc.getMonth() + 1);
-          } else {
-            dataVenc.setDate(dataVenc.getDate() + 30);
-          }
-          dataVencStr = dataVenc.toISOString().split('T')[0];
+          const d = new Date();
+          if (vencimento) { d.setDate(vencimento); if (d < new Date()) d.setMonth(d.getMonth() + 1); }
+          else d.setDate(d.getDate() + 30);
+          dVenc = d.toISOString().split('T')[0];
         }
         
-        // Se NÃO está paga, cria dívida + transação prevista
         if (!paga) {
-          const { data: divida, error: errDiv } = await supabase.from('dividas').insert({
-            user_id: usuario.id,
-            credor: banco.nome,
-            tipo: 'cartao',
-            descricao: `Fatura do cartão ${nome}`,
-            valor_original: valor,
-            valor_atual: valor,
-            data_vencimento: dataVencStr,
-            data_inicio: new Date().toISOString().split('T')[0],
-            status: 'ativa',
-            prioridade: atrasada ? 1 : 2,
-            conta_id: cartao.id
+          const { data: div } = await supabase.from('dividas').insert({
+            user_id: usuario.id, credor: banco.nome, tipo: 'cartao',
+            descricao: `Fatura ${nome}`, valor_original: valor, valor_atual: valor,
+            data_vencimento: dVenc, data_inicio: new Date().toISOString().split('T')[0],
+            status: 'ativa', prioridade: atrasada ? 1 : 2, conta_id: cart.id
           }).select().single();
-          
-          if (!errDiv && divida) {
-            dividasAdicionadas.push(divida);
-            
-            // Cria transação prevista
+          if (div) {
+            dividasAdicionadas.push(div);
             await supabase.from('transacoes').insert({
-              user_id: usuario.id,
-              valor,
-              descricao: `Fatura ${nome}`,
-              data: dataVencStr,
-              tipo: 'saida',
-              conta_id: cartao.id,
-              divida_id: divida.id,
-              status: 'prevista'
+              user_id: usuario.id, valor, descricao: `Fatura ${nome}`, data: dVenc,
+              tipo: 'saida', conta_id: cart.id, divida_id: div.id, status: 'prevista'
             });
           }
         } else {
-          // Se está paga, cria transação como realizada
           await supabase.from('transacoes').insert({
-            user_id: usuario.id,
-            valor,
-            descricao: `Fatura ${nome} (paga)`,
-            data: dataVencStr,
-            tipo: 'saida',
-            conta_id: cartao.id,
-            status: 'realizada'
+            user_id: usuario.id, valor, descricao: `Fatura ${nome} (paga)`, data: dVenc,
+            tipo: 'saida', conta_id: cart.id, status: 'realizada'
           });
         }
       }
       
       await darXP(25, 'cartao_setup', 'Setup cartão: ' + nome);
-      mostrarToast(`+25 XP 💳 Cartão ${nome} salvo!`);
-      
-      // Reset estados temporários
-      cartaoSalvandoTemp = null;
-      statusFaturaTemp = null;
-      
-      // Próximo cartão ou banco
-      setTimeout(() => {
-        cartaoIndexAtual++;
-        renderPasso4();
-      }, 800);
-    } catch (e) {
-      alert('Erro salvando cartão: ' + e.message);
-      console.error(e);
-    }
+      toast(`+25 XP 💳 ${nome} salvo!`);
+      cartaoTemp = null; statusFaturaTemp = null;
+      setTimeout(() => { cartaoIdx++; renderP5(); }, 800);
+    } catch (e) { alert('Erro: ' + e.message); console.error(e); }
   }
   
-  function renderPasso4_Resumo() {
-    const totalDivida = dividasAdicionadas
-      .filter(d => d.tipo === 'cartao')
-      .reduce((a, d) => a + Number(d.valor_atual || 0), 0);
+  function renderP5_Resumo() {
+    const totalDiv = dividasAdicionadas.filter(d => d.tipo === 'cartao').reduce((a, d) => a + Number(d.valor_atual || 0), 0);
     const atrasadas = dividasAdicionadas.filter(d => d.tipo === 'cartao' && d.prioridade === 1).length;
-    
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🎉</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu</div>
-          <div class="tatu-texto">Pronto! Cadastrei <strong>${cartoesAdicionados.length} cartões</strong>. ${totalDivida > 0 ? `Total de fatura: <strong>R$ ${formatarMoeda(totalDivida)}</strong>.` : ''} ${atrasadas > 0 ? `<br><br>⚠️ Você tem <strong>${atrasadas} fatura${atrasadas > 1 ? 's' : ''} atrasada${atrasadas > 1 ? 's' : ''}</strong>! Vou te ajudar a negociar depois!` : ''}</div>
-        </div>
-      </div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🎉</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Pronto! <strong>${cartoesAdicionados.length} cartões</strong> cadastrados. ${totalDiv > 0 ? `Total fatura: <strong>R$ ${formatarMoeda(totalDiv)}</strong>.` : ''} ${atrasadas > 0 ? `<br><br>⚠️ <strong>${atrasadas} fatura${atrasadas > 1 ? 's' : ''} atrasada${atrasadas > 1 ? 's' : ''}</strong>! Te ajudo a negociar depois.` : ''}</div></div></div>
       <div class="step-titulo">Cartões cadastrados</div>
-      <div class="step-subtitulo">${cartoesAdicionados.length} cartões no total</div>
-      
       ${cartoesAdicionados.map(c => `
         <div class="item-cadastrado">
           <div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div>
-          <div class="item-info-mini">
-            <div class="item-nome-mini">${c.nome}</div>
-            <div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)} ${c.dia_vencimento ? `• Vence dia ${c.dia_vencimento}` : ''}</div>
-          </div>
-          <div class="item-check">✓</div>
+          <div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)} ${c.dia_vencimento ? `• Vence dia ${c.dia_vencimento}` : ''}</div></div>
+          <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div>
         </div>
       `).join('')}
     `;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">Próximo →</button>`;
   }
   
-  // ============================================
-  // PASSOS 5-8 (inalterados do v1.2)
-  // ============================================
-  
-  function renderPasso5() {
+  // ============ PASSO 6: RENDA ============
+  function renderP6() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Agora me conta sua <strong>renda mensal</strong>. Salário, freelance, aluguel recebido — tudo que entra todo mês.</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Sua <strong>renda mensal</strong>. Tudo que entra todo mês: salário, freela, aluguel recebido.</div></div></div>
       <div class="step-titulo">Sua renda mensal</div>
-      <div class="step-subtitulo">Tudo que entra todo mês.</div>
+      <div class="step-subtitulo">Adicione todas as fontes.</div>
       <div class="opcoes-acao">
-        <div class="opcao-btn" onclick="abrirManualRenda()" style="grid-column:1/-1;">
+        <div class="opcao-btn" onclick="manualRenda()" style="grid-column:1/-1;">
           <div class="opcao-btn-icon">✍️</div>
           <div class="opcao-btn-titulo">Adicionar renda</div>
           <div class="opcao-btn-sub">Salário, comissão, aluguel</div>
@@ -1037,7 +908,7 @@
           <div class="item-cadastrado">
             <div class="item-icone-mini" style="background:${r.cor || '#00d97e'}30;color:${r.cor || '#00d97e'};">${r.icone || '💰'}</div>
             <div class="item-info-mini"><div class="item-nome-mini">${r.nome}</div><div class="item-valor-mini positivo">+R$ ${formatarMoeda(r.valor)}/mês</div></div>
-            <div class="item-check">✓</div>
+            <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirRenda('${r.id}')">✕</div></div>
           </div>
         `).join('')}
       ` : `<div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;"><div style="font-size:36px;margin-bottom:10px;">💰</div><div style="font-size:13px;color:var(--text-mute);">Nenhuma renda ainda</div></div>`}
@@ -1045,14 +916,24 @@
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${rendasAdicionadas.length > 0 ? 'Continuar →' : 'Pular →'}</button>`;
   }
   
-  window.abrirManualRenda = function() {
+  window.excluirRenda = async function(id) {
+    if (!confirm('Excluir essa renda e transações previstas?')) return;
+    try {
+      await supabase.from('transacoes').delete().eq('renda_id', id);
+      await supabase.from('rendas').delete().eq('id', id);
+      rendasAdicionadas = rendasAdicionadas.filter(r => r.id !== id);
+      renderP6();
+    } catch (e) { alert('Erro: ' + e.message); }
+  };
+  
+  window.manualRenda = function() {
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Cadastra a fonte de renda. Vou gerar entradas previstas todo mês!</div></div></div>
       <div class="step-titulo">Nova renda</div>
       <div class="form-card">
         <div class="field">
           <label>Tipo</label>
-          <select id="m-r-categoria">
+          <select id="mr-cat">
             <option value="salario_clt">💼 Salário CLT</option>
             <option value="salario">💼 Salário</option>
             <option value="autonomo">🛠️ Autônomo</option>
@@ -1064,54 +945,65 @@
             <option value="outro">📌 Outro</option>
           </select>
         </div>
-        <div class="field"><label>Nome</label><input type="text" id="m-r-nome" placeholder="Digite o nome"></div>
-        <div class="field"><label>Valor mensal</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="m-r-valor" placeholder="0,00" oninput="formatarValor(this)"></div></div>
-        <div class="field"><label>Dia que recebe (1-31)</label><input type="number" id="m-r-dia" placeholder="5" min="1" max="31"></div>
-        <button class="btn btn-primary" onclick="salvarRendaManual()">Salvar renda</button>
+        <div class="field"><label>Nome</label><input type="text" id="mr-nome" placeholder="Digite o nome"></div>
+        <div class="field"><label>Valor mensal</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mr-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
+        <div class="field"><label>Dia que recebe (1-31)</label><input type="number" id="mr-dia" placeholder="5" min="1" max="31"></div>
+        <button class="btn btn-primary" onclick="salvarRenda()">Salvar renda</button>
       </div>
     `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderPasso5()">‹</button><button class="btn btn-primary" disabled>Cadastre acima</button>`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP6()">‹</button><button class="btn btn-primary" disabled>Cadastre</button>`;
   };
   
-  window.salvarRendaManual = async function() {
-    const categoria = document.getElementById('m-r-categoria').value;
-    const nome = document.getElementById('m-r-nome').value.trim();
-    const valor = valorParaNumero(document.getElementById('m-r-valor').value);
-    const dia = parseInt(document.getElementById('m-r-dia').value) || null;
+  window.salvarRenda = async function() {
+    const cat = document.getElementById('mr-cat').value;
+    const nome = document.getElementById('mr-nome').value.trim();
+    const val = valorParaNumero(document.getElementById('mr-val').value);
+    const dia = parseInt(document.getElementById('mr-dia').value) || null;
     if (!nome) { alert('Digite o nome'); return; }
-    if (!valor || valor <= 0) { alert('Informe o valor'); return; }
+    if (!val || val <= 0) { alert('Informe o valor'); return; }
     const emojis = { 'salario_clt': '💼', 'salario': '💼', 'autonomo': '🛠️', 'comissao': '🎯', 'freelance': '💻', 'aluguel_recebido': '🏠', 'dividendos': '📈', 'bonus': '🎁', 'outro': '📌' };
     try {
       const { data, error } = await supabase.from('rendas').insert({
-        user_id: usuario.id, nome, categoria, valor, dia_recebimento: dia, cor: '#00d97e', icone: emojis[categoria] || '💰'
+        user_id: usuario.id, nome, categoria: cat, valor: val, dia_recebimento: dia, cor: '#00d97e', icone: emojis[cat] || '💰'
       }).select().single();
       if (error) throw error;
       rendasAdicionadas.push(data);
+      
+      // Salva renda principal no perfil também
+      const totalRenda = rendasAdicionadas.reduce((a, r) => a + Number(r.valor || 0), 0);
+      await supabase.from('perfis').update({ renda_mensal: totalRenda }).eq('id', usuario.id);
+      
       const hoje = new Date();
-      const diaUsar = dia || hoje.getDate();
-      let mesInicial = hoje.getMonth();
-      if (diaUsar <= hoje.getDate()) mesInicial++;
+      const dUsar = dia || hoje.getDate();
+      let mes = hoje.getMonth();
+      if (dUsar <= hoje.getDate()) mes++;
       const trans = [];
       for (let i = 0; i < 12; i++) {
-        const d = new Date(hoje.getFullYear(), mesInicial + i, diaUsar);
-        trans.push({ user_id: usuario.id, valor, descricao: nome, data: d.toISOString().split('T')[0], tipo: 'entrada', renda_id: data.id, status: 'prevista', recorrente: true });
+        const d = new Date(hoje.getFullYear(), mes + i, dUsar);
+        trans.push({ user_id: usuario.id, valor: val, descricao: nome, data: d.toISOString().split('T')[0], tipo: 'entrada', renda_id: data.id, status: 'prevista', recorrente: true });
       }
       await supabase.from('transacoes').insert(trans);
       await darXP(20, 'renda_setup', 'Setup renda: ' + nome);
-      mostrarToast(`+20 XP 💰 Renda salva!`);
-      setTimeout(() => renderPasso5(), 800);
+      toast(`+20 XP 💰 Renda salva!`);
+      setTimeout(() => renderP6(), 800);
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  function renderPasso6() {
+  // ============ PASSO 7: DESPESAS FIXAS ============
+  function renderP7() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>Despesas fixas</strong>: aluguel, luz, água, internet, streaming, escola.</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>Despesas fixas</strong>: luz, água, internet, aluguel, streaming. Pode <strong>tirar foto do boleto</strong> que eu cadastro!</div></div></div>
       <div class="step-titulo">Despesas fixas mensais</div>
-      <div class="step-subtitulo">Aluguel, luz, água, internet, streaming...</div>
+      <div class="step-subtitulo">Tudo que vence todo mês.</div>
       <div class="opcoes-acao">
-        <div class="opcao-btn" onclick="abrirManualDespesa()" style="grid-column:1/-1;">
+        <div class="opcao-btn ia" onclick="abrirFoto('boleto', null)">
+          <div class="opcao-btn-icon">📸</div>
+          <div class="opcao-btn-titulo">Foto do boleto</div>
+          <div class="opcao-btn-sub">IA preenche tudo</div>
+        </div>
+        <div class="opcao-btn" onclick="manualDesp()">
           <div class="opcao-btn-icon">✍️</div>
-          <div class="opcao-btn-titulo">Adicionar despesa fixa</div>
+          <div class="opcao-btn-titulo">Digitar manual</div>
           <div class="opcao-btn-sub">Você preenche</div>
         </div>
       </div>
@@ -1121,7 +1013,7 @@
           <div class="item-cadastrado">
             <div class="item-icone-mini" style="background:${d.cor || '#ffb800'}30;color:${d.cor || '#ffb800'};">${d.icone || '📋'}</div>
             <div class="item-info-mini"><div class="item-nome-mini">${d.nome}</div><div class="item-valor-mini danger">-R$ ${formatarMoeda(d.valor)}/mês</div></div>
-            <div class="item-check">✓</div>
+            <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDesp('${d.id}')">✕</div></div>
           </div>
         `).join('')}
       ` : `<div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;"><div style="font-size:36px;margin-bottom:10px;">📋</div><div style="font-size:13px;color:var(--text-mute);">Nenhuma despesa ainda</div></div>`}
@@ -1129,14 +1021,24 @@
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${despesasAdicionadas.length > 0 ? 'Continuar →' : 'Pular →'}</button>`;
   }
   
-  window.abrirManualDespesa = function() {
+  window.excluirDesp = async function(id) {
+    if (!confirm('Excluir essa despesa e transações previstas?')) return;
+    try {
+      await supabase.from('transacoes').delete().eq('compromisso_id', id);
+      await supabase.from('compromissos').delete().eq('id', id);
+      despesasAdicionadas = despesasAdicionadas.filter(d => d.id !== id);
+      renderP7();
+    } catch (e) { alert('Erro: ' + e.message); }
+  };
+  
+  window.manualDesp = function() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Preenche os dados. Vou gerar as contas previstas pros próximos 12 meses!</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Preenche os dados. Vou gerar contas previstas pros próximos 12 meses!</div></div></div>
       <div class="step-titulo">Nova despesa fixa</div>
       <div class="form-card">
         <div class="field">
           <label>Categoria</label>
-          <select id="m-d-categoria">
+          <select id="md-cat">
             <option value="aluguel">🏠 Aluguel</option>
             <option value="condominio">🏢 Condomínio</option>
             <option value="luz">💡 Luz</option>
@@ -1154,87 +1056,111 @@
             <option value="outro">📌 Outro</option>
           </select>
         </div>
-        <div class="field"><label>Nome</label><input type="text" id="m-d-nome" placeholder="Digite o nome"></div>
-        <div class="field"><label>Valor mensal</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="m-d-valor" placeholder="0,00" oninput="formatarValor(this)"></div></div>
-        <div class="field"><label>Dia do vencimento (1-31)</label><input type="number" id="m-d-dia" placeholder="10" min="1" max="31"></div>
-        <button class="btn btn-primary" onclick="salvarDespesaManual()">Salvar despesa</button>
+        <div class="field"><label>Nome</label><input type="text" id="md-nome" placeholder="Digite o nome"></div>
+        <div class="field"><label>Valor mensal</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="md-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
+        <div class="field"><label>Dia do vencimento (1-31)</label><input type="number" id="md-dia" placeholder="10" min="1" max="31"></div>
+        <button class="btn btn-primary" onclick="salvarDesp()">Salvar despesa</button>
       </div>
     `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderPasso6()">‹</button><button class="btn btn-primary" disabled>Cadastre acima</button>`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP7()">‹</button><button class="btn btn-primary" disabled>Cadastre</button>`;
   };
   
-  window.salvarDespesaManual = async function() {
-    const categoria = document.getElementById('m-d-categoria').value;
-    const nome = document.getElementById('m-d-nome').value.trim();
-    const valor = valorParaNumero(document.getElementById('m-d-valor').value);
-    const dia = parseInt(document.getElementById('m-d-dia').value) || null;
+  const EMOJI_DESP = {
+    'aluguel': { e: '🏠', c: '#00d97e' }, 'condominio': { e: '🏢', c: '#14b8a6' },
+    'luz': { e: '💡', c: '#ffb800' }, 'agua': { e: '💧', c: '#38bdf8' },
+    'gas': { e: '🔥', c: '#ff6b35' }, 'internet': { e: '🌐', c: '#a855f7' },
+    'telefone': { e: '📱', c: '#a855f7' }, 'streaming': { e: '🎬', c: '#8b5cf6' },
+    'academia': { e: '💪', c: '#f59e0b' }, 'plano_saude': { e: '🏥', c: '#ef4444' },
+    'escola': { e: '🎓', c: '#3b82f6' }, 'seguro': { e: '🛡️', c: '#6366f1' },
+    'iptu': { e: '🏛️', c: '#f59e0b' }, 'assinatura': { e: '📺', c: '#8b5cf6' },
+    'outro': { e: '📋', c: '#38bdf8' }
+  };
+  
+  window.salvarDesp = async function() {
+    const cat = document.getElementById('md-cat').value;
+    const nome = document.getElementById('md-nome').value.trim();
+    const val = valorParaNumero(document.getElementById('md-val').value);
+    const dia = parseInt(document.getElementById('md-dia').value) || null;
     if (!nome) { alert('Digite o nome'); return; }
-    if (!valor || valor <= 0) { alert('Informe o valor'); return; }
-    const emojiCor = {
-      'aluguel': { e: '🏠', c: '#00d97e' }, 'condominio': { e: '🏢', c: '#14b8a6' }, 'luz': { e: '💡', c: '#ffb800' },
-      'agua': { e: '💧', c: '#38bdf8' }, 'gas': { e: '🔥', c: '#ff6b35' }, 'internet': { e: '🌐', c: '#a855f7' },
-      'telefone': { e: '📱', c: '#a855f7' }, 'streaming': { e: '🎬', c: '#8b5cf6' }, 'academia': { e: '💪', c: '#f59e0b' },
-      'plano_saude': { e: '🏥', c: '#ef4444' }, 'escola': { e: '🎓', c: '#3b82f6' }, 'seguro': { e: '🛡️', c: '#6366f1' },
-      'iptu': { e: '🏛️', c: '#f59e0b' }, 'assinatura': { e: '📺', c: '#8b5cf6' }, 'outro': { e: '📋', c: '#38bdf8' }
-    };
-    const ec = emojiCor[categoria] || { e: '📋', c: '#38bdf8' };
+    if (!val || val <= 0) { alert('Informe o valor'); return; }
+    await salvarDespesaNoBanco(nome, cat, val, dia);
+  };
+  
+  async function salvarDespesaNoBanco(nome, cat, val, dia) {
+    const ec = EMOJI_DESP[cat] || EMOJI_DESP.outro;
     try {
       const { data, error } = await supabase.from('compromissos').insert({
-        user_id: usuario.id, nome, categoria, tipo: 'recorrente', valor, dia_vencimento: dia, cor: ec.c, icone: ec.e
+        user_id: usuario.id, nome, categoria: cat, tipo: 'recorrente', valor: val, dia_vencimento: dia, cor: ec.c, icone: ec.e
       }).select().single();
       if (error) throw error;
       despesasAdicionadas.push(data);
       const hoje = new Date();
-      const diaUsar = dia || hoje.getDate();
-      let mesInicial = hoje.getMonth();
-      if (diaUsar <= hoje.getDate()) mesInicial++;
+      const dUsar = dia || hoje.getDate();
+      let mes = hoje.getMonth();
+      if (dUsar <= hoje.getDate()) mes++;
       const trans = [];
       for (let i = 0; i < 12; i++) {
-        const d = new Date(hoje.getFullYear(), mesInicial + i, diaUsar);
-        trans.push({ user_id: usuario.id, valor, descricao: nome, data: d.toISOString().split('T')[0], tipo: 'saida', compromisso_id: data.id, status: 'prevista', recorrente: true });
+        const d = new Date(hoje.getFullYear(), mes + i, dUsar);
+        trans.push({ user_id: usuario.id, valor: val, descricao: nome, data: d.toISOString().split('T')[0], tipo: 'saida', compromisso_id: data.id, status: 'prevista', recorrente: true });
       }
       await supabase.from('transacoes').insert(trans);
       await darXP(15, 'despesa_setup', 'Setup despesa: ' + nome);
-      mostrarToast(`+15 XP 📋 Despesa salva!`);
-      setTimeout(() => renderPasso6(), 800);
+      toast(`+15 XP 📋 Despesa salva!`);
+      setTimeout(() => renderP7(), 800);
     } catch (e) { alert('Erro: ' + e.message); }
-  };
+  }
   
-  function renderPasso7() {
+  // ============ PASSO 8: DÍVIDAS ============
+  function renderP8() {
+    const outrasDivs = dividasAdicionadas.filter(d => d.tipo !== 'cartao');
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Além dos cartões, tem <strong>outras dívidas</strong>? Empréstimo, financiamento, loja, cheque especial? Sem julgamento!</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Tem <strong>outras dívidas</strong>? Empréstimo, financiamento, loja, cheque especial? Pode tirar foto do contrato ou print de negociação!</div></div></div>
       <div class="step-titulo">Outras dívidas?</div>
       <div class="step-subtitulo">Empréstimos, financiamentos, cheque especial...</div>
       <div class="opcoes-acao">
-        <div class="opcao-btn" onclick="abrirManualDivida()" style="grid-column:1/-1;">
+        <div class="opcao-btn ia" onclick="abrirFoto('contrato', null)">
+          <div class="opcao-btn-icon">📸</div>
+          <div class="opcao-btn-titulo">Foto contrato</div>
+          <div class="opcao-btn-sub">IA lê e cadastra</div>
+        </div>
+        <div class="opcao-btn" onclick="manualDiv()">
           <div class="opcao-btn-icon">✍️</div>
-          <div class="opcao-btn-titulo">Cadastrar dívida</div>
-          <div class="opcao-btn-sub">Preenche os dados</div>
+          <div class="opcao-btn-titulo">Digitar manual</div>
+          <div class="opcao-btn-sub">Você preenche</div>
         </div>
       </div>
-      ${dividasAdicionadas.filter(d => d.tipo !== 'cartao').length > 0 ? `
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:20px 0 10px;">✅ Cadastradas</div>
-        ${dividasAdicionadas.filter(d => d.tipo !== 'cartao').map(d => `
+      ${outrasDivs.length > 0 ? `
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:20px 0 10px;">✅ Cadastradas (${outrasDivs.length})</div>
+        ${outrasDivs.map(d => `
           <div class="item-cadastrado" style="border-color:var(--danger);">
             <div class="item-icone-mini" style="background:var(--danger-soft);color:var(--danger);">💸</div>
             <div class="item-info-mini"><div class="item-nome-mini">${d.credor}</div><div class="item-valor-mini danger">R$ ${formatarMoeda(d.valor_atual)}</div></div>
-            <div class="item-check">✓</div>
+            <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDiv('${d.id}')">✕</div></div>
           </div>
         `).join('')}
       ` : `<div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;"><div style="font-size:36px;margin-bottom:10px;">🎉</div><div style="font-size:13px;color:var(--text-mute);">Sem outras dívidas? Que ótimo!</div></div>`}
     `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${dividasAdicionadas.filter(d => d.tipo !== 'cartao').length > 0 ? 'Continuar →' : 'Não tenho →'}</button>`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${outrasDivs.length > 0 ? 'Continuar →' : 'Não tenho →'}</button>`;
   }
   
-  window.abrirManualDivida = function() {
+  window.excluirDiv = async function(id) {
+    if (!confirm('Excluir essa dívida?')) return;
+    try {
+      await supabase.from('dividas').delete().eq('id', id);
+      dividasAdicionadas = dividasAdicionadas.filter(d => d.id !== id);
+      renderP8();
+    } catch (e) { alert('Erro: ' + e.message); }
+  };
+  
+  window.manualDiv = function() {
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Preenche os dados. Depois te ajudo a negociar!</div></div></div>
       <div class="step-titulo">Nova dívida</div>
       <div class="form-card">
-        <div class="field"><label>Credor (quem você deve)</label><input type="text" id="m-dv-credor" placeholder="Digite o nome"></div>
+        <div class="field"><label>Credor (quem você deve)</label><input type="text" id="mdv-cred" placeholder="Digite o nome"></div>
         <div class="field">
           <label>Tipo</label>
-          <select id="m-dv-tipo">
+          <select id="mdv-tipo">
             <option value="emprestimo">💸 Empréstimo</option>
             <option value="financiamento">🏦 Financiamento</option>
             <option value="cheque_especial">🆘 Cheque especial</option>
@@ -1242,53 +1168,53 @@
             <option value="outro">📌 Outro</option>
           </select>
         </div>
-        <div class="field"><label>Valor total em aberto</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="m-dv-valor" placeholder="0,00" oninput="formatarValor(this)"></div></div>
-        <button class="btn btn-primary" onclick="salvarDividaManual()">Salvar dívida</button>
+        <div class="field"><label>Valor total em aberto</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mdv-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
+        <button class="btn btn-primary" onclick="salvarDiv()">Salvar dívida</button>
       </div>
     `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderPasso7()">‹</button><button class="btn btn-primary" disabled>Cadastre acima</button>`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP8()">‹</button><button class="btn btn-primary" disabled>Cadastre</button>`;
   };
   
-  window.salvarDividaManual = async function() {
-    const credor = document.getElementById('m-dv-credor').value.trim();
-    const tipo = document.getElementById('m-dv-tipo').value;
-    const valor = valorParaNumero(document.getElementById('m-dv-valor').value);
-    if (!credor) { alert('Digite o credor'); return; }
-    if (!valor || valor <= 0) { alert('Informe o valor'); return; }
-    const dataVenc = new Date();
-    dataVenc.setDate(dataVenc.getDate() + 30);
+  window.salvarDiv = async function() {
+    const cred = document.getElementById('mdv-cred').value.trim();
+    const tipo = document.getElementById('mdv-tipo').value;
+    const val = valorParaNumero(document.getElementById('mdv-val').value);
+    if (!cred) { alert('Digite o credor'); return; }
+    if (!val || val <= 0) { alert('Informe o valor'); return; }
+    const dv = new Date(); dv.setDate(dv.getDate() + 30);
     try {
       const { data, error } = await supabase.from('dividas').insert({
-        user_id: usuario.id, credor, tipo, descricao: `Dívida ${credor}`,
-        valor_original: valor, valor_atual: valor,
-        data_vencimento: dataVenc.toISOString().split('T')[0],
-        data_inicio: new Date().toISOString().split('T')[0],
+        user_id: usuario.id, credor: cred, tipo, descricao: `Dívida ${cred}`,
+        valor_original: val, valor_atual: val,
+        data_vencimento: dv.toISOString().split('T')[0], data_inicio: new Date().toISOString().split('T')[0],
         status: 'ativa', prioridade: 1
       }).select().single();
       if (error) throw error;
       dividasAdicionadas.push(data);
-      await darXP(15, 'divida_setup', 'Setup dívida: ' + credor);
-      mostrarToast(`+15 XP 💸 Dívida salva!`);
-      setTimeout(() => renderPasso7(), 800);
+      await darXP(15, 'divida_setup', 'Setup dívida: ' + cred);
+      toast(`+15 XP 💸 Dívida salva!`);
+      setTimeout(() => renderP8(), 800);
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  async function renderPasso8() {
+  // ============ PASSO 9: ANÁLISE FINAL ============
+  async function renderP9() {
     document.getElementById('container').innerHTML = `
       <div class="ia-loading">
         <div class="ia-spinner"></div>
         <div class="ia-loading-titulo">🦔 Tatu está analisando...</div>
-        <div class="ia-loading-sub">Olhando todos os seus dados pra montar um plano personalizado</div>
+        <div class="ia-loading-sub">Montando seu plano personalizado</div>
         <div class="ia-loading-passo" id="ia-passo">Calculando situação financeira...</div>
       </div>
     `;
     document.getElementById('footer-content').innerHTML = '';
     
-    setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Identificando seu nível financeiro...'; }, 1500);
+    setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Identificando seu nível...'; }, 1500);
     setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Definindo primeira meta...'; }, 3500);
     setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Montando plano de 12 meses...'; }, 5500);
     
     const dados = {
+      objetivo_principal: objetivoPrincipal,
       contas: contasAdicionadas.map(c => ({ nome: c.nome, tipo: c.tipo, saldo: c.saldo_inicial })),
       cartoes: cartoesAdicionados.map(c => ({ nome: c.nome, limite: c.limite })),
       rendas: rendasAdicionadas.map(r => ({ nome: r.nome, categoria: r.categoria, valor: r.valor })),
@@ -1297,47 +1223,62 @@
     };
     
     try {
-      const resp = await fetch(IA_FUNCTION_URL, {
+      const r = await fetch(IA_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
         body: JSON.stringify({ tipo: 'analisar_situacao_financeira', dados_financeiros: dados, max_tokens: 2500 })
       });
-      const data = await resp.json();
-      if (data.resultado && !data.resultado.erro) {
-        analiseIA = data.resultado;
-        await salvarAnaliseEFinalizar();
-        renderResultadoAnalise();
-      } else {
-        await salvarSetupSemAnalise();
-        renderErroAnalise();
-      }
-    } catch (e) {
-      console.error('Erro IA:', e);
-      await salvarSetupSemAnalise();
-      renderErroAnalise();
-    }
+      const d = await r.json();
+      if (d.resultado && !d.resultado.erro) { analiseIA = d.resultado; await salvarTudo(); renderResultado(); }
+      else { await salvarSemAnalise(); renderErro(); }
+    } catch (e) { console.error(e); await salvarSemAnalise(); renderErro(); }
   }
   
-  async function salvarAnaliseEFinalizar() {
-    await supabase.from('perfis').update({ setup_concluido: true, setup_concluido_em: new Date().toISOString(), analise_setup: analiseIA }).eq('id', usuario.id);
+  async function salvarTudo() {
+    await supabase.from('perfis').update({
+      setup_concluido: true,
+      setup_concluido_em: new Date().toISOString(),
+      analise_setup: analiseIA,
+      nivel_jornada: analiseIA?.situacao?.nivel_recomendado || 1
+    }).eq('id', usuario.id);
     await darXP(100, 'setup_concluido', 'Modo Setup completo!');
   }
   
-  async function salvarSetupSemAnalise() {
+  async function salvarSemAnalise() {
     await supabase.from('perfis').update({ setup_concluido: true, setup_concluido_em: new Date().toISOString() }).eq('id', usuario.id);
-    await darXP(50, 'setup_concluido_parcial', 'Setup sem análise IA');
+    await darXP(50, 'setup_concluido_parcial', 'Setup sem análise');
   }
   
-  function renderResultadoAnalise() {
+  function renderResultado() {
     const a = analiseIA;
     const s = a.situacao;
+    const nivel = s.nivel_recomendado || 2;
+    const jornadaPontos = [
+      { num: 1, nome: 'Diag.' }, { num: 2, nome: 'Resgate' }, { num: 3, nome: 'Estab.' },
+      { num: 4, nome: 'Cresc.' }, { num: 5, nome: 'Liberd.' }
+    ];
+    
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble"><div class="tatu-emoji">🎉</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Analisei tudo! Aqui vai sua <strong>análise personalizada</strong>:</div></div></div>
+      
       <div class="nivel-card">
         <div class="nivel-label">Seu nível</div>
-        <div class="nivel-numero">${s.nivel_recomendado}</div>
+        <div class="nivel-numero">${nivel}</div>
         <div class="nivel-nome">${s.nivel_nome}</div>
       </div>
+      
+      <div class="jornada-card">
+        <div class="jornada-titulo">Sua jornada</div>
+        <div class="jornada-pontos">
+          ${jornadaPontos.map(p => `
+            <div class="ponto ${p.num === nivel ? 'atual' : p.num < nivel ? 'passou' : ''}">
+              <div class="ponto-circle">${p.num}</div>
+              <div class="ponto-label">${p.nome}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      
       <div class="analise-card">
         <div class="analise-titulo">📊 Sua situação</div>
         <div class="situacao-grid">
@@ -1347,8 +1288,11 @@
           <div class="situacao-item"><div class="situacao-label">Total dívidas</div><div class="situacao-valor" style="color:${s.total_dividas > 0 ? 'var(--danger)' : 'var(--brand)'};">R$ ${formatarMoeda(s.total_dividas)}</div></div>
         </div>
       </div>
+      
       <div class="analise-card"><div class="analise-titulo">🦔 Diagnóstico do Tatu</div><div class="diagnostico-texto">${a.diagnostico}</div></div>
+      
       ${a.alertas && a.alertas.length > 0 ? `<div class="analise-card"><div class="analise-titulo">⚠️ Pontos de atenção</div>${a.alertas.map(al => `<div class="alerta-item"><span style="flex-shrink:0;">⚠️</span><span>${al}</span></div>`).join('')}</div>` : ''}
+      
       ${a.primeira_meta ? `
         <div class="meta-card">
           <div class="meta-titulo-card">🎯 Sua primeira meta</div>
@@ -1360,29 +1304,34 @@
           <div class="meta-explicacao">${a.primeira_meta.explicacao}</div>
         </div>
       ` : ''}
+      
       ${a.mensagem_motivacional ? `<div class="tatu-bubble"><div class="tatu-emoji">💚</div><div class="tatu-content"><div class="tatu-titulo">Mensagem do Tatu</div><div class="tatu-texto">${a.mensagem_motivacional}</div></div></div>` : ''}
     `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="irParaHome()">🚀 Bora começar minha jornada!</button>`;
-    mostrarToast('+100 XP 🎉 Setup completo!');
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="irHome()">🚀 Bora começar minha jornada!</button>`;
+    toast('+100 XP 🎉 Setup completo!');
   }
   
-  function renderErroAnalise() {
+  function renderErro() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Setup completo! Tive um problema gerando a análise agora, mas teus dados estão salvos. Você pode fazer a análise depois pelo chat.</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Setup completo! Tive um problema gerando a análise, mas teus dados estão salvos. Você pode rodar a análise depois pelo chat.</div></div></div>
       <div class="form-card" style="text-align:center;padding:30px 20px;">
         <div style="font-size:48px;margin-bottom:12px;">✅</div>
         <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px;">Tudo cadastrado!</div>
         <div style="font-size:13px;color:var(--text-mute);">${contasAdicionadas.length} contas, ${cartoesAdicionados.length} cartões, ${rendasAdicionadas.length} rendas, ${despesasAdicionadas.length} despesas, ${dividasAdicionadas.length} dívidas</div>
       </div>
     `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="irParaHome()">🚀 Ir para o app</button>`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="irHome()">🚀 Ir para o app</button>`;
   }
   
-  window.irParaHome = function() { window.location.href = 'home.html?v=' + Date.now(); };
+  window.irHome = function() { window.location.href = 'home.html?v=' + Date.now(); };
   
-  // ============================================
-  // FOTO + COMPRESSÃO (v1.2)
-  // ============================================
+  // ============ FOTO + COMPRESSÃO + IA ============
+  
+  window.abrirFoto = function(modo, alvo) {
+    modoFoto = modo;
+    alvoFoto = alvo;
+    document.getElementById('input-foto').click();
+  };
   
   window.processarFoto = async function(e) {
     const file = e.target.files[0];
@@ -1393,111 +1342,178 @@
       <div class="ia-loading">
         <div class="ia-spinner"></div>
         <div class="ia-loading-titulo">📸 Preparando foto...</div>
-        <div class="ia-loading-sub">Reduzindo o tamanho pra IA processar mais rápido</div>
-        <div class="ia-loading-passo" id="passo-foto">Comprimindo imagem...</div>
+        <div class="ia-loading-sub">Comprimindo + lendo com IA Claude</div>
+        <div class="ia-loading-passo" id="p-foto">Comprimindo imagem...</div>
       </div>
     `;
     
     let base64;
     try {
       base64 = await comprimirImagem(file, 1600, 0.85);
-      const elPasso = document.getElementById('passo-foto');
-      if (elPasso) elPasso.textContent = 'IA Claude lendo a foto...';
+      const el = document.getElementById('p-foto');
+      if (el) el.textContent = 'IA Claude lendo a foto...';
     } catch (err) {
-      console.error('Erro comprimindo:', err);
-      alert('⚠️ Não consegui processar essa foto. Tenta outra ou usa o cadastro manual.');
-      if (modoFoto === 'conta') renderPasso3();
+      console.error(err);
+      alert('⚠️ Não consegui processar essa foto.');
+      voltarAposFoto();
       return;
     }
     
+    let tipoFn;
+    if (modoFoto === 'conta') tipoFn = 'analisar_conta';
+    else if (modoFoto === 'fatura') tipoFn = 'analisar_fatura_cartao';
+    else if (modoFoto === 'boleto') tipoFn = 'analisar_boleto';
+    else if (modoFoto === 'contrato') tipoFn = 'analisar_contrato';
+    
     try {
-      const tipoFn = 'analisar_conta';
-      const hint = alvoFotoAtual ? 'conta_corrente' : null;
-      
-      const resp = await fetch(IA_FUNCTION_URL, {
+      const r = await fetch(IA_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
-        body: JSON.stringify({ tipo: tipoFn, imagem_base64: base64, hint_tipo: hint, max_tokens: 1500 })
+        body: JSON.stringify({ tipo: tipoFn, imagem_base64: base64, max_tokens: 1500 })
       });
-      const data = await resp.json();
+      const d = await r.json();
       
-      if (data.resultado && !data.resultado.erro) {
-        await processarResultadoContaIA(data.resultado);
+      if (d.resultado && !d.resultado.erro) {
+        if (modoFoto === 'conta') await processarConta(d.resultado);
+        else if (modoFoto === 'fatura') await processarFatura(d.resultado);
+        else if (modoFoto === 'boleto') await processarBoleto(d.resultado);
+        else if (modoFoto === 'contrato') await processarContrato(d.resultado);
       } else {
-        const erro = data.resultado?.erro || 'Erro desconhecido';
-        alert('⚠️ IA não conseguiu processar: ' + erro);
-        renderPasso3();
+        const erro = d.resultado?.erro || 'erro';
+        alert('⚠️ IA não conseguiu: ' + erro);
+        voltarAposFoto();
       }
     } catch (err) {
       console.error(err);
-      alert('Erro de conexão: ' + err.message);
-      renderPasso3();
+      alert('Erro: ' + err.message);
+      voltarAposFoto();
     }
   };
   
-  async function comprimirImagem(file, maxWidth = 1600, qualidade = 0.85) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
+  function voltarAposFoto() {
+    if (modoFoto === 'conta') renderP4();
+    else if (modoFoto === 'fatura') renderP5();
+    else if (modoFoto === 'boleto') renderP7();
+    else if (modoFoto === 'contrato') renderP8();
+  }
+  
+  async function comprimirImagem(file, maxW = 1600, q = 0.85) {
+    return new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-          let largura = img.width;
-          let altura = img.height;
-          if (largura > maxWidth) { altura = Math.round((altura * maxWidth) / largura); largura = maxWidth; }
-          const canvas = document.createElement('canvas');
-          canvas.width = largura;
-          canvas.height = altura;
-          const ctx = canvas.getContext('2d');
+          let w = img.width, h = img.height;
+          if (w > maxW) { h = Math.round((h * maxW) / w); w = maxW; }
+          const c = document.createElement('canvas');
+          c.width = w; c.height = h;
+          const ctx = c.getContext('2d');
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = 'high';
-          ctx.drawImage(img, 0, 0, largura, altura);
-          const base64 = canvas.toDataURL('image/jpeg', qualidade);
-          const tamanhoKB = Math.round((base64.length * 0.75) / 1024);
-          console.log(`📸 Imagem comprimida: ${largura}x${altura} ≈ ${tamanhoKB}KB`);
-          if (tamanhoKB > 4000 && qualidade > 0.5) {
-            const base64Menor = canvas.toDataURL('image/jpeg', 0.7);
-            resolve(base64Menor);
-          } else { resolve(base64); }
+          ctx.drawImage(img, 0, 0, w, h);
+          let b64 = c.toDataURL('image/jpeg', q);
+          const kb = Math.round((b64.length * 0.75) / 1024);
+          if (kb > 4000 && q > 0.5) b64 = c.toDataURL('image/jpeg', 0.7);
+          res(b64);
         };
-        img.onerror = () => reject(new Error('Erro carregando imagem'));
+        img.onerror = () => rej(new Error('Erro carregando imagem'));
         img.src = e.target.result;
       };
-      reader.onerror = () => reject(new Error('Erro lendo arquivo'));
-      reader.readAsDataURL(file);
+      r.onerror = () => rej(new Error('Erro lendo arquivo'));
+      r.readAsDataURL(file);
     });
   }
   
-  async function processarResultadoContaIA(r) {
-    const banco = BANCOS.find(b => b.id === alvoFotoAtual);
+  async function processarConta(r) {
+    const banco = BANCOS.find(b => b.id === alvoFoto);
     const dados = {
-      user_id: usuario.id,
-      nome: r.nome_sugerido || banco.nome,
-      tipo: r.tipo_conta || 'conta_corrente',
-      banco: banco.nome, cor: banco.cor,
+      user_id: usuario.id, nome: r.nome_sugerido || banco.nome,
+      tipo: r.tipo_conta || 'conta_corrente', banco: banco.nome, cor: banco.cor,
       icone: r.tipo_conta === 'poupanca' ? '🐷' : r.tipo_conta === 'investimento' ? '📈' : '🏦',
-      saldo_inicial: r.saldo_atual || 0,
-      padrao: contasAdicionadas.length === 0
+      saldo_inicial: r.saldo_atual || 0, padrao: contasAdicionadas.length === 0
     };
     try {
       const { data, error } = await supabase.from('contas').insert(dados).select().single();
       if (error) throw error;
       contasAdicionadas.push(data);
-      await darXP(25, 'conta_via_ia_setup', 'Setup IA: ' + banco.nome);
-      mostrarToast('+25 XP ✨ IA cadastrou!');
+      await darXP(25, 'conta_ia', 'Setup IA: ' + banco.nome);
+      toast('+25 XP ✨ IA cadastrou!');
       setTimeout(() => {
         bancoIndexAtual++;
         if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); }
-        else { renderPasso3(); }
+        else renderP4();
       }, 1000);
-    } catch (e) { alert('Erro salvando: ' + e.message); renderPasso3(); }
+    } catch (e) { alert('Erro: ' + e.message); renderP4(); }
   }
   
-  function renderFooterPadrao(temVoltar, podeAvancar) {
-    let html = '';
-    if (temVoltar) html += `<button class="btn btn-back" onclick="voltarPasso()">‹</button>`;
-    html += `<button class="btn btn-primary" ${podeAvancar ? '' : 'disabled'} onclick="proximoPasso()">Continuar →</button>`;
-    document.getElementById('footer-content').innerHTML = html;
+  async function processarFatura(r) {
+    const bId = alvoFoto;
+    const banco = BANCOS.find(b => b.id === bId);
+    const nome = r.nome_sugerido || banco.nome;
+    const limite = r.limite_total || 0;
+    const fec = r.dia_fechamento || null;
+    const ven = r.dia_vencimento || null;
+    const valor = r.valor_fatura || 0;
+    const atrasada = r.esta_atrasada || false;
+    
+    cartaoTemp = { bancoId: bId, nome, limite, fechamento: fec, vencimento: ven };
+    
+    if (valor > 0) {
+      await salvarCartaoFinal({ valor, paga: false, atrasada });
+    } else {
+      await salvarCartaoFinal({ valor: 0, paga: true, atrasada: false });
+    }
   }
+  
+  async function processarBoleto(r) {
+    const nome = r.nome_sugerido || 'Despesa';
+    const cat = r.categoria || 'outro';
+    const val = r.valor || 0;
+    const dia = r.dia_vencimento || null;
+    
+    if (val <= 0) {
+      alert('⚠️ IA não conseguiu ler o valor do boleto. Tenta manual.');
+      renderP7();
+      return;
+    }
+    
+    await salvarDespesaNoBanco(nome, cat, val, dia);
+    await darXP(25, 'despesa_ia', 'Setup IA: ' + nome);
+    toast('+25 XP ✨ Boleto lido!');
+  }
+  
+  async function processarContrato(r) {
+    const cred = r.credor || 'Credor';
+    const tipo = r.tipo || 'outro';
+    const val = r.valor_total || 0;
+    
+    if (val <= 0) {
+      alert('⚠️ IA não conseguiu ler o valor. Tenta manual.');
+      renderP8();
+      return;
+    }
+    
+    const dv = new Date();
+    if (r.data_vencimento_proxima) dv.setTime(new Date(r.data_vencimento_proxima).getTime());
+    else dv.setDate(dv.getDate() + 30);
+    
+    try {
+      const { data, error } = await supabase.from('dividas').insert({
+        user_id: usuario.id, credor: cred, tipo, descricao: `Dívida ${cred}`,
+        valor_original: val, valor_atual: val,
+        data_vencimento: dv.toISOString().split('T')[0], data_inicio: new Date().toISOString().split('T')[0],
+        status: 'ativa', prioridade: r.esta_atrasada ? 1 : 2,
+        juros_mensal: r.juros_mensal || null
+      }).select().single();
+      if (error) throw error;
+      dividasAdicionadas.push(data);
+      await darXP(25, 'divida_ia', 'Setup IA: ' + cred);
+      toast('+25 XP ✨ Dívida lida!');
+      setTimeout(() => renderP8(), 1000);
+    } catch (e) { alert('Erro: ' + e.message); renderP8(); }
+  }
+  
+  // ============ UTILS ============
   
   window.formatarValor = function(input) {
     let v = input.value.replace(/\D/g, '');
@@ -1526,7 +1542,7 @@
     } catch (e) { console.error('XP:', e); }
   }
   
-  function mostrarToast(texto) {
+  function toast(texto) {
     const t = document.getElementById('xp-toast');
     t.textContent = texto;
     t.style.display = 'block';
