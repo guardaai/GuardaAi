@@ -28,7 +28,6 @@
     --info: #38bdf8;
     --info-soft: rgba(56, 189, 248, 0.1);
     --ia: #a855f7;
-    --ia-hover: #9333ea;
     --ia-soft: rgba(168, 85, 247, 0.1);
     --text: #ffffff;
     --text-mute: #a3a3a3;
@@ -134,7 +133,16 @@
   
   .nav-btn:active { background: var(--brand-soft); }
   
-  .nav-mes-info { flex: 1; text-align: center; }
+  .nav-mes-info {
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 8px;
+    transition: background 0.15s;
+  }
+  
+  .nav-mes-info:active { background: var(--bg-elev); }
   
   .nav-mes-titulo {
     font-family: 'Space Grotesk', sans-serif;
@@ -142,6 +150,15 @@
     font-weight: 700;
     text-transform: capitalize;
     letter-spacing: -0.01em;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .nav-mes-titulo::after {
+    content: '▾';
+    font-size: 10px;
+    color: var(--text-mute);
   }
   
   .nav-mes-sub {
@@ -344,21 +361,18 @@
   
   .trans-card:active { transform: scale(0.99); }
   
-  /* SAÍDA PREVISTA (a pagar) */
   .trans-card.prevista-saida {
     background: linear-gradient(135deg, rgba(255, 184, 0, 0.05) 0%, var(--bg-card) 100%);
     border-color: rgba(255, 184, 0, 0.25);
     border-left: 3px solid var(--warning);
   }
   
-  /* ENTRADA PREVISTA (a receber) - verde */
   .trans-card.prevista-entrada {
     background: linear-gradient(135deg, rgba(0, 217, 126, 0.05) 0%, var(--bg-card) 100%);
     border-color: rgba(0, 217, 126, 0.25);
     border-left: 3px solid var(--brand);
   }
   
-  /* VENCIDA */
   .trans-card.vencida {
     background: linear-gradient(135deg, rgba(255, 71, 87, 0.05) 0%, var(--bg-card) 100%);
     border-color: rgba(255, 71, 87, 0.3);
@@ -375,25 +389,10 @@
     flex-shrink: 0;
   }
   
-  .trans-icone.entrada {
-    background: var(--brand-soft);
-    color: var(--brand);
-  }
-  
-  .trans-icone.saida {
-    background: var(--danger-soft);
-    color: var(--danger);
-  }
-  
-  .trans-icone.prevista-saida {
-    background: var(--warning-soft);
-    color: var(--warning);
-  }
-  
-  .trans-icone.prevista-entrada {
-    background: var(--brand-soft);
-    color: var(--brand);
-  }
+  .trans-icone.entrada { background: var(--brand-soft); color: var(--brand); }
+  .trans-icone.saida { background: var(--danger-soft); color: var(--danger); }
+  .trans-icone.prevista-saida { background: var(--warning-soft); color: var(--warning); }
+  .trans-icone.prevista-entrada { background: var(--brand-soft); color: var(--brand); }
   
   .trans-info { flex: 1; min-width: 0; }
   
@@ -547,6 +546,11 @@
     overflow: hidden;
   }
   
+  .modal.small {
+    height: auto;
+    max-height: 80vh;
+  }
+  
   @keyframes slideUp {
     from { transform: translateY(100%); }
     to { transform: translateY(0); }
@@ -625,15 +629,8 @@
     color: var(--text-mute);
   }
   
-  .tipo-tab.active.entrada {
-    background: var(--brand);
-    color: #001a0e;
-  }
-  
-  .tipo-tab.active.saida {
-    background: var(--danger);
-    color: white;
-  }
+  .tipo-tab.active.entrada { background: var(--brand); color: #001a0e; }
+  .tipo-tab.active.saida { background: var(--danger); color: white; }
   
   .valor-input-wrapper {
     display: flex;
@@ -764,10 +761,24 @@
     font-weight: 700;
   }
   
+  .data-futura-aviso {
+    background: var(--warning-soft);
+    border: 1px solid rgba(255, 184, 0, 0.3);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    font-size: 11px;
+    color: var(--warning);
+    line-height: 1.4;
+    display: none;
+  }
+  
+  .data-futura-aviso.show { display: block; }
+  
   .categorias-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
     margin-bottom: 14px;
   }
   
@@ -775,7 +786,7 @@
     background: var(--bg-input);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 10px 6px;
+    padding: 8px 4px;
     text-align: center;
     cursor: pointer;
     transition: all 0.15s;
@@ -788,15 +799,23 @@
     border-color: var(--brand);
   }
   
+  .cat-opcao.nova {
+    background: var(--ia-soft);
+    border-color: rgba(168, 85, 247, 0.4);
+    border-style: dashed;
+  }
+  
   .cat-emoji { font-size: 20px; margin-bottom: 2px; }
   .cat-nome {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 600;
     color: var(--text-mute);
     line-height: 1.2;
+    word-break: break-word;
   }
   .cat-opcao.active .cat-nome { color: var(--brand); }
+  .cat-opcao.nova .cat-nome { color: var(--ia); }
   
   .toggle-section {
     background: var(--bg-input);
@@ -922,18 +941,8 @@
   }
   
   .msg.show { display: block; }
-  
-  .msg-error {
-    background: var(--danger-soft);
-    border: 1px solid rgba(255, 71, 87, 0.3);
-    color: #ff6b78;
-  }
-  
-  .msg-ia {
-    background: var(--ia-soft);
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    color: var(--ia);
-  }
+  .msg-error { background: var(--danger-soft); border: 1px solid rgba(255, 71, 87, 0.3); color: #ff6b78; }
+  .msg-ia { background: var(--ia-soft); border: 1px solid rgba(168, 85, 247, 0.3); color: var(--ia); }
   
   .xp-toast {
     position: fixed;
@@ -1037,6 +1046,111 @@
     text-align: right;
   }
   
+  /* === SELETOR DE MÊS === */
+  .meses-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .mes-opcao {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  
+  .mes-opcao:active { transform: scale(0.96); }
+  
+  .mes-opcao.atual {
+    background: var(--brand-soft);
+    border-color: var(--brand);
+  }
+  
+  .mes-opcao.hoje {
+    background: var(--brand);
+    color: #001a0e;
+    border-color: var(--brand);
+  }
+  
+  .mes-nome {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: capitalize;
+    margin-bottom: 2px;
+  }
+  
+  .mes-ano {
+    font-size: 10px;
+    color: var(--text-mute);
+    font-weight: 500;
+  }
+  
+  .mes-opcao.atual .mes-ano { color: var(--brand); }
+  .mes-opcao.hoje .mes-ano { color: #001a0e; opacity: 0.7; }
+  
+  .ano-divider {
+    grid-column: 1 / -1;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    color: var(--text-faint);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 12px 0 4px;
+  }
+  
+  /* === MODAL NOVA CATEGORIA === */
+  .emoji-picker {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
+    margin-bottom: 14px;
+    max-height: 180px;
+    overflow-y: auto;
+    padding: 4px;
+    background: var(--bg-input);
+    border-radius: 10px;
+  }
+  
+  .emoji-pick {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    background: var(--bg-elev);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+  
+  .emoji-pick:active { transform: scale(0.92); }
+  .emoji-pick.active { background: var(--brand-soft); border-color: var(--brand); }
+  
+  .cor-picker {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  
+  .cor-pick {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.15s;
+  }
+  
+  .cor-pick:active { transform: scale(0.9); }
+  .cor-pick.active { border-color: white; transform: scale(1.1); }
+  
   .hidden { display: none !important; }
 </style>
 </head>
@@ -1052,7 +1166,7 @@
 
   <div class="nav-mes">
     <button class="nav-btn" onclick="navegarMes(-1)">‹</button>
-    <div class="nav-mes-info">
+    <div class="nav-mes-info" onclick="abrirSeletorMes()">
       <div class="nav-mes-titulo" id="nav-mes-titulo">—</div>
       <div class="nav-mes-sub" id="nav-mes-sub">—</div>
     </div>
@@ -1153,7 +1267,7 @@
       
       <div class="field">
         <label>Descrição</label>
-        <input type="text" id="f-descricao" placeholder="Ex: Mercado, Salário">
+        <input type="text" id="f-descricao" placeholder="Digite a descrição">
       </div>
       
       <div id="contas-section">
@@ -1161,12 +1275,19 @@
         <div id="contas-area"></div>
       </div>
       
-      <div class="secao-titulo" style="margin-top:0;">Categoria</div>
+      <div class="secao-titulo" style="margin-top:0;">
+        <span>Categoria</span>
+        <span class="secao-count" style="color:var(--ia);">Toque em + Nova pra criar</span>
+      </div>
       <div class="categorias-grid" id="categorias-grid"></div>
       
       <div class="field">
         <label>Data</label>
-        <input type="date" id="f-data">
+        <input type="date" id="f-data" onchange="checarDataFutura()">
+      </div>
+      
+      <div class="data-futura-aviso" id="data-futura-aviso">
+        📅 <strong>Data futura detectada</strong> — vai ser cadastrada como prevista. Quando o dinheiro entrar/sair, você marca como realizada.
       </div>
       
       <div class="toggle-section">
@@ -1197,7 +1318,7 @@
           <div class="field-row" style="margin-top:12px;margin-bottom:0;">
             <div class="field" style="margin-bottom:0;">
               <label>Nº parcelas</label>
-              <input type="number" id="f-parcelas" placeholder="12" min="2" max="24" value="3">
+              <input type="number" id="f-parcelas" placeholder="2" min="2" max="24" value="3">
             </div>
             <div class="field" style="margin-bottom:0;">
               <label>Valor total</label>
@@ -1215,6 +1336,57 @@
   </div>
 </div>
 
+<!-- MODAL NOVA CATEGORIA -->
+<div class="modal-overlay" id="modal-nova-cat">
+  <div class="modal small">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">✨ Nova categoria</div>
+      <button class="modal-close" onclick="fecharModal('modal-nova-cat')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="msg" id="msg-cat"></div>
+      
+      <div class="field">
+        <label>Nome da categoria</label>
+        <input type="text" id="cat-nome" placeholder="Digite o nome" maxlength="30">
+      </div>
+      
+      <div class="secao-titulo" style="margin-top:0;">Tipo</div>
+      <div class="tipo-tabs">
+        <div class="tipo-tab active saida" id="cat-tab-saida" onclick="trocarTipoCat('saida')">↑ Saída</div>
+        <div class="tipo-tab entrada" id="cat-tab-entrada" onclick="trocarTipoCat('entrada')">↓ Entrada</div>
+      </div>
+      
+      <div class="secao-titulo">Ícone</div>
+      <div class="emoji-picker" id="emoji-picker"></div>
+      
+      <div class="secao-titulo">Cor</div>
+      <div class="cor-picker" id="cor-picker"></div>
+      
+      <div style="height:20px;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="btn-salvar-cat" onclick="salvarCategoria()">Criar categoria</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SELETOR DE MÊS -->
+<div class="modal-overlay" id="modal-meses">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">Escolher mês</div>
+      <button class="modal-close" onclick="fecharModal('modal-meses')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="meses-area"></div>
+      <div style="height:20px;"></div>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL IA -->
 <div class="modal-overlay" id="modal-ia">
   <div class="modal">
@@ -1224,25 +1396,21 @@
       <button class="modal-close" onclick="fecharModal('modal-ia')">✕</button>
     </div>
     <div class="modal-body">
-      
       <div id="ia-vazio">
         <div class="sem-conta-aviso">
           📸 Tire foto do cupom fiscal, recibo, comprovante ou print. A IA lê tudo e cadastra!
         </div>
-        
         <div class="upload-area" onclick="document.getElementById('input-ia').click()">
           <div class="upload-emoji">📱</div>
           <div class="upload-titulo">Toque pra escolher imagem</div>
           <div class="upload-sub">Cupom fiscal, comprovante PIX, recibo, nota</div>
         </div>
       </div>
-      
       <div id="ia-analisando-area" class="hidden ia-analisando">
         <div class="ia-spinner"></div>
         <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--ia);margin-bottom:4px;">🤖 IA lendo o cupom...</div>
         <div style="font-size:12px;color:var(--text-mute);">Extraindo valor, data, categoria</div>
       </div>
-      
     </div>
     <div class="modal-footer"></div>
   </div>
@@ -1273,10 +1441,20 @@
   const IA_FUNCTION_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
   
+  const EMOJIS_DISPONIVEIS = ['💰','💵','💸','🛒','🍽️','🛵','⛽','🚗','🚕','🚌','🏠','💡','💧','🔥','📱','🌐','📺','🎬','🎵','🎮','🏥','💊','💉','💪','💄','✂️','🎓','📚','📝','💼','📊','📈','📉','🛍️','👕','👞','👜','💍','🎁','🎉','🎂','🍰','✈️','🏖️','🐾','🐕','🐈','🪑','🪴','🧹','🧺','🧴','🛠️','🔧','⚙️','🛡️','🏛️','📌','📎','📋','🎯','🎪','🎭','🎨','🎤','🍺','☕','🧉','🍷','💧','💎','🏆','⭐','❤️','💔','🌟','🦔'];
+  
+  const CORES_DISPONIVEIS = [
+    '#00d97e','#14b8a6','#06b6d4','#38bdf8','#3b82f6','#6366f1','#8b5cf6','#a855f7',
+    '#ec4899','#ef4444','#ff4757','#ff6b35','#f97316','#f59e0b','#fbbf24','#facc15',
+    '#84cc16','#22c55e','#10b981','#0891b2','#0ea5e9','#7c3aed','#d946ef','#a3a3a3'
+  ];
+  
   let usuario;
   let mesAtual = new Date();
   let transacoes = [];
   let categorias = [];
+  let compromissosMap = {};
+  let rendasMap = {};
   let contas = [];
   let saldosContas = {};
   let filtroAtivo = 'todas';
@@ -1289,6 +1467,11 @@
   let veiodaIA = false;
   let isRecorrente = false;
   let isParcelado = false;
+  
+  // Nova categoria
+  let novaCatTipo = 'saida';
+  let novaCatEmoji = '📌';
+  let novaCatCor = '#00d97e';
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -1306,7 +1489,7 @@
     const inicio = new Date(mesAtual.getFullYear(), mesAtual.getMonth(), 1).toISOString().split('T')[0];
     const fim = new Date(mesAtual.getFullYear(), mesAtual.getMonth() + 1, 0).toISOString().split('T')[0];
     
-    const [transRes, catRes, contasRes, transContasRes] = await Promise.all([
+    const [transRes, catRes, contasRes, compromissosRes, rendasRes, transContasRes] = await Promise.all([
       supabase.from('transacoes')
         .select('*, categorias(nome, icone, cor)')
         .eq('user_id', usuario.id)
@@ -1323,7 +1506,12 @@
         .eq('ativa', true)
         .order('padrao', { ascending: false })
         .order('criado_em', { ascending: true }),
-      // OTIMIZAÇÃO: 1 query única pra todos saldos
+      supabase.from('compromissos')
+        .select('id, nome, categoria, icone, cor')
+        .eq('user_id', usuario.id),
+      supabase.from('rendas')
+        .select('id, nome, categoria, icone, cor')
+        .eq('user_id', usuario.id),
       supabase.from('transacoes')
         .select('valor, tipo, conta_id')
         .eq('user_id', usuario.id)
@@ -1334,6 +1522,13 @@
     transacoes = transRes.data || [];
     categorias = catRes.data || [];
     contas = contasRes.data || [];
+    
+    // Maps pra lookup rápido
+    compromissosMap = {};
+    (compromissosRes.data || []).forEach(c => compromissosMap[c.id] = c);
+    
+    rendasMap = {};
+    (rendasRes.data || []).forEach(r => rendasMap[r.id] = r);
     
     saldosContas = {};
     const tcs = transContasRes.data || [];
@@ -1371,10 +1566,10 @@
     const saida = realizadas.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
     const saldo = entrada - saida;
     
-    // CORREÇÃO: separa A Receber e A Pagar
     const aReceber = previstas.filter(t => t.tipo === 'entrada' && t.data >= hoje).reduce((a, t) => a + Number(t.valor), 0);
     const aPagar = previstas.filter(t => t.tipo === 'saida' && t.data >= hoje).reduce((a, t) => a + Number(t.valor), 0);
-    const vencidas = previstas.filter(t => t.data < hoje).reduce((a, t) => a + (t.tipo === 'saida' ? Number(t.valor) : -Number(t.valor)), 0);
+    const vencidas = previstas.filter(t => t.data < hoje);
+    const totalVencidas = vencidas.reduce((a, t) => a + (t.tipo === 'saida' ? Number(t.valor) : -Number(t.valor)), 0);
     
     document.getElementById('total-entrada').textContent = `R$ ${formatarMoeda(entrada)}`;
     document.getElementById('total-saida').textContent = `R$ ${formatarMoeda(saida)}`;
@@ -1388,14 +1583,13 @@
       document.getElementById('total-receber').textContent = `+R$ ${formatarMoeda(aReceber)}`;
       document.getElementById('total-pagar').textContent = `R$ ${formatarMoeda(aPagar)}`;
       
-      if (vencidas !== 0) {
+      if (vencidas.length > 0) {
         document.getElementById('vencidas-cards').style.display = 'grid';
-        document.getElementById('total-vencidas').textContent = `R$ ${formatarMoeda(Math.abs(vencidas))}`;
+        document.getElementById('total-vencidas').textContent = `R$ ${formatarMoeda(Math.abs(totalVencidas))}`;
       } else {
         document.getElementById('vencidas-cards').style.display = 'none';
       }
       
-      // Saldo previsto = saldo realizado + (a receber - a pagar)
       const saldoPrevisto = saldo + aReceber - aPagar;
       document.getElementById('saldo-previsto-sub').style.display = 'block';
       document.getElementById('saldo-previsto-sub').innerHTML = `Saldo previsto fim do mês: <strong style="color:${saldoPrevisto >= 0 ? 'var(--brand)' : 'var(--danger)'}">R$ ${formatarMoeda(saldoPrevisto)}</strong>`;
@@ -1421,6 +1615,34 @@
     renderLista();
   };
   
+  // FIX BUG 1: Resolve categoria pra transação - usa compromisso/renda se categoria_id for null
+  function resolverCategoria(t) {
+    // 1) Se tem categoria_id válida, usa
+    if (t.categorias && t.categorias.nome) {
+      return { nome: t.categorias.nome, icone: t.categorias.icone, cor: t.categorias.cor };
+    }
+    
+    // 2) Se vinculada a compromisso, usa categoria dele
+    if (t.compromisso_id && compromissosMap[t.compromisso_id]) {
+      const c = compromissosMap[t.compromisso_id];
+      return { nome: c.nome, icone: c.icone || '📋', cor: c.cor || '#ffb800' };
+    }
+    
+    // 3) Se vinculada a renda, usa categoria dela
+    if (t.renda_id && rendasMap[t.renda_id]) {
+      const r = rendasMap[t.renda_id];
+      return { nome: r.nome, icone: r.icone || '💰', cor: r.cor || '#00d97e' };
+    }
+    
+    // 4) Se vinculada a dívida (fatura cartão)
+    if (t.divida_id) {
+      return { nome: 'Pagamento de dívida', icone: '💳', cor: '#ff4757' };
+    }
+    
+    // 5) Fallback
+    return { nome: 'Sem categoria', icone: t.tipo === 'entrada' ? '↓' : '↑', cor: '#a3a3a3' };
+  }
+  
   function renderLista() {
     const lista = document.getElementById('lista');
     
@@ -1442,9 +1664,8 @@
     const hoje = new Date().toISOString().split('T')[0];
     const grupos = {};
     filtradas.forEach(t => {
-      const data = t.data;
-      if (!grupos[data]) grupos[data] = [];
-      grupos[data].push(t);
+      if (!grupos[t.data]) grupos[t.data] = [];
+      grupos[t.data].push(t);
     });
     
     const datasOrdenadas = Object.keys(grupos).sort((a, b) => {
@@ -1486,7 +1707,7 @@
   }
   
   function transHTML(t, hoje) {
-    const cat = t.categorias;
+    const cat = resolverCategoria(t);
     const conta = contas.find(c => c.id === t.conta_id);
     const ehPrevista = t.status === 'prevista';
     const ehVencida = ehPrevista && t.data < hoje;
@@ -1499,7 +1720,6 @@
       </span>
     ` : '';
     
-    // BADGES DIFERENCIADOS POR TIPO
     let badges = '';
     if (ehVencida) badges += '<span class="badge-vencida">⚠️ VENCIDA</span>';
     else if (ehPrevista && ehEntrada) badges += '<span class="badge-receber">💰 A RECEBER</span>';
@@ -1507,7 +1727,6 @@
     if (t.recorrente) badges += '<span class="badge-recorrente">🔁</span>';
     if (t.parcelado) badges += `<span class="badge-parcela">💳 ${t.numero_parcela}/${t.total_parcelas}</span>`;
     
-    // CLASSES VISUAIS DIFERENTES POR TIPO+STATUS
     let cardClass, iconeClass, valorClass;
     if (ehVencida) {
       cardClass = 'vencida';
@@ -1531,21 +1750,18 @@
       ? `<span class="trans-prev-label">${ehEntrada ? 'A receber' : 'A pagar'}</span>` 
       : '';
     
-    const sinal = (!ehPrevista && ehEntrada) ? '+' : (!ehPrevista && !ehEntrada) ? '-' : (ehEntrada ? '+' : '-');
+    const sinal = ehEntrada ? '+' : '-';
     
-    // EMOJI ÍCONE
-    let emoji;
-    if (ehPrevista && ehEntrada) emoji = '💰';
-    else if (ehPrevista) emoji = '📅';
-    else emoji = cat?.icone || (ehEntrada ? '↓' : '↑');
+    // FIX BUG 1: usa ícone da categoria resolvida (do compromisso/renda)
+    const emoji = cat.icone || (ehEntrada ? '↓' : '↑');
     
     return `
       <div class="trans-card ${cardClass}" onclick="abrirDetalhe('${t.id}')">
-        <div class="trans-icone ${iconeClass}">${emoji}</div>
+        <div class="trans-icone ${iconeClass}" style="${cat.cor ? `background:${cat.cor}25;color:${cat.cor};` : ''}">${emoji}</div>
         <div class="trans-info">
           <div class="trans-desc">${t.descricao}</div>
           <div class="trans-meta">
-            ${cat ? `<span>${cat.nome}</span>` : ''}
+            <span>${cat.nome}</span>
             ${conta ? '<span>•</span>' + contaTag : ''}
             ${badges}
           </div>
@@ -1593,12 +1809,22 @@
   function renderCategorias(tipo) {
     const grid = document.getElementById('categorias-grid');
     const cats = categorias.filter(c => c.tipo === tipo);
-    grid.innerHTML = cats.map(c => `
+    let html = cats.map(c => `
       <div class="cat-opcao ${c.id === categoriaSelecionada ? 'active' : ''}" data-cat="${c.id}" onclick="selecionarCategoria('${c.id}')">
         <div class="cat-emoji">${c.icone || '📌'}</div>
         <div class="cat-nome">${c.nome}</div>
       </div>
     `).join('');
+    
+    // Botão de NOVA categoria
+    html += `
+      <div class="cat-opcao nova" onclick="abrirModalNovaCat()">
+        <div class="cat-emoji">➕</div>
+        <div class="cat-nome">+ Nova</div>
+      </div>
+    `;
+    
+    grid.innerHTML = html;
   }
   
   window.navegarMes = function(delta) {
@@ -1608,6 +1834,61 @@
   
   window.irParaHoje = function() {
     mesAtual = new Date();
+    carregarDados().then(render);
+  };
+  
+  // FIX BUG 3: Seletor de mês com lista
+  window.abrirSeletorMes = function() {
+    const area = document.getElementById('meses-area');
+    const hoje = new Date();
+    const anoAtual = hoje.getFullYear();
+    const mesHoje = hoje.getMonth();
+    const meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    
+    // Gera 36 meses (1 ano passado + ano atual + 1 ano futuro)
+    let html = '';
+    let ultimoAno = null;
+    
+    for (let i = -12; i < 24; i++) {
+      const d = new Date(anoAtual, mesHoje + i, 1);
+      const ano = d.getFullYear();
+      const mes = d.getMonth();
+      
+      if (ano !== ultimoAno) {
+        html += `<div class="ano-divider">${ano}</div><div class="meses-grid">`;
+        if (ultimoAno !== null) html = html.slice(0, -22) + '</div>' + html.slice(-22);
+        ultimoAno = ano;
+      }
+      
+      const ehHoje = (ano === anoAtual && mes === mesHoje);
+      const ehAtual = (ano === mesAtual.getFullYear() && mes === mesAtual.getMonth());
+      
+      let cls = '';
+      if (ehHoje) cls = 'hoje';
+      else if (ehAtual) cls = 'atual';
+      
+      html += `
+        <div class="mes-opcao ${cls}" onclick="selecionarMes(${ano}, ${mes})">
+          <div class="mes-nome">${meses[mes]}</div>
+          <div class="mes-ano">${ano}</div>
+        </div>
+      `;
+    }
+    html += '</div>';
+    
+    area.innerHTML = html;
+    document.getElementById('modal-meses').classList.add('show');
+    
+    // Scroll até o mês atual
+    setTimeout(() => {
+      const atual = document.querySelector('.mes-opcao.atual') || document.querySelector('.mes-opcao.hoje');
+      if (atual) atual.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }, 100);
+  };
+  
+  window.selecionarMes = function(ano, mes) {
+    mesAtual = new Date(ano, mes, 1);
+    fecharModal('modal-meses');
     carregarDados().then(render);
   };
   
@@ -1651,6 +1932,13 @@
     document.getElementById('extras-parcelado').classList.toggle('show', isParcelado);
   };
   
+  // FIX BUG 2: Detecta data futura e mostra aviso
+  window.checarDataFutura = function() {
+    const data = document.getElementById('f-data').value;
+    const hoje = new Date().toISOString().split('T')[0];
+    document.getElementById('data-futura-aviso').classList.toggle('show', data > hoje);
+  };
+  
   window.formatarValor = function(input) {
     let v = input.value.replace(/\D/g, '');
     if (!v) { input.value = ''; return; }
@@ -1679,6 +1967,7 @@
     document.getElementById('f-data').value = new Date().toISOString().split('T')[0];
     document.getElementById('f-valor-total').value = '';
     document.getElementById('msg-form').className = 'msg';
+    document.getElementById('data-futura-aviso').classList.remove('show');
     document.getElementById('toggle-recorrente').classList.remove('active');
     document.getElementById('toggle-parcelado').classList.remove('active');
     document.getElementById('extras-recorrente').classList.remove('show');
@@ -1709,6 +1998,105 @@
     document.getElementById(id).classList.remove('show');
   };
   
+  // === MODAL NOVA CATEGORIA (FIX BUG 4) ===
+  window.abrirModalNovaCat = function() {
+    document.getElementById('cat-nome').value = '';
+    document.getElementById('msg-cat').className = 'msg';
+    novaCatTipo = tipoSelecionado;
+    novaCatEmoji = '📌';
+    novaCatCor = '#00d97e';
+    
+    document.getElementById('cat-tab-saida').classList.toggle('active', novaCatTipo === 'saida');
+    document.getElementById('cat-tab-entrada').classList.toggle('active', novaCatTipo === 'entrada');
+    
+    renderEmojiPicker();
+    renderCorPicker();
+    
+    document.getElementById('modal-nova-cat').classList.add('show');
+  };
+  
+  function renderEmojiPicker() {
+    document.getElementById('emoji-picker').innerHTML = EMOJIS_DISPONIVEIS.map(e => `
+      <div class="emoji-pick ${e === novaCatEmoji ? 'active' : ''}" data-emoji="${e}" onclick="selecionarEmojiCat('${e}')">${e}</div>
+    `).join('');
+  }
+  
+  function renderCorPicker() {
+    document.getElementById('cor-picker').innerHTML = CORES_DISPONIVEIS.map(c => `
+      <div class="cor-pick ${c === novaCatCor ? 'active' : ''}" data-cor="${c}" style="background:${c};" onclick="selecionarCorCat('${c}')"></div>
+    `).join('');
+  }
+  
+  window.selecionarEmojiCat = function(e) {
+    novaCatEmoji = e;
+    document.querySelectorAll('.emoji-pick').forEach(el => el.classList.toggle('active', el.dataset.emoji === e));
+  };
+  
+  window.selecionarCorCat = function(c) {
+    novaCatCor = c;
+    document.querySelectorAll('.cor-pick').forEach(el => el.classList.toggle('active', el.dataset.cor === c));
+  };
+  
+  window.trocarTipoCat = function(tipo) {
+    novaCatTipo = tipo;
+    document.getElementById('cat-tab-saida').classList.toggle('active', tipo === 'saida');
+    document.getElementById('cat-tab-entrada').classList.toggle('active', tipo === 'entrada');
+  };
+  
+  window.salvarCategoria = async function() {
+    const btn = document.getElementById('btn-salvar-cat');
+    const nome = document.getElementById('cat-nome').value.trim();
+    
+    if (!nome) {
+      document.getElementById('msg-cat').className = 'msg show msg-error';
+      document.getElementById('msg-cat').textContent = 'Digite o nome da categoria';
+      return;
+    }
+    
+    btn.disabled = true;
+    btn.textContent = 'Criando...';
+    
+    try {
+      const { data, error } = await supabase.from('categorias').insert({
+        user_id: usuario.id,
+        nome,
+        icone: novaCatEmoji,
+        cor: novaCatCor,
+        tipo: novaCatTipo,
+        padrao: false,
+        ativa: true,
+        personalizada: true
+      }).select().single();
+      
+      if (error) throw error;
+      
+      // Recarrega categorias
+      const { data: catRes } = await supabase.from('categorias')
+        .select('*')
+        .or(`user_id.eq.${usuario.id},padrao.eq.true`)
+        .eq('ativa', true);
+      categorias = catRes || [];
+      
+      // Se o tipo da nova categoria for igual ao tipo selecionado no form, seleciona
+      if (novaCatTipo === tipoSelecionado) {
+        categoriaSelecionada = data.id;
+        renderCategorias(tipoSelecionado);
+      }
+      
+      await darXP(5, 'categoria_criada', 'Nova categoria: ' + nome);
+      mostrarToast('+5 XP ✨ Categoria criada');
+      
+      btn.disabled = false;
+      btn.textContent = 'Criar categoria';
+      fecharModal('modal-nova-cat');
+    } catch (e) {
+      document.getElementById('msg-cat').className = 'msg show msg-error';
+      document.getElementById('msg-cat').textContent = 'Erro: ' + (e.message || e);
+      btn.disabled = false;
+      btn.textContent = 'Criar categoria';
+    }
+  };
+  
   window.processarIA = async function(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -1726,11 +2114,7 @@
           'apikey': SUPABASE_KEY,
           'Authorization': 'Bearer ' + SUPABASE_KEY
         },
-        body: JSON.stringify({
-          tipo: 'ler_notinha',
-          imagem_base64: base64,
-          max_tokens: 1024
-        })
+        body: JSON.stringify({ tipo: 'ler_notinha', imagem_base64: base64, max_tokens: 1024 })
       });
       
       const data = await resp.json();
@@ -1748,7 +2132,6 @@
         fecharModal('modal-ia');
       }
     } catch (err) {
-      console.error('Erro IA:', err);
       document.getElementById('ia-analisando-area').classList.add('hidden');
       alert('⚠️ Erro: ' + err.message);
       fecharModal('modal-ia');
@@ -1766,6 +2149,7 @@
     btn.textContent = 'Salvar transação';
     btn.disabled = false;
     document.getElementById('msg-form').className = 'msg';
+    document.getElementById('data-futura-aviso').classList.remove('show');
     document.getElementById('toggle-recorrente').classList.remove('active');
     document.getElementById('toggle-parcelado').classList.remove('active');
     document.getElementById('extras-recorrente').classList.remove('show');
@@ -1784,18 +2168,7 @@
     
     categoriaSelecionada = null;
     if (r.categoria_sugerida) {
-      const mapeamento = {
-        'mercado': ['mercado','supermercado'],
-        'alimentacao': ['alimentação','alimentacao','restaurante'],
-        'delivery': ['delivery','ifood'],
-        'transporte': ['transporte','uber','combustível'],
-        'saude': ['saúde','saude','farmácia'],
-        'educacao': ['educação','educacao'],
-        'vestuario': ['vestuário','vestuario','roupa'],
-        'lazer': ['lazer'],
-        'outros': ['outros']
-      };
-      const palavras = mapeamento[r.categoria_sugerida] || [r.categoria_sugerida];
+      const palavras = r.categoria_sugerida.toLowerCase().split(/\s+/);
       const cat = categorias.find(c => c.tipo === 'saida' && palavras.some(p => c.nome.toLowerCase().includes(p)));
       if (cat) categoriaSelecionada = cat.id;
     }
@@ -1825,6 +2198,7 @@
     
     renderContasSelector();
     renderCategorias('saida');
+    checarDataFutura();
     
     const conf = r.confianca || 'média';
     let msg = `✨ <strong>IA preencheu tudo!</strong> Confiança: ${conf}. Revise e ajuste.`;
@@ -1840,6 +2214,7 @@
     const valor = valorParaNumero(document.getElementById('f-valor').value);
     const descricao = document.getElementById('f-descricao').value.trim();
     const data = document.getElementById('f-data').value;
+    const hoje = new Date().toISOString().split('T')[0];
     
     if (!valor || valor <= 0) {
       document.getElementById('msg-form').className = 'msg show msg-error';
@@ -1862,6 +2237,9 @@
       return;
     }
     
+    // FIX BUG 2: status auto baseado em data
+    const statusAuto = data > hoje ? 'prevista' : 'realizada';
+    
     btn.disabled = true;
     btn.textContent = 'Salvando...';
     
@@ -1883,11 +2261,12 @@
         for (let i = 0; i < nParcelas; i++) {
           const d = new Date(dataInicio);
           d.setMonth(d.getMonth() + i);
+          const dataStr = d.toISOString().split('T')[0];
           lanc.push({
             user_id: usuario.id,
             valor: valorParcela,
             descricao: `${descricao} (${i+1}/${nParcelas})`,
-            data: d.toISOString().split('T')[0],
+            data: dataStr,
             tipo: tipoSelecionado,
             categoria_id: categoriaSelecionada,
             conta_id: contaSelecionada,
@@ -1895,7 +2274,7 @@
             grupo_parcela: grupoId,
             numero_parcela: i + 1,
             total_parcelas: nParcelas,
-            status: 'realizada'
+            status: dataStr > hoje ? 'prevista' : 'realizada'
           });
         }
         await supabase.from('transacoes').insert(lanc);
@@ -1907,16 +2286,17 @@
         for (let i = 0; i < meses; i++) {
           const d = new Date(dataInicio);
           d.setMonth(d.getMonth() + i);
+          const dataStr = d.toISOString().split('T')[0];
           lanc.push({
             user_id: usuario.id,
             valor, descricao,
-            data: d.toISOString().split('T')[0],
+            data: dataStr,
             tipo: tipoSelecionado,
             categoria_id: categoriaSelecionada,
             conta_id: contaSelecionada,
             recorrente: true,
             grupo_recorrencia: grupoId,
-            status: 'realizada'
+            status: dataStr > hoje ? 'prevista' : 'realizada'
           });
         }
         await supabase.from('transacoes').insert(lanc);
@@ -1927,14 +2307,16 @@
           tipo: tipoSelecionado,
           categoria_id: categoriaSelecionada,
           conta_id: contaSelecionada,
-          status: 'realizada'
+          status: statusAuto
         });
       }
       
       if (!editandoId) {
         const xp = veiodaIA ? 20 : 10;
         await darXP(xp, veiodaIA ? 'trans_via_ia' : 'transacao_cadastrada', 'Transação: ' + descricao);
-        mostrarToast(`+${xp} XP ${veiodaIA ? '✨ IA' : '💸'}`);
+        let toastMsg = `+${xp} XP ${veiodaIA ? '✨ IA' : '💸'}`;
+        if (statusAuto === 'prevista' && !isParcelado && !isRecorrente) toastMsg += ' 📅 Prevista';
+        mostrarToast(toastMsg);
       }
       
       veiodaIA = false;
@@ -1956,34 +2338,22 @@
     if (!t) return;
     detalheAtual = t;
     
+    const cat = resolverCategoria(t);
     const conta = contas.find(c => c.id === t.conta_id);
     const ehPrevista = t.status === 'prevista';
     const ehEntrada = t.tipo === 'entrada';
     
     document.getElementById('detalhe-titulo').textContent = t.descricao;
     
-    // CORES DIFERENTES por tipo+status
     let bg, borda, cor, label;
     if (ehPrevista && ehEntrada) {
-      bg = 'rgba(0,217,126,0.1)';
-      borda = 'var(--brand)';
-      cor = 'var(--brand)';
-      label = '💰 A RECEBER';
+      bg = 'rgba(0,217,126,0.1)'; borda = 'var(--brand)'; cor = 'var(--brand)'; label = '💰 A RECEBER';
     } else if (ehPrevista) {
-      bg = 'rgba(255,184,0,0.1)';
-      borda = 'var(--warning)';
-      cor = 'var(--warning)';
-      label = '📅 A PAGAR';
+      bg = 'rgba(255,184,0,0.1)'; borda = 'var(--warning)'; cor = 'var(--warning)'; label = '📅 A PAGAR';
     } else if (ehEntrada) {
-      bg = 'var(--brand-soft)';
-      borda = 'var(--brand)';
-      cor = 'var(--brand)';
-      label = '↓ Entrada';
+      bg = 'var(--brand-soft)'; borda = 'var(--brand)'; cor = 'var(--brand)'; label = '↓ Entrada';
     } else {
-      bg = 'var(--danger-soft)';
-      borda = 'var(--danger)';
-      cor = 'var(--danger)';
-      label = '↑ Saída';
+      bg = 'var(--danger-soft)'; borda = 'var(--danger)'; cor = 'var(--danger)'; label = '↑ Saída';
     }
     
     let html = `
@@ -1993,7 +2363,7 @@
       </div>
       <div class="detalhe-card">
         <div class="detalhe-linha"><div class="detalhe-label">Data</div><div class="detalhe-valor">${new Date(t.data + 'T12:00:00').toLocaleDateString('pt-BR')}</div></div>
-        <div class="detalhe-linha"><div class="detalhe-label">Categoria</div><div class="detalhe-valor">${t.categorias?.icone || ''} ${t.categorias?.nome || 'Sem categoria'}</div></div>
+        <div class="detalhe-linha"><div class="detalhe-label">Categoria</div><div class="detalhe-valor">${cat.icone} ${cat.nome}</div></div>
         ${conta ? `<div class="detalhe-linha"><div class="detalhe-label">Conta</div><div class="detalhe-valor" style="color:${conta.cor};">${conta.icone} ${conta.nome}</div></div>` : ''}
         ${t.recorrente ? `<div class="detalhe-linha"><div class="detalhe-label">Tipo</div><div class="detalhe-valor">🔁 Recorrente</div></div>` : ''}
         ${t.parcelado ? `<div class="detalhe-linha"><div class="detalhe-label">Parcela</div><div class="detalhe-valor">💳 ${t.numero_parcela}/${t.total_parcelas}</div></div>` : ''}
@@ -2045,7 +2415,6 @@
       data: new Date().toISOString().split('T')[0]
     }).eq('id', detalheAtual.id);
     
-    // Se vinculada a dívida (só saídas), atualiza
     if (detalheAtual.divida_id && !ehEntrada) {
       const { data: divida } = await supabase.from('dividas').select('*').eq('id', detalheAtual.divida_id).single();
       if (divida) {
@@ -2058,13 +2427,10 @@
       }
     }
     
-    // Se vinculada a compromisso parcelado (saídas), incrementa parcelas pagas
     if (detalheAtual.compromisso_id && detalheAtual.parcelado && !ehEntrada) {
       const { data: comp } = await supabase.from('compromissos').select('*').eq('id', detalheAtual.compromisso_id).single();
       if (comp && comp.tipo === 'parcelado') {
-        await supabase.from('compromissos').update({ 
-          parcelas_pagas: (comp.parcelas_pagas || 0) + 1 
-        }).eq('id', comp.id);
+        await supabase.from('compromissos').update({ parcelas_pagas: (comp.parcelas_pagas || 0) + 1 }).eq('id', comp.id);
       }
     }
     
@@ -2088,6 +2454,7 @@
     btn.textContent = 'Salvar';
     btn.disabled = false;
     document.getElementById('msg-form').className = 'msg';
+    document.getElementById('data-futura-aviso').classList.remove('show');
     document.getElementById('toggle-recorrente').classList.remove('active');
     document.getElementById('toggle-parcelado').classList.remove('active');
     document.getElementById('extras-recorrente').classList.remove('show');
@@ -2107,6 +2474,7 @@
     
     renderContasSelector();
     renderCategorias(tipoSelecionado);
+    checarDataFutura();
     
     fecharModal('modal-detalhe');
     document.getElementById('modal-form').classList.add('show');
