@@ -52,7 +52,6 @@
     -webkit-text-fill-color: #fff !important;
   }
   
-  /* === HEADER === */
   .header {
     padding: 16px 20px;
     background: var(--bg);
@@ -79,7 +78,6 @@
   
   .header-skip:active { background: var(--bg-card); }
   
-  /* === PROGRESS BAR === */
   .progress-wrapper {
     flex: 1;
     height: 6px;
@@ -110,7 +108,6 @@
     padding-bottom: 120px;
   }
   
-  /* === TATU BUBBLE === */
   .tatu-bubble {
     background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%);
     border: 1px solid rgba(168, 85, 247, 0.3);
@@ -152,7 +149,6 @@
   
   .tatu-texto strong { color: var(--text); font-weight: 700; }
   
-  /* === STEP CONTENT === */
   .step-titulo {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 26px;
@@ -169,7 +165,6 @@
     margin-bottom: 24px;
   }
   
-  /* === BANCOS GRID === */
   .bancos-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -221,7 +216,6 @@
     line-height: 1.2;
   }
   
-  /* === INSTRUCAO CARD (TATU ENSINA) === */
   .instrucao-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -272,7 +266,6 @@
     flex-shrink: 0;
   }
   
-  /* === OPÇÕES (manual / IA) === */
   .opcoes-acao {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -320,7 +313,6 @@
     line-height: 1.2;
   }
   
-  /* === ITENS JÁ CADASTRADOS === */
   .item-cadastrado {
     background: var(--bg-card);
     border: 1px solid var(--brand);
@@ -368,7 +360,6 @@
     font-weight: 700;
   }
   
-  /* === FORM CARD === */
   .form-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -437,7 +428,6 @@
     min-height: 0;
   }
   
-  /* === TIPO TABS === */
   .tipo-tabs {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -466,41 +456,6 @@
   .tipo-tab.active.entrada { background: var(--brand); color: #001a0e; }
   .tipo-tab.active.saida { background: var(--danger); color: white; }
   
-  /* === CHOICE BOX (sim/não) === */
-  .choice-box {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  
-  .choice-btn {
-    background: var(--bg-card);
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    color: var(--text);
-    min-height: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-  
-  .choice-btn:active { transform: scale(0.96); }
-  
-  .choice-btn-emoji { font-size: 36px; }
-  
-  .choice-btn-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-  }
-  
-  /* === FOOTER BOTÕES === */
   .footer {
     position: fixed;
     bottom: 0;
@@ -551,7 +506,6 @@
   
   .btn-back:active { background: var(--bg-elev); }
   
-  /* === MENSAGENS === */
   .msg {
     padding: 12px;
     border-radius: 10px;
@@ -566,7 +520,6 @@
   .msg-error { background: var(--danger-soft); border: 1px solid rgba(255, 71, 87, 0.3); color: #ff6b78; }
   .msg-ia { background: var(--ia-soft); border: 1px solid rgba(168, 85, 247, 0.3); color: var(--ia); }
   
-  /* === ANÁLISE IA (PASSO FINAL) === */
   .analise-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -703,7 +656,6 @@
     color: var(--text-mute);
   }
   
-  /* === LOADING IA === */
   .ia-loading {
     text-align: center;
     padding: 60px 20px;
@@ -742,7 +694,6 @@
     font-style: italic;
   }
   
-  /* === UPLOAD AREA === */
   .upload-hidden { display: none; }
   
   .loader-circle {
@@ -754,7 +705,6 @@
     margin: 40px auto;
   }
   
-  /* === XP TOAST === */
   .xp-toast {
     position: fixed;
     top: 80px;
@@ -815,7 +765,6 @@
   
   const TOTAL_PASSOS = 8;
   
-  // === BANCOS BRASILEIROS ===
   const BANCOS = [
     { id: 'nubank', nome: 'Nubank', cor: '#820AD1', sigla: 'NU' },
     { id: 'itau', nome: 'Itaú', cor: '#EC7000', sigla: 'IT' },
@@ -855,7 +804,6 @@
   let perfil;
   let passoAtual = 0;
   
-  // Estado do wizard
   let bancosSelecionados = [];
   let bancoIndexAtual = 0;
   let contasAdicionadas = [];
@@ -865,13 +813,13 @@
   let dividasAdicionadas = [];
   let analiseIA = null;
   
-  let modoFoto = null; // 'conta', 'cartao', 'renda', 'despesa', 'divida'
+  let modoFoto = null;
   let alvoFotoAtual = null;
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
-      window.location.href = 'index.html?v=1';
+      window.location.href = 'index.html?v=' + Date.now();
       return;
     }
     usuario = session.user;
@@ -879,9 +827,9 @@
     const { data: p } = await supabase.from('perfis').select('*').eq('id', usuario.id).maybeSingle();
     perfil = p || {};
     
-    // Se já fez setup, redireciona
     if (perfil.setup_concluido) {
-      window.location.href = 'home.html?v=3';
+      // FIX v1.1: cache busting ao redirecionar
+      window.location.href = 'home.html?v=' + Date.now();
       return;
     }
     
@@ -889,7 +837,6 @@
     renderPasso();
   })();
   
-  // ============ NAVEGAÇÃO ============
   function renderPasso() {
     const pct = ((passoAtual + 1) / TOTAL_PASSOS) * 100;
     document.getElementById('progress-fill').style.width = pct + '%';
@@ -898,14 +845,8 @@
     salvarProgresso();
     
     const passos = [
-      renderPasso1,  // Boas-vindas
-      renderPasso2,  // Bancos
-      renderPasso3,  // Cadastrar conta de cada banco
-      renderPasso4,  // Cartões
-      renderPasso5,  // Renda
-      renderPasso6,  // Despesas fixas
-      renderPasso7,  // Dívidas
-      renderPasso8   // Análise final
+      renderPasso1, renderPasso2, renderPasso3, renderPasso4,
+      renderPasso5, renderPasso6, renderPasso7, renderPasso8
     ];
     
     passos[passoAtual]();
@@ -941,10 +882,10 @@
       setup_concluido_em: new Date().toISOString()
     }).eq('id', usuario.id);
     
-    window.location.href = 'home.html?v=3';
+    // FIX v1.1: cache busting
+    window.location.href = 'home.html?v=' + Date.now();
   };
   
-  // ============ PASSO 1: BOAS-VINDAS ============
   function renderPasso1() {
     const nome = perfil.nome || perfil.full_name || usuario.email?.split('@')[0] || 'amigo';
     const primeiroNome = nome.split(' ')[0];
@@ -995,7 +936,6 @@
     `;
   }
   
-  // ============ PASSO 2: BANCOS ============
   function renderPasso2() {
     const html = `
       <div class="tatu-bubble">
@@ -1034,7 +974,6 @@
     renderFooterPadrao(true, bancosSelecionados.length > 0);
   };
   
-  // ============ PASSO 3: CADASTRAR CONTA DE CADA BANCO ============
   function renderPasso3() {
     if (bancosSelecionados.length === 0) {
       proximoPasso();
@@ -1042,7 +981,6 @@
     }
     
     if (bancoIndexAtual >= bancosSelecionados.length) {
-      // Terminou todos os bancos
       bancoIndexAtual = 0;
       proximoPasso();
       return;
@@ -1060,7 +998,7 @@
           <div class="tatu-titulo">Tatu te ensina</div>
           <div class="tatu-texto">
             Vamos cadastrar sua conta do <strong>${banco.nome}</strong> agora.
-            ${ehCarteira ? 'Quanto tem em dinheiro vivo na carteira agora?' : 'Sigue os passos pra eu te ajudar a pegar o saldo.'}
+            ${ehCarteira ? 'Quanto tem em dinheiro vivo na carteira agora?' : 'Segue os passos pra eu te ajudar a pegar o saldo.'}
           </div>
         </div>
       </div>
@@ -1128,7 +1066,6 @@
     
     document.getElementById('container').innerHTML = html;
     
-    // Footer especial: pular esse banco
     document.getElementById('footer-content').innerHTML = `
       <button class="btn btn-back" onclick="voltarPasso()">‹</button>
       <button class="btn btn-primary" onclick="pularBancoOuSeguir()">${bancoIndexAtual + 1 === bancosSelecionados.length ? 'Próximo →' : 'Pular esse →'}</button>
@@ -1274,7 +1211,6 @@
     }, 800);
   };
   
-  // ============ PASSO 4: CARTÕES ============
   function renderPasso4() {
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble">
@@ -1410,7 +1346,6 @@
     
     cartoesAdicionados.push(data);
     
-    // Se tem fatura, cria dívida + previstas
     if (fatura > 0) {
       const dataVenc = new Date();
       dataVenc.setDate(10);
@@ -1451,7 +1386,6 @@
     setTimeout(() => renderPasso4(), 800);
   };
   
-  // ============ PASSO 5: RENDA ============
   function renderPasso5() {
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble">
@@ -1582,7 +1516,6 @@
     
     rendasAdicionadas.push(data);
     
-    // Gera 12 previstas
     const hoje = new Date();
     const diaUsar = dia || hoje.getDate();
     let mesInicial = hoje.getMonth();
@@ -1610,7 +1543,6 @@
     setTimeout(() => renderPasso5(), 800);
   };
   
-  // ============ PASSO 6: DESPESAS FIXAS ============
   function renderPasso6() {
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble">
@@ -1761,7 +1693,6 @@
     
     despesasAdicionadas.push(data);
     
-    // Gera 12 previstas
     const hoje = new Date();
     const diaUsar = dia || hoje.getDate();
     let mesInicial = hoje.getMonth();
@@ -1789,7 +1720,6 @@
     setTimeout(() => renderPasso6(), 800);
   };
   
-  // ============ PASSO 7: DÍVIDAS ============
   function renderPasso7() {
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble">
@@ -1917,7 +1847,6 @@
     setTimeout(() => renderPasso7(), 800);
   };
   
-  // ============ PASSO 8: ANÁLISE IA ============
   async function renderPasso8() {
     document.getElementById('container').innerHTML = `
       <div class="ia-loading">
@@ -1929,7 +1858,6 @@
     `;
     document.getElementById('footer-content').innerHTML = '';
     
-    // Pequenos delays pra dar sensação de processo
     setTimeout(() => { 
       const el = document.getElementById('ia-passo');
       if (el) el.textContent = 'Identificando seu nível financeiro...';
@@ -1943,7 +1871,6 @@
       if (el) el.textContent = 'Montando plano de 12 meses...';
     }, 5500);
     
-    // Coleta TODOS os dados pra IA analisar
     const dados = {
       contas: contasAdicionadas.map(c => ({ nome: c.nome, tipo: c.tipo, saldo: c.saldo_inicial })),
       cartoes: cartoesAdicionados.map(c => ({ nome: c.nome, limite: c.limite })),
@@ -1974,7 +1901,6 @@
         await salvarAnaliseEFinalizar();
         renderResultadoAnalise();
       } else {
-        // Erro: ainda salva o setup mas sem análise IA
         await salvarSetupSemAnalise();
         renderErroAnalise();
       }
@@ -2119,11 +2045,11 @@
     `;
   }
   
+  // FIX v1.1: cache busting com timestamp único pra forçar reload dos dados na home
   window.irParaHome = function() {
-    window.location.href = 'home.html?v=3';
+    window.location.href = 'home.html?v=' + Date.now();
   };
   
-  // ============ FOTO IA ============
   window.processarFoto = async function(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -2164,7 +2090,6 @@
         else if (modoFoto === 'cartao') await processarResultadoCartaoIA(data.resultado);
       } else {
         alert('⚠️ IA não conseguiu processar: ' + (data.resultado?.erro || 'erro desconhecido'));
-        // Volta pro passo
         if (modoFoto === 'conta') renderPasso3();
         else if (modoFoto === 'cartao') renderPasso4();
       }
@@ -2239,7 +2164,6 @@
     
     cartoesAdicionados.push(data);
     
-    // Se tem fatura, cria dívida + prevista
     if (r.tem_divida && r.valor_divida > 0) {
       const dataVenc = r.dia_vencimento ? calcularProxVenc(r.dia_vencimento) : (new Date(Date.now() + 30*24*60*60*1000)).toISOString().split('T')[0];
       
@@ -2284,7 +2208,6 @@
     return d.toISOString().split('T')[0];
   }
   
-  // ============ HELPERS ============
   function renderFooterPadrao(temVoltar, podeAvancar) {
     let html = '';
     if (temVoltar) {
