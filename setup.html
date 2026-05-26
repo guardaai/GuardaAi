@@ -167,10 +167,11 @@
   .aviso-divergencia { background: var(--warning-soft); border: 1px solid rgba(255, 184, 0, 0.4); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
   .aviso-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: var(--warning); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
   .aviso-texto { font-size: 13px; color: var(--text); line-height: 1.5; margin-bottom: 12px; }
-  .aviso-acoes { display: flex; gap: 8px; }
-  .aviso-btn { flex: 1; padding: 10px; border-radius: 10px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; border: none; }
-  .aviso-btn-primary { background: var(--brand); color: #001a0e; }
-  .aviso-btn-secondary { background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); }
+  
+  .restaurando-banner { background: linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%); border: 1px solid var(--brand); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+  .restaurando-emoji { font-size: 20px; }
+  .restaurando-texto { font-size: 12px; color: var(--text); line-height: 1.4; }
+  .restaurando-texto strong { color: var(--brand); }
 </style>
 </head>
 <body>
@@ -268,6 +269,7 @@
   let modoFoto = null;
   let alvoFoto = null;
   let dadosIAPendentes = null;
+  let restaurouEstado = false;
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -279,9 +281,78 @@
     
     if (perfil.setup_concluido) { window.location.href = 'home.html?v=' + Date.now(); return; }
     
-    passoAtual = perfil.setup_passo_atual || 0;
+    // 🔥 v3.2 FIX: RECONSTRÓI ESTADO DO BANCO
+    await reconstruirEstadoCompleto();
+    
     renderPasso();
   })();
+  
+  // ============================================
+  // 🔥 v3.2: RECONSTRÓI ESTADO PÓS-REFRESH
+  // ============================================
+  
+  async function reconstruirEstadoCompleto() {
+    try {
+      // Restaura objetivo
+      objetivoPrincipal = perfil.objetivo_principal || null;
+      
+      // Busca tudo que já foi cadastrado
+      const [contasRes, cartoesRes, rendasRes, despRes, divsRes] = await Promise.all([
+        supabase.from('contas').select('*').eq('user_id', usuario.id).neq('tipo', 'cartao_credito').eq('ativa', true),
+        supabase.from('contas').select('*').eq('user_id', usuario.id).eq('tipo', 'cartao_credito').eq('ativa', true),
+        supabase.from('rendas').select('*').eq('user_id', usuario.id),
+        supabase.from('compromissos').select('*').eq('user_id', usuario.id),
+        supabase.from('dividas').select('*').eq('user_id', usuario.id).eq('status', 'ativa')
+      ]);
+      
+      contasAdicionadas = contasRes.data || [];
+      cartoesAdicionados = cartoesRes.data || [];
+      rendasAdicionadas = rendasRes.data || [];
+      despesasAdicionadas = despRes.data || [];
+      dividasAdicionadas = divsRes.data || [];
+      
+      // Reconstrói bancosSelecionados das contas reais
+      const bancosUsados = new Set();
+      contasAdicionadas.forEach(c => {
+        const banco = BANCOS.find(b => b.nome === c.banco || (c.tipo === 'carteira' && b.id === 'carteira'));
+        if (banco) bancosUsados.add(banco.id);
+      });
+      
+      // Reconstrói bancosCartoes
+      const bancosCart = new Set();
+      const qtdCart = {};
+      cartoesAdicionados.forEach(c => {
+        const banco = BANCOS.find(b => b.nome === c.banco);
+        if (banco) {
+          bancosCart.add(banco.id);
+          qtdCart[banco.id] = (qtdCart[banco.id] || 0) + 1;
+        }
+      });
+      
+      bancosCartoes = Array.from(bancosCart);
+      qtdPorBanco = qtdCart;
+      if (cartoesAdicionados.length > 0) temCartoes = true;
+      
+      // Passo do banco: usa o que tá no perfil OU calcula pelo que já cadastrou
+      passoAtual = perfil.setup_passo_atual || 0;
+      
+      // Detecta se há restauração visual a fazer
+      if (contasAdicionadas.length > 0 || cartoesAdicionados.length > 0 || 
+          rendasAdicionadas.length > 0 || despesasAdicionadas.length > 0 || 
+          dividasAdicionadas.length > 0 || objetivoPrincipal) {
+        restaurouEstado = true;
+      }
+      
+      // Lista de bancos selecionados precisa incluir os do passo 3 atual
+      // Se passou do passo 3, pega bancos que tem contas
+      if (passoAtual >= 3) {
+        bancosSelecionados = Array.from(bancosUsados);
+      }
+      
+    } catch (e) {
+      console.error('Erro reconstruindo estado:', e);
+    }
+  }
   
   function renderPasso() {
     const pct = ((passoAtual + 1) / TOTAL_PASSOS) * 100;
@@ -294,6 +365,18 @@
   
   async function salvarProgresso() {
     try { await supabase.from('perfis').update({ setup_passo_atual: passoAtual }).eq('id', usuario.id); } catch (e) {}
+  }
+  
+  function bannerRestauracao() {
+    if (!restaurouEstado) return '';
+    const itens = [];
+    if (contasAdicionadas.length > 0) itens.push(`${contasAdicionadas.length} conta${contasAdicionadas.length === 1 ? '' : 's'}`);
+    if (cartoesAdicionados.length > 0) itens.push(`${cartoesAdicionados.length} cartão${cartoesAdicionados.length === 1 ? '' : 'es'}`);
+    if (rendasAdicionadas.length > 0) itens.push(`${rendasAdicionadas.length} renda${rendasAdicionadas.length === 1 ? '' : 's'}`);
+    if (despesasAdicionadas.length > 0) itens.push(`${despesasAdicionadas.length} despesa${despesasAdicionadas.length === 1 ? '' : 's'}`);
+    if (dividasAdicionadas.length > 0) itens.push(`${dividasAdicionadas.length} dívida${dividasAdicionadas.length === 1 ? '' : 's'}`);
+    if (itens.length === 0) return '';
+    return `<div class="restaurando-banner"><div class="restaurando-emoji">🦔</div><div class="restaurando-texto">Continuando de onde você parou: <strong>${itens.join(', ')}</strong> já cadastrado${itens.length === 1 ? '' : 's'}. Pode continuar!</div></div>`;
   }
   
   window.proximoPasso = function() {
@@ -315,6 +398,7 @@
     const nome = perfil.nome || usuario.email?.split('@')[0] || 'amigo';
     const pnome = nome.split(' ')[0];
     document.getElementById('container').innerHTML = `
+      ${bannerRestauracao()}
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
@@ -338,9 +422,10 @@
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="proximoPasso()">🚀 Bora começar!</button>`;
   }
   
-  // ============ PASSO 2: OBJETIVO ============
+  // ============ PASSO 2 ============
   function renderP2() {
     document.getElementById('container').innerHTML = `
+      ${bannerRestauracao()}
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
@@ -386,9 +471,18 @@
     proximoPasso();
   };
   
-  // ============ PASSO 3: BANCOS ============
+  // ============ PASSO 3 ============
   function renderP3() {
+    // Se já tem contas cadastradas, pré-seleciona bancos delas
+    if (bancosSelecionados.length === 0 && contasAdicionadas.length > 0) {
+      contasAdicionadas.forEach(c => {
+        const banco = BANCOS.find(b => b.nome === c.banco || (c.tipo === 'carteira' && b.id === 'carteira'));
+        if (banco && !bancosSelecionados.includes(banco.id)) bancosSelecionados.push(banco.id);
+      });
+    }
+    
     document.getElementById('container').innerHTML = `
+      ${bannerRestauracao()}
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
@@ -419,9 +513,24 @@
     if (btn) btn.disabled = bancosSelecionados.length === 0;
   };
   
-  // ============ PASSO 4: CONTAS ============
+  // ============ PASSO 4 ============
   function renderP4() {
     if (bancosSelecionados.length === 0) { proximoPasso(); return; }
+    
+    // Calcula o próximo banco que NÃO tem conta cadastrada
+    if (bancoIndexAtual === 0 && contasAdicionadas.length > 0) {
+      // Encontra primeiro banco selecionado que ainda não tem conta
+      for (let i = 0; i < bancosSelecionados.length; i++) {
+        const bId = bancosSelecionados[i];
+        const banco = BANCOS.find(b => b.id === bId);
+        const jaTem = contasAdicionadas.some(c => 
+          c.banco === banco.nome || (banco.id === 'carteira' && c.tipo === 'carteira')
+        );
+        if (!jaTem) { bancoIndexAtual = i; break; }
+        if (i === bancosSelecionados.length - 1) { bancoIndexAtual = bancosSelecionados.length; }
+      }
+    }
+    
     if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); return; }
     
     const bId = bancosSelecionados[bancoIndexAtual];
@@ -576,11 +685,31 @@
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  // ============ PASSO 5: CARTÕES ============
+  // ============ PASSO 5 ============
   function renderP5() {
     if (temCartoes === null) { renderP5_Pergunta(); return; }
     if (temCartoes === false) { proximoPasso(); return; }
     if (bancosCartoes.length === 0) { renderP5_SelBancos(); return; }
+    
+    // Calcula posição atual baseado em cartões já cadastrados
+    if (bancoCartaoIdx === 0 && cartaoIdx === 0 && cartoesAdicionados.length > 0) {
+      // Encontra primeiro banco/cartão que não foi cadastrado
+      let encontrou = false;
+      for (let i = 0; i < bancosCartoes.length; i++) {
+        const bId = bancosCartoes[i];
+        const banco = BANCOS.find(b => b.id === bId);
+        const qtdEsperada = qtdPorBanco[bId] || 0;
+        const qtdJa = cartoesAdicionados.filter(c => c.banco === banco.nome).length;
+        if (qtdJa < qtdEsperada) {
+          bancoCartaoIdx = i;
+          cartaoIdx = qtdJa;
+          encontrou = true;
+          break;
+        }
+      }
+      if (!encontrou) { bancoCartaoIdx = bancosCartoes.length; cartaoIdx = 0; }
+    }
+    
     if (bancoCartaoIdx >= bancosCartoes.length) { bancoCartaoIdx = 0; cartaoIdx = 0; renderP5_Resumo(); return; }
     
     const bId = bancosCartoes[bancoCartaoIdx];
@@ -592,6 +721,7 @@
   
   function renderP5_Pergunta() {
     document.getElementById('container').innerHTML = `
+      ${bannerRestauracao()}
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Agora os <strong>cartões de crédito</strong>. Você pode mandar foto da fatura OU preencher manual.</div></div>
@@ -626,6 +756,15 @@
       await supabase.from('contas').delete().eq('id', id);
       cartoesAdicionados = cartoesAdicionados.filter(c => c.id !== id);
       dividasAdicionadas = dividasAdicionadas.filter(d => d.conta_id !== id);
+      
+      // Reconta qtdPorBanco
+      const novoQtd = {};
+      cartoesAdicionados.forEach(c => {
+        const banco = BANCOS.find(b => b.nome === c.banco);
+        if (banco) novoQtd[banco.id] = (novoQtd[banco.id] || 0) + 1;
+      });
+      // Mantém qtd original ou ajusta
+      
       renderP5();
     } catch (e) { alert('Erro: ' + e.message); }
   };
@@ -717,6 +856,19 @@
           <div class="opcao-btn-sub">Você preenche</div>
         </div>
       </div>
+      
+      ${cartoesAdicionados.length > 0 ? `
+        <div style="margin-top:20px;">
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;">✅ Já cadastrados (${cartoesAdicionados.length})</div>
+          ${cartoesAdicionados.map(c => `
+            <div class="item-cadastrado">
+              <div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div>
+              <div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)}</div></div>
+              <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
     `;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltCartao()">‹</button><button class="btn btn-primary" onclick="pulaCartao()">Pular esse →</button>`;
   }
@@ -882,9 +1034,10 @@
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">Próximo →</button>`;
   }
   
-  // ============ PASSO 6: RENDA ============
+  // ============ PASSO 6 ============
   function renderP6() {
     document.getElementById('container').innerHTML = `
+      ${bannerRestauracao()}
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Sua <strong>renda mensal</strong>. Tudo que entra todo mês: salário, freela, aluguel recebido.</div></div></div>
       <div class="step-titulo">Sua renda mensal</div>
       <div class="step-subtitulo">Adicione todas as fontes.</div>
@@ -979,9 +1132,10 @@
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  // ============ PASSO 7: DESPESAS ============
+  // ============ PASSO 7 ============
   function renderP7() {
     document.getElementById('container').innerHTML = `
+      ${bannerRestauracao()}
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>Despesas fixas</strong>: luz, água, internet, aluguel, streaming. Pode <strong>tirar foto do boleto</strong> que eu cadastro!</div></div></div>
       <div class="step-titulo">Despesas fixas mensais</div>
       <div class="step-subtitulo">Tudo que vence todo mês.</div>
@@ -1100,10 +1254,11 @@
     } catch (e) { alert('Erro: ' + e.message); }
   }
   
-  // ============ PASSO 8: DÍVIDAS ============
+  // ============ PASSO 8 ============
   function renderP8() {
     const outrasDivs = dividasAdicionadas.filter(d => d.tipo !== 'cartao');
     document.getElementById('container').innerHTML = `
+      ${bannerRestauracao()}
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Tem <strong>outras dívidas</strong>? Empréstimo, financiamento, loja, cheque especial? Pode tirar foto do contrato ou print de negociação!</div></div></div>
       <div class="step-titulo">Outras dívidas?</div>
       <div class="step-subtitulo">Empréstimos, financiamentos, cheque especial...</div>
@@ -1187,7 +1342,7 @@
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  // ============ PASSO 9: ANÁLISE ============
+  // ============ PASSO 9 ============
   async function renderP9() {
     document.getElementById('container').innerHTML = `
       <div class="ia-loading">
@@ -1303,7 +1458,7 @@
   
   function renderErro() {
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Setup completo! Tive um problema gerando a análise, mas teus dados estão salvos. Você pode rodar a análise depois pelo chat.</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Setup completo! Tive um problema gerando a análise, mas teus dados estão salvos.</div></div></div>
       <div class="form-card" style="text-align:center;padding:30px 20px;">
         <div style="font-size:48px;margin-bottom:12px;">✅</div>
         <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px;">Tudo cadastrado!</div>
@@ -1315,7 +1470,7 @@
   
   window.irHome = function() { window.location.href = 'home.html?v=' + Date.now(); };
   
-  // ============ FOTO + IA (CORRIGIDO v3.1) ============
+  // ============ FOTO + IA ============
   
   window.abrirFoto = function(modo, alvo) {
     modoFoto = modo;
@@ -1343,7 +1498,6 @@
       const el = document.getElementById('p-foto');
       if (el) el.textContent = 'IA Claude lendo a foto...';
     } catch (err) {
-      console.error(err);
       alert('⚠️ Não consegui processar essa foto.');
       voltarAposFoto();
       return;
@@ -1369,12 +1523,10 @@
         else if (modoFoto === 'boleto') await processarBoleto(d.resultado);
         else if (modoFoto === 'contrato') await processarContrato(d.resultado);
       } else {
-        const erro = d.resultado?.erro || 'erro';
-        alert('⚠️ IA não conseguiu: ' + erro);
+        alert('⚠️ IA não conseguiu: ' + (d.resultado?.erro || 'erro'));
         voltarAposFoto();
       }
     } catch (err) {
-      console.error(err);
       alert('Erro: ' + err.message);
       voltarAposFoto();
     }
@@ -1406,44 +1558,34 @@
           if (kb > 4000 && q > 0.5) b64 = c.toDataURL('image/jpeg', 0.7);
           res(b64);
         };
-        img.onerror = () => rej(new Error('Erro carregando imagem'));
+        img.onerror = () => rej(new Error('Erro'));
         img.src = e.target.result;
       };
-      r.onerror = () => rej(new Error('Erro lendo arquivo'));
+      r.onerror = () => rej(new Error('Erro'));
       r.readAsDataURL(file);
     });
   }
   
-  // 🔥 v3.1 FIX: respeita banco selecionado pelo usuário
   async function checarDivergenciaConta(r) {
     const bancoSelecionado = BANCOS.find(b => b.id === alvoFoto);
     const bancoDetectado = (r.banco_detectado || '').toLowerCase();
     const nomeSelecionado = bancoSelecionado.nome.toLowerCase();
-    
-    // Detecta divergência (banco da IA não bate com selecionado)
     const houveDivergencia = bancoDetectado && 
       !bancoDetectado.includes(nomeSelecionado) && 
       !nomeSelecionado.includes(bancoDetectado);
     
     if (houveDivergencia) {
-      // Mostra aviso pro usuário decidir
       dadosIAPendentes = r;
       document.getElementById('container').innerHTML = `
         <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu detectou algo</div><div class="tatu-texto">Você escolheu <strong>${bancoSelecionado.nome}</strong>, mas a foto parece ser <strong>${r.banco_detectado}</strong>.</div></div></div>
-        
         <div class="aviso-divergencia">
           <div class="aviso-titulo">⚠️ Banco diferente detectado</div>
-          <div class="aviso-texto">A IA leu a foto e identificou como <strong>${r.banco_detectado}</strong>, mas você selecionou <strong>${bancoSelecionado.nome}</strong>.<br><br>O que prefere fazer?</div>
+          <div class="aviso-texto">A IA leu como <strong>${r.banco_detectado}</strong>, mas você selecionou <strong>${bancoSelecionado.nome}</strong>.<br><br>O que prefere fazer?</div>
         </div>
-        
         <div class="form-card">
           <div style="display:flex;flex-direction:column;gap:10px;">
-            <button class="btn btn-primary" onclick="usarBancoSelecionado()">
-              ✅ Usar ${bancoSelecionado.nome} mesmo (foto pode estar errada)
-            </button>
-            <button class="btn" style="background:var(--warning-soft);color:var(--warning);border:1px solid var(--warning);" onclick="cancelarFoto()">
-              🔄 Cancelar e mandar outra foto
-            </button>
+            <button class="btn btn-primary" onclick="usarBancoSelecionado()">✅ Usar ${bancoSelecionado.nome} mesmo</button>
+            <button class="btn" style="background:var(--warning-soft);color:var(--warning);border:1px solid var(--warning);" onclick="cancelarFoto()">🔄 Cancelar e mandar outra</button>
           </div>
         </div>
       `;
@@ -1451,7 +1593,6 @@
       return;
     }
     
-    // Sem divergência: processa direto
     await processarContaFinal(r, bancoSelecionado);
   }
   
@@ -1467,7 +1608,6 @@
   };
   
   async function processarContaFinal(r, banco) {
-    // SEMPRE usa o banco selecionado pelo usuário
     const dados = {
       user_id: usuario.id,
       nome: banco.nome,
@@ -1492,13 +1632,11 @@
     } catch (e) { alert('Erro: ' + e.message); renderP4(); }
   }
   
-  // 🔥 v3.1 FIX: respeita banco selecionado também no cartão
   async function checarDivergenciaCartao(r) {
     const bId = alvoFoto;
     const bancoSelecionado = BANCOS.find(b => b.id === bId);
     const bancoDetectado = (r.banco_detectado || '').toLowerCase();
     const nomeSelecionado = bancoSelecionado.nome.toLowerCase();
-    
     const houveDivergencia = bancoDetectado && 
       !bancoDetectado.includes(nomeSelecionado) && 
       !nomeSelecionado.includes(bancoDetectado);
@@ -1507,20 +1645,14 @@
       dadosIAPendentes = r;
       document.getElementById('container').innerHTML = `
         <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu detectou algo</div><div class="tatu-texto">Você está cadastrando cartão do <strong>${bancoSelecionado.nome}</strong>, mas a foto parece ser do <strong>${r.banco_detectado}</strong>.</div></div></div>
-        
         <div class="aviso-divergencia">
           <div class="aviso-titulo">⚠️ Banco diferente na foto</div>
-          <div class="aviso-texto">A IA leu como <strong>${r.banco_detectado}</strong>, mas você selecionou <strong>${bancoSelecionado.nome}</strong>.<br><br>O que prefere fazer?</div>
+          <div class="aviso-texto">A IA leu como <strong>${r.banco_detectado}</strong>, mas você selecionou <strong>${bancoSelecionado.nome}</strong>.</div>
         </div>
-        
         <div class="form-card">
           <div style="display:flex;flex-direction:column;gap:10px;">
-            <button class="btn btn-primary" onclick="usarBancoCartaoSelecionado()">
-              ✅ Usar ${bancoSelecionado.nome} mesmo
-            </button>
-            <button class="btn" style="background:var(--warning-soft);color:var(--warning);border:1px solid var(--warning);" onclick="cancelarFoto()">
-              🔄 Cancelar e mandar outra foto
-            </button>
+            <button class="btn btn-primary" onclick="usarBancoCartaoSelecionado()">✅ Usar ${bancoSelecionado.nome} mesmo</button>
+            <button class="btn" style="background:var(--warning-soft);color:var(--warning);border:1px solid var(--warning);" onclick="cancelarFoto()">🔄 Cancelar</button>
           </div>
         </div>
       `;
@@ -1550,11 +1682,8 @@
     
     cartaoTemp = { bancoId: banco.id, nome, limite, fechamento: fec, vencimento: ven };
     
-    if (valor > 0) {
-      await salvarCartaoFinal({ valor, paga: false, atrasada });
-    } else {
-      await salvarCartaoFinal({ valor: 0, paga: true, atrasada: false });
-    }
+    if (valor > 0) await salvarCartaoFinal({ valor, paga: false, atrasada });
+    else await salvarCartaoFinal({ valor: 0, paga: true, atrasada: false });
   }
   
   async function processarBoleto(r) {
@@ -1562,13 +1691,11 @@
     const cat = r.categoria || 'outro';
     const val = r.valor || 0;
     const dia = r.dia_vencimento || null;
-    
     if (val <= 0) {
-      alert('⚠️ IA não conseguiu ler o valor do boleto. Tenta manual.');
+      alert('⚠️ IA não conseguiu ler o valor. Tenta manual.');
       renderP7();
       return;
     }
-    
     await salvarDespesaNoBanco(nome, cat, val, dia);
   }
   
@@ -1576,17 +1703,14 @@
     const cred = r.credor || 'Credor';
     const tipo = r.tipo || 'outro';
     const val = r.valor_total || 0;
-    
     if (val <= 0) {
       alert('⚠️ IA não conseguiu ler o valor. Tenta manual.');
       renderP8();
       return;
     }
-    
     const dv = new Date();
     if (r.data_vencimento_proxima) dv.setTime(new Date(r.data_vencimento_proxima).getTime());
     else dv.setDate(dv.getDate() + 30);
-    
     try {
       const { data, error } = await supabase.from('dividas').insert({
         user_id: usuario.id, credor: cred, tipo, descricao: `Dívida ${cred}`,
