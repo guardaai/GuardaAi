@@ -274,7 +274,6 @@
     line-height: 1.2;
   }
   
-  /* FILTRO STATUS */
   .filtro-status {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -345,12 +344,21 @@
   
   .trans-card:active { transform: scale(0.99); }
   
-  .trans-card.prevista {
+  /* SAÍDA PREVISTA (a pagar) */
+  .trans-card.prevista-saida {
     background: linear-gradient(135deg, rgba(255, 184, 0, 0.05) 0%, var(--bg-card) 100%);
     border-color: rgba(255, 184, 0, 0.25);
     border-left: 3px solid var(--warning);
   }
   
+  /* ENTRADA PREVISTA (a receber) - verde */
+  .trans-card.prevista-entrada {
+    background: linear-gradient(135deg, rgba(0, 217, 126, 0.05) 0%, var(--bg-card) 100%);
+    border-color: rgba(0, 217, 126, 0.25);
+    border-left: 3px solid var(--brand);
+  }
+  
+  /* VENCIDA */
   .trans-card.vencida {
     background: linear-gradient(135deg, rgba(255, 71, 87, 0.05) 0%, var(--bg-card) 100%);
     border-color: rgba(255, 71, 87, 0.3);
@@ -377,9 +385,14 @@
     color: var(--danger);
   }
   
-  .trans-icone.prevista {
+  .trans-icone.prevista-saida {
     background: var(--warning-soft);
     color: var(--warning);
+  }
+  
+  .trans-icone.prevista-entrada {
+    background: var(--brand-soft);
+    color: var(--brand);
   }
   
   .trans-info { flex: 1; min-width: 0; }
@@ -429,7 +442,8 @@
   
   .trans-valor.entrada { color: var(--brand); }
   .trans-valor.saida { color: var(--danger); }
-  .trans-valor.prevista { color: var(--warning); }
+  .trans-valor.prevista-saida { color: var(--warning); }
+  .trans-valor.prevista-entrada { color: var(--brand); }
   
   .trans-prev-label {
     display: block;
@@ -441,7 +455,7 @@
     letter-spacing: 0.05em;
   }
   
-  .badge-recorrente, .badge-parcela, .badge-prevista, .badge-vencida {
+  .badge-recorrente, .badge-parcela, .badge-prevista, .badge-vencida, .badge-receber {
     font-size: 9px;
     padding: 2px 5px;
     border-radius: 4px;
@@ -453,6 +467,7 @@
   .badge-recorrente { background: var(--info-soft); color: var(--info); }
   .badge-parcela { background: var(--warning-soft); color: var(--warning); }
   .badge-prevista { background: rgba(255,184,0,0.15); color: var(--warning); }
+  .badge-receber { background: rgba(0,217,126,0.15); color: var(--brand); }
   .badge-vencida { background: var(--danger-soft); color: var(--danger); }
   
   .empty {
@@ -891,6 +906,12 @@
     margin-top: 8px;
   }
   
+  .btn-success {
+    background: var(--brand);
+    color: #001a0e;
+    margin-top: 8px;
+  }
+  
   .msg {
     padding: 12px;
     border-radius: 10px;
@@ -1022,9 +1043,9 @@
 <body>
 
 <div class="header">
-  <button class="back-btn" onclick="window.location.href='home.html?v=1'">‹</button>
+  <button class="back-btn" onclick="window.location.href='home.html?v=3'">‹</button>
   <div class="header-title">Transações</div>
-  <div class="brand-mark-mini" onclick="window.location.href='home.html?v=1'"></div>
+  <div class="brand-mark-mini" onclick="window.location.href='home.html?v=3'"></div>
 </div>
 
 <div class="container">
@@ -1051,11 +1072,18 @@
   </div>
   
   <div class="resumo-cards" id="previstas-cards" style="display:none;">
-    <div class="resumo-card" style="border-color:rgba(255,184,0,0.3);">
-      <div class="resumo-label">📅 Previstas</div>
-      <div class="resumo-valor warning" id="total-previstas">R$ 0,00</div>
+    <div class="resumo-card" style="border-color:rgba(0,217,126,0.3);">
+      <div class="resumo-label">💰 A Receber</div>
+      <div class="resumo-valor brand" id="total-receber">R$ 0,00</div>
     </div>
-    <div class="resumo-card" style="border-color:rgba(255,71,87,0.3);">
+    <div class="resumo-card" style="border-color:rgba(255,184,0,0.3);">
+      <div class="resumo-label">📅 A Pagar</div>
+      <div class="resumo-valor warning" id="total-pagar">R$ 0,00</div>
+    </div>
+  </div>
+  
+  <div class="resumo-cards" id="vencidas-cards" style="display:none;">
+    <div class="resumo-card" style="border-color:rgba(255,71,87,0.3);grid-column:1/-1;">
       <div class="resumo-label">⚠️ Vencidas</div>
       <div class="resumo-valor danger" id="total-vencidas">R$ 0,00</div>
     </div>
@@ -1152,7 +1180,7 @@
         <div class="toggle-extras" id="extras-recorrente">
           <div class="field" style="margin-top:12px;margin-bottom:0;">
             <label>Repetir por quantos meses?</label>
-            <input type="number" id="f-recorrencia-meses" placeholder="Ex: 12" min="2" max="36" value="12">
+            <input type="number" id="f-recorrencia-meses" placeholder="12" min="2" max="36" value="12">
           </div>
         </div>
       </div>
@@ -1169,7 +1197,7 @@
           <div class="field-row" style="margin-top:12px;margin-bottom:0;">
             <div class="field" style="margin-bottom:0;">
               <label>Nº parcelas</label>
-              <input type="number" id="f-parcelas" placeholder="Ex: 12" min="2" max="24" value="3">
+              <input type="number" id="f-parcelas" placeholder="12" min="2" max="24" value="3">
             </div>
             <div class="field" style="margin-bottom:0;">
               <label>Valor total</label>
@@ -1278,7 +1306,7 @@
     const inicio = new Date(mesAtual.getFullYear(), mesAtual.getMonth(), 1).toISOString().split('T')[0];
     const fim = new Date(mesAtual.getFullYear(), mesAtual.getMonth() + 1, 0).toISOString().split('T')[0];
     
-    const [transRes, catRes, contasRes] = await Promise.all([
+    const [transRes, catRes, contasRes, transContasRes] = await Promise.all([
       supabase.from('transacoes')
         .select('*, categorias(nome, icone, cor)')
         .eq('user_id', usuario.id)
@@ -1294,25 +1322,25 @@
         .eq('user_id', usuario.id)
         .eq('ativa', true)
         .order('padrao', { ascending: false })
-        .order('criado_em', { ascending: true })
+        .order('criado_em', { ascending: true }),
+      // OTIMIZAÇÃO: 1 query única pra todos saldos
+      supabase.from('transacoes')
+        .select('valor, tipo, conta_id')
+        .eq('user_id', usuario.id)
+        .eq('status', 'realizada')
+        .not('conta_id', 'is', null)
     ]);
     
     transacoes = transRes.data || [];
     categorias = catRes.data || [];
     contas = contasRes.data || [];
     
-    // Calcula saldo de cada conta (só realizadas)
     saldosContas = {};
+    const tcs = transContasRes.data || [];
     for (const c of contas) {
-      const { data: t } = await supabase
-        .from('transacoes')
-        .select('valor, tipo')
-        .eq('user_id', usuario.id)
-        .eq('conta_id', c.id)
-        .eq('status', 'realizada');
       let s = Number(c.saldo_inicial || 0);
-      (t || []).forEach(tx => {
-        s += tx.tipo === 'entrada' ? Number(tx.valor) : -Number(tx.valor);
+      tcs.filter(t => t.conta_id === c.id).forEach(t => {
+        s += t.tipo === 'entrada' ? Number(t.valor) : -Number(t.valor);
       });
       saldosContas[c.id] = s;
     }
@@ -1343,9 +1371,10 @@
     const saida = realizadas.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
     const saldo = entrada - saida;
     
-    const previsto = previstas.reduce((a, t) => a + (t.tipo === 'entrada' ? Number(t.valor) : -Number(t.valor)), 0);
-    const vencidas = previstas.filter(t => t.data < hoje).reduce((a, t) => a + Number(t.valor), 0);
-    const previstasNaoVencidas = previstas.filter(t => t.data >= hoje).reduce((a, t) => a + Number(t.valor), 0);
+    // CORREÇÃO: separa A Receber e A Pagar
+    const aReceber = previstas.filter(t => t.tipo === 'entrada' && t.data >= hoje).reduce((a, t) => a + Number(t.valor), 0);
+    const aPagar = previstas.filter(t => t.tipo === 'saida' && t.data >= hoje).reduce((a, t) => a + Number(t.valor), 0);
+    const vencidas = previstas.filter(t => t.data < hoje).reduce((a, t) => a + (t.tipo === 'saida' ? Number(t.valor) : -Number(t.valor)), 0);
     
     document.getElementById('total-entrada').textContent = `R$ ${formatarMoeda(entrada)}`;
     document.getElementById('total-saida').textContent = `R$ ${formatarMoeda(saida)}`;
@@ -1356,14 +1385,23 @@
     
     if (previstas.length > 0) {
       document.getElementById('previstas-cards').style.display = 'grid';
-      document.getElementById('total-previstas').textContent = `R$ ${formatarMoeda(previstasNaoVencidas)}`;
-      document.getElementById('total-vencidas').textContent = `R$ ${formatarMoeda(vencidas)}`;
+      document.getElementById('total-receber').textContent = `+R$ ${formatarMoeda(aReceber)}`;
+      document.getElementById('total-pagar').textContent = `R$ ${formatarMoeda(aPagar)}`;
       
-      const saldoPrevisto = saldo + previsto;
+      if (vencidas !== 0) {
+        document.getElementById('vencidas-cards').style.display = 'grid';
+        document.getElementById('total-vencidas').textContent = `R$ ${formatarMoeda(Math.abs(vencidas))}`;
+      } else {
+        document.getElementById('vencidas-cards').style.display = 'none';
+      }
+      
+      // Saldo previsto = saldo realizado + (a receber - a pagar)
+      const saldoPrevisto = saldo + aReceber - aPagar;
       document.getElementById('saldo-previsto-sub').style.display = 'block';
       document.getElementById('saldo-previsto-sub').innerHTML = `Saldo previsto fim do mês: <strong style="color:${saldoPrevisto >= 0 ? 'var(--brand)' : 'var(--danger)'}">R$ ${formatarMoeda(saldoPrevisto)}</strong>`;
     } else {
       document.getElementById('previstas-cards').style.display = 'none';
+      document.getElementById('vencidas-cards').style.display = 'none';
       document.getElementById('saldo-previsto-sub').style.display = 'none';
     }
   }
@@ -1395,7 +1433,7 @@
         <div class="empty">
           <div class="empty-emoji">💸</div>
           <div class="empty-title">${filtroAtivo === 'previstas' ? 'Sem previstas' : filtroAtivo === 'realizadas' ? 'Sem realizadas' : 'Sem transações'}</div>
-          <div class="empty-desc">${filtroAtivo === 'previstas' ? 'Cadastre despesas fixas em "Vida Financeira" pra ver previstas aqui.' : 'Comece cadastrando suas entradas e saídas.'}</div>
+          <div class="empty-desc">${filtroAtivo === 'previstas' ? 'Cadastre rendas e despesas fixas em "Vida Financeira" pra ver previstas aqui.' : 'Comece cadastrando suas entradas e saídas.'}</div>
         </div>
       `;
       return;
@@ -1410,8 +1448,6 @@
     });
     
     const datasOrdenadas = Object.keys(grupos).sort((a, b) => {
-      // Previstas: ordem crescente (próximas primeiro)
-      // Realizadas: ordem decrescente (recentes primeiro)
       if (filtroAtivo === 'previstas') return a.localeCompare(b);
       return b.localeCompare(a);
     });
@@ -1454,6 +1490,7 @@
     const conta = contas.find(c => c.id === t.conta_id);
     const ehPrevista = t.status === 'prevista';
     const ehVencida = ehPrevista && t.data < hoje;
+    const ehEntrada = t.tipo === 'entrada';
     
     const contaTag = conta ? `
       <span class="trans-conta-tag" style="color:${conta.cor}">
@@ -1462,24 +1499,49 @@
       </span>
     ` : '';
     
+    // BADGES DIFERENCIADOS POR TIPO
     let badges = '';
     if (ehVencida) badges += '<span class="badge-vencida">⚠️ VENCIDA</span>';
-    else if (ehPrevista) badges += '<span class="badge-prevista">📅 PREVISTA</span>';
+    else if (ehPrevista && ehEntrada) badges += '<span class="badge-receber">💰 A RECEBER</span>';
+    else if (ehPrevista) badges += '<span class="badge-prevista">📅 A PAGAR</span>';
     if (t.recorrente) badges += '<span class="badge-recorrente">🔁</span>';
     if (t.parcelado) badges += `<span class="badge-parcela">💳 ${t.numero_parcela}/${t.total_parcelas}</span>`;
     
-    const cardClass = ehVencida ? 'vencida' : (ehPrevista ? 'prevista' : '');
-    const iconeClass = ehPrevista ? 'prevista' : t.tipo;
-    const valorClass = ehPrevista ? 'prevista' : t.tipo;
+    // CLASSES VISUAIS DIFERENTES POR TIPO+STATUS
+    let cardClass, iconeClass, valorClass;
+    if (ehVencida) {
+      cardClass = 'vencida';
+      iconeClass = ehEntrada ? 'prevista-entrada' : 'prevista-saida';
+      valorClass = 'saida';
+    } else if (ehPrevista && ehEntrada) {
+      cardClass = 'prevista-entrada';
+      iconeClass = 'prevista-entrada';
+      valorClass = 'prevista-entrada';
+    } else if (ehPrevista) {
+      cardClass = 'prevista-saida';
+      iconeClass = 'prevista-saida';
+      valorClass = 'prevista-saida';
+    } else {
+      cardClass = '';
+      iconeClass = t.tipo;
+      valorClass = t.tipo;
+    }
     
-    const valorLabel = ehPrevista ? '<span class="trans-prev-label">A pagar</span>' : '';
-    const sinal = ehPrevista ? '' : (t.tipo === 'entrada' ? '+' : '-');
+    const valorLabel = ehPrevista 
+      ? `<span class="trans-prev-label">${ehEntrada ? 'A receber' : 'A pagar'}</span>` 
+      : '';
+    
+    const sinal = (!ehPrevista && ehEntrada) ? '+' : (!ehPrevista && !ehEntrada) ? '-' : (ehEntrada ? '+' : '-');
+    
+    // EMOJI ÍCONE
+    let emoji;
+    if (ehPrevista && ehEntrada) emoji = '💰';
+    else if (ehPrevista) emoji = '📅';
+    else emoji = cat?.icone || (ehEntrada ? '↓' : '↑');
     
     return `
       <div class="trans-card ${cardClass}" onclick="abrirDetalhe('${t.id}')">
-        <div class="trans-icone ${iconeClass}">
-          ${ehPrevista ? '📅' : (cat?.icone || (t.tipo === 'entrada' ? '↓' : '↑'))}
-        </div>
+        <div class="trans-icone ${iconeClass}">${emoji}</div>
         <div class="trans-info">
           <div class="trans-desc">${t.descricao}</div>
           <div class="trans-meta">
@@ -1501,8 +1563,7 @@
     if (contas.length === 0) {
       area.innerHTML = `
         <div class="sem-conta-aviso">
-          🏦 Você não tem conta cadastrada. <a href="contas.html?v=2">Cadastrar agora →</a><br>
-          <small style="color:var(--text-mute);">A transação será salva sem vincular conta.</small>
+          🏦 Você não tem conta cadastrada. <a href="contas.html?v=3">Cadastrar agora →</a>
         </div>
       `;
       return;
@@ -1798,7 +1859,6 @@
     if (contas.length > 0 && !contaSelecionada) {
       document.getElementById('msg-form').className = 'msg show msg-error';
       document.getElementById('msg-form').textContent = 'Escolha a conta';
-      document.getElementById('contas-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
     
@@ -1898,13 +1958,38 @@
     
     const conta = contas.find(c => c.id === t.conta_id);
     const ehPrevista = t.status === 'prevista';
+    const ehEntrada = t.tipo === 'entrada';
     
     document.getElementById('detalhe-titulo').textContent = t.descricao;
     
+    // CORES DIFERENTES por tipo+status
+    let bg, borda, cor, label;
+    if (ehPrevista && ehEntrada) {
+      bg = 'rgba(0,217,126,0.1)';
+      borda = 'var(--brand)';
+      cor = 'var(--brand)';
+      label = '💰 A RECEBER';
+    } else if (ehPrevista) {
+      bg = 'rgba(255,184,0,0.1)';
+      borda = 'var(--warning)';
+      cor = 'var(--warning)';
+      label = '📅 A PAGAR';
+    } else if (ehEntrada) {
+      bg = 'var(--brand-soft)';
+      borda = 'var(--brand)';
+      cor = 'var(--brand)';
+      label = '↓ Entrada';
+    } else {
+      bg = 'var(--danger-soft)';
+      borda = 'var(--danger)';
+      cor = 'var(--danger)';
+      label = '↑ Saída';
+    }
+    
     let html = `
-      <div class="saldo-card" style="background:${ehPrevista ? 'rgba(255,184,0,0.1)' : (t.tipo === 'entrada' ? 'var(--brand-soft)' : 'var(--danger-soft)')};border-color:${ehPrevista ? 'var(--warning)' : (t.tipo === 'entrada' ? 'var(--brand)' : 'var(--danger)')};">
-        <div class="saldo-label" style="color:${ehPrevista ? 'var(--warning)' : (t.tipo === 'entrada' ? 'var(--brand)' : 'var(--danger)')};">${ehPrevista ? '📅 PREVISTA' : (t.tipo === 'entrada' ? '↓ Entrada' : '↑ Saída')}</div>
-        <div class="saldo-valor ${ehPrevista ? '' : (t.tipo === 'entrada' ? 'positivo' : 'negativo')}" style="${ehPrevista ? 'color:var(--warning)' : ''}">R$ ${formatarMoeda(t.valor)}</div>
+      <div class="saldo-card" style="background:${bg};border-color:${borda};">
+        <div class="saldo-label" style="color:${cor};">${label}</div>
+        <div class="saldo-valor" style="color:${cor};">R$ ${formatarMoeda(t.valor)}</div>
       </div>
       <div class="detalhe-card">
         <div class="detalhe-linha"><div class="detalhe-label">Data</div><div class="detalhe-valor">${new Date(t.data + 'T12:00:00').toLocaleDateString('pt-BR')}</div></div>
@@ -1912,9 +1997,10 @@
         ${conta ? `<div class="detalhe-linha"><div class="detalhe-label">Conta</div><div class="detalhe-valor" style="color:${conta.cor};">${conta.icone} ${conta.nome}</div></div>` : ''}
         ${t.recorrente ? `<div class="detalhe-linha"><div class="detalhe-label">Tipo</div><div class="detalhe-valor">🔁 Recorrente</div></div>` : ''}
         ${t.parcelado ? `<div class="detalhe-linha"><div class="detalhe-label">Parcela</div><div class="detalhe-valor">💳 ${t.numero_parcela}/${t.total_parcelas}</div></div>` : ''}
-        ${t.divida_id ? `<div class="detalhe-linha"><div class="detalhe-label">Vinculo</div><div class="detalhe-valor">💳 Fatura cartão</div></div>` : ''}
-        ${t.compromisso_id ? `<div class="detalhe-linha"><div class="detalhe-label">Vinculo</div><div class="detalhe-valor">📋 Compromisso fixo</div></div>` : ''}
-        <div class="detalhe-linha"><div class="detalhe-label">Status</div><div class="detalhe-valor">${ehPrevista ? '📅 Prevista' : '✅ Realizada'}</div></div>
+        ${t.divida_id ? `<div class="detalhe-linha"><div class="detalhe-label">Vínculo</div><div class="detalhe-valor">💳 Fatura cartão</div></div>` : ''}
+        ${t.compromisso_id ? `<div class="detalhe-linha"><div class="detalhe-label">Vínculo</div><div class="detalhe-valor">📋 Compromisso fixo</div></div>` : ''}
+        ${t.renda_id ? `<div class="detalhe-linha"><div class="detalhe-label">Vínculo</div><div class="detalhe-valor">💰 Renda</div></div>` : ''}
+        <div class="detalhe-linha"><div class="detalhe-label">Status</div><div class="detalhe-valor">${ehPrevista ? (ehEntrada ? '💰 A receber' : '📅 A pagar') : '✅ Realizada'}</div></div>
       </div>
     `;
     
@@ -1922,11 +2008,19 @@
     
     let footerHTML = '';
     if (ehPrevista) {
-      footerHTML = `
-        <button class="btn btn-warning" onclick="marcarComoPago()">💸 Marcar como pago</button>
-        <button class="btn btn-secondary" onclick="editarTransacao()">Editar</button>
-        <button class="btn btn-danger" onclick="excluirTransacao()">Excluir prevista</button>
-      `;
+      if (ehEntrada) {
+        footerHTML = `
+          <button class="btn btn-success" onclick="marcarComoPago()">💰 Marcar como recebido</button>
+          <button class="btn btn-secondary" onclick="editarTransacao()">Editar</button>
+          <button class="btn btn-danger" onclick="excluirTransacao()">Excluir prevista</button>
+        `;
+      } else {
+        footerHTML = `
+          <button class="btn btn-warning" onclick="marcarComoPago()">💸 Marcar como pago</button>
+          <button class="btn btn-secondary" onclick="editarTransacao()">Editar</button>
+          <button class="btn btn-danger" onclick="excluirTransacao()">Excluir prevista</button>
+        `;
+      }
     } else {
       footerHTML = `
         <button class="btn btn-primary" onclick="editarTransacao()">Editar</button>
@@ -1940,15 +2034,19 @@
   
   window.marcarComoPago = async function() {
     if (!detalheAtual) return;
-    if (!confirm(`Marcar "${detalheAtual.descricao}" como pago?\n\nO valor R$ ${formatarMoeda(detalheAtual.valor)} vai ser debitado da conta vinculada.`)) return;
+    const ehEntrada = detalheAtual.tipo === 'entrada';
+    const acaoLabel = ehEntrada ? 'recebido' : 'pago';
+    const efeito = ehEntrada ? 'creditado na' : 'debitado da';
+    
+    if (!confirm(`Marcar "${detalheAtual.descricao}" como ${acaoLabel}?\n\nR$ ${formatarMoeda(detalheAtual.valor)} ${efeito} conta vinculada.`)) return;
     
     await supabase.from('transacoes').update({
       status: 'realizada',
-      data: new Date().toISOString().split('T')[0] // marca com data de hoje
+      data: new Date().toISOString().split('T')[0]
     }).eq('id', detalheAtual.id);
     
-    // Se está vinculada a dívida, atualiza dívida
-    if (detalheAtual.divida_id) {
+    // Se vinculada a dívida (só saídas), atualiza
+    if (detalheAtual.divida_id && !ehEntrada) {
       const { data: divida } = await supabase.from('dividas').select('*').eq('id', detalheAtual.divida_id).single();
       if (divida) {
         const novoValor = Number(divida.valor_atual) - Number(detalheAtual.valor);
@@ -1960,8 +2058,8 @@
       }
     }
     
-    // Se está vinculada a compromisso parcelado, incrementa parcelas pagas
-    if (detalheAtual.compromisso_id && detalheAtual.parcelado) {
+    // Se vinculada a compromisso parcelado (saídas), incrementa parcelas pagas
+    if (detalheAtual.compromisso_id && detalheAtual.parcelado && !ehEntrada) {
       const { data: comp } = await supabase.from('compromissos').select('*').eq('id', detalheAtual.compromisso_id).single();
       if (comp && comp.tipo === 'parcelado') {
         await supabase.from('compromissos').update({ 
@@ -1970,8 +2068,8 @@
       }
     }
     
-    await darXP(5, 'pagamento', 'Marcou como pago: ' + detalheAtual.descricao);
-    mostrarToast('+5 XP ✅ Pago!');
+    await darXP(5, 'pagamento', `Marcou como ${acaoLabel}: ` + detalheAtual.descricao);
+    mostrarToast(ehEntrada ? '+5 XP 💰 Recebido!' : '+5 XP ✅ Pago!');
     
     fecharModal('modal-detalhe');
     await carregarDados();
