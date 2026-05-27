@@ -47,6 +47,15 @@
   .banco-card.active { background: var(--brand-soft); border-color: var(--brand); }
   .banco-logo { width: 44px; height: 44px; border-radius: 10px; color: white; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; }
   .banco-nome { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--text); line-height: 1.2; }
+  
+  .categoria-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .categoria-card { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 12px 6px; text-align: center; cursor: pointer; transition: all 0.15s; min-height: 92px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+  .categoria-card:active { transform: scale(0.95); }
+  .categoria-card.active { background: var(--brand-soft); border-color: var(--brand); }
+  .categoria-card.add { border-style: dashed; border-color: var(--text-faint); }
+  .categoria-emoji { font-size: 28px; line-height: 1; }
+  .categoria-nome { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; color: var(--text); line-height: 1.2; text-align: center; padding: 0 2px; }
+  
   .instrucao-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
   .instrucao-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; color: var(--brand); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
   .passo-lista { list-style: none; margin: 0; padding: 0; }
@@ -93,6 +102,16 @@
   .qtd-btn { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 18px 4px; cursor: pointer; text-align: center; transition: all 0.15s; font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: var(--text); }
   .qtd-btn:active { transform: scale(0.95); }
   .qtd-btn.active { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
+  
+  .tipo-recorrencia-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .tipo-rec-btn { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 14px 10px; cursor: pointer; transition: all 0.15s; text-align: center; min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+  .tipo-rec-btn:active { transform: scale(0.97); }
+  .tipo-rec-btn.active { background: var(--brand-soft); border-color: var(--brand); }
+  .tipo-rec-emoji { font-size: 24px; }
+  .tipo-rec-nome { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; color: var(--text); }
+  .tipo-rec-desc { font-size: 10px; color: var(--text-mute); line-height: 1.2; }
+  .tipo-rec-btn.active .tipo-rec-nome { color: var(--brand); }
+  
   .objetivo-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
   .objetivo-card { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 16px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 14px; }
   .objetivo-card:active { transform: scale(0.98); }
@@ -216,6 +235,65 @@
   
   const BANCOS = [...BANCOS_BR, ...BANCOS_INTL, ...OUTROS];
   
+  // 🆕 v3.4: CATEGORIAS GUIADAS
+  
+  const CATEGORIAS_RENDA = [
+    { id: 'salario_clt', nome: 'Salário CLT', emoji: '💼', cor: '#00d97e' },
+    { id: 'salario_pj', nome: 'Salário PJ', emoji: '💼', cor: '#00d97e' },
+    { id: 'autonomo', nome: 'Autônomo', emoji: '🛠️', cor: '#00d97e' },
+    { id: 'comissao', nome: 'Comissão', emoji: '🎯', cor: '#00d97e' },
+    { id: 'freelance', nome: 'Freelance', emoji: '💻', cor: '#00d97e' },
+    { id: 'aluguel_recebido', nome: 'Aluguel rec.', emoji: '🏠', cor: '#00d97e' },
+    { id: 'dividendos', nome: 'Dividendos', emoji: '📈', cor: '#00d97e' },
+    { id: 'bonus', nome: 'Bônus', emoji: '🎁', cor: '#00d97e' },
+    { id: 'pensao', nome: 'Pensão', emoji: '👨‍👩‍👧', cor: '#00d97e' },
+    { id: 'aposentadoria', nome: 'Aposent.', emoji: '🏖️', cor: '#00d97e' },
+    { id: 'venda', nome: 'Venda extra', emoji: '🛍️', cor: '#00d97e' },
+    { id: 'outro', nome: '+ Outra', emoji: '➕', cor: '#a3a3a3' }
+  ];
+  
+  const CATEGORIAS_DESPESA = [
+    { id: 'aluguel', nome: 'Aluguel', emoji: '🏠', cor: '#00d97e' },
+    { id: 'condominio', nome: 'Condomínio', emoji: '🏢', cor: '#14b8a6' },
+    { id: 'luz', nome: 'Luz', emoji: '💡', cor: '#ffb800' },
+    { id: 'agua', nome: 'Água', emoji: '💧', cor: '#38bdf8' },
+    { id: 'gas', nome: 'Gás', emoji: '🔥', cor: '#ff6b35' },
+    { id: 'internet', nome: 'Internet', emoji: '🌐', cor: '#a855f7' },
+    { id: 'telefone', nome: 'Telefone', emoji: '📱', cor: '#a855f7' },
+    { id: 'streaming', nome: 'Streaming', emoji: '🎬', cor: '#8b5cf6' },
+    { id: 'academia', nome: 'Academia', emoji: '💪', cor: '#f59e0b' },
+    { id: 'plano_saude', nome: 'Plano saúde', emoji: '🏥', cor: '#ef4444' },
+    { id: 'escola', nome: 'Escola', emoji: '🎓', cor: '#3b82f6' },
+    { id: 'seguro', nome: 'Seguro', emoji: '🛡️', cor: '#6366f1' },
+    { id: 'iptu', nome: 'IPTU', emoji: '🏛️', cor: '#f59e0b' },
+    { id: 'ipva', nome: 'IPVA', emoji: '🚗', cor: '#f59e0b' },
+    { id: 'combustivel', nome: 'Combustível', emoji: '⛽', cor: '#ff6b35' },
+    { id: 'assinatura', nome: 'Assinatura', emoji: '📺', cor: '#8b5cf6' },
+    { id: 'outro', nome: '+ Outra', emoji: '➕', cor: '#a3a3a3' }
+  ];
+  
+  const CATEGORIAS_DIVIDA = [
+    { id: 'emprestimo', nome: 'Empréstimo', emoji: '💸', cor: '#ef4444' },
+    { id: 'financ_imovel', nome: 'Financ. imóvel', emoji: '🏦', cor: '#ef4444' },
+    { id: 'financ_veiculo', nome: 'Financ. veículo', emoji: '🚗', cor: '#ef4444' },
+    { id: 'cheque_especial', nome: 'Cheque esp.', emoji: '🆘', cor: '#ef4444' },
+    { id: 'loja', nome: 'Loja física', emoji: '🛍️', cor: '#ef4444' },
+    { id: 'carne', nome: 'Carnê', emoji: '📋', cor: '#ef4444' },
+    { id: 'medica', nome: 'Médica', emoji: '🏥', cor: '#ef4444' },
+    { id: 'estudantil', nome: 'Estudantil', emoji: '🎓', cor: '#ef4444' },
+    { id: 'consignado', nome: 'Consignado', emoji: '💼', cor: '#ef4444' },
+    { id: 'pessoal', nome: 'Pessoal', emoji: '👨‍👩‍👧', cor: '#ef4444' },
+    { id: 'mercado', nome: 'Mercado', emoji: '🛒', cor: '#ef4444' },
+    { id: 'outro', nome: '+ Outra', emoji: '➕', cor: '#a3a3a3' }
+  ];
+  
+  const TIPOS_RECORRENCIA = [
+    { id: 'mensal', nome: 'Mensal', emoji: '🔄', desc: 'Todo mês' },
+    { id: 'pontual', nome: 'Pontual', emoji: '📌', desc: 'Só essa vez' },
+    { id: 'parcelada', nome: 'Parcelada', emoji: '📅', desc: 'Em X vezes' },
+    { id: 'anual', nome: 'Anual', emoji: '🎯', desc: 'Tipo IPTU' }
+  ];
+  
   const INSTRUCOES_CONTA = {
     'nubank': ['Abre o app Nubank', 'Saldo no topo', 'Print'],
     'itau': ['Abre Itaú', '"Saldo em conta"', 'Print'],
@@ -278,6 +356,8 @@
   let alvoFoto = null;
   let dadosIAPendentes = null;
   let restaurouEstado = false;
+  let categoriaTemp = null;
+  let tipoRecorrenciaTemp = null;
   
   (async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -305,13 +385,11 @@
       rendasAdicionadas = rendasRes.data || [];
       despesasAdicionadas = despRes.data || [];
       dividasAdicionadas = divsRes.data || [];
-      
       const bancosUsados = new Set();
       contasAdicionadas.forEach(c => {
         const banco = BANCOS.find(b => b.nome === c.banco || (c.tipo === 'carteira' && b.id === 'carteira'));
         if (banco) bancosUsados.add(banco.id);
       });
-      
       const bancosCart = new Set();
       const qtdCart = {};
       cartoesAdicionados.forEach(c => {
@@ -327,7 +405,6 @@
       passoAtual = perfil.setup_passo_atual || 0;
       if (bancosUsados.size > 0) bancosSelecionados = Array.from(bancosUsados);
       bancoIndexAtual = 0;
-      
       if (contasAdicionadas.length > 0 || cartoesAdicionados.length > 0 || rendasAdicionadas.length > 0 || despesasAdicionadas.length > 0 || dividasAdicionadas.length > 0 || objetivoPrincipal) {
         restaurouEstado = true;
       }
@@ -369,6 +446,8 @@
       bancoIndexAtual = 0;
       bancoCartaoIdx = 0;
       cartaoIdx = 0;
+      categoriaTemp = null;
+      tipoRecorrenciaTemp = null;
       renderPasso(); 
       window.scrollTo({ top: 0, behavior: 'smooth' }); 
     }
@@ -388,32 +467,32 @@
       <div class="tatu-bubble">
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
-          <div class="tatu-titulo">Tatu, seu consultor</div>
-          <div class="tatu-texto">Oi <strong>${pnome}</strong>! Vou te ajudar a configurar tudo.<br><br><strong>20-40 minutos</strong> de consulta. No final: <strong>plano financeiro personalizado</strong>.</div>
+          <div class="tatu-titulo">Tatu, seu gestor 24h</div>
+          <div class="tatu-texto">Oi <strong>${pnome}</strong>! Sou o Tatu, seu gestor financeiro pessoal.<br><br>Vou passar uns <strong>30-60 minutos</strong> com você agora. Esse é o momento MAIS IMPORTANTE: <strong>quanto mais info você me der aqui, mais eu te ajudo</strong>.<br><br>Depois você não para mais. Bora?</div>
         </div>
       </div>
       <div class="form-card" style="background:linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%);border-color:var(--brand);">
         <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;margin-bottom:10px;">📋 O que vamos cadastrar</div>
         <div style="display:grid;gap:8px;">
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>🎯</span> Objetivo financeiro</div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>🏦</span> Contas (BR + internacionais)</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>🎯</span> Seu objetivo</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>🏦</span> Contas (BR + intl)</div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💳</span> Cartões + faturas</div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💰</span> Renda mensal</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💰</span> Rendas</div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>📋</span> Despesas fixas</div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💸</span> Dívidas</div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--brand);font-weight:700;"><span>🎯</span> Análise IA!</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--brand);font-weight:700;"><span>🎯</span> Análise IA + plano!</div>
         </div>
       </div>
     `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="proximoPasso()">🚀 Bora começar!</button>`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="proximoPasso()">🚀 Bora!</button>`;
   }
   
   function renderP2() {
     document.getElementById('container').innerHTML = `
       ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Qual seu <strong>foco principal</strong>?</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Qual seu <strong>foco</strong> agora? Vou montar plano AGRESSIVO pra acelerar.</div></div></div>
       <div class="step-titulo">Qual seu foco agora?</div>
-      <div class="step-subtitulo">O que mais quer resolver primeiro?</div>
+      <div class="step-subtitulo">Vou ajudar a resolver rápido.</div>
       <div class="objetivo-list">
         <div class="objetivo-card ${objetivoPrincipal === 'sair_dividas' ? 'selected' : ''}" data-val="sair_dividas" onclick="selObj('sair_dividas')">
           <div class="objetivo-emoji">🚨</div><div class="objetivo-info"><div class="objetivo-titulo">Sair das dívidas</div><div class="objetivo-desc">Quitar e limpar o nome</div></div>
@@ -454,9 +533,9 @@
     }
     document.getElementById('container').innerHTML = `
       ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Quais bancos você usa? Marca todos.</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Marca TODOS os bancos que usa. Inclui contas digitais, internacionais, carteira.</div></div></div>
       <div class="step-titulo">Quais bancos você usa?</div>
-      <div class="step-subtitulo">Toque pra selecionar.</div>
+      <div class="step-subtitulo">Marca tudo - pode ser vários.</div>
       <div class="secao-bancos-titulo">🇧🇷 Bancos brasileiros</div>
       <div class="bancos-grid">
         ${BANCOS_BR.map(b => `
@@ -512,7 +591,7 @@
         <div class="tatu-emoji">🦔</div>
         <div class="tatu-content">
           <div class="tatu-titulo">Tatu te ensina</div>
-          <div class="tatu-texto">${jaTemConta ? `Já cadastrou ${banco.nome}. Adicionar outra ou ir pro próximo?` : `Conta do ${banco.nome}. ${ehCart ? 'Quanto tem em dinheiro?' : 'Segue os passos.'}`}</div>
+          <div class="tatu-texto">${jaTemConta ? `Já tem ${banco.nome}. Outra conta ou próximo?` : `Conta do ${banco.nome}. ${ehCart ? 'Quanto tem em dinheiro?' : 'Segue os passos.'}`}</div>
         </div>
       </div>
       <div class="step-titulo" style="display:flex;align-items:center;gap:10px;">
@@ -527,12 +606,12 @@
       <div class="opcoes-acao">
         <div class="opcao-btn ia" onclick="abrirFoto('conta', '${bId}')">
           <div class="opcao-btn-icon">📸</div>
-          <div class="opcao-btn-titulo">${jaTemConta ? 'Mais uma foto' : 'Mandar foto'}</div>
+          <div class="opcao-btn-titulo">${jaTemConta ? 'Mais uma' : 'Foto'}</div>
           <div class="opcao-btn-sub">IA lê o saldo</div>
         </div>
         <div class="opcao-btn" onclick="manualConta('${bId}')">
           <div class="opcao-btn-icon">✍️</div>
-          <div class="opcao-btn-titulo">${jaTemConta ? 'Outra manual' : 'Digitar manual'}</div>
+          <div class="opcao-btn-titulo">${jaTemConta ? 'Outra manual' : 'Manual'}</div>
           <div class="opcao-btn-sub">Você preenche</div>
         </div>
       </div>
@@ -542,7 +621,7 @@
           <label>Quanto tem em dinheiro?</label>
           <div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="cart-val" placeholder="0,00" oninput="formatarValor(this)"></div>
         </div>
-        <button class="btn btn-primary" onclick="salvarCart()">Salvar carteira</button>
+        <button class="btn btn-primary" onclick="salvarCart()">Salvar</button>
       </div>`}
       ${contasAdicionadas.length > 0 ? `
         <div class="lista-cadastrados">
@@ -658,12 +737,12 @@
   function renderP5_Pergunta() {
     document.getElementById('container').innerHTML = `
       ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Agora <strong>cartões de crédito</strong>.</div></div></div>
-      <div class="step-titulo">Você tem cartão de crédito?</div>
-      <div class="step-subtitulo">Se tiver, pedi limite, dias e fatura.</div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Tem <strong>cartão de crédito</strong>?</div></div></div>
+      <div class="step-titulo">Tem cartão de crédito?</div>
+      <div class="step-subtitulo">Se tiver, pedi limite, dias, fatura.</div>
       <div class="sim-nao-grid">
-        <div class="sim-nao-btn sim" onclick="respCartoes(true)"><div class="sim-nao-btn-emoji">💳</div>Sim, tenho</div>
-        <div class="sim-nao-btn nao" onclick="respCartoes(false)"><div class="sim-nao-btn-emoji">🚫</div>Não tenho</div>
+        <div class="sim-nao-btn sim" onclick="respCartoes(true)"><div class="sim-nao-btn-emoji">💳</div>Sim</div>
+        <div class="sim-nao-btn nao" onclick="respCartoes(false)"><div class="sim-nao-btn-emoji">🚫</div>Não</div>
       </div>
       ${cartoesAdicionados.length > 0 ? `
         <div class="lista-cadastrados">
@@ -698,7 +777,6 @@
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">De quais bancos são os cartões?</div></div></div>
       <div class="step-titulo">Bancos dos cartões</div>
-      <div class="step-subtitulo">Toque nos bancos.</div>
       <div class="secao-bancos-titulo">🇧🇷 Brasileiros</div>
       <div class="bancos-grid">
         ${BANCOS_BR.map(b => `
@@ -775,7 +853,7 @@
       <div class="opcoes-acao">
         <div class="opcao-btn ia" onclick="abrirFoto('fatura', '${bId}')">
           <div class="opcao-btn-icon">📸</div>
-          <div class="opcao-btn-titulo">Foto da fatura</div>
+          <div class="opcao-btn-titulo">Foto fatura</div>
           <div class="opcao-btn-sub">IA lê tudo</div>
         </div>
         <div class="opcao-btn" onclick="manualCartao('${bId}')">
@@ -796,7 +874,7 @@
           `).join('')}
         </div>` : ''}
     `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltCartao()">‹</button><button class="btn btn-primary" onclick="pulaCartao()">Pular esse →</button>`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltCartao()">‹</button><button class="btn btn-primary" onclick="pulaCartao()">Pular →</button>`;
   }
   
   window.voltCartao = function() {
@@ -842,7 +920,6 @@
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">${cartaoTemp.nome} tem fatura aberta?</div></div></div>
       <div class="step-titulo">Tem fatura aberta?</div>
-      <div class="step-subtitulo">Aberta ou fechada.</div>
       <div class="sim-nao-grid">
         <div class="sim-nao-btn sim" onclick="respFat(true)"><div class="sim-nao-btn-emoji">💸</div>Sim</div>
         <div class="sim-nao-btn nao" onclick="respFat(false)"><div class="sim-nao-btn-emoji">✨</div>Não, zerada</div>
@@ -956,18 +1033,20 @@
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">Próximo →</button>`;
   }
   
+  // ============ PASSO 6 — RENDA COM CATEGORIAS GUIADAS ============
   function renderP6() {
     document.getElementById('container').innerHTML = `
       ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Sua <strong>renda mensal</strong>.</div></div></div>
-      <div class="step-titulo">Renda mensal</div>
-      <div class="step-subtitulo">Todas as fontes.</div>
-      <div class="opcoes-acao">
-        <div class="opcao-btn" onclick="manualRenda()" style="grid-column:1/-1;">
-          <div class="opcao-btn-icon">✍️</div>
-          <div class="opcao-btn-titulo">Adicionar renda</div>
-          <div class="opcao-btn-sub">Salário, comissão, aluguel</div>
-        </div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>TODA</strong> renda que entra. Tudo que cai mensal: salário, freela, aluguel, comissão. Marca o tipo:</div></div></div>
+      <div class="step-titulo">Suas rendas mensais</div>
+      <div class="step-subtitulo">Toca no tipo da renda que quer cadastrar.</div>
+      <div class="categoria-grid">
+        ${CATEGORIAS_RENDA.map(c => `
+          <div class="categoria-card ${c.id === 'outro' ? 'add' : ''}" onclick="abrirCadRenda('${c.id}')">
+            <div class="categoria-emoji">${c.emoji}</div>
+            <div class="categoria-nome">${c.nome}</div>
+          </div>
+        `).join('')}
       </div>
       ${rendasAdicionadas.length > 0 ? `
         <div class="lista-cadastrados">
@@ -979,10 +1058,27 @@
               <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirRenda('${r.id}')">✕</div></div>
             </div>
           `).join('')}
-        </div>` : `<div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;"><div style="font-size:36px;margin-bottom:10px;">💰</div><div style="font-size:13px;color:var(--text-mute);">Nenhuma renda</div></div>`}
+        </div>` : ''}
     `;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${rendasAdicionadas.length > 0 ? 'Continuar →' : 'Pular →'}</button>`;
   }
+  
+  window.abrirCadRenda = function(catId) {
+    const cat = CATEGORIAS_RENDA.find(c => c.id === catId);
+    categoriaTemp = cat;
+    const sugNome = cat.id === 'outro' ? '' : cat.nome;
+    document.getElementById('container').innerHTML = `
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>${cat.emoji} ${cat.nome}</strong>. Dados:</div></div></div>
+      <div class="step-titulo">Nova renda</div>
+      <div class="form-card">
+        <div class="field"><label>Nome</label><input type="text" id="mr-nome" placeholder="Digite o nome" value="${sugNome}"></div>
+        <div class="field"><label>Valor mensal</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mr-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
+        <div class="field"><label>Dia recebe (1-31)</label><input type="number" id="mr-dia" placeholder="5" min="1" max="31"></div>
+        <button class="btn btn-primary" onclick="salvarRenda()">Salvar</button>
+      </div>
+    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP6()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
+  };
   
   window.excluirRenda = async function(id) {
     if (!confirm('Excluir?')) return;
@@ -994,45 +1090,16 @@
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  window.manualRenda = function() {
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Fonte de renda.</div></div></div>
-      <div class="step-titulo">Nova renda</div>
-      <div class="form-card">
-        <div class="field">
-          <label>Tipo</label>
-          <select id="mr-cat">
-            <option value="salario_clt">💼 Salário CLT</option>
-            <option value="salario">💼 Salário</option>
-            <option value="autonomo">🛠️ Autônomo</option>
-            <option value="comissao">🎯 Comissão</option>
-            <option value="freelance">💻 Freelance</option>
-            <option value="aluguel_recebido">🏠 Aluguel recebido</option>
-            <option value="dividendos">📈 Dividendos</option>
-            <option value="bonus">🎁 Bônus</option>
-            <option value="outro">📌 Outro</option>
-          </select>
-        </div>
-        <div class="field"><label>Nome</label><input type="text" id="mr-nome" placeholder="Digite o nome"></div>
-        <div class="field"><label>Valor mensal</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mr-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
-        <div class="field"><label>Dia recebe (1-31)</label><input type="number" id="mr-dia" placeholder="5" min="1" max="31"></div>
-        <button class="btn btn-primary" onclick="salvarRenda()">Salvar</button>
-      </div>
-    `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP6()">‹</button><button class="btn btn-primary" disabled>Cadastre</button>`;
-  };
-  
   window.salvarRenda = async function() {
-    const cat = document.getElementById('mr-cat').value;
     const nome = document.getElementById('mr-nome').value.trim();
     const val = valorParaNumero(document.getElementById('mr-val').value);
     const dia = parseInt(document.getElementById('mr-dia').value) || null;
     if (!nome) { alert('Digite o nome'); return; }
     if (!val || val <= 0) { alert('Informe o valor'); return; }
-    const emojis = { 'salario_clt': '💼', 'salario': '💼', 'autonomo': '🛠️', 'comissao': '🎯', 'freelance': '💻', 'aluguel_recebido': '🏠', 'dividendos': '📈', 'bonus': '🎁', 'outro': '📌' };
+    const cat = categoriaTemp;
     try {
       const { data, error } = await supabase.from('rendas').insert({
-        user_id: usuario.id, nome, categoria: cat, valor: val, dia_recebimento: dia, cor: '#00d97e', icone: emojis[cat] || '💰'
+        user_id: usuario.id, nome, categoria: cat.id, valor: val, dia_recebimento: dia, cor: cat.cor, icone: cat.emoji
       }).select().single();
       if (error) throw error;
       rendasAdicionadas.push(data);
@@ -1049,28 +1116,26 @@
       }
       await supabase.from('transacoes').insert(trans);
       await darXP(20, 'renda_setup', 'Setup renda: ' + nome);
-      toast(`+20 XP 💰`);
+      toast(`+20 XP 💰 ${nome}`);
+      categoriaTemp = null;
       setTimeout(() => renderP6(), 800);
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
+  // ============ PASSO 7 — DESPESAS COM CATEGORIAS GUIADAS ============
   function renderP7() {
     document.getElementById('container').innerHTML = `
       ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>Despesas fixas</strong>. Tira foto do boleto!</div></div></div>
-      <div class="step-titulo">Despesas fixas mensais</div>
-      <div class="step-subtitulo">O que vence todo mês.</div>
-      <div class="opcoes-acao">
-        <div class="opcao-btn ia" onclick="abrirFoto('boleto', null)">
-          <div class="opcao-btn-icon">📸</div>
-          <div class="opcao-btn-titulo">Foto do boleto</div>
-          <div class="opcao-btn-sub">IA preenche</div>
-        </div>
-        <div class="opcao-btn" onclick="manualDesp()">
-          <div class="opcao-btn-icon">✍️</div>
-          <div class="opcao-btn-titulo">Manual</div>
-          <div class="opcao-btn-sub">Você preenche</div>
-        </div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>Despesas fixas</strong>. Toca em cada tipo que você paga. Quanto mais eu souber, melhor o plano:</div></div></div>
+      <div class="step-titulo">Suas despesas</div>
+      <div class="step-subtitulo">Toca em cada tipo que você tem.</div>
+      <div class="categoria-grid">
+        ${CATEGORIAS_DESPESA.map(c => `
+          <div class="categoria-card ${c.id === 'outro' ? 'add' : ''}" onclick="abrirCadDesp('${c.id}')">
+            <div class="categoria-emoji">${c.emoji}</div>
+            <div class="categoria-nome">${c.nome}</div>
+          </div>
+        `).join('')}
       </div>
       ${despesasAdicionadas.length > 0 ? `
         <div class="lista-cadastrados">
@@ -1082,9 +1147,69 @@
               <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDesp('${d.id}')">✕</div></div>
             </div>
           `).join('')}
-        </div>` : `<div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;"><div style="font-size:36px;margin-bottom:10px;">📋</div><div style="font-size:13px;color:var(--text-mute);">Nenhuma despesa</div></div>`}
+        </div>` : ''}
     `;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${despesasAdicionadas.length > 0 ? 'Continuar →' : 'Pular →'}</button>`;
+  }
+  
+  window.abrirCadDesp = function(catId) {
+    const cat = CATEGORIAS_DESPESA.find(c => c.id === catId);
+    categoriaTemp = cat;
+    tipoRecorrenciaTemp = null;
+    // Vai pra pergunta de tipo (recorrente/pontual/etc)
+    renderP7_TipoRec(cat);
+  };
+  
+  function renderP7_TipoRec(cat) {
+    document.getElementById('container').innerHTML = `
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>${cat.emoji} ${cat.nome}</strong> é de qual tipo?</div></div></div>
+      <div class="step-titulo">Qual o tipo?</div>
+      <div class="step-subtitulo">Pra eu calcular certinho.</div>
+      <div class="tipo-recorrencia-grid">
+        ${TIPOS_RECORRENCIA.map(t => `
+          <div class="tipo-rec-btn" data-tipo="${t.id}" onclick="selTipoRec('${t.id}')">
+            <div class="tipo-rec-emoji">${t.emoji}</div>
+            <div class="tipo-rec-nome">${t.nome}</div>
+            <div class="tipo-rec-desc">${t.desc}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP7()">‹</button><button class="btn btn-primary" id="btn-tipo" onclick="confirmaTipoRec()" disabled>Continuar →</button>`;
+  }
+  
+  window.selTipoRec = function(tId) {
+    tipoRecorrenciaTemp = tId;
+    document.querySelectorAll('[data-tipo]').forEach(el => el.classList.remove('active'));
+    document.querySelector(`[data-tipo="${tId}"]`).classList.add('active');
+    document.getElementById('btn-tipo').disabled = false;
+  };
+  
+  window.confirmaTipoRec = function() {
+    if (!tipoRecorrenciaTemp) return;
+    renderP7_Form();
+  };
+  
+  function renderP7_Form() {
+    const cat = categoriaTemp;
+    const tipo = TIPOS_RECORRENCIA.find(t => t.id === tipoRecorrenciaTemp);
+    const sugNome = cat.id === 'outro' ? '' : cat.nome;
+    
+    const labelValor = tipo.id === 'parcelada' ? 'Valor da parcela' : 'Valor';
+    const ehParcelada = tipo.id === 'parcelada';
+    
+    document.getElementById('container').innerHTML = `
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>${cat.emoji} ${cat.nome}</strong> • ${tipo.emoji} ${tipo.nome}</div></div></div>
+      <div class="step-titulo">Dados</div>
+      <div class="form-card">
+        <div class="field"><label>Nome</label><input type="text" id="md-nome" placeholder="Digite o nome" value="${sugNome}"></div>
+        <div class="field"><label>${labelValor}</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="md-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
+        ${ehParcelada ? `<div class="field"><label>Quantas parcelas restam?</label><input type="number" id="md-parcelas" placeholder="10" min="1" max="120"></div>` : ''}
+        <div class="field"><label>Dia vencimento (1-31)</label><input type="number" id="md-dia" placeholder="10" min="1" max="31"></div>
+        <button class="btn btn-primary" onclick="salvarDesp()">Salvar</button>
+      </div>
+    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP7_TipoRec(categoriaTemp)">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
   }
   
   window.excluirDesp = async function(id) {
@@ -1097,103 +1222,67 @@
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  window.manualDesp = function() {
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Dados da despesa.</div></div></div>
-      <div class="step-titulo">Nova despesa fixa</div>
-      <div class="form-card">
-        <div class="field">
-          <label>Categoria</label>
-          <select id="md-cat">
-            <option value="aluguel">🏠 Aluguel</option>
-            <option value="condominio">🏢 Condomínio</option>
-            <option value="luz">💡 Luz</option>
-            <option value="agua">💧 Água</option>
-            <option value="gas">🔥 Gás</option>
-            <option value="internet">🌐 Internet</option>
-            <option value="telefone">📱 Telefone</option>
-            <option value="streaming">🎬 Streaming</option>
-            <option value="academia">💪 Academia</option>
-            <option value="plano_saude">🏥 Plano Saúde</option>
-            <option value="escola">🎓 Escola</option>
-            <option value="seguro">🛡️ Seguro</option>
-            <option value="iptu">🏛️ IPTU</option>
-            <option value="assinatura">📺 Assinatura</option>
-            <option value="outro">📌 Outro</option>
-          </select>
-        </div>
-        <div class="field"><label>Nome</label><input type="text" id="md-nome" placeholder="Digite o nome"></div>
-        <div class="field"><label>Valor mensal</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="md-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
-        <div class="field"><label>Dia vencimento</label><input type="number" id="md-dia" placeholder="10" min="1" max="31"></div>
-        <button class="btn btn-primary" onclick="salvarDesp()">Salvar</button>
-      </div>
-    `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP7()">‹</button><button class="btn btn-primary" disabled>Cadastre</button>`;
-  };
-  
-  const EMOJI_DESP = {
-    'aluguel': { e: '🏠', c: '#00d97e' }, 'condominio': { e: '🏢', c: '#14b8a6' },
-    'luz': { e: '💡', c: '#ffb800' }, 'agua': { e: '💧', c: '#38bdf8' },
-    'gas': { e: '🔥', c: '#ff6b35' }, 'internet': { e: '🌐', c: '#a855f7' },
-    'telefone': { e: '📱', c: '#a855f7' }, 'streaming': { e: '🎬', c: '#8b5cf6' },
-    'academia': { e: '💪', c: '#f59e0b' }, 'plano_saude': { e: '🏥', c: '#ef4444' },
-    'escola': { e: '🎓', c: '#3b82f6' }, 'seguro': { e: '🛡️', c: '#6366f1' },
-    'iptu': { e: '🏛️', c: '#f59e0b' }, 'assinatura': { e: '📺', c: '#8b5cf6' },
-    'outro': { e: '📋', c: '#38bdf8' }
-  };
-  
   window.salvarDesp = async function() {
-    const cat = document.getElementById('md-cat').value;
     const nome = document.getElementById('md-nome').value.trim();
     const val = valorParaNumero(document.getElementById('md-val').value);
     const dia = parseInt(document.getElementById('md-dia').value) || null;
     if (!nome) { alert('Digite o nome'); return; }
     if (!val || val <= 0) { alert('Informe o valor'); return; }
-    await salvarDespesaNoBanco(nome, cat, val, dia);
-  };
-  
-  async function salvarDespesaNoBanco(nome, cat, val, dia) {
-    const ec = EMOJI_DESP[cat] || EMOJI_DESP.outro;
+    const cat = categoriaTemp;
+    const tipo = tipoRecorrenciaTemp;
+    
+    const parcelasEl = document.getElementById('md-parcelas');
+    const parcelas = parcelasEl ? (parseInt(parcelasEl.value) || 1) : null;
+    
     try {
+      const tipoDB = tipo === 'pontual' ? 'pontual' : 'recorrente';
       const { data, error } = await supabase.from('compromissos').insert({
-        user_id: usuario.id, nome, categoria: cat, tipo: 'recorrente', valor: val, dia_vencimento: dia, cor: ec.c, icone: ec.e
+        user_id: usuario.id, nome, categoria: cat.id, tipo: tipoDB, valor: val, dia_vencimento: dia, cor: cat.cor, icone: cat.emoji
       }).select().single();
       if (error) throw error;
       despesasAdicionadas.push(data);
+      
       const hoje = new Date();
       const dUsar = dia || hoje.getDate();
       let mes = hoje.getMonth();
       if (dUsar <= hoje.getDate()) mes++;
+      
       const trans = [];
-      for (let i = 0; i < 12; i++) {
-        const d = new Date(hoje.getFullYear(), mes + i, dUsar);
-        trans.push({ user_id: usuario.id, valor: val, descricao: nome, data: d.toISOString().split('T')[0], tipo: 'saida', compromisso_id: data.id, status: 'prevista', recorrente: true });
+      let qtdMeses;
+      if (tipo === 'mensal') qtdMeses = 12;
+      else if (tipo === 'pontual') qtdMeses = 1;
+      else if (tipo === 'parcelada') qtdMeses = parcelas;
+      else if (tipo === 'anual') qtdMeses = 1;
+      
+      for (let i = 0; i < qtdMeses; i++) {
+        const d = tipo === 'anual' ? new Date(hoje.getFullYear() + i, mes, dUsar) : new Date(hoje.getFullYear(), mes + i, dUsar);
+        const descParcela = tipo === 'parcelada' ? `${nome} (${i+1}/${qtdMeses})` : nome;
+        trans.push({ user_id: usuario.id, valor: val, descricao: descParcela, data: d.toISOString().split('T')[0], tipo: 'saida', compromisso_id: data.id, status: 'prevista', recorrente: tipo !== 'pontual' });
       }
       await supabase.from('transacoes').insert(trans);
       await darXP(15, 'despesa_setup', 'Setup despesa: ' + nome);
-      toast(`+15 XP 📋`);
+      toast(`+15 XP 📋 ${nome}`);
+      categoriaTemp = null;
+      tipoRecorrenciaTemp = null;
       setTimeout(() => renderP7(), 800);
     } catch (e) { alert('Erro: ' + e.message); }
-  }
+  };
   
+  // ============ PASSO 8 — DÍVIDAS COM CATEGORIAS GUIADAS ============
   function renderP8() {
     const outrasDivs = dividasAdicionadas.filter(d => d.tipo !== 'cartao');
     document.getElementById('container').innerHTML = `
       ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Outras dívidas? Empréstimo, financiamento, loja?</div></div></div>
-      <div class="step-titulo">Outras dívidas?</div>
-      <div class="step-subtitulo">Empréstimos, financiamentos...</div>
-      <div class="opcoes-acao">
-        <div class="opcao-btn ia" onclick="abrirFoto('contrato', null)">
-          <div class="opcao-btn-icon">📸</div>
-          <div class="opcao-btn-titulo">Foto contrato</div>
-          <div class="opcao-btn-sub">IA cadastra</div>
-        </div>
-        <div class="opcao-btn" onclick="manualDiv()">
-          <div class="opcao-btn-icon">✍️</div>
-          <div class="opcao-btn-titulo">Manual</div>
-          <div class="opcao-btn-sub">Você preenche</div>
-        </div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Toca em <strong>TODOS</strong> os tipos de dívida que você tem hoje. Quanto mais eu souber, melhor te ajudo a quitar:</div></div></div>
+      <div class="step-titulo">Suas dívidas</div>
+      <div class="step-subtitulo">Toca em cada tipo que você tem.</div>
+      <div class="categoria-grid">
+        ${CATEGORIAS_DIVIDA.map(c => `
+          <div class="categoria-card ${c.id === 'outro' ? 'add' : ''}" onclick="abrirCadDiv('${c.id}')">
+            <div class="categoria-emoji">${c.emoji}</div>
+            <div class="categoria-nome">${c.nome}</div>
+          </div>
+        `).join('')}
       </div>
       ${outrasDivs.length > 0 ? `
         <div class="lista-cadastrados">
@@ -1205,10 +1294,39 @@
               <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDiv('${d.id}')">✕</div></div>
             </div>
           `).join('')}
-        </div>` : `<div style="background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:30px 20px;text-align:center;margin-top:20px;"><div style="font-size:36px;margin-bottom:10px;">🎉</div><div style="font-size:13px;color:var(--text-mute);">Sem outras dívidas?</div></div>`}
+        </div>` : ''}
     `;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${outrasDivs.length > 0 ? 'Continuar →' : 'Não tenho →'}</button>`;
   }
+  
+  window.abrirCadDiv = function(catId) {
+    const cat = CATEGORIAS_DIVIDA.find(c => c.id === catId);
+    categoriaTemp = cat;
+    const sugCred = cat.id === 'outro' ? '' : cat.nome;
+    document.getElementById('container').innerHTML = `
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>${cat.emoji} ${cat.nome}</strong>. Conta os dados:</div></div></div>
+      <div class="step-titulo">Nova dívida</div>
+      <div class="form-card">
+        <div class="field"><label>Credor (com quem você deve)</label><input type="text" id="mdv-cred" placeholder="Digite o nome" value="${sugCred}"></div>
+        <div class="field"><label>Valor total em aberto</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mdv-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
+        <div class="field"><label>Está atrasada?</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <div class="qtd-btn" data-atraso="nao" onclick="selAtraso('nao')" style="font-size:12px;padding:14px;">✅ Em dia</div>
+            <div class="qtd-btn" data-atraso="sim" onclick="selAtraso('sim')" style="font-size:12px;padding:14px;">⚠️ Atrasada</div>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="salvarDiv()">Salvar dívida</button>
+      </div>
+    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP8()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
+  };
+  
+  let atrasoTemp = null;
+  window.selAtraso = function(s) {
+    atrasoTemp = s;
+    document.querySelectorAll('[data-atraso]').forEach(el => el.classList.remove('active'));
+    document.querySelector(`[data-atraso="${s}"]`).classList.add('active');
+  };
   
   window.excluirDiv = async function(id) {
     if (!confirm('Excluir?')) return;
@@ -1219,47 +1337,29 @@
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  window.manualDiv = function() {
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Dados.</div></div></div>
-      <div class="step-titulo">Nova dívida</div>
-      <div class="form-card">
-        <div class="field"><label>Credor</label><input type="text" id="mdv-cred" placeholder="Digite o nome"></div>
-        <div class="field">
-          <label>Tipo</label>
-          <select id="mdv-tipo">
-            <option value="emprestimo">💸 Empréstimo</option>
-            <option value="financiamento">🏦 Financiamento</option>
-            <option value="cheque_especial">🆘 Cheque especial</option>
-            <option value="loja">🛍️ Loja</option>
-            <option value="outro">📌 Outro</option>
-          </select>
-        </div>
-        <div class="field"><label>Valor em aberto</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mdv-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
-        <button class="btn btn-primary" onclick="salvarDiv()">Salvar</button>
-      </div>
-    `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP8()">‹</button><button class="btn btn-primary" disabled>Cadastre</button>`;
-  };
-  
   window.salvarDiv = async function() {
     const cred = document.getElementById('mdv-cred').value.trim();
-    const tipo = document.getElementById('mdv-tipo').value;
     const val = valorParaNumero(document.getElementById('mdv-val').value);
     if (!cred) { alert('Digite o credor'); return; }
     if (!val || val <= 0) { alert('Informe o valor'); return; }
-    const dv = new Date(); dv.setDate(dv.getDate() + 30);
+    const cat = categoriaTemp;
+    const atrasada = atrasoTemp === 'sim';
+    const dv = new Date(); 
+    if (atrasada) dv.setMonth(dv.getMonth() - 1);
+    else dv.setDate(dv.getDate() + 30);
     try {
       const { data, error } = await supabase.from('dividas').insert({
-        user_id: usuario.id, credor: cred, tipo, descricao: `Dívida ${cred}`,
+        user_id: usuario.id, credor: cred, tipo: cat.id, descricao: `${cat.nome}: ${cred}`,
         valor_original: val, valor_atual: val,
         data_vencimento: dv.toISOString().split('T')[0], data_inicio: new Date().toISOString().split('T')[0],
-        status: 'ativa', prioridade: 1
+        status: 'ativa', prioridade: atrasada ? 1 : 2
       }).select().single();
       if (error) throw error;
       dividasAdicionadas.push(data);
       await darXP(15, 'divida_setup', 'Setup dívida: ' + cred);
-      toast(`+15 XP 💸`);
+      toast(`+15 XP 💸 ${cred}`);
+      categoriaTemp = null;
+      atrasoTemp = null;
       setTimeout(() => renderP8(), 800);
     } catch (e) { alert('Erro: ' + e.message); }
   };
@@ -1268,15 +1368,15 @@
     document.getElementById('container').innerHTML = `
       <div class="ia-loading">
         <div class="ia-spinner"></div>
-        <div class="ia-loading-titulo">🦔 Tatu está analisando...</div>
-        <div class="ia-loading-sub">Montando seu plano</div>
+        <div class="ia-loading-titulo">🦔 Tatu analisando...</div>
+        <div class="ia-loading-sub">Montando plano AGRESSIVO</div>
         <div class="ia-loading-passo" id="ia-passo">Calculando...</div>
       </div>
     `;
     document.getElementById('footer-content').innerHTML = '';
     setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Identificando nível...'; }, 1500);
-    setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Definindo meta...'; }, 3500);
-    setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Plano 12 meses...'; }, 5500);
+    setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Definindo meta CURTA...'; }, 3500);
+    setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Plano 3-6 meses...'; }, 5500);
     
     const dados = {
       objetivo_principal: objetivoPrincipal,
@@ -1321,7 +1421,7 @@
       { num: 4, nome: 'Cresc.' }, { num: 5, nome: 'Liberd.' }
     ];
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🎉</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Analisei tudo!</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🎉</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Analisei TUDO! Olha seu plano:</div></div></div>
       <div class="nivel-card">
         <div class="nivel-label">Seu nível</div>
         <div class="nivel-numero">${nivel}</div>
@@ -1361,7 +1461,7 @@
         </div>` : ''}
       ${a.mensagem_motivacional ? `<div class="tatu-bubble"><div class="tatu-emoji">💚</div><div class="tatu-content"><div class="tatu-titulo">Mensagem</div><div class="tatu-texto">${a.mensagem_motivacional}</div></div></div>` : ''}
     `;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="irHome()">🚀 Bora!</button>`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="irHome()">🚀 Topo o desafio!</button>`;
     toast('+100 XP 🎉');
   }
   
@@ -1414,8 +1514,6 @@
       if (d.resultado && !d.resultado.erro) {
         if (modoFoto === 'conta') await checarDivergenciaConta(d.resultado);
         else if (modoFoto === 'fatura') await checarDivergenciaCartao(d.resultado);
-        else if (modoFoto === 'boleto') await processarBoleto(d.resultado);
-        else if (modoFoto === 'contrato') await processarContrato(d.resultado);
       } else { alert('⚠️ ' + (d.resultado?.erro || 'erro')); voltarAposFoto(); }
     } catch (err) { alert('Erro: ' + err.message); voltarAposFoto(); }
   };
@@ -1551,39 +1649,6 @@
     cartaoTemp = { bancoId: banco.id, nome, limite, fechamento: fec, vencimento: ven };
     if (valor > 0) await salvarCartaoFinal({ valor, paga: false, atrasada });
     else await salvarCartaoFinal({ valor: 0, paga: true, atrasada: false });
-  }
-  
-  async function processarBoleto(r) {
-    const nome = r.nome_sugerido || 'Despesa';
-    const cat = r.categoria || 'outro';
-    const val = r.valor || 0;
-    const dia = r.dia_vencimento || null;
-    if (val <= 0) { alert('⚠️ Tenta manual.'); renderP7(); return; }
-    await salvarDespesaNoBanco(nome, cat, val, dia);
-  }
-  
-  async function processarContrato(r) {
-    const cred = r.credor || 'Credor';
-    const tipo = r.tipo || 'outro';
-    const val = r.valor_total || 0;
-    if (val <= 0) { alert('⚠️ Tenta manual.'); renderP8(); return; }
-    const dv = new Date();
-    if (r.data_vencimento_proxima) dv.setTime(new Date(r.data_vencimento_proxima).getTime());
-    else dv.setDate(dv.getDate() + 30);
-    try {
-      const { data, error } = await supabase.from('dividas').insert({
-        user_id: usuario.id, credor: cred, tipo, descricao: `Dívida ${cred}`,
-        valor_original: val, valor_atual: val,
-        data_vencimento: dv.toISOString().split('T')[0], data_inicio: new Date().toISOString().split('T')[0],
-        status: 'ativa', prioridade: r.esta_atrasada ? 1 : 2,
-        juros_mensal: r.juros_mensal || null
-      }).select().single();
-      if (error) throw error;
-      dividasAdicionadas.push(data);
-      await darXP(25, 'divida_ia', 'IA: ' + cred);
-      toast('+25 XP ✨');
-      setTimeout(() => renderP8(), 1000);
-    } catch (e) { alert('Erro: ' + e.message); renderP8(); }
   }
   
   window.formatarValor = function(input) {
