@@ -124,7 +124,6 @@
   .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; background: var(--bg-elev); color: var(--text-faint); }
   .btn-back { background: var(--bg-card); color: var(--text); border: 1px solid var(--border); flex: 0 0 56px; min-width: 56px; }
   .btn-back:active { background: var(--bg-elev); }
-  /* 🆕 v3.4.1: botão de form ocupa largura total */
   .btn-form { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Space Grotesk', sans-serif; min-height: 56px; background: var(--brand); color: #001a0e; display: block; margin-top: 4px; }
   .btn-form:active { background: var(--brand-hover); transform: scale(0.985); }
   .btn-form:disabled { opacity: 0.4; background: var(--bg-elev); color: var(--text-faint); }
@@ -172,6 +171,8 @@
   .restaurando-texto strong { color: var(--brand); }
   .lista-cadastrados { margin-top: 20px; }
   .lista-cadastrados-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--text-mute); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .revisao-card { background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%); border: 1px solid var(--ia); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+  .revisao-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: var(--ia); margin-bottom: 12px; }
 </style>
 </head>
 <body>
@@ -188,7 +189,6 @@
 <input type="file" id="input-foto" class="upload-hidden" accept="image/*" onchange="processarFoto(event)">
 
 <div class="xp-toast" id="xp-toast">+10 XP</div>
-
 <script type="module">
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
   const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
@@ -393,10 +393,7 @@
       const qtdCart = {};
       cartoesAdicionados.forEach(c => {
         const banco = BANCOS.find(b => b.nome === c.banco);
-        if (banco) {
-          bancosCart.add(banco.id);
-          qtdCart[banco.id] = (qtdCart[banco.id] || 0) + 1;
-        }
+        if (banco) { bancosCart.add(banco.id); qtdCart[banco.id] = (qtdCart[banco.id] || 0) + 1; }
       });
       bancosCartoes = Array.from(bancosCart);
       qtdPorBanco = qtdCart;
@@ -404,9 +401,7 @@
       passoAtual = perfil.setup_passo_atual || 0;
       if (bancosUsados.size > 0) bancosSelecionados = Array.from(bancosUsados);
       bancoIndexAtual = 0;
-      if (contasAdicionadas.length > 0 || cartoesAdicionados.length > 0 || rendasAdicionadas.length > 0 || despesasAdicionadas.length > 0 || dividasAdicionadas.length > 0 || objetivoPrincipal) {
-        restaurouEstado = true;
-      }
+      if (contasAdicionadas.length > 0 || cartoesAdicionados.length > 0 || rendasAdicionadas.length > 0 || despesasAdicionadas.length > 0 || dividasAdicionadas.length > 0 || objetivoPrincipal) restaurouEstado = true;
     } catch (e) { console.error('Erro:', e); }
   }
   
@@ -441,15 +436,9 @@
   
   window.voltarPasso = function() {
     if (passoAtual > 0) { 
-      passoAtual--; 
-      bancoIndexAtual = 0;
-      bancoCartaoIdx = 0;
-      cartaoIdx = 0;
-      categoriaTemp = null;
-      tipoRecorrenciaTemp = null;
-      atrasoTemp = null;
-      renderPasso(); 
-      window.scrollTo({ top: 0, behavior: 'smooth' }); 
+      passoAtual--; bancoIndexAtual = 0; bancoCartaoIdx = 0; cartaoIdx = 0;
+      categoriaTemp = null; tipoRecorrenciaTemp = null; atrasoTemp = null;
+      renderPasso(); window.scrollTo({ top: 0, behavior: 'smooth' }); 
     }
   };
   
@@ -464,13 +453,7 @@
     const pnome = nome.split(' ')[0];
     document.getElementById('container').innerHTML = `
       ${bannerRestauracao()}
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu, seu gestor 24h</div>
-          <div class="tatu-texto">Oi <strong>${pnome}</strong>! Sou o Tatu, seu gestor financeiro pessoal.<br><br>Vou passar uns <strong>30-60 minutos</strong> com você agora. Esse é o momento MAIS IMPORTANTE: <strong>quanto mais info você me der aqui, mais eu te ajudo</strong>.<br><br>Depois você não para mais. Bora?</div>
-        </div>
-      </div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu, seu gestor 24h</div><div class="tatu-texto">Oi <strong>${pnome}</strong>! Sou o Tatu, seu gestor financeiro pessoal.<br><br>Vou passar uns <strong>30-60 minutos</strong> com você agora. <strong>Quanto mais info você me der aqui, mais eu te ajudo</strong>.<br><br>Bora?</div></div></div>
       <div class="form-card" style="background:linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%);border-color:var(--brand);">
         <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;margin-bottom:10px;">📋 O que vamos cadastrar</div>
         <div style="display:grid;gap:8px;">
@@ -482,8 +465,7 @@
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💸</span> Dívidas</div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--brand);font-weight:700;"><span>🎯</span> Análise IA + plano!</div>
         </div>
-      </div>
-    `;
+      </div>`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="proximoPasso()">🚀 Bora!</button>`;
   }
   
@@ -494,20 +476,11 @@
       <div class="step-titulo">Qual seu foco agora?</div>
       <div class="step-subtitulo">Vou ajudar a resolver rápido.</div>
       <div class="objetivo-list">
-        <div class="objetivo-card ${objetivoPrincipal === 'sair_dividas' ? 'selected' : ''}" data-val="sair_dividas" onclick="selObj('sair_dividas')">
-          <div class="objetivo-emoji">🚨</div><div class="objetivo-info"><div class="objetivo-titulo">Sair das dívidas</div><div class="objetivo-desc">Quitar e limpar o nome</div></div>
-        </div>
-        <div class="objetivo-card ${objetivoPrincipal === 'criar_reserva' ? 'selected' : ''}" data-val="criar_reserva" onclick="selObj('criar_reserva')">
-          <div class="objetivo-emoji">🛡️</div><div class="objetivo-info"><div class="objetivo-titulo">Criar reserva</div><div class="objetivo-desc">Parar de viver no aperto</div></div>
-        </div>
-        <div class="objetivo-card ${objetivoPrincipal === 'investir' ? 'selected' : ''}" data-val="investir" onclick="selObj('investir')">
-          <div class="objetivo-emoji">📈</div><div class="objetivo-info"><div class="objetivo-titulo">Investir</div><div class="objetivo-desc">Fazer dinheiro trabalhar</div></div>
-        </div>
-        <div class="objetivo-card ${objetivoPrincipal === 'liberdade' ? 'selected' : ''}" data-val="liberdade" onclick="selObj('liberdade')">
-          <div class="objetivo-emoji">🚀</div><div class="objetivo-info"><div class="objetivo-titulo">Liberdade financeira</div><div class="objetivo-desc">Crescer patrimônio</div></div>
-        </div>
-      </div>
-    `;
+        <div class="objetivo-card ${objetivoPrincipal === 'sair_dividas' ? 'selected' : ''}" data-val="sair_dividas" onclick="selObj('sair_dividas')"><div class="objetivo-emoji">🚨</div><div class="objetivo-info"><div class="objetivo-titulo">Sair das dívidas</div><div class="objetivo-desc">Quitar e limpar o nome</div></div></div>
+        <div class="objetivo-card ${objetivoPrincipal === 'criar_reserva' ? 'selected' : ''}" data-val="criar_reserva" onclick="selObj('criar_reserva')"><div class="objetivo-emoji">🛡️</div><div class="objetivo-info"><div class="objetivo-titulo">Criar reserva</div><div class="objetivo-desc">Parar de viver no aperto</div></div></div>
+        <div class="objetivo-card ${objetivoPrincipal === 'investir' ? 'selected' : ''}" data-val="investir" onclick="selObj('investir')"><div class="objetivo-emoji">📈</div><div class="objetivo-info"><div class="objetivo-titulo">Investir</div><div class="objetivo-desc">Fazer dinheiro trabalhar</div></div></div>
+        <div class="objetivo-card ${objetivoPrincipal === 'liberdade' ? 'selected' : ''}" data-val="liberdade" onclick="selObj('liberdade')"><div class="objetivo-emoji">🚀</div><div class="objetivo-info"><div class="objetivo-titulo">Liberdade financeira</div><div class="objetivo-desc">Crescer patrimônio</div></div></div>
+      </div>`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" id="btn-obj" onclick="confirmarObjetivo()" ${!objetivoPrincipal ? 'disabled' : ''}>Continuar →</button>`;
   }
   
@@ -533,44 +506,21 @@
     }
     document.getElementById('container').innerHTML = `
       ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Marca TODOS os bancos que usa. Inclui contas digitais, internacionais, carteira.</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Marca TODOS os bancos que usa. Inclui digitais, internacionais, carteira.</div></div></div>
       <div class="step-titulo">Quais bancos você usa?</div>
       <div class="step-subtitulo">Marca tudo - pode ser vários.</div>
       <div class="secao-bancos-titulo">🇧🇷 Bancos brasileiros</div>
-      <div class="bancos-grid">
-        ${BANCOS_BR.map(b => `
-          <div class="banco-card ${bancosSelecionados.includes(b.id) ? 'active' : ''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')">
-            <div class="banco-logo" style="background:${b.cor};${b.cor === '#FFEF38' ? 'color:#000;' : ''}">${b.sigla}</div>
-            <div class="banco-nome">${b.nome}</div>
-          </div>
-        `).join('')}
-      </div>
+      <div class="bancos-grid">${BANCOS_BR.map(b => `<div class="banco-card ${bancosSelecionados.includes(b.id) ? 'active' : ''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')"><div class="banco-logo" style="background:${b.cor};${b.cor === '#FFEF38' ? 'color:#000;' : ''}">${b.sigla}</div><div class="banco-nome">${b.nome}</div></div>`).join('')}</div>
       <div class="secao-bancos-titulo">🌎 Contas internacionais</div>
-      <div class="bancos-grid">
-        ${BANCOS_INTL.map(b => `
-          <div class="banco-card ${bancosSelecionados.includes(b.id) ? 'active' : ''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')">
-            <div class="banco-logo" style="background:${b.cor};">${b.sigla}</div>
-            <div class="banco-nome">${b.nome}</div>
-          </div>
-        `).join('')}
-      </div>
+      <div class="bancos-grid">${BANCOS_INTL.map(b => `<div class="banco-card ${bancosSelecionados.includes(b.id) ? 'active' : ''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')"><div class="banco-logo" style="background:${b.cor};">${b.sigla}</div><div class="banco-nome">${b.nome}</div></div>`).join('')}</div>
       <div class="secao-bancos-titulo">💵 Outros</div>
-      <div class="bancos-grid">
-        ${OUTROS.map(b => `
-          <div class="banco-card ${bancosSelecionados.includes(b.id) ? 'active' : ''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')">
-            <div class="banco-logo" style="background:${b.cor};">${b.sigla}</div>
-            <div class="banco-nome">${b.nome}</div>
-          </div>
-        `).join('')}
-      </div>
-    `;
+      <div class="bancos-grid">${OUTROS.map(b => `<div class="banco-card ${bancosSelecionados.includes(b.id) ? 'active' : ''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')"><div class="banco-logo" style="background:${b.cor};">${b.sigla}</div><div class="banco-nome">${b.nome}</div></div>`).join('')}</div>`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" id="btn-bancos" onclick="proximoPasso()" ${bancosSelecionados.length === 0 ? 'disabled' : ''}>Continuar →</button>`;
   }
   
   window.toggleBanco = function(id) {
     const idx = bancosSelecionados.indexOf(id);
-    if (idx >= 0) bancosSelecionados.splice(idx, 1);
-    else bancosSelecionados.push(id);
+    if (idx >= 0) bancosSelecionados.splice(idx, 1); else bancosSelecionados.push(id);
     document.querySelector(`[data-banco="${id}"]`).classList.toggle('active');
     const btn = document.getElementById('btn-bancos');
     if (btn) btn.disabled = bancosSelecionados.length === 0;
@@ -587,59 +537,22 @@
     const jaTemConta = contasAdicionadas.some(c => c.banco === banco.nome || (banco.id === 'carteira' && c.tipo === 'carteira'));
     
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-content">
-          <div class="tatu-titulo">Tatu te ensina</div>
-          <div class="tatu-texto">${jaTemConta ? `Já tem ${banco.nome}. Outra conta ou próximo?` : `Conta do ${banco.nome}. ${ehCart ? 'Quanto tem em dinheiro?' : 'Segue os passos.'}`}</div>
-        </div>
-      </div>
-      <div class="step-titulo" style="display:flex;align-items:center;gap:10px;">
-        <div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>${banco.nome}
-      </div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu te ensina</div><div class="tatu-texto">${jaTemConta ? `Já tem ${banco.nome}. Outra conta ou próximo?` : `Conta do ${banco.nome}. ${ehCart ? 'Quanto tem em dinheiro?' : 'Segue os passos.'}`}</div></div></div>
+      <div class="step-titulo" style="display:flex;align-items:center;gap:10px;"><div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>${banco.nome}</div>
       <div class="step-subtitulo">Banco ${bancoIndexAtual + 1} de ${bancosSelecionados.length}${jaTemConta ? ' • cadastrado' : ''}</div>
       ${!ehCart ? `
-      <div class="instrucao-card">
-        <div class="instrucao-titulo">📱 Passo a passo</div>
-        <ol class="passo-lista">${passos.map((p, i) => `<li class="passo-item"><div class="passo-num">${i + 1}</div><div>${p}</div></li>`).join('')}</ol>
-      </div>
+      <div class="instrucao-card"><div class="instrucao-titulo">📱 Passo a passo</div><ol class="passo-lista">${passos.map((p, i) => `<li class="passo-item"><div class="passo-num">${i + 1}</div><div>${p}</div></li>`).join('')}</ol></div>
       <div class="opcoes-acao">
-        <div class="opcao-btn ia" onclick="abrirFoto('conta', '${bId}')">
-          <div class="opcao-btn-icon">📸</div>
-          <div class="opcao-btn-titulo">${jaTemConta ? 'Mais uma' : 'Foto'}</div>
-          <div class="opcao-btn-sub">IA lê o saldo</div>
-        </div>
-        <div class="opcao-btn" onclick="manualConta('${bId}')">
-          <div class="opcao-btn-icon">✍️</div>
-          <div class="opcao-btn-titulo">${jaTemConta ? 'Outra manual' : 'Manual'}</div>
-          <div class="opcao-btn-sub">Você preenche</div>
-        </div>
-      </div>
-      ` : `
+        <div class="opcao-btn ia" onclick="abrirFoto('conta', '${bId}')"><div class="opcao-btn-icon">📸</div><div class="opcao-btn-titulo">${jaTemConta ? 'Mais uma' : 'Foto'}</div><div class="opcao-btn-sub">IA lê o saldo</div></div>
+        <div class="opcao-btn" onclick="manualConta('${bId}')"><div class="opcao-btn-icon">✍️</div><div class="opcao-btn-titulo">${jaTemConta ? 'Outra manual' : 'Manual'}</div><div class="opcao-btn-sub">Você preenche</div></div>
+      </div>` : `
       <div class="form-card">
-        <div class="field">
-          <label>Quanto tem em dinheiro?</label>
-          <div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="cart-val" placeholder="0,00" oninput="formatarValor(this)"></div>
-        </div>
+        <div class="field"><label>Quanto tem em dinheiro?</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="cart-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
         <button class="btn-form" onclick="salvarCart()">Salvar carteira</button>
       </div>`}
-      ${contasAdicionadas.length > 0 ? `
-        <div class="lista-cadastrados">
-          <div class="lista-cadastrados-titulo">✅ Cadastradas (${contasAdicionadas.length})</div>
-          ${contasAdicionadas.map(c => `
-            <div class="item-cadastrado">
-              <div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">${c.icone}</div>
-              <div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini ${Number(c.saldo_inicial) >= 0 ? 'positivo' : 'danger'}">R$ ${formatarMoeda(c.saldo_inicial || 0)}</div></div>
-              <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirConta('${c.id}')">✕</div></div>
-            </div>
-          `).join('')}
-        </div>` : ''}
-    `;
+      ${contasAdicionadas.length > 0 ? `<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastradas (${contasAdicionadas.length})</div>${contasAdicionadas.map(c => `<div class="item-cadastrado"><div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">${c.icone}</div><div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini ${Number(c.saldo_inicial) >= 0 ? 'positivo' : 'danger'}">R$ ${formatarMoeda(c.saldo_inicial || 0)}</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirConta('${c.id}')">✕</div></div></div>`).join('')}</div>` : ''}`;
     const ehUltimo = bancoIndexAtual + 1 === bancosSelecionados.length;
-    document.getElementById('footer-content').innerHTML = `
-      <button class="btn btn-back" onclick="voltarBancoOuPasso()">‹</button>
-      <button class="btn btn-primary" onclick="proximoBancoOuPasso()">${ehUltimo ? 'Próximo passo →' : (jaTemConta ? 'Próximo banco →' : 'Pular esse →')}</button>
-    `;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarBancoOuPasso()">‹</button><button class="btn btn-primary" onclick="proximoBancoOuPasso()">${ehUltimo ? 'Próximo passo →' : (jaTemConta ? 'Próximo banco →' : 'Pular esse →')}</button>`;
   }
   
   window.voltarBancoOuPasso = function() {
@@ -655,11 +568,8 @@
   
   window.excluirConta = async function(id) {
     if (!confirm('Excluir?')) return;
-    try {
-      await supabase.from('contas').delete().eq('id', id);
-      contasAdicionadas = contasAdicionadas.filter(c => c.id !== id);
-      renderP4();
-    } catch (e) { alert('Erro: ' + e.message); }
+    try { await supabase.from('contas').delete().eq('id', id); contasAdicionadas = contasAdicionadas.filter(c => c.id !== id); renderP4(); }
+    catch (e) { alert('Erro: ' + e.message); }
   };
   
   window.manualConta = function(bId) {
@@ -668,22 +578,10 @@
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Dados da conta ${banco.nome}.</div></div></div>
       <div class="step-titulo">${banco.nome}</div>
       <div class="form-card">
-        <div class="field">
-          <label>Tipo</label>
-          <select id="mc-tipo">
-            <option value="conta_corrente">🏦 Conta Corrente</option>
-            <option value="poupanca">🐷 Poupança</option>
-            <option value="investimento">📈 Investimento</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Saldo atual (positivo ou negativo)</label>
-          <div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mc-saldo" placeholder="0,00" oninput="formatarValorComSinal(this)"></div>
-          <div style="font-size:11px;color:var(--text-mute);margin-top:4px;">💡 Cheque especial? -500,00</div>
-        </div>
+        <div class="field"><label>Tipo</label><select id="mc-tipo"><option value="conta_corrente">🏦 Conta Corrente</option><option value="poupanca">🐷 Poupança</option><option value="investimento">📈 Investimento</option></select></div>
+        <div class="field"><label>Saldo atual (positivo ou negativo)</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mc-saldo" placeholder="0,00" oninput="formatarValorComSinal(this)"></div><div style="font-size:11px;color:var(--text-mute);margin-top:4px;">💡 Cheque especial? -500,00</div></div>
         <button class="btn-form" onclick="salvarContaManual('${bId}')">Salvar conta</button>
-      </div>
-    `;
+      </div>`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP4()">‹</button><button class="btn btn-primary" disabled>Cadastre</button>`;
   };
   
@@ -694,10 +592,7 @@
     if (saldo === null || isNaN(saldo)) { alert('Informe o saldo'); return; }
     const emojis = { 'conta_corrente': '🏦', 'poupanca': '🐷', 'investimento': '📈' };
     try {
-      const { data, error } = await supabase.from('contas').insert({
-        user_id: usuario.id, nome: banco.nome, tipo, banco: banco.nome, cor: banco.cor,
-        icone: emojis[tipo] || '🏦', saldo_inicial: saldo, padrao: contasAdicionadas.length === 0
-      }).select().single();
+      const { data, error } = await supabase.from('contas').insert({ user_id: usuario.id, nome: banco.nome, tipo, banco: banco.nome, cor: banco.cor, icone: emojis[tipo] || '🏦', saldo_inicial: saldo, padrao: contasAdicionadas.length === 0 }).select().single();
       if (error) throw error;
       contasAdicionadas.push(data);
       await darXP(15, 'conta_setup', 'Setup: ' + banco.nome);
@@ -710,10 +605,7 @@
     const valor = valorParaNumero(document.getElementById('cart-val').value);
     if (valor === null || isNaN(valor)) { alert('Informe o valor'); return; }
     try {
-      const { data, error } = await supabase.from('contas').insert({
-        user_id: usuario.id, nome: 'Carteira', tipo: 'carteira', cor: '#84cc16', icone: '💵',
-        saldo_inicial: valor, padrao: contasAdicionadas.length === 0
-      }).select().single();
+      const { data, error } = await supabase.from('contas').insert({ user_id: usuario.id, nome: 'Carteira', tipo: 'carteira', cor: '#84cc16', icone: '💵', saldo_inicial: valor, padrao: contasAdicionadas.length === 0 }).select().single();
       if (error) throw error;
       contasAdicionadas.push(data);
       await darXP(15, 'carteira_setup', 'Setup: Carteira');
@@ -739,23 +631,11 @@
       ${bannerRestauracao()}
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Tem <strong>cartão de crédito</strong>?</div></div></div>
       <div class="step-titulo">Tem cartão de crédito?</div>
-      <div class="step-subtitulo">Se tiver, pedi limite, dias, fatura.</div>
       <div class="sim-nao-grid">
         <div class="sim-nao-btn sim" onclick="respCartoes(true)"><div class="sim-nao-btn-emoji">💳</div>Sim</div>
         <div class="sim-nao-btn nao" onclick="respCartoes(false)"><div class="sim-nao-btn-emoji">🚫</div>Não</div>
       </div>
-      ${cartoesAdicionados.length > 0 ? `
-        <div class="lista-cadastrados">
-          <div class="lista-cadastrados-titulo">✅ Cadastrados (${cartoesAdicionados.length})</div>
-          ${cartoesAdicionados.map(c => `
-            <div class="item-cadastrado">
-              <div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div>
-              <div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)}</div></div>
-              <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div>
-            </div>
-          `).join('')}
-        </div>` : ''}
-    `;
+      ${cartoesAdicionados.length > 0 ? `<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastrados (${cartoesAdicionados.length})</div>${cartoesAdicionados.map(c => `<div class="item-cadastrado"><div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div><div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)}</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div></div>`).join('')}</div>` : ''}`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()" ${cartoesAdicionados.length === 0 ? 'disabled' : ''}>Continuar →</button>`;
   }
   
@@ -778,31 +658,15 @@
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">De quais bancos são os cartões?</div></div></div>
       <div class="step-titulo">Bancos dos cartões</div>
       <div class="secao-bancos-titulo">🇧🇷 Brasileiros</div>
-      <div class="bancos-grid">
-        ${BANCOS_BR.map(b => `
-          <div class="banco-card ${bancosCartoes.includes(b.id) ? 'active' : ''}" data-bc="${b.id}" onclick="togBC('${b.id}')">
-            <div class="banco-logo" style="background:${b.cor};${b.cor === '#FFEF38' ? 'color:#000;' : ''}">${b.sigla}</div>
-            <div class="banco-nome">${b.nome}</div>
-          </div>
-        `).join('')}
-      </div>
+      <div class="bancos-grid">${BANCOS_BR.map(b => `<div class="banco-card ${bancosCartoes.includes(b.id) ? 'active' : ''}" data-bc="${b.id}" onclick="togBC('${b.id}')"><div class="banco-logo" style="background:${b.cor};${b.cor === '#FFEF38' ? 'color:#000;' : ''}">${b.sigla}</div><div class="banco-nome">${b.nome}</div></div>`).join('')}</div>
       <div class="secao-bancos-titulo">🌎 Internacionais</div>
-      <div class="bancos-grid">
-        ${BANCOS_INTL.map(b => `
-          <div class="banco-card ${bancosCartoes.includes(b.id) ? 'active' : ''}" data-bc="${b.id}" onclick="togBC('${b.id}')">
-            <div class="banco-logo" style="background:${b.cor};">${b.sigla}</div>
-            <div class="banco-nome">${b.nome}</div>
-          </div>
-        `).join('')}
-      </div>
-    `;
+      <div class="bancos-grid">${BANCOS_INTL.map(b => `<div class="banco-card ${bancosCartoes.includes(b.id) ? 'active' : ''}" data-bc="${b.id}" onclick="togBC('${b.id}')"><div class="banco-logo" style="background:${b.cor};">${b.sigla}</div><div class="banco-nome">${b.nome}</div></div>`).join('')}</div>`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="temCartoes = null; renderP5_Pergunta();">‹</button><button class="btn btn-primary" id="btn-bc" onclick="confBC()" ${bancosCartoes.length === 0 ? 'disabled' : ''}>Continuar →</button>`;
   }
   
   window.togBC = function(id) {
     const i = bancosCartoes.indexOf(id);
-    if (i >= 0) bancosCartoes.splice(i, 1);
-    else bancosCartoes.push(id);
+    if (i >= 0) bancosCartoes.splice(i, 1); else bancosCartoes.push(id);
     document.querySelector(`[data-bc="${id}"]`).classList.toggle('active');
     document.getElementById('btn-bc').disabled = bancosCartoes.length === 0;
   };
@@ -813,17 +677,14 @@
     const banco = BANCOS.find(b => b.id === bId);
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Quantos cartões do <strong>${banco.nome}</strong>?</div></div></div>
-      <div class="step-titulo" style="display:flex;align-items:center;gap:10px;">
-        <div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>${banco.nome}
-      </div>
+      <div class="step-titulo" style="display:flex;align-items:center;gap:10px;"><div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>${banco.nome}</div>
       <div class="step-subtitulo">Banco ${bancoCartaoIdx + 1} de ${bancosCartoes.length}</div>
       <div class="qtd-grid">
         <div class="qtd-btn" onclick="selQtd('${bId}', 1)">1</div>
         <div class="qtd-btn" onclick="selQtd('${bId}', 2)">2</div>
         <div class="qtd-btn" onclick="selQtd('${bId}', 3)">3</div>
         <div class="qtd-btn" onclick="selQtd('${bId}', 4)">4+</div>
-      </div>
-    `;
+      </div>`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltBC()">‹</button><button class="btn btn-primary" disabled>Escolha</button>`;
   }
   
@@ -842,38 +703,14 @@
     const numC = cartaoIdx + 1;
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu te ensina</div><div class="tatu-texto">Cartão <strong>${numC} de ${qtd}</strong> do ${banco.nome}.</div></div></div>
-      <div class="step-titulo" style="display:flex;align-items:center;gap:10px;">
-        <div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>${banco.nome}
-      </div>
+      <div class="step-titulo" style="display:flex;align-items:center;gap:10px;"><div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>${banco.nome}</div>
       <div class="step-subtitulo">Cartão ${numC}/${qtd} • Banco ${bancoCartaoIdx + 1}/${bancosCartoes.length}</div>
-      <div class="instrucao-card">
-        <div class="instrucao-titulo">📱 Onde achar</div>
-        <ol class="passo-lista">${passos.map((p, i) => `<li class="passo-item"><div class="passo-num">${i + 1}</div><div>${p}</div></li>`).join('')}</ol>
-      </div>
+      <div class="instrucao-card"><div class="instrucao-titulo">📱 Onde achar</div><ol class="passo-lista">${passos.map((p, i) => `<li class="passo-item"><div class="passo-num">${i + 1}</div><div>${p}</div></li>`).join('')}</ol></div>
       <div class="opcoes-acao">
-        <div class="opcao-btn ia" onclick="abrirFoto('fatura', '${bId}')">
-          <div class="opcao-btn-icon">📸</div>
-          <div class="opcao-btn-titulo">Foto fatura</div>
-          <div class="opcao-btn-sub">IA lê tudo</div>
-        </div>
-        <div class="opcao-btn" onclick="manualCartao('${bId}')">
-          <div class="opcao-btn-icon">✍️</div>
-          <div class="opcao-btn-titulo">Manual</div>
-          <div class="opcao-btn-sub">Você preenche</div>
-        </div>
+        <div class="opcao-btn ia" onclick="abrirFoto('fatura', '${bId}')"><div class="opcao-btn-icon">📸</div><div class="opcao-btn-titulo">Foto fatura</div><div class="opcao-btn-sub">IA lê tudo</div></div>
+        <div class="opcao-btn" onclick="manualCartao('${bId}')"><div class="opcao-btn-icon">✍️</div><div class="opcao-btn-titulo">Manual</div><div class="opcao-btn-sub">Você preenche</div></div>
       </div>
-      ${cartoesAdicionados.length > 0 ? `
-        <div class="lista-cadastrados">
-          <div class="lista-cadastrados-titulo">✅ Cadastrados (${cartoesAdicionados.length})</div>
-          ${cartoesAdicionados.map(c => `
-            <div class="item-cadastrado">
-              <div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div>
-              <div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)}</div></div>
-              <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div>
-            </div>
-          `).join('')}
-        </div>` : ''}
-    `;
+      ${cartoesAdicionados.length > 0 ? `<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastrados (${cartoesAdicionados.length})</div>${cartoesAdicionados.map(c => `<div class="item-cadastrado"><div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div><div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)}</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div></div>`).join('')}</div>` : ''}`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltCartao()">‹</button><button class="btn btn-primary" onclick="pulaCartao()">Pular →</button>`;
   }
   
@@ -895,13 +732,9 @@
       <div class="form-card">
         <div class="field"><label>Apelido</label><input type="text" id="c-nome" value="${sugNome}"></div>
         <div class="field"><label>Limite total</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="c-lim" placeholder="0,00" oninput="formatarValor(this)"></div></div>
-        <div class="field-row">
-          <div class="field"><label>Fechamento</label><input type="number" id="c-fec" placeholder="20" min="1" max="31"></div>
-          <div class="field"><label>Vencimento</label><input type="number" id="c-ven" placeholder="10" min="1" max="31"></div>
-        </div>
+        <div class="field-row"><div class="field"><label>Fechamento</label><input type="number" id="c-fec" placeholder="20" min="1" max="31"></div><div class="field"><label>Vencimento</label><input type="number" id="c-ven" placeholder="10" min="1" max="31"></div></div>
         <button class="btn-form" onclick="confDadosCart('${bId}')">Continuar →</button>
-      </div>
-    `;
+      </div>`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP5_CadCartao('${bId}')">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
   };
   
@@ -923,8 +756,7 @@
       <div class="sim-nao-grid">
         <div class="sim-nao-btn sim" onclick="respFat(true)"><div class="sim-nao-btn-emoji">💸</div>Sim</div>
         <div class="sim-nao-btn nao" onclick="respFat(false)"><div class="sim-nao-btn-emoji">✨</div>Não, zerada</div>
-      </div>
-    `;
+      </div>`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="manualCartao('${cartaoTemp.bancoId}')">‹</button><button class="btn btn-primary" disabled>Escolha</button>`;
   }
   
@@ -939,17 +771,13 @@
       <div class="step-titulo">Dados da fatura</div>
       <div class="form-card">
         <div class="field"><label>Valor</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="f-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
-        <div class="field">
-          <label>Status</label>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-            <div class="qtd-btn" data-st="aberta" onclick="selStat('aberta')" style="font-size:11px;padding:14px 4px;line-height:1.3;">📅<br>Aberta</div>
-            <div class="qtd-btn" data-st="paga" onclick="selStat('paga')" style="font-size:11px;padding:14px 4px;line-height:1.3;">✅<br>Paga</div>
-            <div class="qtd-btn" data-st="atrasada" onclick="selStat('atrasada')" style="font-size:11px;padding:14px 4px;line-height:1.3;">⚠️<br>Atrasada</div>
-          </div>
-        </div>
+        <div class="field"><label>Status</label><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+          <div class="qtd-btn" data-st="aberta" onclick="selStat('aberta')" style="font-size:11px;padding:14px 4px;line-height:1.3;">📅<br>Aberta</div>
+          <div class="qtd-btn" data-st="paga" onclick="selStat('paga')" style="font-size:11px;padding:14px 4px;line-height:1.3;">✅<br>Paga</div>
+          <div class="qtd-btn" data-st="atrasada" onclick="selStat('atrasada')" style="font-size:11px;padding:14px 4px;line-height:1.3;">⚠️<br>Atrasada</div>
+        </div></div>
         <button class="btn-form" onclick="confFat()">Salvar cartão →</button>
-      </div>
-    `;
+      </div>`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP5_PergFatura()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
   }
   
@@ -970,43 +798,18 @@
     const { bancoId, nome, limite, fechamento, vencimento } = cartaoTemp;
     const banco = BANCOS.find(b => b.id === bancoId);
     try {
-      const { data: cart, error: e1 } = await supabase.from('contas').insert({
-        user_id: usuario.id, nome, tipo: 'cartao_credito', banco: banco.nome, cor: banco.cor,
-        icone: '💳', limite, saldo_inicial: 0, dia_fechamento: fechamento, dia_vencimento: vencimento
-      }).select().single();
+      const { data: cart, error: e1 } = await supabase.from('contas').insert({ user_id: usuario.id, nome, tipo: 'cartao_credito', banco: banco.nome, cor: banco.cor, icone: '💳', limite, saldo_inicial: 0, dia_fechamento: fechamento, dia_vencimento: vencimento }).select().single();
       if (e1) throw e1;
       cartoesAdicionados.push(cart);
       if (valor > 0) {
         let dVenc;
-        if (atrasada) {
-          const d = new Date(); d.setMonth(d.getMonth() - 1);
-          if (vencimento) d.setDate(vencimento);
-          dVenc = d.toISOString().split('T')[0];
-        } else {
-          const d = new Date();
-          if (vencimento) { d.setDate(vencimento); if (d < new Date()) d.setMonth(d.getMonth() + 1); }
-          else d.setDate(d.getDate() + 30);
-          dVenc = d.toISOString().split('T')[0];
-        }
+        if (atrasada) { const d = new Date(); d.setMonth(d.getMonth() - 1); if (vencimento) d.setDate(vencimento); dVenc = d.toISOString().split('T')[0]; }
+        else { const d = new Date(); if (vencimento) { d.setDate(vencimento); if (d < new Date()) d.setMonth(d.getMonth() + 1); } else d.setDate(d.getDate() + 30); dVenc = d.toISOString().split('T')[0]; }
         if (!paga) {
-          const { data: div } = await supabase.from('dividas').insert({
-            user_id: usuario.id, credor: banco.nome, tipo: 'cartao',
-            descricao: `Fatura ${nome}`, valor_original: valor, valor_atual: valor,
-            data_vencimento: dVenc, data_inicio: new Date().toISOString().split('T')[0],
-            status: 'ativa', prioridade: atrasada ? 1 : 2, conta_id: cart.id
-          }).select().single();
-          if (div) {
-            dividasAdicionadas.push(div);
-            await supabase.from('transacoes').insert({
-              user_id: usuario.id, valor, descricao: `Fatura ${nome}`, data: dVenc,
-              tipo: 'saida', conta_id: cart.id, divida_id: div.id, status: 'prevista'
-            });
-          }
+          const { data: div } = await supabase.from('dividas').insert({ user_id: usuario.id, credor: banco.nome, tipo: 'cartao', descricao: `Fatura ${nome}`, valor_original: valor, valor_atual: valor, data_vencimento: dVenc, data_inicio: new Date().toISOString().split('T')[0], status: 'ativa', prioridade: atrasada ? 1 : 2, conta_id: cart.id }).select().single();
+          if (div) { dividasAdicionadas.push(div); await supabase.from('transacoes').insert({ user_id: usuario.id, valor, descricao: `Fatura ${nome}`, data: dVenc, tipo: 'saida', conta_id: cart.id, divida_id: div.id, status: 'prevista' }); }
         } else {
-          await supabase.from('transacoes').insert({
-            user_id: usuario.id, valor, descricao: `Fatura ${nome} (paga)`, data: dVenc,
-            tipo: 'saida', conta_id: cart.id, status: 'realizada'
-          });
+          await supabase.from('transacoes').insert({ user_id: usuario.id, valor, descricao: `Fatura ${nome} (paga)`, data: dVenc, tipo: 'saida', conta_id: cart.id, status: 'realizada' });
         }
       }
       await darXP(25, 'cartao_setup', 'Setup cartão: ' + nome);
@@ -1022,43 +825,18 @@
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble"><div class="tatu-emoji">🎉</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Pronto! <strong>${cartoesAdicionados.length} cartões</strong>. ${totalDiv > 0 ? `Total: <strong>R$ ${formatarMoeda(totalDiv)}</strong>.` : ''} ${atrasadas > 0 ? `<br>⚠️ <strong>${atrasadas} atrasada${atrasadas > 1 ? 's' : ''}</strong>!` : ''}</div></div></div>
       <div class="step-titulo">Cartões cadastrados</div>
-      ${cartoesAdicionados.map(c => `
-        <div class="item-cadastrado">
-          <div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div>
-          <div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)}</div></div>
-          <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div>
-        </div>
-      `).join('')}
-    `;
+      ${cartoesAdicionados.map(c => `<div class="item-cadastrado"><div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div><div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)}</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div></div>`).join('')}`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">Próximo →</button>`;
   }
   
   function renderP6() {
     document.getElementById('container').innerHTML = `
       ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>TODA</strong> renda que entra. Tudo que cai mensal: salário, freela, aluguel, comissão. Marca o tipo:</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>TODA</strong> renda que entra. Salário, freela, aluguel, comissão. Marca o tipo:</div></div></div>
       <div class="step-titulo">Suas rendas mensais</div>
       <div class="step-subtitulo">Toca no tipo da renda que quer cadastrar.</div>
-      <div class="categoria-grid">
-        ${CATEGORIAS_RENDA.map(c => `
-          <div class="categoria-card ${c.id === 'outro' ? 'add' : ''}" onclick="abrirCadRenda('${c.id}')">
-            <div class="categoria-emoji">${c.emoji}</div>
-            <div class="categoria-nome">${c.nome}</div>
-          </div>
-        `).join('')}
-      </div>
-      ${rendasAdicionadas.length > 0 ? `
-        <div class="lista-cadastrados">
-          <div class="lista-cadastrados-titulo">✅ Cadastradas (${rendasAdicionadas.length})</div>
-          ${rendasAdicionadas.map(r => `
-            <div class="item-cadastrado">
-              <div class="item-icone-mini" style="background:${r.cor || '#00d97e'}30;color:${r.cor || '#00d97e'};">${r.icone || '💰'}</div>
-              <div class="item-info-mini"><div class="item-nome-mini">${r.nome}</div><div class="item-valor-mini positivo">+R$ ${formatarMoeda(r.valor)}/mês</div></div>
-              <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirRenda('${r.id}')">✕</div></div>
-            </div>
-          `).join('')}
-        </div>` : ''}
-    `;
+      <div class="categoria-grid">${CATEGORIAS_RENDA.map(c => `<div class="categoria-card ${c.id === 'outro' ? 'add' : ''}" onclick="abrirCadRenda('${c.id}')"><div class="categoria-emoji">${c.emoji}</div><div class="categoria-nome">${c.nome}</div></div>`).join('')}</div>
+      ${rendasAdicionadas.length > 0 ? `<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastradas (${rendasAdicionadas.length})</div>${rendasAdicionadas.map(r => `<div class="item-cadastrado"><div class="item-icone-mini" style="background:${r.cor || '#00d97e'}30;color:${r.cor || '#00d97e'};">${r.icone || '💰'}</div><div class="item-info-mini"><div class="item-nome-mini">${r.nome}</div><div class="item-valor-mini positivo">+R$ ${formatarMoeda(r.valor)}/mês</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirRenda('${r.id}')">✕</div></div></div>`).join('')}</div>` : ''}`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${rendasAdicionadas.length > 0 ? 'Continuar →' : 'Pular →'}</button>`;
   }
   
@@ -1074,19 +852,14 @@
         <div class="field"><label>Valor mensal</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mr-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
         <div class="field"><label>Dia recebe (1-31)</label><input type="number" id="mr-dia" placeholder="5" min="1" max="31"></div>
         <button class="btn-form" onclick="salvarRenda()">Salvar renda</button>
-      </div>
-    `;
+      </div>`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP6()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
   };
   
   window.excluirRenda = async function(id) {
     if (!confirm('Excluir?')) return;
-    try {
-      await supabase.from('transacoes').delete().eq('renda_id', id);
-      await supabase.from('rendas').delete().eq('id', id);
-      rendasAdicionadas = rendasAdicionadas.filter(r => r.id !== id);
-      renderP6();
-    } catch (e) { alert('Erro: ' + e.message); }
+    try { await supabase.from('transacoes').delete().eq('renda_id', id); await supabase.from('rendas').delete().eq('id', id); rendasAdicionadas = rendasAdicionadas.filter(r => r.id !== id); renderP6(); }
+    catch (e) { alert('Erro: ' + e.message); }
   };
   
   window.salvarRenda = async function() {
@@ -1097,9 +870,7 @@
     if (!val || val <= 0) { alert('Informe o valor'); return; }
     const cat = categoriaTemp;
     try {
-      const { data, error } = await supabase.from('rendas').insert({
-        user_id: usuario.id, nome, categoria: cat.id, valor: val, dia_recebimento: dia, cor: cat.cor, icone: cat.emoji
-      }).select().single();
+      const { data, error } = await supabase.from('rendas').insert({ user_id: usuario.id, nome, categoria: cat.id, valor: val, dia_recebimento: dia, cor: cat.cor, icone: cat.emoji }).select().single();
       if (error) throw error;
       rendasAdicionadas.push(data);
       const totalRenda = rendasAdicionadas.reduce((a, r) => a + Number(r.valor || 0), 0);
@@ -1121,33 +892,15 @@
     } catch (e) { alert('Erro: ' + e.message); }
   };
   
-  // ============ PASSO 7 — DESPESAS ============
+  // ============ PASSO 7 — DESPESAS v3.4.1 (com Foto/Manual) ============
   function renderP7() {
     document.getElementById('container').innerHTML = `
       ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>Despesas fixas</strong>. Toca em cada tipo que você paga. Quanto mais eu souber, melhor o plano:</div></div></div>
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>Despesas fixas</strong>. Toca em cada tipo que você paga:</div></div></div>
       <div class="step-titulo">Suas despesas</div>
       <div class="step-subtitulo">Toca em cada tipo que você tem.</div>
-      <div class="categoria-grid">
-        ${CATEGORIAS_DESPESA.map(c => `
-          <div class="categoria-card ${c.id === 'outro' ? 'add' : ''}" onclick="abrirCadDesp('${c.id}')">
-            <div class="categoria-emoji">${c.emoji}</div>
-            <div class="categoria-nome">${c.nome}</div>
-          </div>
-        `).join('')}
-      </div>
-      ${despesasAdicionadas.length > 0 ? `
-        <div class="lista-cadastrados">
-          <div class="lista-cadastrados-titulo">✅ Cadastradas (${despesasAdicionadas.length})</div>
-          ${despesasAdicionadas.map(d => `
-            <div class="item-cadastrado">
-              <div class="item-icone-mini" style="background:${d.cor || '#ffb800'}30;color:${d.cor || '#ffb800'};">${d.icone || '📋'}</div>
-              <div class="item-info-mini"><div class="item-nome-mini">${d.nome}</div><div class="item-valor-mini danger">-R$ ${formatarMoeda(d.valor)}/mês</div></div>
-              <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDesp('${d.id}')">✕</div></div>
-            </div>
-          `).join('')}
-        </div>` : ''}
-    `;
+      <div class="categoria-grid">${CATEGORIAS_DESPESA.map(c => `<div class="categoria-card ${c.id === 'outro' ? 'add' : ''}" onclick="abrirCadDesp('${c.id}')"><div class="categoria-emoji">${c.emoji}</div><div class="categoria-nome">${c.nome}</div></div>`).join('')}</div>
+      ${despesasAdicionadas.length > 0 ? `<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastradas (${despesasAdicionadas.length})</div>${despesasAdicionadas.map(d => `<div class="item-cadastrado"><div class="item-icone-mini" style="background:${d.cor || '#ffb800'}30;color:${d.cor || '#ffb800'};">${d.icone || '📋'}</div><div class="item-info-mini"><div class="item-nome-mini">${d.nome}</div><div class="item-valor-mini danger">-R$ ${formatarMoeda(d.valor)}/mês</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDesp('${d.id}')">✕</div></div></div>`).join('')}</div>` : ''}`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${despesasAdicionadas.length > 0 ? 'Continuar →' : 'Pular →'}</button>`;
   }
   
@@ -1158,23 +911,14 @@
     renderP7_TipoRec(cat);
   };
   
-  function renderP7_TipoRec(cat) {
+  window.renderP7_TipoRec = function(cat) {
     document.getElementById('container').innerHTML = `
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>${cat.emoji} ${cat.nome}</strong> é de qual tipo?</div></div></div>
       <div class="step-titulo">Qual o tipo?</div>
       <div class="step-subtitulo">Pra eu calcular certinho.</div>
-      <div class="tipo-recorrencia-grid">
-        ${TIPOS_RECORRENCIA.map(t => `
-          <div class="tipo-rec-btn" data-tipo="${t.id}" onclick="selTipoRec('${t.id}')">
-            <div class="tipo-rec-emoji">${t.emoji}</div>
-            <div class="tipo-rec-nome">${t.nome}</div>
-            <div class="tipo-rec-desc">${t.desc}</div>
-          </div>
-        `).join('')}
-      </div>
-    `;
+      <div class="tipo-recorrencia-grid">${TIPOS_RECORRENCIA.map(t => `<div class="tipo-rec-btn" data-tipo="${t.id}" onclick="selTipoRec('${t.id}')"><div class="tipo-rec-emoji">${t.emoji}</div><div class="tipo-rec-nome">${t.nome}</div><div class="tipo-rec-desc">${t.desc}</div></div>`).join('')}</div>`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP7()">‹</button><button class="btn btn-primary" id="btn-tipo" onclick="confirmaTipoRec()" disabled>Continuar →</button>`;
-  }
+  };
   
   window.selTipoRec = function(tId) {
     tipoRecorrenciaTemp = tId;
@@ -1183,13 +927,12 @@
     document.getElementById('btn-tipo').disabled = false;
   };
   
-  // 🆕 v3.4.1: tela Foto OU Manual após escolher categoria + tipo
   window.confirmaTipoRec = function() {
     if (!tipoRecorrenciaTemp) return;
     renderP7_FotoOuManual();
   };
   
-  function renderP7_FotoOuManual() {
+  window.renderP7_FotoOuManual = function() {
     const cat = categoriaTemp;
     const tipo = TIPOS_RECORRENCIA.find(t => t.id === tipoRecorrenciaTemp);
     document.getElementById('container').innerHTML = `
@@ -1197,50 +940,41 @@
       <div class="step-titulo">Foto ou manual?</div>
       <div class="step-subtitulo">Tem boleto? Tira foto que eu leio.</div>
       <div class="opcoes-acao">
-        <div class="opcao-btn ia" onclick="abrirFoto('boleto', null)">
-          <div class="opcao-btn-icon">📸</div>
-          <div class="opcao-btn-titulo">Foto do boleto</div>
-          <div class="opcao-btn-sub">IA lê tudo</div>
-        </div>
-        <div class="opcao-btn" onclick="renderP7_Form()">
-          <div class="opcao-btn-icon">✍️</div>
-          <div class="opcao-btn-titulo">Manual</div>
-          <div class="opcao-btn-sub">Você preenche</div>
-        </div>
-      </div>
-    `;
+        <div class="opcao-btn ia" onclick="abrirFoto('boleto', null)"><div class="opcao-btn-icon">📸</div><div class="opcao-btn-titulo">Foto do boleto</div><div class="opcao-btn-sub">IA lê tudo</div></div>
+        <div class="opcao-btn" onclick="renderP7_Form()"><div class="opcao-btn-icon">✍️</div><div class="opcao-btn-titulo">Manual</div><div class="opcao-btn-sub">Você preenche</div></div>
+      </div>`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP7_TipoRec(categoriaTemp)">‹</button><button class="btn btn-primary" disabled>Escolha</button>`;
-  }
+  };
   
-  window.renderP7_Form = function() {
+  window.renderP7_Form = function(dadosPreenchidos) {
     const cat = categoriaTemp;
     const tipo = TIPOS_RECORRENCIA.find(t => t.id === tipoRecorrenciaTemp);
-    const sugNome = cat.id === 'outro' ? '' : cat.nome;
+    const sugNome = dadosPreenchidos?.nome || (cat.id === 'outro' ? '' : cat.nome);
+    const sugVal = dadosPreenchidos?.valor ? Number(dadosPreenchidos.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '';
+    const sugDia = dadosPreenchidos?.dia || '';
     const labelValor = tipo.id === 'parcelada' ? 'Valor da parcela' : 'Valor';
     const ehParcelada = tipo.id === 'parcelada';
+    const veioDeFoto = !!dadosPreenchidos;
     
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>${cat.emoji} ${cat.nome}</strong> • ${tipo.emoji} ${tipo.nome}</div></div></div>
-      <div class="step-titulo">Dados</div>
+      <div class="tatu-bubble"><div class="tatu-emoji">${veioDeFoto ? '✅' : '🦔'}</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">${veioDeFoto ? `<strong>Li o boleto!</strong> Confirma os dados:` : `<strong>${cat.emoji} ${cat.nome}</strong> • ${tipo.emoji} ${tipo.nome}`}</div></div></div>
+      ${veioDeFoto ? `<div class="revisao-card"><div class="revisao-titulo">📸 Dados extraídos da foto</div></div>` : ''}
+      <div class="step-titulo">${veioDeFoto ? 'Revisar e salvar' : 'Dados'}</div>
       <div class="form-card">
         <div class="field"><label>Nome</label><input type="text" id="md-nome" placeholder="Digite o nome" value="${sugNome}"></div>
-        <div class="field"><label>${labelValor}</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="md-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
+        <div class="field"><label>${labelValor}</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="md-val" placeholder="0,00" value="${sugVal}" oninput="formatarValor(this)"></div></div>
         ${ehParcelada ? `<div class="field"><label>Quantas parcelas restam?</label><input type="number" id="md-parcelas" placeholder="10" min="1" max="120"></div>` : ''}
-        <div class="field"><label>Dia vencimento (1-31)</label><input type="number" id="md-dia" placeholder="10" min="1" max="31"></div>
-        <button class="btn-form" onclick="salvarDesp()">Salvar despesa</button>
-      </div>
-    `;
+        <div class="field"><label>Dia vencimento (1-31)</label><input type="number" id="md-dia" placeholder="10" min="1" max="31" value="${sugDia}"></div>
+        <button class="btn-form" onclick="salvarDesp()">${veioDeFoto ? '✅ Confirmar e salvar' : 'Salvar despesa'}</button>
+        ${veioDeFoto ? `<button class="btn-form" style="background:var(--bg-elev);color:var(--text);margin-top:8px;" onclick="abrirFoto('boleto', null)">🔄 Refazer foto</button>` : ''}
+      </div>`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP7_FotoOuManual()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
   };
   
   window.excluirDesp = async function(id) {
     if (!confirm('Excluir?')) return;
-    try {
-      await supabase.from('transacoes').delete().eq('compromisso_id', id);
-      await supabase.from('compromissos').delete().eq('id', id);
-      despesasAdicionadas = despesasAdicionadas.filter(d => d.id !== id);
-      renderP7();
-    } catch (e) { alert('Erro: ' + e.message); }
+    try { await supabase.from('transacoes').delete().eq('compromisso_id', id); await supabase.from('compromissos').delete().eq('id', id); despesasAdicionadas = despesasAdicionadas.filter(d => d.id !== id); renderP7(); }
+    catch (e) { alert('Erro: ' + e.message); }
   };
   
   window.salvarDesp = async function() {
@@ -1251,34 +985,27 @@
     if (!val || val <= 0) { alert('Informe o valor'); return; }
     const cat = categoriaTemp;
     const tipo = tipoRecorrenciaTemp;
-    
     const parcelasEl = document.getElementById('md-parcelas');
     const parcelas = parcelasEl ? (parseInt(parcelasEl.value) || 1) : null;
-    
     await salvarDespesaCompleta(nome, cat, val, dia, tipo, parcelas);
   };
   
   async function salvarDespesaCompleta(nome, cat, val, dia, tipo, parcelas) {
     try {
       const tipoDB = tipo === 'pontual' ? 'pontual' : 'recorrente';
-      const { data, error } = await supabase.from('compromissos').insert({
-        user_id: usuario.id, nome, categoria: cat.id, tipo: tipoDB, valor: val, dia_vencimento: dia, cor: cat.cor, icone: cat.emoji
-      }).select().single();
+      const { data, error } = await supabase.from('compromissos').insert({ user_id: usuario.id, nome, categoria: cat.id, tipo: tipoDB, valor: val, dia_vencimento: dia, cor: cat.cor, icone: cat.emoji }).select().single();
       if (error) throw error;
       despesasAdicionadas.push(data);
-      
       const hoje = new Date();
       const dUsar = dia || hoje.getDate();
       let mes = hoje.getMonth();
       if (dUsar <= hoje.getDate()) mes++;
-      
       const trans = [];
       let qtdMeses;
       if (tipo === 'mensal') qtdMeses = 12;
       else if (tipo === 'pontual') qtdMeses = 1;
       else if (tipo === 'parcelada') qtdMeses = parcelas;
       else if (tipo === 'anual') qtdMeses = 1;
-      
       for (let i = 0; i < qtdMeses; i++) {
         const d = tipo === 'anual' ? new Date(hoje.getFullYear() + i, mes, dUsar) : new Date(hoje.getFullYear(), mes + i, dUsar);
         const descParcela = tipo === 'parcelada' ? `${nome} (${i+1}/${qtdMeses})` : nome;
@@ -1287,13 +1014,12 @@
       await supabase.from('transacoes').insert(trans);
       await darXP(15, 'despesa_setup', 'Setup despesa: ' + nome);
       toast(`+15 XP 📋 ${nome}`);
-      categoriaTemp = null;
-      tipoRecorrenciaTemp = null;
+      categoriaTemp = null; tipoRecorrenciaTemp = null;
       setTimeout(() => renderP7(), 800);
     } catch (e) { alert('Erro: ' + e.message); }
   }
   
-  // ============ PASSO 8 — DÍVIDAS ============
+  // ============ PASSO 8 — DÍVIDAS v3.4.1 (com Foto/Manual) ============
   function renderP8() {
     const outrasDivs = dividasAdicionadas.filter(d => d.tipo !== 'cartao');
     document.getElementById('container').innerHTML = `
@@ -1301,37 +1027,359 @@
       <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Toca em <strong>TODOS</strong> os tipos de dívida que você tem hoje. Quanto mais eu souber, melhor te ajudo a quitar:</div></div></div>
       <div class="step-titulo">Suas dívidas</div>
       <div class="step-subtitulo">Toca em cada tipo que você tem.</div>
-      <div class="categoria-grid">
-        ${CATEGORIAS_DIVIDA.map(c => `
-          <div class="categoria-card ${c.id === 'outro' ? 'add' : ''}" onclick="abrirCadDiv('${c.id}')">
-            <div class="categoria-emoji">${c.emoji}</div>
-            <div class="categoria-nome">${c.nome}</div>
-          </div>
-        `).join('')}
-      </div>
-      ${outrasDivs.length > 0 ? `
-        <div class="lista-cadastrados">
-          <div class="lista-cadastrados-titulo">✅ Cadastradas (${outrasDivs.length})</div>
-          ${outrasDivs.map(d => `
-            <div class="item-cadastrado" style="border-color:var(--danger);">
-              <div class="item-icone-mini" style="background:var(--danger-soft);color:var(--danger);">💸</div>
-              <div class="item-info-mini"><div class="item-nome-mini">${d.credor}</div><div class="item-valor-mini danger">R$ ${formatarMoeda(d.valor_atual)}</div></div>
-              <div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDiv('${d.id}')">✕</div></div>
-            </div>
-          `).join('')}
-        </div>` : ''}
-    `;
+      <div class="categoria-grid">${CATEGORIAS_DIVIDA.map(c => `<div class="categoria-card ${c.id === 'outro' ? 'add' : ''}" onclick="abrirCadDiv('${c.id}')"><div class="categoria-emoji">${c.emoji}</div><div class="categoria-nome">${c.nome}</div></div>`).join('')}</div>
+      ${outrasDivs.length > 0 ? `<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastradas (${outrasDivs.length})</div>${outrasDivs.map(d => `<div class="item-cadastrado" style="border-color:var(--danger);"><div class="item-icone-mini" style="background:var(--danger-soft);color:var(--danger);">💸</div><div class="item-info-mini"><div class="item-nome-mini">${d.credor}</div><div class="item-valor-mini danger">R$ ${formatarMoeda(d.valor_atual)}</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDiv('${d.id}')">✕</div></div></div>`).join('')}</div>` : ''}`;
     document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${outrasDivs.length > 0 ? 'Continuar →' : 'Não tenho →'}</button>`;
   }
   
-  // 🆕 v3.4.1: tela Foto OU Manual nas dívidas
   window.abrirCadDiv = function(catId) {
     const cat = CATEGORIAS_DIVIDA.find(c => c.id === catId);
     categoriaTemp = cat;
     renderP8_FotoOuManual();
   };
   
-  function renderP8_FotoOuManual() {
+  window.renderP8_FotoOuManual = function() {
     const cat = categoriaTemp;
     document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">T
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>${cat.emoji} ${cat.nome}</strong>. Como prefere cadastrar?</div></div></div>
+      <div class="step-titulo">Foto ou manual?</div>
+      <div class="step-subtitulo">Tem contrato/print? Eu leio.</div>
+      <div class="opcoes-acao">
+        <div class="opcao-btn ia" onclick="abrirFoto('contrato', null)"><div class="opcao-btn-icon">📸</div><div class="opcao-btn-titulo">Foto do contrato</div><div class="opcao-btn-sub">IA lê tudo</div></div>
+        <div class="opcao-btn" onclick="renderP8_Form()"><div class="opcao-btn-icon">✍️</div><div class="opcao-btn-titulo">Manual</div><div class="opcao-btn-sub">Você preenche</div></div>
+      </div>`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP8()">‹</button><button class="btn btn-primary" disabled>Escolha</button>`;
+  };
+  
+  window.renderP8_Form = function(dadosPreenchidos) {
+    const cat = categoriaTemp;
+    const sugCred = dadosPreenchidos?.credor || (cat.id === 'outro' ? '' : cat.nome);
+    const sugVal = dadosPreenchidos?.valor ? Number(dadosPreenchidos.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '';
+    const veioDeFoto = !!dadosPreenchidos;
+    document.getElementById('container').innerHTML = `
+      <div class="tatu-bubble"><div class="tatu-emoji">${veioDeFoto ? '✅' : '🦔'}</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">${veioDeFoto ? '<strong>Li o contrato!</strong> Confirma:' : `<strong>${cat.emoji} ${cat.nome}</strong>. Conta os dados:`}</div></div></div>
+      ${veioDeFoto ? `<div class="revisao-card"><div class="revisao-titulo">📸 Dados extraídos da foto</div></div>` : ''}
+      <div class="step-titulo">${veioDeFoto ? 'Revisar e salvar' : 'Nova dívida'}</div>
+      <div class="form-card">
+        <div class="field"><label>Credor (com quem você deve)</label><input type="text" id="mdv-cred" placeholder="Digite o nome" value="${sugCred}"></div>
+        <div class="field"><label>Valor total em aberto</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mdv-val" placeholder="0,00" value="${sugVal}" oninput="formatarValor(this)"></div></div>
+        <div class="field"><label>Está atrasada?</label><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div class="qtd-btn" data-atraso="nao" onclick="selAtraso('nao')" style="font-size:12px;padding:14px;">✅ Em dia</div>
+          <div class="qtd-btn" data-atraso="sim" onclick="selAtraso('sim')" style="font-size:12px;padding:14px;">⚠️ Atrasada</div>
+        </div></div>
+        <button class="btn-form" onclick="salvarDiv()">${veioDeFoto ? '✅ Confirmar e salvar' : 'Salvar dívida'}</button>
+        ${veioDeFoto ? `<button class="btn-form" style="background:var(--bg-elev);color:var(--text);margin-top:8px;" onclick="abrirFoto('contrato', null)">🔄 Refazer foto</button>` : ''}
+      </div>`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP8_FotoOuManual()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
+  };
+  
+  window.selAtraso = function(s) {
+    atrasoTemp = s;
+    document.querySelectorAll('[data-atraso]').forEach(el => el.classList.remove('active'));
+    document.querySelector(`[data-atraso="${s}"]`).classList.add('active');
+  };
+  
+  window.excluirDiv = async function(id) {
+    if (!confirm('Excluir?')) return;
+    try { await supabase.from('dividas').delete().eq('id', id); dividasAdicionadas = dividasAdicionadas.filter(d => d.id !== id); renderP8(); }
+    catch (e) { alert('Erro: ' + e.message); }
+  };
+  
+  window.salvarDiv = async function() {
+    const cred = document.getElementById('mdv-cred').value.trim();
+    const val = valorParaNumero(document.getElementById('mdv-val').value);
+    if (!cred) { alert('Digite o credor'); return; }
+    if (!val || val <= 0) { alert('Informe o valor'); return; }
+    const cat = categoriaTemp;
+    const atrasada = atrasoTemp === 'sim';
+    const dv = new Date(); 
+    if (atrasada) dv.setMonth(dv.getMonth() - 1);
+    else dv.setDate(dv.getDate() + 30);
+    try {
+      const { data, error } = await supabase.from('dividas').insert({ user_id: usuario.id, credor: cred, tipo: cat.id, descricao: `${cat.nome}: ${cred}`, valor_original: val, valor_atual: val, data_vencimento: dv.toISOString().split('T')[0], data_inicio: new Date().toISOString().split('T')[0], status: 'ativa', prioridade: atrasada ? 1 : 2 }).select().single();
+      if (error) throw error;
+      dividasAdicionadas.push(data);
+      await darXP(15, 'divida_setup', 'Setup dívida: ' + cred);
+      toast(`+15 XP 💸 ${cred}`);
+      categoriaTemp = null; atrasoTemp = null;
+      setTimeout(() => renderP8(), 800);
+    } catch (e) { alert('Erro: ' + e.message); }
+  };
+  
+  async function renderP9() {
+    document.getElementById('container').innerHTML = `
+      <div class="ia-loading">
+        <div class="ia-spinner"></div>
+        <div class="ia-loading-titulo">🦔 Tatu analisando...</div>
+        <div class="ia-loading-sub">Montando plano AGRESSIVO</div>
+        <div class="ia-loading-passo" id="ia-passo">Calculando...</div>
+      </div>`;
+    document.getElementById('footer-content').innerHTML = '';
+    setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Identificando nível...'; }, 1500);
+    setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Definindo meta CURTA...'; }, 3500);
+    setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Plano 3-6 meses...'; }, 5500);
+    
+    const dados = {
+      objetivo_principal: objetivoPrincipal,
+      contas: contasAdicionadas.map(c => ({ nome: c.nome, tipo: c.tipo, saldo: c.saldo_inicial })),
+      cartoes: cartoesAdicionados.map(c => ({ nome: c.nome, limite: c.limite })),
+      rendas: rendasAdicionadas.map(r => ({ nome: r.nome, categoria: r.categoria, valor: r.valor })),
+      despesas: despesasAdicionadas.map(d => ({ nome: d.nome, categoria: d.categoria, valor: d.valor })),
+      dividas: dividasAdicionadas.map(d => ({ credor: d.credor, tipo: d.tipo, valor: d.valor_atual }))
+    };
+    
+    try {
+      const r = await fetch(IA_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }, body: JSON.stringify({ tipo: 'analisar_situacao_financeira', dados_financeiros: dados, max_tokens: 2500 }) });
+      const d = await r.json();
+      if (d.resultado && !d.resultado.erro) { analiseIA = d.resultado; await salvarTudo(); renderResultado(); }
+      else { await salvarSemAnalise(); renderErro(); }
+    } catch (e) { console.error(e); await salvarSemAnalise(); renderErro(); }
+  }
+  
+  async function salvarTudo() {
+    await supabase.from('perfis').update({ setup_concluido: true, setup_concluido_em: new Date().toISOString(), analise_setup: analiseIA, nivel_jornada: analiseIA?.situacao?.nivel_recomendado || 1 }).eq('id', usuario.id);
+    await darXP(100, 'setup_concluido', 'Setup completo!');
+  }
+  
+  async function salvarSemAnalise() {
+    await supabase.from('perfis').update({ setup_concluido: true, setup_concluido_em: new Date().toISOString() }).eq('id', usuario.id);
+    await darXP(50, 'setup_concluido_parcial', 'Setup parcial');
+  }
+  
+  function renderResultado() {
+    const a = analiseIA;
+    const s = a.situacao;
+    const nivel = s.nivel_recomendado || 2;
+    const jornadaPontos = [{ num: 1, nome: 'Diag.' }, { num: 2, nome: 'Resgate' }, { num: 3, nome: 'Estab.' }, { num: 4, nome: 'Cresc.' }, { num: 5, nome: 'Liberd.' }];
+    document.getElementById('container').innerHTML = `
+      <div class="tatu-bubble"><div class="tatu-emoji">🎉</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Analisei TUDO! Olha seu plano:</div></div></div>
+      <div class="nivel-card"><div class="nivel-label">Seu nível</div><div class="nivel-numero">${nivel}</div><div class="nivel-nome">${s.nivel_nome}</div></div>
+      <div class="jornada-card"><div class="jornada-titulo">Sua jornada</div><div class="jornada-pontos">${jornadaPontos.map(p => `<div class="ponto ${p.num === nivel ? 'atual' : p.num < nivel ? 'passou' : ''}"><div class="ponto-circle">${p.num}</div><div class="ponto-label">${p.nome}</div></div>`).join('')}</div></div>
+      <div class="analise-card"><div class="analise-titulo">📊 Sua situação</div><div class="situacao-grid">
+        <div class="situacao-item"><div class="situacao-label">Renda</div><div class="situacao-valor" style="color:var(--brand);">R$ ${formatarMoeda(s.renda_mensal)}</div></div>
+        <div class="situacao-item"><div class="situacao-label">Despesa</div><div class="situacao-valor" style="color:var(--warning);">R$ ${formatarMoeda(s.despesa_fixa_mensal)}</div></div>
+        <div class="situacao-item"><div class="situacao-label">Patrimônio</div><div class="situacao-valor" style="color:${s.patrimonio_liquido >= 0 ? 'var(--brand)' : 'var(--danger)'};">R$ ${formatarMoeda(s.patrimonio_liquido)}</div></div>
+        <div class="situacao-item"><div class="situacao-label">Dívidas</div><div class="situacao-valor" style="color:${s.total_dividas > 0 ? 'var(--danger)' : 'var(--brand)'};">R$ ${formatarMoeda(s.total_dividas)}</div></div>
+      </div></div>
+      <div class="analise-card"><div class="analise-titulo">🦔 Diagnóstico</div><div class="diagnostico-texto">${a.diagnostico}</div></div>
+      ${a.alertas && a.alertas.length > 0 ? `<div class="analise-card"><div class="analise-titulo">⚠️ Atenção</div>${a.alertas.map(al => `<div class="alerta-item"><span>⚠️</span><span>${al}</span></div>`).join('')}</div>` : ''}
+      ${a.primeira_meta ? `<div class="meta-card"><div class="meta-titulo-card">🎯 Primeira meta</div><div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px;">${a.primeira_meta.titulo}</div><div class="meta-info-row"><span class="meta-pill">💰 R$ ${formatarMoeda(a.primeira_meta.valor_alvo)}</span><span class="meta-pill">📅 ${a.primeira_meta.prazo_meses} meses</span></div><div class="meta-explicacao">${a.primeira_meta.explicacao}</div></div>` : ''}
+      ${a.mensagem_motivacional ? `<div class="tatu-bubble"><div class="tatu-emoji">💚</div><div class="tatu-content"><div class="tatu-titulo">Mensagem</div><div class="tatu-texto">${a.mensagem_motivacional}</div></div></div>` : ''}`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="irHome()">🚀 Topo o desafio!</button>`;
+    toast('+100 XP 🎉');
+  }
+  
+  function renderErro() {
+    document.getElementById('container').innerHTML = `
+      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Setup completo! Análise depois pelo chat.</div></div></div>
+      <div class="form-card" style="text-align:center;padding:30px 20px;">
+        <div style="font-size:48px;margin-bottom:12px;">✅</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px;">Tudo cadastrado!</div>
+        <div style="font-size:13px;color:var(--text-mute);">${contasAdicionadas.length} contas, ${cartoesAdicionados.length} cartões, ${rendasAdicionadas.length} rendas, ${despesasAdicionadas.length} despesas, ${dividasAdicionadas.length} dívidas</div>
+      </div>`;
+    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="irHome()">🚀 Ir ao app</button>`;
+  }
+  
+  window.irHome = function() { window.location.href = 'home.html?v=' + Date.now(); };
+  
+  window.abrirFoto = function(modo, alvo) { modoFoto = modo; alvoFoto = alvo; document.getElementById('input-foto').click(); };
+  
+  window.processarFoto = async function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    e.target.value = '';
+    document.getElementById('container').innerHTML = `
+      <div class="ia-loading">
+        <div class="ia-spinner"></div>
+        <div class="ia-loading-titulo">📸 Preparando...</div>
+        <div class="ia-loading-sub">IA Claude lendo</div>
+        <div class="ia-loading-passo" id="p-foto">Comprimindo...</div>
+      </div>`;
+    let base64;
+    try { base64 = await comprimirImagem(file, 1600, 0.85); const el = document.getElementById('p-foto'); if (el) el.textContent = 'IA lendo...'; }
+    catch (err) { alert('⚠️ Erro'); voltarAposFoto(); return; }
+    let tipoFn;
+    if (modoFoto === 'conta') tipoFn = 'analisar_conta';
+    else if (modoFoto === 'fatura') tipoFn = 'analisar_fatura_cartao';
+    else if (modoFoto === 'boleto') tipoFn = 'analisar_boleto';
+    else if (modoFoto === 'contrato') tipoFn = 'analisar_contrato';
+    try {
+      const r = await fetch(IA_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }, body: JSON.stringify({ tipo: tipoFn, imagem_base64: base64, max_tokens: 1500 }) });
+      const d = await r.json();
+      if (d.resultado && !d.resultado.erro) {
+        if (modoFoto === 'conta') await checarDivergenciaConta(d.resultado);
+        else if (modoFoto === 'fatura') await checarDivergenciaCartao(d.resultado);
+        else if (modoFoto === 'boleto') {
+          // 🆕 v3.4.1: leva pra tela de revisão antes de salvar
+          renderP7_Form({ nome: d.resultado.nome_despesa || d.resultado.descricao || categoriaTemp.nome, valor: d.resultado.valor || 0, dia: d.resultado.dia_vencimento || null });
+        }
+        else if (modoFoto === 'contrato') {
+          // 🆕 v3.4.1: leva pra tela de revisão antes de salvar
+          renderP8_Form({ credor: d.resultado.credor || d.resultado.banco_detectado || categoriaTemp.nome, valor: d.resultado.valor_total || d.resultado.valor_atual || 0 });
+        }
+      } else { alert('⚠️ ' + (d.resultado?.erro || 'erro')); voltarAposFoto(); }
+    } catch (err) { alert('Erro: ' + err.message); voltarAposFoto(); }
+  };
+  
+  function voltarAposFoto() {
+    if (modoFoto === 'conta') renderP4();
+    else if (modoFoto === 'fatura') renderP5();
+    else if (modoFoto === 'boleto') renderP7_FotoOuManual();
+    else if (modoFoto === 'contrato') renderP8_FotoOuManual();
+  }
+  
+  async function comprimirImagem(file, maxW = 1600, q = 0.85) {
+    return new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          let w = img.width, h = img.height;
+          if (w > maxW) { h = Math.round((h * maxW) / w); w = maxW; }
+          const c = document.createElement('canvas');
+          c.width = w; c.height = h;
+          const ctx = c.getContext('2d');
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(img, 0, 0, w, h);
+          let b64 = c.toDataURL('image/jpeg', q);
+          const kb = Math.round((b64.length * 0.75) / 1024);
+          if (kb > 4000 && q > 0.5) b64 = c.toDataURL('image/jpeg', 0.7);
+          res(b64);
+        };
+        img.onerror = () => rej(new Error('Erro'));
+        img.src = e.target.result;
+      };
+      r.onerror = () => rej(new Error('Erro'));
+      r.readAsDataURL(file);
+    });
+  }
+  
+  async function checarDivergenciaConta(r) {
+    const bancoSelecionado = BANCOS.find(b => b.id === alvoFoto);
+    const bancoDetectado = (r.banco_detectado || '').toLowerCase();
+    const nomeSelecionado = bancoSelecionado.nome.toLowerCase();
+    const houveDivergencia = bancoDetectado && !bancoDetectado.includes(nomeSelecionado) && !nomeSelecionado.includes(bancoDetectado);
+    if (houveDivergencia) {
+      dadosIAPendentes = r;
+      document.getElementById('container').innerHTML = `
+        <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu detectou</div><div class="tatu-texto">Você escolheu <strong>${bancoSelecionado.nome}</strong>, foto parece <strong>${r.banco_detectado}</strong>.</div></div></div>
+        <div class="aviso-divergencia"><div class="aviso-titulo">⚠️ Banco diferente</div><div class="aviso-texto">IA leu <strong>${r.banco_detectado}</strong>, você selecionou <strong>${bancoSelecionado.nome}</strong>.</div></div>
+        <div class="form-card"><div style="display:flex;flex-direction:column;gap:10px;">
+          <button class="btn-form" onclick="usarBancoSelecionado()">✅ Usar ${bancoSelecionado.nome}</button>
+          <button class="btn-form" style="background:var(--warning-soft);color:var(--warning);border:1px solid var(--warning);" onclick="cancelarFoto()">🔄 Cancelar</button>
+        </div></div>`;
+      document.getElementById('footer-content').innerHTML = '';
+      return;
+    }
+    await processarContaFinal(r, bancoSelecionado);
+  }
+  
+  window.usarBancoSelecionado = async function() {
+    const bancoSelecionado = BANCOS.find(b => b.id === alvoFoto);
+    await processarContaFinal(dadosIAPendentes, bancoSelecionado);
+    dadosIAPendentes = null;
+  };
+  
+  window.cancelarFoto = function() { dadosIAPendentes = null; voltarAposFoto(); };
+  
+  async function processarContaFinal(r, banco) {
+    const dados = { user_id: usuario.id, nome: banco.nome, tipo: r.tipo_conta || 'conta_corrente', banco: banco.nome, cor: banco.cor, icone: r.tipo_conta === 'poupanca' ? '🐷' : r.tipo_conta === 'investimento' ? '📈' : '🏦', saldo_inicial: r.saldo_atual || 0, padrao: contasAdicionadas.length === 0 };
+    try {
+      const { data, error } = await supabase.from('contas').insert(dados).select().single();
+      if (error) throw error;
+      contasAdicionadas.push(data);
+      await darXP(25, 'conta_ia', 'IA: ' + banco.nome);
+      toast(`+25 XP ✨ ${banco.nome}`);
+      setTimeout(() => renderP4(), 1000);
+    } catch (e) { alert('Erro: ' + e.message); renderP4(); }
+  }
+  
+  async function checarDivergenciaCartao(r) {
+    const bId = alvoFoto;
+    const bancoSelecionado = BANCOS.find(b => b.id === bId);
+    const bancoDetectado = (r.banco_detectado || '').toLowerCase();
+    const nomeSelecionado = bancoSelecionado.nome.toLowerCase();
+    const houveDivergencia = bancoDetectado && !bancoDetectado.includes(nomeSelecionado) && !nomeSelecionado.includes(bancoDetectado);
+    if (houveDivergencia) {
+      dadosIAPendentes = r;
+      document.getElementById('container').innerHTML = `
+        <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu detectou</div><div class="tatu-texto">Cadastrando <strong>${bancoSelecionado.nome}</strong>, foto parece <strong>${r.banco_detectado}</strong>.</div></div></div>
+        <div class="aviso-divergencia"><div class="aviso-titulo">⚠️ Banco diferente</div><div class="aviso-texto">IA leu <strong>${r.banco_detectado}</strong>, você selecionou <strong>${bancoSelecionado.nome}</strong>.</div></div>
+        <div class="form-card"><div style="display:flex;flex-direction:column;gap:10px;">
+          <button class="btn-form" onclick="usarBancoCartaoSelecionado()">✅ Usar ${bancoSelecionado.nome}</button>
+          <button class="btn-form" style="background:var(--warning-soft);color:var(--warning);border:1px solid var(--warning);" onclick="cancelarFoto()">🔄 Cancelar</button>
+        </div></div>`;
+      document.getElementById('footer-content').innerHTML = '';
+      return;
+    }
+    await processarFaturaFinal(r, bancoSelecionado);
+  }
+  
+  window.usarBancoCartaoSelecionado = async function() {
+    const bId = alvoFoto;
+    const bancoSelecionado = BANCOS.find(b => b.id === bId);
+    await processarFaturaFinal(dadosIAPendentes, bancoSelecionado);
+    dadosIAPendentes = null;
+  };
+  
+  async function processarFaturaFinal(r, banco) {
+    const qtd = qtdPorBanco[banco.id];
+    const nomeBase = qtd === 1 ? banco.nome : `${banco.nome} ${cartaoIdx + 1}`;
+    const nome = r.nome_sugerido ? `${banco.nome} (${r.nome_sugerido})` : nomeBase;
+    const limite = r.limite_total || 0;
+    const fec = r.dia_fechamento || null;
+    const ven = r.dia_vencimento || null;
+    const valor = r.valor_fatura || 0;
+    const atrasada = r.esta_atrasada || false;
+    cartaoTemp = { bancoId: banco.id, nome, limite, fechamento: fec, vencimento: ven };
+    if (valor > 0) await salvarCartaoFinal({ valor, paga: false, atrasada });
+    else await salvarCartaoFinal({ valor: 0, paga: true, atrasada: false });
+  }
+  
+  window.formatarValor = function(input) {
+    let v = input.value.replace(/\D/g, '');
+    if (!v) { input.value = ''; return; }
+    v = (parseInt(v) / 100).toFixed(2);
+    input.value = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  };
+  
+  window.formatarValorComSinal = function(input) {
+    const ehNeg = input.value.trim().startsWith('-');
+    let v = input.value.replace(/[^0-9]/g, '');
+    if (!v) { input.value = ''; return; }
+    v = (parseInt(v) / 100).toFixed(2);
+    const formatado = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+    input.value = (ehNeg ? '-' : '') + formatado;
+  };
+  
+  function valorParaNumero(str) {
+    if (!str) return 0;
+    const ehNeg = str.trim().startsWith('-');
+    const limpo = str.replace(/[^0-9,\.]/g, '').replace(/\./g, '').replace(',', '.');
+    const num = Number(limpo) || 0;
+    return ehNeg ? -num : num;
+  }
+  
+  function formatarMoeda(v) {
+    return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  
+  async function darXP(xp, acao, descricao) {
+    try {
+      await supabase.from('historico_xp').insert({ user_id: usuario.id, acao, xp_ganho: xp, descricao });
+      const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).maybeSingle();
+      await supabase.from('gamificacao').update({ xp_total: (g?.xp_total || 0) + xp, ultima_atividade: new Date().toISOString().split('T')[0] }).eq('user_id', usuario.id);
+    } catch (e) { console.error('XP:', e); }
+  }
+  
+  function toast(texto) {
+    const t = document.getElementById('xp-toast');
+    t.textContent = texto;
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 2500);
+  }
+</script>
+
+</body>
+</html>
