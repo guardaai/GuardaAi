@@ -8,385 +8,432 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
-  :root {
-    --bg: #0a0a0a; --bg-card: #141414; --bg-elev: #1c1c1c; --bg-input: #181818;
-    --border: #252525; --border-strong: #353535;
-    --brand: #00d97e; --brand-hover: #00ba6b; --brand-soft: rgba(0, 217, 126, 0.1);
-    --danger: #ff4757; --danger-soft: rgba(255, 71, 87, 0.1);
-    --ia: #a855f7; --ia-soft: rgba(168, 85, 247, 0.1);
-    --text: #ffffff; --text-mute: #a3a3a3; --text-faint: #525252;
-  }
-  html, body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh; overflow-x: hidden; }
-  input, textarea { color: #fff !important; -webkit-text-fill-color: #fff !important; caret-color: var(--brand); }
-  input:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px var(--bg-input) inset !important; -webkit-text-fill-color: #fff !important; }
-  
-  .container { min-height: 100vh; display: flex; flex-direction: column; padding: 40px 24px; max-width: 480px; margin: 0 auto; }
-  
-  .logo-area { text-align: center; margin-bottom: 40px; padding-top: 20px; }
-  .logo-mark { width: 72px; height: 72px; background: var(--brand); border-radius: 18px; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 32px rgba(0, 217, 126, 0.3); }
-  .logo-mark::before { content: ''; width: 28px; height: 28px; border: 4px solid #001a0e; border-radius: 8px; border-top: none; border-right: none; }
-  .logo-nome { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; letter-spacing: -0.03em; text-transform: lowercase; margin-bottom: 4px; }
-  .logo-tag { font-size: 12px; color: var(--text-mute); }
-  
-  .tatu-box { background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 18px; padding: 16px; margin-bottom: 24px; display: flex; gap: 12px; align-items: flex-start; }
-  .tatu-emoji { font-size: 36px; flex-shrink: 0; }
-  .tatu-text { flex: 1; font-size: 13px; line-height: 1.55; color: var(--text); }
-  .tatu-text strong { color: var(--ia); }
-  
-  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--bg-card); padding: 6px; border-radius: 14px; margin-bottom: 20px; border: 1px solid var(--border); }
-  .tab { padding: 12px; text-align: center; border-radius: 10px; cursor: pointer; font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: var(--text-mute); transition: all 0.2s; }
-  .tab.active { background: var(--brand); color: #001a0e; }
-  
-  .form-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 20px; }
-  
-  .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 12px; color: var(--text-mute); margin-bottom: 6px; font-weight: 500; }
-  .field input { width: 100%; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; padding: 14px; color: var(--text); font-size: 16px; font-family: 'Inter', sans-serif; min-height: 50px; }
-  .field input:focus { outline: none; border-color: var(--brand); }
-  
-  .checkbox-row { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; cursor: pointer; }
-  .checkbox-row input { width: 18px; height: 18px; min-height: 18px; accent-color: var(--brand); cursor: pointer; }
-  .checkbox-row label { font-size: 12px; color: var(--text-mute); cursor: pointer; flex: 1; }
-  
-  .btn { width: 100%; padding: 16px; border-radius: 12px; border: none; font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; min-height: 54px; margin-bottom: 10px; }
-  .btn-primary { background: var(--brand); color: #001a0e; }
-  .btn-primary:active { background: var(--brand-hover); transform: scale(0.99); }
-  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; background: var(--bg-elev); color: var(--text-faint); }
-  .btn-secondary { background: transparent; color: var(--text-mute); border: 1px solid var(--border); }
-  .btn-secondary:active { background: var(--bg-elev); }
-  
-  .switch-acc { background: var(--warning-soft); border: 1px solid rgba(255, 184, 0, 0.3); border-radius: 12px; padding: 12px; margin-bottom: 16px; font-size: 12px; color: var(--text); display: flex; align-items: center; gap: 10px; }
-  .switch-acc-emoji { font-size: 20px; flex-shrink: 0; }
-  .switch-acc-info { flex: 1; }
-  .switch-acc-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; margin-bottom: 2px; }
-  .switch-acc-email { font-size: 11px; color: var(--text-mute); word-break: break-all; }
-  .switch-acc-btn { background: transparent; border: 1px solid rgba(255, 184, 0, 0.4); color: var(--warning); padding: 6px 10px; border-radius: 8px; font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
-  
-  .erro-msg { background: var(--danger-soft); border: 1px solid rgba(255, 71, 87, 0.3); border-radius: 12px; padding: 12px; font-size: 12px; color: var(--danger); margin-bottom: 14px; display: none; }
-  .erro-msg.show { display: block; }
-  
-  .features { display: grid; gap: 8px; margin-top: 24px; padding: 0 4px; }
-  .feature { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-mute); }
-  .feature-emoji { font-size: 18px; }
-  
-  .footer-text { text-align: center; font-size: 11px; color: var(--text-faint); margin-top: 24px; line-height: 1.6; }
-  
-  .loader { width: 18px; height: 18px; border: 2px solid rgba(0,26,14,0.2); border-radius: 50%; border-top-color: #001a0e; animation: spin 0.7s linear infinite; display: inline-block; margin-right: 8px; vertical-align: middle; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+:root{--bg:#0a0a0a;--bg-card:#141414;--bg-elev:#1c1c1c;--bg-input:#181818;--border:#252525;--border-strong:#353535;--brand:#00d97e;--brand-hover:#00ba6b;--brand-soft:rgba(0,217,126,0.1);--danger:#ff4757;--danger-soft:rgba(255,71,87,0.1);--warning:#ffb800;--warning-soft:rgba(255,184,0,0.1);--ia:#a855f7;--ia-soft:rgba(168,85,247,0.1);--text:#fff;--text-mute:#a3a3a3;--text-faint:#525252}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;min-height:100vh;overflow-x:hidden}
+input,textarea{color:#fff!important;-webkit-text-fill-color:#fff!important;caret-color:var(--brand)}
+input:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px var(--bg-input) inset!important;-webkit-text-fill-color:#fff!important}
+.container{min-height:100vh;display:flex;flex-direction:column;padding:40px 24px;max-width:480px;margin:0 auto}
+.logo-area{text-align:center;margin-bottom:40px;padding-top:20px}
+.logo-mark{width:72px;height:72px;background:var(--brand);border-radius:18px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(0,217,126,0.3)}
+.logo-mark::before{content:'';width:28px;height:28px;border:4px solid #001a0e;border-radius:8px;border-top:none;border-right:none}
+.logo-nome{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;letter-spacing:-0.03em;text-transform:lowercase;margin-bottom:4px}
+.logo-tag{font-size:12px;color:var(--text-mute)}
+.tatu-box{background:linear-gradient(135deg,var(--ia-soft) 0%,var(--bg-card) 100%);border:1px solid rgba(168,85,247,0.3);border-radius:18px;padding:16px;margin-bottom:24px;display:flex;gap:12px;align-items:flex-start}
+.tatu-emoji{font-size:36px;flex-shrink:0}
+.tatu-text{flex:1;font-size:13px;line-height:1.55;color:var(--text)}
+.tatu-text strong{color:var(--ia)}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--bg-card);padding:6px;border-radius:14px;margin-bottom:20px;border:1px solid var(--border)}
+.tab{padding:12px;text-align:center;border-radius:10px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--text-mute);transition:all 0.2s}
+.tab.active{background:var(--brand);color:#001a0e}
+.form-card{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:20px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;color:var(--text-mute);margin-bottom:6px;font-weight:500}
+.field input{width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:12px;padding:14px;color:var(--text);font-size:16px;font-family:'Inter',sans-serif;min-height:50px}
+.field input:focus{outline:none;border-color:var(--brand)}
+.checkbox-row{display:flex;align-items:center;gap:8px;margin-bottom:16px;cursor:pointer}
+.checkbox-row input{width:18px;height:18px;min-height:18px;accent-color:var(--brand);cursor:pointer}
+.checkbox-row label{font-size:12px;color:var(--text-mute);cursor:pointer;flex:1}
+.btn{width:100%;padding:16px;border-radius:12px;border:none;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;cursor:pointer;min-height:54px;margin-bottom:10px}
+.btn-primary{background:var(--brand);color:#001a0e}
+.btn-primary:active{background:var(--brand-hover);transform:scale(0.99)}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;background:var(--bg-elev);color:var(--text-faint)}
+.btn-secondary{background:transparent;color:var(--text-mute);border:1px solid var(--border)}
+.btn-secondary:active{background:var(--bg-elev)}
+.switch-acc{background:var(--warning-soft);border:1px solid rgba(255,184,0,0.3);border-radius:12px;padding:12px;margin-bottom:16px;font-size:12px;color:var(--text);display:flex;align-items:center;gap:10px}
+.switch-acc-emoji{font-size:20px;flex-shrink:0}
+.switch-acc-info{flex:1;min-width:0}
+.switch-acc-titulo{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;margin-bottom:2px}
+.switch-acc-email{font-size:11px;color:var(--text-mute);word-break:break-all}
+.switch-acc-btn{background:transparent;border:1px solid rgba(255,184,0,0.4);color:var(--warning);padding:6px 10px;border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;cursor:pointer;flex-shrink:0}
+.sessao-expirada{background:var(--info-soft,rgba(56,189,248,0.1));border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:14px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
+.sessao-expirada-emoji{font-size:24px;flex-shrink:0}
+.sessao-expirada-texto{font-size:12px;line-height:1.5;color:var(--text)}
+.sessao-expirada-texto strong{color:#38bdf8}
+.erro-msg{background:var(--danger-soft);border:1px solid rgba(255,71,87,0.3);border-radius:12px;padding:12px;font-size:12px;color:var(--danger);margin-bottom:14px;display:none}
+.erro-msg.show{display:block}
+.features{display:grid;gap:8px;margin-top:24px;padding:0 4px}
+.feature{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-mute)}
+.feature-emoji{font-size:18px}
+.footer-text{text-align:center;font-size:11px;color:var(--text-faint);margin-top:24px;line-height:1.6}
+.loader{width:18px;height:18px;border:2px solid rgba(0,26,14,0.2);border-radius:50%;border-top-color:#001a0e;animation:spin 0.7s linear infinite;display:inline-block;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-grande{width:32px;height:32px;border:3px solid var(--border);border-radius:50%;border-top-color:var(--brand);animation:spin 0.8s linear infinite;margin:40px auto}
+.checando{text-align:center;padding:40px 20px}
+.checando-texto{font-size:13px;color:var(--text-mute);margin-top:14px}
 </style>
 </head>
 <body>
 
 <div class="container">
-  
   <div class="logo-area">
     <div class="logo-mark"></div>
     <div class="logo-nome">guardaí</div>
     <div class="logo-tag">assistente financeiro com IA</div>
   </div>
   
-  <div class="tatu-box" id="tatu-box">
-    <div class="tatu-emoji">🦔</div>
-    <div class="tatu-text" id="tatu-mensagem">
-      Oi! Sou o <strong>Tatu</strong>, seu consultor financeiro. Entra que eu te ajudo a organizar a vida financeira!
+  <div id="conteudo-principal">
+    <div class="checando">
+      <div class="loader-grande"></div>
+      <div class="checando-texto">Verificando sessão...</div>
     </div>
   </div>
-  
-  <div id="switch-acc-box"></div>
-  
-  <div class="tabs" id="tabs">
-    <div class="tab active" data-tab="login" onclick="trocarTab('login')">Entrar</div>
-    <div class="tab" data-tab="cadastro" onclick="trocarTab('cadastro')">Criar conta</div>
-  </div>
-  
-  <div class="erro-msg" id="erro"></div>
-  
-  <div class="form-card">
-    
-    <!-- LOGIN -->
-    <div id="form-login">
-      <div class="field">
-        <label>Email</label>
-        <input type="email" id="login-email" placeholder="Digite seu email" autocomplete="email" inputmode="email">
-      </div>
-      <div class="field">
-        <label>Senha</label>
-        <input type="password" id="login-senha" placeholder="Digite sua senha" autocomplete="current-password">
-      </div>
-      <div class="checkbox-row" onclick="document.getElementById('chk-lembrar').click()">
-        <input type="checkbox" id="chk-lembrar" checked>
-        <label>Lembrar meu email nesse dispositivo</label>
-      </div>
-      <button class="btn btn-primary" id="btn-login" onclick="fazerLogin()">Entrar</button>
-    </div>
-    
-    <!-- CADASTRO -->
-    <div id="form-cadastro" style="display:none;">
-      <div class="field">
-        <label>Como prefere ser chamado?</label>
-        <input type="text" id="cad-nome" placeholder="Digite seu primeiro nome" autocomplete="given-name">
-      </div>
-      <div class="field">
-        <label>Email</label>
-        <input type="email" id="cad-email" placeholder="Digite seu email" autocomplete="email" inputmode="email">
-      </div>
-      <div class="field">
-        <label>Senha (mínimo 6 caracteres)</label>
-        <input type="password" id="cad-senha" placeholder="Crie uma senha" autocomplete="new-password">
-      </div>
-      <button class="btn btn-primary" id="btn-cadastro" onclick="fazerCadastro()">Criar conta grátis</button>
-      <div style="text-align:center;font-size:11px;color:var(--text-faint);margin-top:8px;">Sem cartão. 100% gratuito no beta.</div>
-    </div>
-    
-  </div>
-  
-  <div class="features">
-    <div class="feature"><span class="feature-emoji">🎤</span> Lançamento por áudio</div>
-    <div class="feature"><span class="feature-emoji">📸</span> Foto do cupom, fatura, boleto</div>
-    <div class="feature"><span class="feature-emoji">🤖</span> IA Claude analisa sua vida financeira</div>
-    <div class="feature"><span class="feature-emoji">💪</span> Negociador de dívidas</div>
-    <div class="feature"><span class="feature-emoji">🎮</span> Sua jornada gamificada</div>
-  </div>
-  
-  <div class="footer-text">
-    🦔 100% gratuito durante o beta<br>
-    Seus dados são privados e protegidos
-  </div>
-  
 </div>
 
 <script type="module">
-  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const SUPABASE_URL='https://gmbsxrxqrxpbgyyvifcd.supabase.co';
+const SUPABASE_KEY='sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
+
+let sessaoExpirada=false;
+
+(async()=>{
+  const{data:{session}}=await supabase.auth.getSession();
   
-  const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
-  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  if(session){
+    // 🆕 v2.2: VALIDA se o user ainda existe no banco
+    try{
+      const{data:perfilCheck,error}=await supabase.from('perfis').select('id,nome,setup_concluido').eq('id',session.user.id).maybeSingle();
+      
+      if(error||!perfilCheck){
+        // User_id órfão: sessão tem user que não existe mais no banco (foi deletado/zerado)
+        console.log('Sessão órfã detectada, fazendo logout limpo');
+        await supabase.auth.signOut();
+        localStorage.removeItem('guardai_email');
+        sessaoExpirada=true;
+        renderTelaLogin();
+        return;
+      }
+      
+      // Sessão válida! Mostra opção de continuar
+      renderJaLogado(session.user,perfilCheck);
+    }catch(e){
+      console.error('Erro validando sessão:',e);
+      await supabase.auth.signOut();
+      localStorage.removeItem('guardai_email');
+      sessaoExpirada=true;
+      renderTelaLogin();
+    }
+  }else{
+    renderTelaLogin();
+  }
+})();
+
+function renderJaLogado(user,perfil){
+  const email=user.email;
+  const nome=perfil.nome||user.user_metadata?.nome||email?.split('@')[0]||'amigo';
   
-  // ============ AO CARREGAR ============
-  (async () => {
-    // Se tem sessão ATIVA, mostra opção de continuar OU trocar
-    const { data: { session } } = await supabase.auth.getSession();
+  document.getElementById('conteudo-principal').innerHTML=`
+    <div class="tatu-box">
+      <div class="tatu-emoji">🦔</div>
+      <div class="tatu-text">Bem-vindo de volta, <strong>${nome}</strong>! Pronto pra continuar sua jornada?</div>
+    </div>
     
-    if (session) {
-      const email = session.user.email;
-      const nome = session.user.user_metadata?.nome || email?.split('@')[0] || 'amigo';
-      
-      // Mostra box "já logado como X" com opção de entrar ou trocar
-      document.getElementById('switch-acc-box').innerHTML = `
-        <div class="switch-acc">
-          <div class="switch-acc-emoji">👤</div>
-          <div class="switch-acc-info">
-            <div class="switch-acc-titulo">Logado como ${nome}</div>
-            <div class="switch-acc-email">${email}</div>
-          </div>
-          <button class="switch-acc-btn" onclick="trocarConta()">Trocar</button>
+    <div class="switch-acc">
+      <div class="switch-acc-emoji">👤</div>
+      <div class="switch-acc-info">
+        <div class="switch-acc-titulo">Logado como ${nome}</div>
+        <div class="switch-acc-email">${email}</div>
+      </div>
+      <button class="switch-acc-btn" onclick="trocarConta()">Trocar</button>
+    </div>
+    
+    <button class="btn btn-primary" onclick="continuarLogado()" style="background:linear-gradient(135deg,var(--brand) 0%,var(--brand-hover) 100%);">
+      🚀 Continuar como ${nome}
+    </button>
+  `;
+}
+
+function renderTelaLogin(){
+  const emailLembrado=localStorage.getItem('guardai_email')||'';
+  
+  document.getElementById('conteudo-principal').innerHTML=`
+    ${sessaoExpirada?`
+      <div class="sessao-expirada">
+        <div class="sessao-expirada-emoji">🔄</div>
+        <div class="sessao-expirada-texto">
+          <strong>Sessão expirou</strong><br>
+          Faça login de novo pra continuar. Seus dados estão seguros!
         </div>
-        
-        <button class="btn btn-primary" onclick="continuarLogado()" style="background:linear-gradient(135deg, var(--brand) 0%, var(--brand-hover) 100%);">
-          🚀 Continuar como ${nome}
-        </button>
-      `;
+      </div>
+    `:''}
+    
+    <div class="tatu-box" id="tatu-box">
+      <div class="tatu-emoji">🦔</div>
+      <div class="tatu-text" id="tatu-mensagem">
+        Oi! Sou o <strong>Tatu</strong>, seu consultor financeiro. Entra que eu te ajudo a organizar a vida financeira!
+      </div>
+    </div>
+    
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-tab="login" onclick="trocarTab('login')">Entrar</div>
+      <div class="tab" data-tab="cadastro" onclick="trocarTab('cadastro')">Criar conta</div>
+    </div>
+    
+    <div class="erro-msg" id="erro"></div>
+    
+    <div class="form-card">
+      <div id="form-login">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="login-email" placeholder="Digite seu email" autocomplete="email" inputmode="email" value="${emailLembrado}">
+        </div>
+        <div class="field">
+          <label>Senha</label>
+          <input type="password" id="login-senha" placeholder="Digite sua senha" autocomplete="current-password">
+        </div>
+        <div class="checkbox-row" onclick="document.getElementById('chk-lembrar').click()">
+          <input type="checkbox" id="chk-lembrar" ${emailLembrado?'checked':''}>
+          <label>Lembrar meu email nesse dispositivo</label>
+        </div>
+        <button class="btn btn-primary" id="btn-login" onclick="fazerLogin()">Entrar</button>
+      </div>
       
-      // Esconde tabs e form se logado (mostra só botão continuar)
-      document.getElementById('tabs').style.display = 'none';
-      document.querySelector('.form-card').style.display = 'none';
-      document.querySelector('.features').style.display = 'none';
-      
-      // Atualiza mensagem do Tatu
-      document.getElementById('tatu-mensagem').innerHTML = `Bem-vindo de volta, <strong>${nome}</strong>! Pronto pra continuar sua jornada?`;
-      
+      <div id="form-cadastro" style="display:none;">
+        <div class="field">
+          <label>Como prefere ser chamado?</label>
+          <input type="text" id="cad-nome" placeholder="Digite seu primeiro nome" autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="cad-email" placeholder="Digite seu email" autocomplete="email" inputmode="email">
+        </div>
+        <div class="field">
+          <label>Senha (mínimo 6 caracteres)</label>
+          <input type="password" id="cad-senha" placeholder="Crie uma senha" autocomplete="new-password">
+        </div>
+        <button class="btn btn-primary" id="btn-cadastro" onclick="fazerCadastro()">Criar conta grátis</button>
+        <div style="text-align:center;font-size:11px;color:var(--text-faint);margin-top:8px;">Sem cartão. 100% gratuito no beta.</div>
+      </div>
+    </div>
+    
+    <div class="features">
+      <div class="feature"><span class="feature-emoji">🎤</span> Lançamento por áudio</div>
+      <div class="feature"><span class="feature-emoji">📸</span> Foto do cupom, fatura, boleto</div>
+      <div class="feature"><span class="feature-emoji">🤖</span> IA Claude analisa sua vida financeira</div>
+      <div class="feature"><span class="feature-emoji">💪</span> Negociador de dívidas</div>
+      <div class="feature"><span class="feature-emoji">🎮</span> Sua jornada gamificada</div>
+    </div>
+    
+    <div class="footer-text">
+      🦔 100% gratuito durante o beta<br>
+      Seus dados são privados e protegidos
+    </div>
+  `;
+  
+  // Foco automático
+  setTimeout(()=>{
+    if(emailLembrado){
+      document.getElementById('login-senha')?.focus();
+    }else{
+      document.getElementById('login-email')?.focus();
+    }
+    
+    // Enter pra submeter
+    document.getElementById('login-senha')?.addEventListener('keypress',(e)=>{if(e.key==='Enter')fazerLogin()});
+    document.getElementById('cad-senha')?.addEventListener('keypress',(e)=>{if(e.key==='Enter')fazerCadastro()});
+  },100);
+}
+
+window.continuarLogado=async function(){
+  const{data:{session}}=await supabase.auth.getSession();
+  if(!session){window.location.reload();return}
+  
+  // 🆕 v2.2: Re-valida user antes de redirecionar
+  const{data:perfil,error}=await supabase.from('perfis').select('setup_concluido').eq('id',session.user.id).maybeSingle();
+  
+  if(error||!perfil){
+    // User foi deletado entre o load e o click
+    await supabase.auth.signOut();
+    localStorage.removeItem('guardai_email');
+    sessaoExpirada=true;
+    renderTelaLogin();
+    return;
+  }
+  
+  if(perfil.setup_concluido){
+    window.location.href='home.html?v='+Date.now();
+  }else{
+    window.location.href='setup.html?v='+Date.now();
+  }
+};
+
+window.trocarConta=async function(){
+  if(!confirm('Sair dessa conta?\n\nVocê precisará fazer login de novo.'))return;
+  await supabase.auth.signOut();
+  window.location.reload();
+};
+
+window.trocarTab=function(tab){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+  document.getElementById('form-login').style.display=tab==='login'?'block':'none';
+  document.getElementById('form-cadastro').style.display=tab==='cadastro'?'block':'none';
+  document.getElementById('erro').classList.remove('show');
+  if(tab==='cadastro'){
+    document.getElementById('tatu-mensagem').innerHTML=`Vamos te conhecer! É <strong>rapidinho</strong> e 100% gratuito.`;
+  }else{
+    document.getElementById('tatu-mensagem').innerHTML=`Oi! Sou o <strong>Tatu</strong>, seu consultor financeiro. Entra que eu te ajudo!`;
+  }
+};
+
+window.fazerLogin=async function(){
+  const email=document.getElementById('login-email').value.trim().toLowerCase();
+  const senha=document.getElementById('login-senha').value;
+  const lembrar=document.getElementById('chk-lembrar').checked;
+  
+  if(!email){mostrarErro('Digite seu email');return}
+  if(!senha){mostrarErro('Digite sua senha');return}
+  
+  const btn=document.getElementById('btn-login');
+  btn.innerHTML='<span class="loader"></span>Entrando...';
+  btn.disabled=true;
+  
+  try{
+    const{data,error}=await supabase.auth.signInWithPassword({email,password:senha});
+    
+    if(error){
+      if(error.message.includes('Invalid login')||error.message.includes('credentials')){
+        mostrarErro('Email ou senha incorretos');
+      }else if(error.message.includes('Email not confirmed')){
+        mostrarErro('Confirma seu email primeiro (olha sua caixa de entrada)');
+      }else{
+        mostrarErro('Erro: '+error.message);
+      }
+      btn.innerHTML='Entrar';
+      btn.disabled=false;
       return;
     }
     
-    // Pré-preenche email lembrado
-    const emailLembrado = localStorage.getItem('guardai_email');
-    if (emailLembrado) {
-      document.getElementById('login-email').value = emailLembrado;
-      document.getElementById('login-senha').focus();
-    } else {
-      document.getElementById('login-email').focus();
+    if(lembrar)localStorage.setItem('guardai_email',email);
+    else localStorage.removeItem('guardai_email');
+    
+    // 🆕 v2.2: Valida que o perfil existe (auto-cria se não tiver)
+    const{data:perfil}=await supabase.from('perfis').select('setup_concluido').eq('id',data.user.id).maybeSingle();
+    
+    if(!perfil){
+      // Cria perfil pra usuários antigos sem perfil
+      try{
+        await supabase.from('perfis').upsert({
+          id:data.user.id,
+          nome:data.user.user_metadata?.nome||email.split('@')[0],
+          email,
+          criado_em:new Date().toISOString(),
+          setup_concluido:false,
+          setup_passo_atual:0,
+          tutorial_concluido:false,
+          nivel_jornada:1,
+          xp_total:0
+        },{onConflict:'id'});
+        await supabase.from('gamificacao').upsert({
+          user_id:data.user.id,
+          xp_total:0,
+          streak_atual:0,
+          streak_recorde:0
+        },{onConflict:'user_id'});
+      }catch(e){console.error('Auto-criar perfil:',e)}
+      window.location.href='setup.html?v='+Date.now();
+      return;
     }
-  })();
-  
-  window.continuarLogado = async function() {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) { window.location.reload(); return; }
     
-    // Decide pra onde ir
-    const { data: perfil } = await supabase.from('perfis').select('setup_concluido').eq('id', session.user.id).maybeSingle();
-    
-    if (perfil?.setup_concluido) {
-      window.location.href = 'home.html?v=' + Date.now();
-    } else {
-      window.location.href = 'setup.html?v=' + Date.now();
+    if(perfil.setup_concluido){
+      window.location.href='home.html?v='+Date.now();
+    }else{
+      window.location.href='setup.html?v='+Date.now();
     }
-  };
-  
-  window.trocarConta = async function() {
-    if (!confirm('Sair dessa conta?\n\nVocê precisará fazer login de novo.')) return;
-    await supabase.auth.signOut();
-    window.location.reload();
-  };
-  
-  // ============ TABS ============
-  window.trocarTab = function(tab) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
-    
-    document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none';
-    document.getElementById('form-cadastro').style.display = tab === 'cadastro' ? 'block' : 'none';
-    
-    document.getElementById('erro').classList.remove('show');
-    
-    if (tab === 'cadastro') {
-      document.getElementById('tatu-mensagem').innerHTML = `Vamos te conhecer! É <strong>rapidinho</strong> e 100% gratuito.`;
-    } else {
-      document.getElementById('tatu-mensagem').innerHTML = `Oi! Sou o <strong>Tatu</strong>, seu consultor financeiro. Entra que eu te ajudo!`;
-    }
-  };
-  
-  // ============ LOGIN ============
-  window.fazerLogin = async function() {
-    const email = document.getElementById('login-email').value.trim().toLowerCase();
-    const senha = document.getElementById('login-senha').value;
-    const lembrar = document.getElementById('chk-lembrar').checked;
-    
-    if (!email) { mostrarErro('Digite seu email'); return; }
-    if (!senha) { mostrarErro('Digite sua senha'); return; }
-    
-    const btn = document.getElementById('btn-login');
-    btn.innerHTML = '<span class="loader"></span>Entrando...';
-    btn.disabled = true;
-    
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
-      
-      if (error) {
-        if (error.message.includes('Invalid login') || error.message.includes('credentials')) {
-          mostrarErro('Email ou senha incorretos');
-        } else if (error.message.includes('Email not confirmed')) {
-          mostrarErro('Confirma seu email primeiro (olha sua caixa de entrada)');
-        } else {
-          mostrarErro('Erro: ' + error.message);
-        }
-        btn.innerHTML = 'Entrar';
-        btn.disabled = false;
-        return;
-      }
-      
-      // Salva email se marcou "lembrar"
-      if (lembrar) localStorage.setItem('guardai_email', email);
-      else localStorage.removeItem('guardai_email');
-      
-      // Verifica perfil
-      const { data: perfil } = await supabase.from('perfis').select('setup_concluido').eq('id', data.user.id).maybeSingle();
-      
-      if (perfil?.setup_concluido) {
-        window.location.href = 'home.html?v=' + Date.now();
-      } else {
-        window.location.href = 'setup.html?v=' + Date.now();
-      }
-    } catch (e) {
-      mostrarErro('Erro: ' + e.message);
-      btn.innerHTML = 'Entrar';
-      btn.disabled = false;
-    }
-  };
-  
-  // ============ CADASTRO ============
-  window.fazerCadastro = async function() {
-    const nome = document.getElementById('cad-nome').value.trim();
-    const email = document.getElementById('cad-email').value.trim().toLowerCase();
-    const senha = document.getElementById('cad-senha').value;
-    
-    if (!nome) { mostrarErro('Digite seu nome'); return; }
-    if (nome.length < 2) { mostrarErro('Nome muito curto'); return; }
-    if (!email) { mostrarErro('Digite seu email'); return; }
-    if (!email.includes('@') || !email.includes('.')) { mostrarErro('Email inválido'); return; }
-    if (!senha) { mostrarErro('Crie uma senha'); return; }
-    if (senha.length < 6) { mostrarErro('Senha precisa ter pelo menos 6 caracteres'); return; }
-    
-    const btn = document.getElementById('btn-cadastro');
-    btn.innerHTML = '<span class="loader"></span>Criando...';
-    btn.disabled = true;
-    
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password: senha,
-        options: { data: { nome } }
-      });
-      
-      if (error) {
-        if (error.message.includes('already registered') || error.message.includes('exists')) {
-          mostrarErro('Esse email já está cadastrado. Tenta entrar pela aba "Entrar".');
-        } else if (error.message.includes('weak') || error.message.includes('password')) {
-          mostrarErro('Senha muito fraca. Tenta uma mais forte.');
-        } else {
-          mostrarErro('Erro: ' + error.message);
-        }
-        btn.innerHTML = 'Criar conta grátis';
-        btn.disabled = false;
-        return;
-      }
-      
-      // Cria perfil + gamificação
-      if (data.user) {
-        try {
-          await supabase.from('perfis').upsert({
-            id: data.user.id,
-            nome,
-            email,
-            criado_em: new Date().toISOString(),
-            setup_concluido: false,
-            setup_passo_atual: 0,
-            tutorial_concluido: false,
-            nivel_jornada: 1,
-            xp_total: 0
-          }, { onConflict: 'id' });
-          
-          await supabase.from('gamificacao').upsert({
-            user_id: data.user.id,
-            xp_total: 0,
-            streak_atual: 0,
-            streak_recorde: 0
-          }, { onConflict: 'user_id' });
-        } catch (e) { console.error('Erro perfil:', e); }
-      }
-      
-      // Salva email
-      localStorage.setItem('guardai_email', email);
-      
-      // Se não precisa confirmar email, vai direto pro setup
-      if (data.session) {
-        window.location.href = 'setup.html?v=' + Date.now();
-      } else {
-        // Precisa confirmar email
-        mostrarErro('✅ Conta criada! Confira seu email pra confirmar e fazer login.');
-        setTimeout(() => trocarTab('login'), 2000);
-        document.getElementById('login-email').value = email;
-        btn.innerHTML = 'Criar conta grátis';
-        btn.disabled = false;
-      }
-    } catch (e) {
-      mostrarErro('Erro: ' + e.message);
-      btn.innerHTML = 'Criar conta grátis';
-      btn.disabled = false;
-    }
-  };
-  
-  function mostrarErro(msg) {
-    const e = document.getElementById('erro');
-    e.textContent = msg;
-    e.classList.add('show');
-    e.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }catch(e){
+    mostrarErro('Erro: '+e.message);
+    btn.innerHTML='Entrar';
+    btn.disabled=false;
   }
-  
-  // Enter pra submeter
-  document.getElementById('login-senha').addEventListener('keypress', (e) => { if (e.key === 'Enter') fazerLogin(); });
-  document.getElementById('cad-senha').addEventListener('keypress', (e) => { if (e.key === 'Enter') fazerCadastro(); });
-</script>
+};
 
+window.fazerCadastro=async function(){
+  const nome=document.getElementById('cad-nome').value.trim();
+  const email=document.getElementById('cad-email').value.trim().toLowerCase();
+  const senha=document.getElementById('cad-senha').value;
+  
+  if(!nome){mostrarErro('Digite seu nome');return}
+  if(nome.length<2){mostrarErro('Nome muito curto');return}
+  if(!email){mostrarErro('Digite seu email');return}
+  if(!email.includes('@')||!email.includes('.')){mostrarErro('Email inválido');return}
+  if(!senha){mostrarErro('Crie uma senha');return}
+  if(senha.length<6){mostrarErro('Senha precisa ter pelo menos 6 caracteres');return}
+  
+  const btn=document.getElementById('btn-cadastro');
+  btn.innerHTML='<span class="loader"></span>Criando...';
+  btn.disabled=true;
+  
+  try{
+    const{data,error}=await supabase.auth.signUp({
+      email,
+      password:senha,
+      options:{data:{nome}}
+    });
+    
+    if(error){
+      if(error.message.includes('already registered')||error.message.includes('exists')){
+        mostrarErro('Esse email já está cadastrado. Tenta entrar pela aba "Entrar".');
+      }else if(error.message.includes('weak')||error.message.includes('password')){
+        mostrarErro('Senha muito fraca. Tenta uma mais forte.');
+      }else{
+        mostrarErro('Erro: '+error.message);
+      }
+      btn.innerHTML='Criar conta grátis';
+      btn.disabled=false;
+      return;
+    }
+    
+    if(data.user){
+      try{
+        await supabase.from('perfis').upsert({
+          id:data.user.id,
+          nome,
+          email,
+          criado_em:new Date().toISOString(),
+          setup_concluido:false,
+          setup_passo_atual:0,
+          tutorial_concluido:false,
+          nivel_jornada:1,
+          xp_total:0
+        },{onConflict:'id'});
+        
+        await supabase.from('gamificacao').upsert({
+          user_id:data.user.id,
+          xp_total:0,
+          streak_atual:0,
+          streak_recorde:0
+        },{onConflict:'user_id'});
+      }catch(e){console.error('Erro perfil:',e)}
+    }
+    
+    localStorage.setItem('guardai_email',email);
+    
+    if(data.session){
+      window.location.href='setup.html?v='+Date.now();
+    }else{
+      mostrarErro('✅ Conta criada! Confira seu email pra confirmar e fazer login.');
+      setTimeout(()=>trocarTab('login'),2000);
+      document.getElementById('login-email').value=email;
+      btn.innerHTML='Criar conta grátis';
+      btn.disabled=false;
+    }
+  }catch(e){
+    mostrarErro('Erro: '+e.message);
+    btn.innerHTML='Criar conta grátis';
+    btn.disabled=false;
+  }
+};
+
+function mostrarErro(msg){
+  const e=document.getElementById('erro');
+  if(!e)return;
+  e.textContent=msg;
+  e.classList.add('show');
+  e.scrollIntoView({behavior:'smooth',block:'center'});
+}
+</script>
 </body>
 </html>
