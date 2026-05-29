@@ -117,6 +117,7 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .btn-back:active{background:var(--bg-elev)}
 .btn-form{width:100%;padding:16px;border-radius:14px;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;min-height:56px;background:var(--brand);color:#001a0e;display:block;margin-top:4px}
 .btn-form:active{background:var(--brand-hover);transform:scale(0.985)}
+.btn-form-secondary{background:var(--bg-elev);color:var(--text);border:1px solid var(--border);margin-top:8px}
 .analise-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
 .analise-titulo{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px}
 .situacao-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
@@ -162,8 +163,12 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .restaurando-texto strong{color:var(--brand)}
 .lista-cadastrados{margin-top:20px}
 .lista-cadastrados-titulo{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px}
-.revisao-card{background:linear-gradient(135deg,var(--ia-soft) 0%,var(--bg-card) 100%);border:1px solid var(--ia);border-radius:16px;padding:16px;margin-bottom:16px}
-.revisao-titulo{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--ia);margin-bottom:12px}
+.revisao-card{background:linear-gradient(135deg,var(--ia-soft) 0%,var(--bg-card) 100%);border:1px solid var(--ia);border-radius:16px;padding:16px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start}
+.revisao-emoji{font-size:28px;flex-shrink:0}
+.revisao-content{flex:1}
+.revisao-titulo{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--ia);margin-bottom:4px}
+.revisao-texto{font-size:13px;line-height:1.5;color:var(--text)}
+.revisao-texto strong{color:var(--ia)}
 </style>
 </head>
 <body>
@@ -201,7 +206,7 @@ let contasAdicionadas=[],cartoesAdicionados=[],rendasAdicionadas=[],despesasAdic
 let analiseIA=null,temCartoes=null,bancosCartoes=[],bancoCartaoIdx=0,qtdPorBanco={},cartaoIdx=0;
 let cartaoTemp=null,statusFaturaTemp=null,modoFoto=null,alvoFoto=null,dadosIAPendentes=null;
 let restaurouEstado=false,categoriaTemp=null,tipoRecorrenciaTemp=null,atrasoTemp=null;
-let ultimoItemNovoId=null; // 🆕 v3.5: id do último item cadastrado pra piscar
+let ultimoItemNovoId=null;
 
 (async()=>{
   const{data:{session}}=await supabase.auth.getSession();
@@ -244,14 +249,10 @@ function renderPasso(){
   document.getElementById('progress-num').textContent=`${passoAtual+1}/${TOTAL_PASSOS}`;
   salvarProgresso();
   [renderP1,renderP2,renderP3,renderP4,renderP5,renderP6,renderP7,renderP8,renderP9][passoAtual]();
-  // 🆕 v3.5: aplica pisca no último item cadastrado
   if(ultimoItemNovoId){
     setTimeout(()=>{
       const el=document.querySelector(`[data-item-id="${ultimoItemNovoId}"]`);
-      if(el){
-        el.classList.add('novo');
-        el.scrollIntoView({behavior:'smooth',block:'center'});
-      }
+      if(el){el.classList.add('novo');el.scrollIntoView({behavior:'smooth',block:'center'})}
       setTimeout(()=>{ultimoItemNovoId=null},3500);
     },100);
   }
@@ -316,10 +317,13 @@ window.voltarBancoOuPasso=function(){if(bancoIndexAtual>0){bancoIndexAtual--;ren
 window.proximoBancoOuPasso=function(){bancoIndexAtual++;if(bancoIndexAtual>=bancosSelecionados.length){bancoIndexAtual=0;proximoPasso()}else{renderP4();window.scrollTo({top:0,behavior:'smooth'})}};
 window.excluirConta=async function(id){if(!confirm('Excluir?'))return;try{await supabase.from('contas').delete().eq('id',id);contasAdicionadas=contasAdicionadas.filter(c=>c.id!==id);renderP4()}catch(e){alert('Erro: '+e.message)}};
 
-window.manualConta=function(bId){
+window.manualConta=function(bId,dadosIA){
   const b=BANCOS.find(b=>b.id===bId);
-  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Dados da conta ${b.nome}.</div></div></div><div class="step-titulo">${b.nome}</div><div class="form-card"><div class="field"><label>Tipo</label><select id="mc-tipo"><option value="conta_corrente">🏦 Conta Corrente</option><option value="poupanca">🐷 Poupança</option><option value="investimento">📈 Investimento</option></select></div><div class="field"><label>Saldo atual</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mc-saldo" placeholder="0,00" oninput="formatarValorComSinal(this)"></div><div style="font-size:11px;color:var(--text-mute);margin-top:4px">💡 Cheque especial? -500,00</div></div><button class="btn-form" onclick="salvarContaManual('${bId}')">Salvar conta</button></div>`;
-  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="renderP4()">‹</button><button class="btn btn-primary" disabled>Cadastre</button>`;
+  const vf=!!dadosIA;
+  const tipoSel=dadosIA?.tipo_conta||'conta_corrente';
+  const saldoSel=dadosIA?.saldo_atual?Number(dadosIA.saldo_atual).toFixed(2).replace('.',','):'';
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">${vf?'✅':'🦔'}</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">${vf?`<strong>Li o saldo do ${b.nome}!</strong> Confere antes de salvar:`:`Dados da conta ${b.nome}.`}</div></div></div>${vf?`<div class="revisao-card"><div class="revisao-emoji">📸</div><div class="revisao-content"><div class="revisao-titulo">IA extraiu da foto</div><div class="revisao-texto">Confere se tá certo e ajusta se precisar:</div></div></div>`:''}<div class="step-titulo">${b.nome}</div><div class="form-card"><div class="field"><label>Tipo</label><select id="mc-tipo"><option value="conta_corrente" ${tipoSel==='conta_corrente'?'selected':''}>🏦 Conta Corrente</option><option value="poupanca" ${tipoSel==='poupanca'?'selected':''}>🐷 Poupança</option><option value="investimento" ${tipoSel==='investimento'?'selected':''}>📈 Investimento</option></select></div><div class="field"><label>Saldo atual</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mc-saldo" placeholder="0,00" value="${saldoSel}" oninput="formatarValorComSinal(this)"></div><div style="font-size:11px;color:var(--text-mute);margin-top:4px">💡 Cheque especial? -500,00</div></div><button class="btn-form" onclick="salvarContaManual('${bId}')">${vf?'✅ Confirmar e salvar':'Salvar conta'}</button>${vf?`<button class="btn-form btn-form-secondary" onclick="abrirFoto('conta','${bId}')">🔄 Refazer foto</button>`:''}</div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="renderP4()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
 };
 
 window.salvarContaManual=async function(bId){
@@ -332,7 +336,7 @@ window.salvarContaManual=async function(bId){
     const{data,error}=await supabase.from('contas').insert({user_id:usuario.id,nome:b.nome,tipo:t,banco:b.nome,cor:b.cor,icone:emojis[t]||'🏦',saldo_inicial:s,padrao:contasAdicionadas.length===0}).select().single();
     if(error)throw error;
     contasAdicionadas.push(data);
-    ultimoItemNovoId=data.id; // 🆕 marca pra piscar
+    ultimoItemNovoId=data.id;
     await darXP(15,'conta_setup','Setup: '+b.nome);
     toast(`✅ ${b.nome} • R$ ${formatarMoeda(s)}`);
     setTimeout(()=>renderP4(),600);
@@ -402,15 +406,20 @@ function renderP5_CadCartao(bId){
 window.voltCartao=function(){if(cartaoIdx>0){cartaoIdx--;renderP5()}else if(bancoCartaoIdx>0){voltBC()}else renderP5_SelBancos()};
 window.pulaCartao=function(){cartaoIdx++;renderP5()};
 
-window.manualCartao=function(bId){
+window.manualCartao=function(bId,dadosIA){
   const b=BANCOS.find(b=>b.id===bId);
   const q=qtdPorBanco[bId];
-  const sn=q===1?b.nome:`${b.nome} ${cartaoIdx+1}`;
-  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Dados do cartão ${b.nome}.</div></div></div><div class="step-titulo">${b.nome}</div><div class="form-card"><div class="field"><label>Apelido</label><input type="text" id="c-nome" value="${sn}"></div><div class="field"><label>Limite total</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="c-lim" placeholder="0,00" oninput="formatarValor(this)"></div></div><div class="field-row"><div class="field"><label>Fechamento</label><input type="number" id="c-fec" placeholder="20" min="1" max="31"></div><div class="field"><label>Vencimento</label><input type="number" id="c-ven" placeholder="10" min="1" max="31"></div></div><button class="btn-form" onclick="confDadosCart('${bId}')">Continuar →</button></div>`;
+  const sn=dadosIA?.nome_sugerido||(q===1?b.nome:`${b.nome} ${cartaoIdx+1}`);
+  const limite=dadosIA?.limite_total?Number(dadosIA.limite_total).toLocaleString('pt-BR',{minimumFractionDigits:2}):'';
+  const fec=dadosIA?.dia_fechamento||'';
+  const ven=dadosIA?.dia_vencimento||'';
+  const vf=!!dadosIA;
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">${vf?'✅':'🦔'}</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">${vf?`<strong>Li a fatura do ${b.nome}!</strong> Confere os dados:`:`Dados do cartão ${b.nome}.`}</div></div></div>${vf?`<div class="revisao-card"><div class="revisao-emoji">📸</div><div class="revisao-content"><div class="revisao-titulo">IA extraiu da fatura</div><div class="revisao-texto">Limite, fechamento, vencimento — confere e ajusta se precisar:</div></div></div>`:''}<div class="step-titulo">${b.nome}</div><div class="form-card"><div class="field"><label>Apelido</label><input type="text" id="c-nome" value="${sn}"></div><div class="field"><label>Limite total</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="c-lim" placeholder="0,00" value="${limite}" oninput="formatarValor(this)"></div></div><div class="field-row"><div class="field"><label>Fechamento</label><input type="number" id="c-fec" placeholder="20" min="1" max="31" value="${fec}"></div><div class="field"><label>Vencimento</label><input type="number" id="c-ven" placeholder="10" min="1" max="31" value="${ven}"></div></div><button class="btn-form" onclick="confDadosCart('${bId}','${vf?1:0}')">${vf&&dadosIA?.valor_fatura?'Continuar →':(vf?'✅ Confirmar e salvar':'Continuar →')}</button>${vf?`<button class="btn-form btn-form-secondary" onclick="abrirFoto('fatura','${bId}')">🔄 Refazer foto</button>`:''}</div>`;
   document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="renderP5_CadCartao('${bId}')">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
+  if(vf&&dadosIA){window._dadosIACartao=dadosIA}else{window._dadosIACartao=null}
 };
 
-window.confDadosCart=function(bId){
+window.confDadosCart=function(bId,viaIA){
   const n=document.getElementById('c-nome').value.trim();
   const l=valorParaNumero(document.getElementById('c-lim').value);
   const f=parseInt(document.getElementById('c-fec').value)||null;
@@ -418,6 +427,13 @@ window.confDadosCart=function(bId){
   if(!n){alert('Digite o apelido');return}
   if(!l||l<=0){alert('Informe o limite');return}
   cartaoTemp={bancoId:bId,nome:n,limite:l,fechamento:f,vencimento:v};
+  // Se veio da IA com valor de fatura, já pula pra salvar
+  if(viaIA==='1'&&window._dadosIACartao?.valor_fatura>0){
+    const at=window._dadosIACartao.esta_atrasada||false;
+    salvarCartaoFinal({valor:window._dadosIACartao.valor_fatura,paga:false,atrasada:at});
+    window._dadosIACartao=null;
+    return;
+  }
   renderP5_PergFatura();
 };
 
@@ -543,7 +559,7 @@ window.renderP7_Form=function(dp){
   const lv=t.id==='parcelada'?'Valor da parcela':'Valor';
   const ep=t.id==='parcelada';
   const vf=!!dp;
-  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">${vf?'✅':'🦔'}</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">${vf?`<strong>Li o boleto!</strong> Confirma:`:`<strong>${cat.emoji} ${cat.nome}</strong> • ${t.emoji} ${t.nome}`}</div></div></div>${vf?`<div class="revisao-card"><div class="revisao-titulo">📸 Dados extraídos da foto</div></div>`:''}<div class="step-titulo">${vf?'Revisar e salvar':'Dados'}</div><div class="form-card"><div class="field"><label>Nome</label><input type="text" id="md-nome" placeholder="Digite o nome" value="${sn}"></div><div class="field"><label>${lv}</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="md-val" placeholder="0,00" value="${sv}" oninput="formatarValor(this)"></div></div>${ep?`<div class="field"><label>Quantas parcelas restam?</label><input type="number" id="md-parcelas" placeholder="10" min="1" max="120"></div>`:''}<div class="field"><label>Dia vencimento (1-31)</label><input type="number" id="md-dia" placeholder="10" min="1" max="31" value="${sd}"></div><button class="btn-form" onclick="salvarDesp()">${vf?'✅ Confirmar e salvar':'Salvar despesa'}</button>${vf?`<button class="btn-form" style="background:var(--bg-elev);color:var(--text);margin-top:8px" onclick="abrirFoto('boleto',null)">🔄 Refazer foto</button>`:''}</div>`;
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">${vf?'✅':'🦔'}</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">${vf?`<strong>Li o boleto!</strong> Confere antes de salvar:`:`<strong>${cat.emoji} ${cat.nome}</strong> • ${t.emoji} ${t.nome}`}</div></div></div>${vf?`<div class="revisao-card"><div class="revisao-emoji">📸</div><div class="revisao-content"><div class="revisao-titulo">IA extraiu do boleto</div><div class="revisao-texto">Nome, valor, vencimento — ajusta se precisar:</div></div></div>`:''}<div class="step-titulo">${vf?'Revisar e salvar':'Dados'}</div><div class="form-card"><div class="field"><label>Nome</label><input type="text" id="md-nome" placeholder="Digite o nome" value="${sn}"></div><div class="field"><label>${lv}</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="md-val" placeholder="0,00" value="${sv}" oninput="formatarValor(this)"></div></div>${ep?`<div class="field"><label>Quantas parcelas restam?</label><input type="number" id="md-parcelas" placeholder="10" min="1" max="120"></div>`:''}<div class="field"><label>Dia vencimento (1-31)</label><input type="number" id="md-dia" placeholder="10" min="1" max="31" value="${sd}"></div><button class="btn-form" onclick="salvarDesp()">${vf?'✅ Confirmar e salvar':'Salvar despesa'}</button>${vf?`<button class="btn-form btn-form-secondary" onclick="abrirFoto('boleto',null)">🔄 Refazer foto</button>`:''}</div>`;
   document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="renderP7_FotoOuManual()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
 };
 
@@ -611,7 +627,7 @@ window.renderP8_Form=function(dp){
   const sc=dp?.credor||(cat.id==='outro'?'':cat.nome);
   const sv=dp?.valor?Number(dp.valor).toLocaleString('pt-BR',{minimumFractionDigits:2}):'';
   const vf=!!dp;
-  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">${vf?'✅':'🦔'}</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">${vf?'<strong>Li o contrato!</strong> Confirma:':`<strong>${cat.emoji} ${cat.nome}</strong>. Conta os dados:`}</div></div></div>${vf?`<div class="revisao-card"><div class="revisao-titulo">📸 Dados extraídos da foto</div></div>`:''}<div class="step-titulo">${vf?'Revisar e salvar':'Nova dívida'}</div><div class="form-card"><div class="field"><label>Credor</label><input type="text" id="mdv-cred" placeholder="Digite o nome" value="${sc}"></div><div class="field"><label>Valor total em aberto</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mdv-val" placeholder="0,00" value="${sv}" oninput="formatarValor(this)"></div></div><div class="field"><label>Está atrasada?</label><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><div class="qtd-btn" data-atraso="nao" onclick="selAtraso('nao')" style="font-size:12px;padding:14px">✅ Em dia</div><div class="qtd-btn" data-atraso="sim" onclick="selAtraso('sim')" style="font-size:12px;padding:14px">⚠️ Atrasada</div></div></div><button class="btn-form" onclick="salvarDiv()">${vf?'✅ Confirmar e salvar':'Salvar dívida'}</button>${vf?`<button class="btn-form" style="background:var(--bg-elev);color:var(--text);margin-top:8px" onclick="abrirFoto('contrato',null)">🔄 Refazer foto</button>`:''}</div>`;
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">${vf?'✅':'🦔'}</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">${vf?'<strong>Li o contrato!</strong> Confere antes de salvar:':`<strong>${cat.emoji} ${cat.nome}</strong>. Conta os dados:`}</div></div></div>${vf?`<div class="revisao-card"><div class="revisao-emoji">📸</div><div class="revisao-content"><div class="revisao-titulo">IA extraiu do contrato</div><div class="revisao-texto">Credor, valor — ajusta se precisar:</div></div></div>`:''}<div class="step-titulo">${vf?'Revisar e salvar':'Nova dívida'}</div><div class="form-card"><div class="field"><label>Credor</label><input type="text" id="mdv-cred" placeholder="Digite o nome" value="${sc}"></div><div class="field"><label>Valor total em aberto</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mdv-val" placeholder="0,00" value="${sv}" oninput="formatarValor(this)"></div></div><div class="field"><label>Está atrasada?</label><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><div class="qtd-btn" data-atraso="nao" onclick="selAtraso('nao')" style="font-size:12px;padding:14px">✅ Em dia</div><div class="qtd-btn" data-atraso="sim" onclick="selAtraso('sim')" style="font-size:12px;padding:14px">⚠️ Atrasada</div></div></div><button class="btn-form" onclick="salvarDiv()">${vf?'✅ Confirmar e salvar':'Salvar dívida'}</button>${vf?`<button class="btn-form btn-form-secondary" onclick="abrirFoto('contrato',null)">🔄 Refazer foto</button>`:''}</div>`;
   document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="renderP8_FotoOuManual()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
 };
 
@@ -688,9 +704,10 @@ window.processarFoto=async function(e){
     const r=await fetch(IA_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({tipo:tf,imagem_base64:b64,max_tokens:1500})});
     const d=await r.json();
     if(d.resultado&&!d.resultado.erro){
+      // 🆕 v3.6: SEMPRE abre tela revisão antes de salvar
       if(modoFoto==='conta')await checarDivergenciaConta(d.resultado);
       else if(modoFoto==='fatura')await checarDivergenciaCartao(d.resultado);
-      else if(modoFoto==='boleto')renderP7_Form({nome:d.resultado.nome_despesa||d.resultado.descricao||categoriaTemp.nome,valor:d.resultado.valor||0,dia:d.resultado.dia_vencimento||null});
+      else if(modoFoto==='boleto')renderP7_Form({nome:d.resultado.nome_sugerido||d.resultado.descricao||categoriaTemp.nome,valor:d.resultado.valor||0,dia:d.resultado.dia_vencimento||null});
       else if(modoFoto==='contrato')renderP8_Form({credor:d.resultado.credor||d.resultado.banco_detectado||categoriaTemp.nome,valor:d.resultado.valor_total||d.resultado.valor_atual||0});
     }else{alert('⚠️ '+(d.resultado?.erro||'erro'));voltarAposFoto()}
   }catch(err){alert('Erro: '+err.message);voltarAposFoto()}
@@ -728,24 +745,12 @@ async function checarDivergenciaConta(r){
     document.getElementById('footer-content').innerHTML='';
     return;
   }
-  await processarContaFinal(r,bs);
+  // 🆕 v3.6: vai pra tela revisão (não salva direto)
+  manualConta(alvoFoto,r);
 }
 
-window.usarBancoSelecionado=async function(){const bs=BANCOS.find(b=>b.id===alvoFoto);await processarContaFinal(dadosIAPendentes,bs);dadosIAPendentes=null};
+window.usarBancoSelecionado=function(){const bs=BANCOS.find(b=>b.id===alvoFoto);manualConta(alvoFoto,dadosIAPendentes);dadosIAPendentes=null};
 window.cancelarFoto=function(){dadosIAPendentes=null;voltarAposFoto()};
-
-async function processarContaFinal(r,banco){
-  const dados={user_id:usuario.id,nome:banco.nome,tipo:r.tipo_conta||'conta_corrente',banco:banco.nome,cor:banco.cor,icone:r.tipo_conta==='poupanca'?'🐷':r.tipo_conta==='investimento'?'📈':'🏦',saldo_inicial:r.saldo_atual||0,padrao:contasAdicionadas.length===0};
-  try{
-    const{data,error}=await supabase.from('contas').insert(dados).select().single();
-    if(error)throw error;
-    contasAdicionadas.push(data);
-    ultimoItemNovoId=data.id;
-    await darXP(25,'conta_ia','IA: '+banco.nome);
-    toast(`✅ ${banco.nome} • R$ ${formatarMoeda(r.saldo_atual||0)}`);
-    setTimeout(()=>renderP4(),700);
-  }catch(e){alert('Erro: '+e.message);renderP4()}
-}
 
 async function checarDivergenciaCartao(r){
   const bs=BANCOS.find(b=>b.id===alvoFoto);
@@ -758,24 +763,11 @@ async function checarDivergenciaCartao(r){
     document.getElementById('footer-content').innerHTML='';
     return;
   }
-  await processarFaturaFinal(r,bs);
+  // 🆕 v3.6: vai pra tela revisão (não salva direto)
+  manualCartao(alvoFoto,r);
 }
 
-window.usarBancoCartaoSelecionado=async function(){const bs=BANCOS.find(b=>b.id===alvoFoto);await processarFaturaFinal(dadosIAPendentes,bs);dadosIAPendentes=null};
-
-async function processarFaturaFinal(r,banco){
-  const q=qtdPorBanco[banco.id];
-  const nb=q===1?banco.nome:`${banco.nome} ${cartaoIdx+1}`;
-  const n=r.nome_sugerido?`${banco.nome} (${r.nome_sugerido})`:nb;
-  const l=r.limite_total||0;
-  const f=r.dia_fechamento||null;
-  const v=r.dia_vencimento||null;
-  const va=r.valor_fatura||0;
-  const at=r.esta_atrasada||false;
-  cartaoTemp={bancoId:banco.id,nome:n,limite:l,fechamento:f,vencimento:v};
-  if(va>0)await salvarCartaoFinal({valor:va,paga:false,atrasada:at});
-  else await salvarCartaoFinal({valor:0,paga:true,atrasada:false});
-}
+window.usarBancoCartaoSelecionado=function(){const bs=BANCOS.find(b=>b.id===alvoFoto);manualCartao(alvoFoto,dadosIAPendentes);dadosIAPendentes=null};
 
 window.formatarValor=function(i){let v=i.value.replace(/\D/g,'');if(!v){i.value='';return}v=(parseInt(v)/100).toFixed(2);i.value=Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2})};
 window.formatarValorComSinal=function(i){const n=i.value.trim().startsWith('-');let v=i.value.replace(/[^0-9]/g,'');if(!v){i.value='';return}v=(parseInt(v)/100).toFixed(2);const f=Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2});i.value=(n?'-':'')+f};
