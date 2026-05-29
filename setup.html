@@ -9,1377 +9,783 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
-  :root {
-    --bg: #0a0a0a; --bg-card: #141414; --bg-elev: #1c1c1c; --bg-input: #181818;
-    --border: #252525; --border-strong: #353535;
-    --brand: #00d97e; --brand-hover: #00ba6b; --brand-soft: rgba(0, 217, 126, 0.1);
-    --danger: #ff4757; --danger-soft: rgba(255, 71, 87, 0.1);
-    --warning: #ffb800; --warning-soft: rgba(255, 184, 0, 0.1);
-    --info: #38bdf8; --info-soft: rgba(56, 189, 248, 0.1);
-    --ia: #a855f7; --ia-soft: rgba(168, 85, 247, 0.1);
-    --text: #ffffff; --text-mute: #a3a3a3; --text-faint: #525252;
-  }
-  html, body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh; overflow-x: hidden; }
-  input, textarea, select { color: #fff !important; -webkit-text-fill-color: #fff !important; caret-color: var(--brand); }
-  input:-webkit-autofill, textarea:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px var(--bg-input) inset !important; -webkit-text-fill-color: #fff !important; }
-  .header { padding: 16px 20px; background: var(--bg); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 12px; }
-  .header-skip { background: transparent; border: 1px solid var(--border); color: var(--text-mute); padding: 8px 14px; border-radius: 10px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; cursor: pointer; }
-  .header-skip:active { background: var(--bg-card); }
-  .progress-wrapper { flex: 1; height: 6px; background: var(--bg-card); border-radius: 100px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--brand) 0%, var(--brand-hover) 100%); border-radius: 100px; transition: width 0.4s cubic-bezier(0.34, 1.4, 0.64, 1); }
-  .progress-num { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; color: var(--text-mute); flex-shrink: 0; }
-  .container { max-width: 480px; margin: 0 auto; padding: 20px; padding-bottom: 120px; }
-  .tatu-bubble { background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 18px; padding: 16px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start; animation: fadeIn 0.4s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  .tatu-emoji { font-size: 36px; flex-shrink: 0; line-height: 1; }
-  .tatu-content { flex: 1; min-width: 0; }
-  .tatu-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: var(--ia); margin-bottom: 4px; }
-  .tatu-texto { font-size: 14px; line-height: 1.55; color: var(--text); }
-  .tatu-texto strong { color: var(--text); font-weight: 700; }
-  .step-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2; }
-  .step-subtitulo { font-size: 14px; color: var(--text-mute); line-height: 1.5; margin-bottom: 24px; }
-  .secao-bancos-titulo { display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--text-mute); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin: 4px 4px 10px; }
-  .secao-bancos-titulo:not(:first-of-type) { margin-top: 16px; }
-  .bancos-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-  .banco-card { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 14px 8px; text-align: center; cursor: pointer; transition: all 0.15s; min-height: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
-  .banco-card:active { transform: scale(0.95); }
-  .banco-card.active { background: var(--brand-soft); border-color: var(--brand); }
-  .banco-logo { width: 44px; height: 44px; border-radius: 10px; color: white; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; }
-  .banco-nome { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--text); line-height: 1.2; }
-  .categoria-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-  .categoria-card { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 12px 6px; text-align: center; cursor: pointer; transition: all 0.15s; min-height: 92px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
-  .categoria-card:active { transform: scale(0.95); }
-  .categoria-card.active { background: var(--brand-soft); border-color: var(--brand); }
-  .categoria-card.add { border-style: dashed; border-color: var(--text-faint); }
-  .categoria-emoji { font-size: 28px; line-height: 1; }
-  .categoria-nome { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; color: var(--text); line-height: 1.2; text-align: center; padding: 0 2px; }
-  .instrucao-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
-  .instrucao-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; color: var(--brand); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-  .passo-lista { list-style: none; margin: 0; padding: 0; }
-  .passo-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; font-size: 13px; line-height: 1.5; color: var(--text); }
-  .passo-num { background: var(--brand-soft); color: var(--brand); width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; flex-shrink: 0; }
-  .opcoes-acao { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-  .opcao-btn { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 16px 12px; text-align: center; cursor: pointer; transition: all 0.15s; color: var(--text); display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 90px; justify-content: center; }
-  .opcao-btn:active { transform: scale(0.97); }
-  .opcao-btn.ia { background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%); border-color: rgba(168, 85, 247, 0.3); }
-  .opcao-btn-icon { font-size: 28px; }
-  .opcao-btn-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; }
-  .opcao-btn.ia .opcao-btn-titulo { color: var(--ia); }
-  .opcao-btn-sub { font-size: 10px; color: var(--text-mute); line-height: 1.2; }
-  .item-cadastrado { background: var(--bg-card); border: 1px solid var(--brand); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
-  .item-icone-mini { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-  .item-info-mini { flex: 1; min-width: 0; }
-  .item-nome-mini { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .item-valor-mini { font-size: 11px; color: var(--text-mute); }
-  .item-valor-mini.positivo { color: var(--brand); }
-  .item-valor-mini.danger { color: var(--danger); }
-  .item-acoes { display: flex; gap: 4px; flex-shrink: 0; }
-  .item-acao-btn { width: 28px; height: 28px; border-radius: 8px; background: var(--bg-elev); border: 1px solid var(--border); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; }
-  .item-acao-btn:active { transform: scale(0.92); }
-  .item-acao-btn.danger { color: var(--danger); }
-  .form-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
-  .field { margin-bottom: 14px; }
-  .field:last-child { margin-bottom: 0; }
-  .field label { display: block; font-size: 12px; color: var(--text-mute); margin-bottom: 6px; font-weight: 500; }
-  .field input, .field select { width: 100%; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; padding: 14px; color: var(--text); font-size: 16px; font-family: 'Inter', sans-serif; min-height: 48px; }
-  .field input:focus, .field select:focus { outline: none; border-color: var(--brand); }
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .valor-input-wrapper { display: flex; align-items: center; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
-  .valor-input-wrapper:focus-within { border-color: var(--brand); }
-  .valor-prefix { color: var(--text-mute); font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; margin-right: 6px; }
-  .valor-input-wrapper input { background: transparent; border: none; flex: 1; text-align: right; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; padding: 0; min-height: 0; }
-  .sim-nao-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-  .sim-nao-btn { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 20px 16px; cursor: pointer; transition: all 0.15s; color: var(--text); text-align: center; font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
-  .sim-nao-btn:active { transform: scale(0.97); }
-  .sim-nao-btn.sim { border-color: var(--brand); color: var(--brand); }
-  .sim-nao-btn.sim:active { background: var(--brand-soft); }
-  .sim-nao-btn.nao { border-color: var(--text-faint); }
-  .sim-nao-btn-emoji { font-size: 28px; }
-  .qtd-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
-  .qtd-btn { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 18px 4px; cursor: pointer; text-align: center; transition: all 0.15s; font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: var(--text); }
-  .qtd-btn:active { transform: scale(0.95); }
-  .qtd-btn.active { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
-  .tipo-recorrencia-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-  .tipo-rec-btn { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 14px 10px; cursor: pointer; transition: all 0.15s; text-align: center; min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
-  .tipo-rec-btn:active { transform: scale(0.97); }
-  .tipo-rec-btn.active { background: var(--brand-soft); border-color: var(--brand); }
-  .tipo-rec-emoji { font-size: 24px; }
-  .tipo-rec-nome { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; color: var(--text); }
-  .tipo-rec-desc { font-size: 10px; color: var(--text-mute); line-height: 1.2; }
-  .tipo-rec-btn.active .tipo-rec-nome { color: var(--brand); }
-  .objetivo-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-  .objetivo-card { background: var(--bg-card); border: 2px solid var(--border); border-radius: 14px; padding: 16px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 14px; }
-  .objetivo-card:active { transform: scale(0.98); }
-  .objetivo-card.selected { background: var(--brand-soft); border-color: var(--brand); }
-  .objetivo-emoji { font-size: 28px; flex-shrink: 0; }
-  .objetivo-info { flex: 1; }
-  .objetivo-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 2px; }
-  .objetivo-desc { font-size: 13px; color: var(--text-mute); }
-  .footer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg); border-top: 1px solid var(--border); padding: 16px 20px; padding-bottom: max(16px, env(safe-area-inset-bottom)); z-index: 80; }
-  .footer-content { max-width: 480px; margin: 0 auto; display: flex; gap: 10px; }
-  .btn { padding: 16px; border-radius: 14px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Space Grotesk', sans-serif; min-height: 56px; flex: 1; }
-  .btn-primary { background: var(--brand); color: #001a0e; }
-  .btn-primary:active { background: var(--brand-hover); transform: scale(0.985); }
-  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; background: var(--bg-elev); color: var(--text-faint); }
-  .btn-back { background: var(--bg-card); color: var(--text); border: 1px solid var(--border); flex: 0 0 56px; min-width: 56px; }
-  .btn-back:active { background: var(--bg-elev); }
-  .btn-form { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Space Grotesk', sans-serif; min-height: 56px; background: var(--brand); color: #001a0e; display: block; margin-top: 4px; }
-  .btn-form:active { background: var(--brand-hover); transform: scale(0.985); }
-  .btn-form:disabled { opacity: 0.4; background: var(--bg-elev); color: var(--text-faint); }
-  .analise-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 16px; }
-  .analise-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--text-mute); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; }
-  .situacao-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-  .situacao-item { background: var(--bg-input); border-radius: 10px; padding: 10px; }
-  .situacao-label { font-size: 10px; color: var(--text-mute); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
-  .situacao-valor { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; }
-  .nivel-card { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-hover) 100%); border-radius: 16px; padding: 20px; text-align: center; color: #001a0e; margin-bottom: 16px; }
-  .nivel-label { font-family: 'Space Grotesk', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; opacity: 0.8; margin-bottom: 4px; }
-  .nivel-numero { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
-  .nivel-nome { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; }
-  .diagnostico-texto { font-size: 14px; line-height: 1.6; color: var(--text); white-space: pre-line; }
-  .alerta-item { background: var(--warning-soft); border: 1px solid rgba(255, 184, 0, 0.3); border-radius: 10px; padding: 12px; margin-bottom: 8px; font-size: 13px; color: var(--warning); display: flex; align-items: flex-start; gap: 8px; }
-  .meta-card { background: linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%); border: 1px solid var(--brand); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
-  .meta-titulo-card { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: var(--brand); margin-bottom: 6px; }
-  .meta-info-row { display: flex; gap: 10px; margin: 10px 0; }
-  .meta-pill { background: var(--bg-elev); border-radius: 100px; padding: 4px 10px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--text); }
-  .meta-explicacao { font-size: 13px; line-height: 1.5; color: var(--text-mute); }
-  .jornada-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
-  .jornada-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; text-align: center; }
-  .jornada-pontos { display: flex; justify-content: space-between; align-items: center; gap: 4px; }
-  .ponto { flex: 1; text-align: center; }
-  .ponto-circle { width: 32px; height: 32px; border-radius: 50%; background: var(--bg-elev); border: 1px solid var(--border); margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: var(--text-faint); font-family: 'Space Grotesk', sans-serif; }
-  .ponto.atual .ponto-circle { background: var(--brand); border-color: var(--brand); color: #001a0e; box-shadow: 0 0 20px rgba(0, 217, 126, 0.5); }
-  .ponto.passou .ponto-circle { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
-  .ponto-label { font-size: 9px; color: var(--text-faint); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
-  .ponto.atual .ponto-label { color: var(--brand); }
-  .ia-loading { text-align: center; padding: 60px 20px; }
-  .ia-spinner { width: 60px; height: 60px; border: 4px solid var(--ia-soft); border-top-color: var(--ia); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .ia-loading-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--ia); margin-bottom: 6px; }
-  .ia-loading-sub { font-size: 13px; color: var(--text-mute); line-height: 1.5; }
-  .ia-loading-passo { font-size: 12px; color: var(--text-faint); margin-top: 16px; font-style: italic; }
-  .upload-hidden { display: none; }
-  .loader-circle { width: 32px; height: 32px; border: 3px solid var(--border); border-radius: 50%; border-top-color: var(--brand); animation: spin 0.8s linear infinite; margin: 40px auto; }
-  .xp-toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #001a0e; padding: 12px 20px; border-radius: 100px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 14px; z-index: 200; box-shadow: 0 8px 32px rgba(0, 217, 126, 0.4); display: none; max-width: 90%; text-align: center; }
-  .aviso-divergencia { background: var(--warning-soft); border: 1px solid rgba(255, 184, 0, 0.4); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
-  .aviso-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: var(--warning); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-  .aviso-texto { font-size: 13px; color: var(--text); line-height: 1.5; margin-bottom: 12px; }
-  .restaurando-banner { background: linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%); border: 1px solid var(--brand); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
-  .restaurando-emoji { font-size: 20px; }
-  .restaurando-texto { font-size: 12px; color: var(--text); line-height: 1.4; }
-  .restaurando-texto strong { color: var(--brand); }
-  .lista-cadastrados { margin-top: 20px; }
-  .lista-cadastrados-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--text-mute); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
-  .revisao-card { background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%); border: 1px solid var(--ia); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
-  .revisao-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: var(--ia); margin-bottom: 12px; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+:root{--bg:#0a0a0a;--bg-card:#141414;--bg-elev:#1c1c1c;--bg-input:#181818;--border:#252525;--brand:#00d97e;--brand-hover:#00ba6b;--brand-soft:rgba(0,217,126,0.1);--danger:#ff4757;--danger-soft:rgba(255,71,87,0.1);--warning:#ffb800;--warning-soft:rgba(255,184,0,0.1);--ia:#a855f7;--ia-soft:rgba(168,85,247,0.1);--text:#fff;--text-mute:#a3a3a3;--text-faint:#525252}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;min-height:100vh;overflow-x:hidden}
+input,textarea,select{color:#fff!important;-webkit-text-fill-color:#fff!important;caret-color:var(--brand)}
+input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px var(--bg-input) inset!important;-webkit-text-fill-color:#fff!important}
+.header{padding:16px 20px;background:var(--bg);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px}
+.header-skip{background:transparent;border:1px solid var(--border);color:var(--text-mute);padding:8px 14px;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;cursor:pointer}
+.header-skip:active{background:var(--bg-card)}
+.progress-wrapper{flex:1;height:6px;background:var(--bg-card);border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--brand) 0%,var(--brand-hover) 100%);border-radius:100px;transition:width 0.4s cubic-bezier(0.34,1.4,0.64,1)}
+.progress-num{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:var(--text-mute);flex-shrink:0}
+.container{max-width:480px;margin:0 auto;padding:20px;padding-bottom:120px}
+.tatu-bubble{background:linear-gradient(135deg,var(--ia-soft) 0%,var(--bg-card) 100%);border:1px solid rgba(168,85,247,0.3);border-radius:18px;padding:16px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;animation:fadeIn 0.4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.tatu-emoji{font-size:36px;flex-shrink:0;line-height:1}
+.tatu-content{flex:1;min-width:0}
+.tatu-titulo{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--ia);margin-bottom:4px}
+.tatu-texto{font-size:14px;line-height:1.55;color:var(--text)}
+.tatu-texto strong{color:var(--text);font-weight:700}
+.step-titulo{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px;line-height:1.2}
+.step-subtitulo{font-size:14px;color:var(--text-mute);line-height:1.5;margin-bottom:24px}
+.secao-bancos-titulo{display:flex;align-items:center;gap:8px;font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:4px 4px 10px}
+.secao-bancos-titulo:not(:first-of-type){margin-top:16px}
+.bancos-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.banco-card{background:var(--bg-card);border:2px solid var(--border);border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer;transition:all 0.15s;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.banco-card:active{transform:scale(0.95)}
+.banco-card.active{background:var(--brand-soft);border-color:var(--brand)}
+.banco-logo{width:44px;height:44px;border-radius:10px;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700}
+.banco-nome{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;color:var(--text);line-height:1.2}
+.categoria-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+.categoria-card{background:var(--bg-card);border:2px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center;cursor:pointer;transition:all 0.15s;min-height:92px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.categoria-card:active{transform:scale(0.95)}
+.categoria-card.add{border-style:dashed;border-color:var(--text-faint)}
+.categoria-emoji{font-size:28px;line-height:1}
+.categoria-nome{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;color:var(--text);line-height:1.2;text-align:center;padding:0 2px}
+.instrucao-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px}
+.instrucao-titulo{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--brand);margin-bottom:12px}
+.passo-lista{list-style:none;margin:0;padding:0}
+.passo-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;font-size:13px;line-height:1.5;color:var(--text)}
+.passo-num{background:var(--brand-soft);color:var(--brand);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;flex-shrink:0}
+.opcoes-acao{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.opcao-btn{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px 12px;text-align:center;cursor:pointer;transition:all 0.15s;color:var(--text);display:flex;flex-direction:column;align-items:center;gap:4px;min-height:90px;justify-content:center}
+.opcao-btn:active{transform:scale(0.97)}
+.opcao-btn.ia{background:linear-gradient(135deg,var(--ia-soft) 0%,var(--bg-card) 100%);border-color:rgba(168,85,247,0.3)}
+.opcao-btn-icon{font-size:28px}
+.opcao-btn-titulo{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700}
+.opcao-btn.ia .opcao-btn-titulo{color:var(--ia)}
+.opcao-btn-sub{font-size:10px;color:var(--text-mute);line-height:1.2}
+.item-cadastrado{background:var(--bg-card);border:1px solid var(--brand);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:12px;transition:all 0.3s}
+.item-cadastrado.novo{animation:piscaItem 3s ease-out;background:var(--brand-soft);border-color:var(--brand);box-shadow:0 0 24px rgba(0,217,126,0.3)}
+@keyframes piscaItem{0%{transform:scale(0.95);opacity:0;background:var(--brand);border-color:var(--brand)}10%{transform:scale(1.03);opacity:1}30%{background:var(--brand-soft);transform:scale(1)}60%{background:var(--brand-soft);box-shadow:0 0 30px rgba(0,217,126,0.5)}100%{background:var(--bg-card);box-shadow:none}}
+.item-icone-mini{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.item-info-mini{flex:1;min-width:0}
+.item-nome-mini{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-valor-mini{font-size:11px;color:var(--text-mute)}
+.item-valor-mini.positivo{color:var(--brand)}
+.item-valor-mini.danger{color:var(--danger)}
+.item-acoes{display:flex;gap:4px;flex-shrink:0}
+.item-acao-btn{width:28px;height:28px;border-radius:8px;background:var(--bg-elev);border:1px solid var(--border);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px}
+.item-acao-btn:active{transform:scale(0.92)}
+.item-acao-btn.danger{color:var(--danger)}
+.form-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px}
+.field{margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:12px;color:var(--text-mute);margin-bottom:6px;font-weight:500}
+.field input,.field select{width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:12px;padding:14px;color:var(--text);font-size:16px;font-family:'Inter',sans-serif;min-height:48px}
+.field input:focus,.field select:focus{outline:none;border-color:var(--brand)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.valor-input-wrapper{display:flex;align-items:center;background:var(--bg-input);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.valor-input-wrapper:focus-within{border-color:var(--brand)}
+.valor-prefix{color:var(--text-mute);font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;margin-right:6px}
+.valor-input-wrapper input{background:transparent;border:none;flex:1;text-align:right;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;padding:0;min-height:0}
+.sim-nao-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.sim-nao-btn{background:var(--bg-card);border:2px solid var(--border);border-radius:14px;padding:20px 16px;cursor:pointer;transition:all 0.15s;color:var(--text);text-align:center;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.sim-nao-btn:active{transform:scale(0.97)}
+.sim-nao-btn.sim{border-color:var(--brand);color:var(--brand)}
+.sim-nao-btn.nao{border-color:var(--text-faint)}
+.sim-nao-btn-emoji{font-size:28px}
+.qtd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.qtd-btn{background:var(--bg-card);border:2px solid var(--border);border-radius:14px;padding:18px 4px;cursor:pointer;text-align:center;transition:all 0.15s;font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--text)}
+.qtd-btn:active{transform:scale(0.95)}
+.qtd-btn.active{background:var(--brand-soft);border-color:var(--brand);color:var(--brand)}
+.tipo-recorrencia-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.tipo-rec-btn{background:var(--bg-card);border:2px solid var(--border);border-radius:14px;padding:14px 10px;cursor:pointer;transition:all 0.15s;text-align:center;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.tipo-rec-btn:active{transform:scale(0.97)}
+.tipo-rec-btn.active{background:var(--brand-soft);border-color:var(--brand)}
+.tipo-rec-emoji{font-size:24px}
+.tipo-rec-nome{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:var(--text)}
+.tipo-rec-desc{font-size:10px;color:var(--text-mute);line-height:1.2}
+.tipo-rec-btn.active .tipo-rec-nome{color:var(--brand)}
+.objetivo-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.objetivo-card{background:var(--bg-card);border:2px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:14px}
+.objetivo-card:active{transform:scale(0.98)}
+.objetivo-card.selected{background:var(--brand-soft);border-color:var(--brand)}
+.objetivo-emoji{font-size:28px;flex-shrink:0}
+.objetivo-info{flex:1}
+.objetivo-titulo{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;margin-bottom:2px}
+.objetivo-desc{font-size:13px;color:var(--text-mute)}
+.footer{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--border);padding:16px 20px;padding-bottom:max(16px,env(safe-area-inset-bottom));z-index:80}
+.footer-content{max-width:480px;margin:0 auto;display:flex;gap:10px}
+.btn{padding:16px;border-radius:14px;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;min-height:56px;flex:1}
+.btn-primary{background:var(--brand);color:#001a0e}
+.btn-primary:active{background:var(--brand-hover);transform:scale(0.985)}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;background:var(--bg-elev);color:var(--text-faint)}
+.btn-back{background:var(--bg-card);color:var(--text);border:1px solid var(--border);flex:0 0 56px;min-width:56px}
+.btn-back:active{background:var(--bg-elev)}
+.btn-form{width:100%;padding:16px;border-radius:14px;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;min-height:56px;background:var(--brand);color:#001a0e;display:block;margin-top:4px}
+.btn-form:active{background:var(--brand-hover);transform:scale(0.985)}
+.analise-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.analise-titulo{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px}
+.situacao-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.situacao-item{background:var(--bg-input);border-radius:10px;padding:10px}
+.situacao-label{font-size:10px;color:var(--text-mute);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em}
+.situacao-valor{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700}
+.nivel-card{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-hover) 100%);border-radius:16px;padding:20px;text-align:center;color:#001a0e;margin-bottom:16px}
+.nivel-label{font-family:'Space Grotesk',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;opacity:0.8;margin-bottom:4px}
+.nivel-numero{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;line-height:1;margin-bottom:2px}
+.nivel-nome{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700}
+.diagnostico-texto{font-size:14px;line-height:1.6;color:var(--text);white-space:pre-line}
+.alerta-item{background:var(--warning-soft);border:1px solid rgba(255,184,0,0.3);border-radius:10px;padding:12px;margin-bottom:8px;font-size:13px;color:var(--warning);display:flex;align-items:flex-start;gap:8px}
+.meta-card{background:linear-gradient(135deg,var(--brand-soft) 0%,var(--bg-card) 100%);border:1px solid var(--brand);border-radius:16px;padding:16px;margin-bottom:16px}
+.meta-titulo-card{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:var(--brand);margin-bottom:6px}
+.meta-info-row{display:flex;gap:10px;margin:10px 0}
+.meta-pill{background:var(--bg-elev);border-radius:100px;padding:4px 10px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;color:var(--text)}
+.meta-explicacao{font-size:13px;line-height:1.5;color:var(--text-mute)}
+.jornada-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px}
+.jornada-titulo{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;text-align:center}
+.jornada-pontos{display:flex;justify-content:space-between;align-items:center;gap:4px}
+.ponto{flex:1;text-align:center}
+.ponto-circle{width:32px;height:32px;border-radius:50%;background:var(--bg-elev);border:1px solid var(--border);margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--text-faint);font-family:'Space Grotesk',sans-serif}
+.ponto.atual .ponto-circle{background:var(--brand);border-color:var(--brand);color:#001a0e;box-shadow:0 0 20px rgba(0,217,126,0.5)}
+.ponto.passou .ponto-circle{background:var(--brand-soft);border-color:var(--brand);color:var(--brand)}
+.ponto-label{font-size:9px;color:var(--text-faint);font-weight:500;text-transform:uppercase;letter-spacing:0.05em}
+.ponto.atual .ponto-label{color:var(--brand)}
+.ia-loading{text-align:center;padding:60px 20px}
+.ia-spinner{width:60px;height:60px;border:4px solid var(--ia-soft);border-top-color:var(--ia);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 20px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ia-loading-titulo{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--ia);margin-bottom:6px}
+.ia-loading-sub{font-size:13px;color:var(--text-mute);line-height:1.5}
+.ia-loading-passo{font-size:12px;color:var(--text-faint);margin-top:16px;font-style:italic}
+.upload-hidden{display:none}
+.loader-circle{width:32px;height:32px;border:3px solid var(--border);border-radius:50%;border-top-color:var(--brand);animation:spin 0.8s linear infinite;margin:40px auto}
+.xp-toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--brand);color:#001a0e;padding:14px 22px;border-radius:100px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;z-index:200;box-shadow:0 8px 32px rgba(0,217,126,0.4);display:none;max-width:90%;text-align:center;animation:toastIn 0.3s ease}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,-20px)}to{opacity:1;transform:translate(-50%,0)}}
+.aviso-divergencia{background:var(--warning-soft);border:1px solid rgba(255,184,0,0.4);border-radius:14px;padding:14px;margin-bottom:14px}
+.aviso-titulo{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--warning);margin-bottom:6px}
+.aviso-texto{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:12px}
+.restaurando-banner{background:linear-gradient(135deg,var(--brand-soft) 0%,var(--bg-card) 100%);border:1px solid var(--brand);border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.restaurando-emoji{font-size:20px}
+.restaurando-texto{font-size:12px;color:var(--text);line-height:1.4}
+.restaurando-texto strong{color:var(--brand)}
+.lista-cadastrados{margin-top:20px}
+.lista-cadastrados-titulo{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px}
+.revisao-card{background:linear-gradient(135deg,var(--ia-soft) 0%,var(--bg-card) 100%);border:1px solid var(--ia);border-radius:16px;padding:16px;margin-bottom:16px}
+.revisao-titulo{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--ia);margin-bottom:12px}
 </style>
 </head>
 <body>
-
 <div class="header">
-  <button class="header-skip" onclick="pularSetup()">Pular agora</button>
-  <div class="progress-wrapper"><div class="progress-fill" id="progress-fill" style="width: 0%"></div></div>
-  <div class="progress-num" id="progress-num">1/9</div>
+<button class="header-skip" onclick="pularSetup()">Pular agora</button>
+<div class="progress-wrapper"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+<div class="progress-num" id="progress-num">1/9</div>
 </div>
-
 <div class="container" id="container"><div class="loader-circle"></div></div>
 <div class="footer" id="footer"><div class="footer-content" id="footer-content"></div></div>
-
 <input type="file" id="input-foto" class="upload-hidden" accept="image/*" onchange="processarFoto(event)">
-
 <div class="xp-toast" id="xp-toast">+10 XP</div>
 <script type="module">
-  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-  const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
-  const IA_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
-  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-  const TOTAL_PASSOS = 9;
-  
-  const BANCOS_BR = [
-    { id: 'nubank', nome: 'Nubank', cor: '#820AD1', sigla: 'NU' },
-    { id: 'itau', nome: 'Itaú', cor: '#EC7000', sigla: 'IT' },
-    { id: 'bradesco', nome: 'Bradesco', cor: '#CC092F', sigla: 'BR' },
-    { id: 'santander', nome: 'Santander', cor: '#EC0000', sigla: 'SA' },
-    { id: 'bb', nome: 'BB', cor: '#FFEF38', sigla: 'BB' },
-    { id: 'caixa', nome: 'Caixa', cor: '#005CA9', sigla: 'CX' },
-    { id: 'inter', nome: 'Inter', cor: '#FF7A00', sigla: 'IN' },
-    { id: 'c6', nome: 'C6 Bank', cor: '#1F1F1F', sigla: 'C6' },
-    { id: 'picpay', nome: 'PicPay', cor: '#21C25E', sigla: 'PP' },
-    { id: 'mercadopago', nome: 'M. Pago', cor: '#00B1EA', sigla: 'MP' },
-    { id: 'pagbank', nome: 'PagBank', cor: '#FCB814', sigla: 'PB' },
-    { id: 'neon', nome: 'Neon', cor: '#00FFB8', sigla: 'NE' },
-    { id: 'porto', nome: 'Porto', cor: '#00A1DE', sigla: 'PO' },
-    { id: 'digio', nome: 'Digio', cor: '#1E2A45', sigla: 'DG' },
-    { id: 'xp', nome: 'XP', cor: '#000000', sigla: 'XP' },
-    { id: 'btg', nome: 'BTG', cor: '#001E50', sigla: 'BT' },
-    { id: 'original', nome: 'Original', cor: '#6BBB16', sigla: 'OR' },
-    { id: 'pan', nome: 'Pan', cor: '#0F4C81', sigla: 'PN' },
-    { id: 'will', nome: 'Will', cor: '#7B2FF6', sigla: 'WL' },
-    { id: 'next', nome: 'Next', cor: '#00FF5F', sigla: 'NX' },
-    { id: 'bmg', nome: 'BMG', cor: '#FF6900', sigla: 'BM' }
-  ];
-  
-  const BANCOS_INTL = [
-    { id: 'wise', nome: 'Wise', cor: '#9FE870', sigla: 'WS' },
-    { id: 'nomad', nome: 'Nomad', cor: '#0066FF', sigla: 'NM' },
-    { id: 'revolut', nome: 'Revolut', cor: '#191C1F', sigla: 'RV' },
-    { id: 'avenue', nome: 'Avenue', cor: '#000000', sigla: 'AV' }
-  ];
-  
-  const OUTROS = [
-    { id: 'carteira', nome: 'Dinheiro', cor: '#84cc16', sigla: '💵' },
-    { id: 'outro', nome: 'Outro', cor: '#555555', sigla: '?' }
-  ];
-  
-  const BANCOS = [...BANCOS_BR, ...BANCOS_INTL, ...OUTROS];
-  
-  const CATEGORIAS_RENDA = [
-    { id: 'salario_clt', nome: 'Salário CLT', emoji: '💼', cor: '#00d97e' },
-    { id: 'salario_pj', nome: 'Salário PJ', emoji: '💼', cor: '#00d97e' },
-    { id: 'autonomo', nome: 'Autônomo', emoji: '🛠️', cor: '#00d97e' },
-    { id: 'comissao', nome: 'Comissão', emoji: '🎯', cor: '#00d97e' },
-    { id: 'freelance', nome: 'Freelance', emoji: '💻', cor: '#00d97e' },
-    { id: 'aluguel_recebido', nome: 'Aluguel rec.', emoji: '🏠', cor: '#00d97e' },
-    { id: 'dividendos', nome: 'Dividendos', emoji: '📈', cor: '#00d97e' },
-    { id: 'bonus', nome: 'Bônus', emoji: '🎁', cor: '#00d97e' },
-    { id: 'pensao', nome: 'Pensão', emoji: '👨‍👩‍👧', cor: '#00d97e' },
-    { id: 'aposentadoria', nome: 'Aposent.', emoji: '🏖️', cor: '#00d97e' },
-    { id: 'venda', nome: 'Venda extra', emoji: '🛍️', cor: '#00d97e' },
-    { id: 'outro', nome: '+ Outra', emoji: '➕', cor: '#a3a3a3' }
-  ];
-  
-  const CATEGORIAS_DESPESA = [
-    { id: 'aluguel', nome: 'Aluguel', emoji: '🏠', cor: '#00d97e' },
-    { id: 'condominio', nome: 'Condomínio', emoji: '🏢', cor: '#14b8a6' },
-    { id: 'luz', nome: 'Luz', emoji: '💡', cor: '#ffb800' },
-    { id: 'agua', nome: 'Água', emoji: '💧', cor: '#38bdf8' },
-    { id: 'gas', nome: 'Gás', emoji: '🔥', cor: '#ff6b35' },
-    { id: 'internet', nome: 'Internet', emoji: '🌐', cor: '#a855f7' },
-    { id: 'telefone', nome: 'Telefone', emoji: '📱', cor: '#a855f7' },
-    { id: 'streaming', nome: 'Streaming', emoji: '🎬', cor: '#8b5cf6' },
-    { id: 'academia', nome: 'Academia', emoji: '💪', cor: '#f59e0b' },
-    { id: 'plano_saude', nome: 'Plano saúde', emoji: '🏥', cor: '#ef4444' },
-    { id: 'escola', nome: 'Escola', emoji: '🎓', cor: '#3b82f6' },
-    { id: 'seguro', nome: 'Seguro', emoji: '🛡️', cor: '#6366f1' },
-    { id: 'iptu', nome: 'IPTU', emoji: '🏛️', cor: '#f59e0b' },
-    { id: 'ipva', nome: 'IPVA', emoji: '🚗', cor: '#f59e0b' },
-    { id: 'combustivel', nome: 'Combustível', emoji: '⛽', cor: '#ff6b35' },
-    { id: 'assinatura', nome: 'Assinatura', emoji: '📺', cor: '#8b5cf6' },
-    { id: 'outro', nome: '+ Outra', emoji: '➕', cor: '#a3a3a3' }
-  ];
-  
-  const CATEGORIAS_DIVIDA = [
-    { id: 'emprestimo', nome: 'Empréstimo', emoji: '💸', cor: '#ef4444' },
-    { id: 'financ_imovel', nome: 'Financ. imóvel', emoji: '🏦', cor: '#ef4444' },
-    { id: 'financ_veiculo', nome: 'Financ. veículo', emoji: '🚗', cor: '#ef4444' },
-    { id: 'cheque_especial', nome: 'Cheque esp.', emoji: '🆘', cor: '#ef4444' },
-    { id: 'loja', nome: 'Loja física', emoji: '🛍️', cor: '#ef4444' },
-    { id: 'carne', nome: 'Carnê', emoji: '📋', cor: '#ef4444' },
-    { id: 'medica', nome: 'Médica', emoji: '🏥', cor: '#ef4444' },
-    { id: 'estudantil', nome: 'Estudantil', emoji: '🎓', cor: '#ef4444' },
-    { id: 'consignado', nome: 'Consignado', emoji: '💼', cor: '#ef4444' },
-    { id: 'pessoal', nome: 'Pessoal', emoji: '👨‍👩‍👧', cor: '#ef4444' },
-    { id: 'mercado', nome: 'Mercado', emoji: '🛒', cor: '#ef4444' },
-    { id: 'outro', nome: '+ Outra', emoji: '➕', cor: '#a3a3a3' }
-  ];
-  
-  const TIPOS_RECORRENCIA = [
-    { id: 'mensal', nome: 'Mensal', emoji: '🔄', desc: 'Todo mês' },
-    { id: 'pontual', nome: 'Pontual', emoji: '📌', desc: 'Só essa vez' },
-    { id: 'parcelada', nome: 'Parcelada', emoji: '📅', desc: 'Em X vezes' },
-    { id: 'anual', nome: 'Anual', emoji: '🎯', desc: 'Tipo IPTU' }
-  ];
-  
-  const INSTRUCOES_CONTA = {
-    'nubank': ['Abre o app Nubank', 'Saldo no topo', 'Print'],
-    'itau': ['Abre Itaú', '"Saldo em conta"', 'Print'],
-    'bradesco': ['Bradesco', '"Saldo e Extrato"', 'Print'],
-    'santander': ['Santander', 'Saldo na home', 'Print'],
-    'bb': ['BB', '"Saldo"', 'Print'],
-    'caixa': ['Caixa', 'Saldo na home', 'Print'],
-    'inter': ['Inter', 'Saldo principal', 'Print'],
-    'c6': ['C6 Bank', 'Saldo na home', 'Print'],
-    'picpay': ['PicPay', 'Saldo da carteira', 'Print'],
-    'pan': ['App Pan', 'Saldo na home', 'Print'],
-    'will': ['Will Bank', 'Saldo no topo', 'Print'],
-    'next': ['Next', 'Saldo na home', 'Print'],
-    'bmg': ['App BMG', 'Saldo', 'Print'],
-    'wise': ['Wise', 'Saldo multimoeda', 'Print'],
-    'nomad': ['Nomad', 'Saldo em dólar', 'Print'],
-    'revolut': ['Revolut', 'Saldo home', 'Print'],
-    'avenue': ['Avenue', 'Saldo USD', 'Print'],
-    'default': ['Abre o app do banco', 'Acha o saldo', 'Print']
-  };
-  
-  const INSTRUCOES_CARTAO = {
-    'nubank': ['Nubank → Cartão de crédito', 'Limite + fatura', 'Print'],
-    'itau': ['Itaú → Menu → Cartões', 'Detalhes fatura', 'Print'],
-    'bradesco': ['Bradesco → Cartões → Faturas', 'Print'],
-    'santander': ['Santander → Cartões → Fatura', 'Print'],
-    'bb': ['BB → Cartões → Fatura', 'Print'],
-    'inter': ['Inter → Cartão → Fatura', 'Print'],
-    'c6': ['C6 → Cartões → Fatura', 'Print'],
-    'pan': ['Pan → Cartão de crédito', 'Fatura', 'Print'],
-    'will': ['Will → Cartão → Fatura', 'Print'],
-    'next': ['Next → Cartões → Fatura', 'Print'],
-    'bmg': ['BMG → Cartão → Fatura', 'Print'],
-    'wise': ['Wise → Card', 'Limite + fatura', 'Print'],
-    'nomad': ['Nomad → Cartão', 'Limite + fatura', 'Print'],
-    'revolut': ['Revolut → Card', 'Fatura mensal', 'Print'],
-    'avenue': ['Avenue → Cartão', 'Fatura', 'Print'],
-    'default': ['App → Cartões → Fatura', 'Print']
-  };
-  
-  let usuario, perfil;
-  let passoAtual = 0;
-  let objetivoPrincipal = null;
-  let bancosSelecionados = [];
-  let bancoIndexAtual = 0;
-  let contasAdicionadas = [];
-  let cartoesAdicionados = [];
-  let rendasAdicionadas = [];
-  let despesasAdicionadas = [];
-  let dividasAdicionadas = [];
-  let analiseIA = null;
-  let temCartoes = null;
-  let bancosCartoes = [];
-  let bancoCartaoIdx = 0;
-  let qtdPorBanco = {};
-  let cartaoIdx = 0;
-  let cartaoTemp = null;
-  let statusFaturaTemp = null;
-  let modoFoto = null;
-  let alvoFoto = null;
-  let dadosIAPendentes = null;
-  let restaurouEstado = false;
-  let categoriaTemp = null;
-  let tipoRecorrenciaTemp = null;
-  let atrasoTemp = null;
-  
-  (async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) { window.location.href = 'index.html?v=' + Date.now(); return; }
-    usuario = session.user;
-    const { data: p } = await supabase.from('perfis').select('*').eq('id', usuario.id).maybeSingle();
-    perfil = p || {};
-    if (perfil.setup_concluido) { window.location.href = 'home.html?v=' + Date.now(); return; }
-    await reconstruirEstadoCompleto();
-    renderPasso();
-  })();
-  
-  async function reconstruirEstadoCompleto() {
-    try {
-      objetivoPrincipal = perfil.objetivo_principal || null;
-      const [contasRes, cartoesRes, rendasRes, despRes, divsRes] = await Promise.all([
-        supabase.from('contas').select('*').eq('user_id', usuario.id).neq('tipo', 'cartao_credito').eq('ativa', true),
-        supabase.from('contas').select('*').eq('user_id', usuario.id).eq('tipo', 'cartao_credito').eq('ativa', true),
-        supabase.from('rendas').select('*').eq('user_id', usuario.id),
-        supabase.from('compromissos').select('*').eq('user_id', usuario.id),
-        supabase.from('dividas').select('*').eq('user_id', usuario.id).eq('status', 'ativa')
-      ]);
-      contasAdicionadas = contasRes.data || [];
-      cartoesAdicionados = cartoesRes.data || [];
-      rendasAdicionadas = rendasRes.data || [];
-      despesasAdicionadas = despRes.data || [];
-      dividasAdicionadas = divsRes.data || [];
-      const bancosUsados = new Set();
-      contasAdicionadas.forEach(c => {
-        const banco = BANCOS.find(b => b.nome === c.banco || (c.tipo === 'carteira' && b.id === 'carteira'));
-        if (banco) bancosUsados.add(banco.id);
-      });
-      const bancosCart = new Set();
-      const qtdCart = {};
-      cartoesAdicionados.forEach(c => {
-        const banco = BANCOS.find(b => b.nome === c.banco);
-        if (banco) { bancosCart.add(banco.id); qtdCart[banco.id] = (qtdCart[banco.id] || 0) + 1; }
-      });
-      bancosCartoes = Array.from(bancosCart);
-      qtdPorBanco = qtdCart;
-      if (cartoesAdicionados.length > 0) temCartoes = true;
-      passoAtual = perfil.setup_passo_atual || 0;
-      if (bancosUsados.size > 0) bancosSelecionados = Array.from(bancosUsados);
-      bancoIndexAtual = 0;
-      if (contasAdicionadas.length > 0 || cartoesAdicionados.length > 0 || rendasAdicionadas.length > 0 || despesasAdicionadas.length > 0 || dividasAdicionadas.length > 0 || objetivoPrincipal) restaurouEstado = true;
-    } catch (e) { console.error('Erro:', e); }
-  }
-  
-  function renderPasso() {
-    const pct = ((passoAtual + 1) / TOTAL_PASSOS) * 100;
-    document.getElementById('progress-fill').style.width = pct + '%';
-    document.getElementById('progress-num').textContent = `${passoAtual + 1}/${TOTAL_PASSOS}`;
-    salvarProgresso();
-    const passos = [renderP1, renderP2, renderP3, renderP4, renderP5, renderP6, renderP7, renderP8, renderP9];
-    passos[passoAtual]();
-  }
-  
-  async function salvarProgresso() {
-    try { await supabase.from('perfis').update({ setup_passo_atual: passoAtual }).eq('id', usuario.id); } catch (e) {}
-  }
-  
-  function bannerRestauracao() {
-    if (!restaurouEstado) return '';
-    const itens = [];
-    if (contasAdicionadas.length > 0) itens.push(`${contasAdicionadas.length} conta${contasAdicionadas.length === 1 ? '' : 's'}`);
-    if (cartoesAdicionados.length > 0) itens.push(`${cartoesAdicionados.length} cartão${cartoesAdicionados.length === 1 ? '' : 'es'}`);
-    if (rendasAdicionadas.length > 0) itens.push(`${rendasAdicionadas.length} renda${rendasAdicionadas.length === 1 ? '' : 's'}`);
-    if (despesasAdicionadas.length > 0) itens.push(`${despesasAdicionadas.length} despesa${despesasAdicionadas.length === 1 ? '' : 's'}`);
-    if (dividasAdicionadas.length > 0) itens.push(`${dividasAdicionadas.length} dívida${dividasAdicionadas.length === 1 ? '' : 's'}`);
-    if (itens.length === 0) return '';
-    return `<div class="restaurando-banner"><div class="restaurando-emoji">🦔</div><div class="restaurando-texto">Continuando: <strong>${itens.join(', ')}</strong>.</div></div>`;
-  }
-  
-  window.proximoPasso = function() {
-    if (passoAtual < TOTAL_PASSOS - 1) { passoAtual++; renderPasso(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-  };
-  
-  window.voltarPasso = function() {
-    if (passoAtual > 0) { 
-      passoAtual--; bancoIndexAtual = 0; bancoCartaoIdx = 0; cartaoIdx = 0;
-      categoriaTemp = null; tipoRecorrenciaTemp = null; atrasoTemp = null;
-      renderPasso(); window.scrollTo({ top: 0, behavior: 'smooth' }); 
-    }
-  };
-  
-  window.pularSetup = async function() {
-    if (!confirm('Tem certeza? 🦔')) return;
-    await supabase.from('perfis').update({ setup_concluido: true, setup_concluido_em: new Date().toISOString() }).eq('id', usuario.id);
-    window.location.href = 'home.html?v=' + Date.now();
-  };
-  
-  function renderP1() {
-    const nome = perfil.nome || usuario.email?.split('@')[0] || 'amigo';
-    const pnome = nome.split(' ')[0];
-    document.getElementById('container').innerHTML = `
-      ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu, seu gestor 24h</div><div class="tatu-texto">Oi <strong>${pnome}</strong>! Sou o Tatu, seu gestor financeiro pessoal.<br><br>Vou passar uns <strong>30-60 minutos</strong> com você agora. <strong>Quanto mais info você me der aqui, mais eu te ajudo</strong>.<br><br>Bora?</div></div></div>
-      <div class="form-card" style="background:linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%);border-color:var(--brand);">
-        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;margin-bottom:10px;">📋 O que vamos cadastrar</div>
-        <div style="display:grid;gap:8px;">
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>🎯</span> Seu objetivo</div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>🏦</span> Contas (BR + intl)</div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💳</span> Cartões + faturas</div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💰</span> Rendas</div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>📋</span> Despesas fixas</div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span>💸</span> Dívidas</div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--brand);font-weight:700;"><span>🎯</span> Análise IA + plano!</div>
-        </div>
-      </div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="proximoPasso()">🚀 Bora!</button>`;
-  }
-  
-  function renderP2() {
-    document.getElementById('container').innerHTML = `
-      ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Qual seu <strong>foco</strong> agora? Vou montar plano AGRESSIVO pra acelerar.</div></div></div>
-      <div class="step-titulo">Qual seu foco agora?</div>
-      <div class="step-subtitulo">Vou ajudar a resolver rápido.</div>
-      <div class="objetivo-list">
-        <div class="objetivo-card ${objetivoPrincipal === 'sair_dividas' ? 'selected' : ''}" data-val="sair_dividas" onclick="selObj('sair_dividas')"><div class="objetivo-emoji">🚨</div><div class="objetivo-info"><div class="objetivo-titulo">Sair das dívidas</div><div class="objetivo-desc">Quitar e limpar o nome</div></div></div>
-        <div class="objetivo-card ${objetivoPrincipal === 'criar_reserva' ? 'selected' : ''}" data-val="criar_reserva" onclick="selObj('criar_reserva')"><div class="objetivo-emoji">🛡️</div><div class="objetivo-info"><div class="objetivo-titulo">Criar reserva</div><div class="objetivo-desc">Parar de viver no aperto</div></div></div>
-        <div class="objetivo-card ${objetivoPrincipal === 'investir' ? 'selected' : ''}" data-val="investir" onclick="selObj('investir')"><div class="objetivo-emoji">📈</div><div class="objetivo-info"><div class="objetivo-titulo">Investir</div><div class="objetivo-desc">Fazer dinheiro trabalhar</div></div></div>
-        <div class="objetivo-card ${objetivoPrincipal === 'liberdade' ? 'selected' : ''}" data-val="liberdade" onclick="selObj('liberdade')"><div class="objetivo-emoji">🚀</div><div class="objetivo-info"><div class="objetivo-titulo">Liberdade financeira</div><div class="objetivo-desc">Crescer patrimônio</div></div></div>
-      </div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" id="btn-obj" onclick="confirmarObjetivo()" ${!objetivoPrincipal ? 'disabled' : ''}>Continuar →</button>`;
-  }
-  
-  window.selObj = function(val) {
-    objetivoPrincipal = val;
-    document.querySelectorAll('.objetivo-card').forEach(c => c.classList.remove('selected'));
-    document.querySelector(`[data-val="${val}"]`).classList.add('selected');
-    document.getElementById('btn-obj').disabled = false;
-  };
-  
-  window.confirmarObjetivo = async function() {
-    if (!objetivoPrincipal) return;
-    try { await supabase.from('perfis').update({ objetivo_principal: objetivoPrincipal }).eq('id', usuario.id); } catch (e) {}
-    proximoPasso();
-  };
-  
-  function renderP3() {
-    if (bancosSelecionados.length === 0 && contasAdicionadas.length > 0) {
-      contasAdicionadas.forEach(c => {
-        const banco = BANCOS.find(b => b.nome === c.banco || (c.tipo === 'carteira' && b.id === 'carteira'));
-        if (banco && !bancosSelecionados.includes(banco.id)) bancosSelecionados.push(banco.id);
-      });
-    }
-    document.getElementById('container').innerHTML = `
-      ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Marca TODOS os bancos que usa. Inclui digitais, internacionais, carteira.</div></div></div>
-      <div class="step-titulo">Quais bancos você usa?</div>
-      <div class="step-subtitulo">Marca tudo - pode ser vários.</div>
-      <div class="secao-bancos-titulo">🇧🇷 Bancos brasileiros</div>
-      <div class="bancos-grid">${BANCOS_BR.map(b => `<div class="banco-card ${bancosSelecionados.includes(b.id) ? 'active' : ''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')"><div class="banco-logo" style="background:${b.cor};${b.cor === '#FFEF38' ? 'color:#000;' : ''}">${b.sigla}</div><div class="banco-nome">${b.nome}</div></div>`).join('')}</div>
-      <div class="secao-bancos-titulo">🌎 Contas internacionais</div>
-      <div class="bancos-grid">${BANCOS_INTL.map(b => `<div class="banco-card ${bancosSelecionados.includes(b.id) ? 'active' : ''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')"><div class="banco-logo" style="background:${b.cor};">${b.sigla}</div><div class="banco-nome">${b.nome}</div></div>`).join('')}</div>
-      <div class="secao-bancos-titulo">💵 Outros</div>
-      <div class="bancos-grid">${OUTROS.map(b => `<div class="banco-card ${bancosSelecionados.includes(b.id) ? 'active' : ''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')"><div class="banco-logo" style="background:${b.cor};">${b.sigla}</div><div class="banco-nome">${b.nome}</div></div>`).join('')}</div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" id="btn-bancos" onclick="proximoPasso()" ${bancosSelecionados.length === 0 ? 'disabled' : ''}>Continuar →</button>`;
-  }
-  
-  window.toggleBanco = function(id) {
-    const idx = bancosSelecionados.indexOf(id);
-    if (idx >= 0) bancosSelecionados.splice(idx, 1); else bancosSelecionados.push(id);
-    document.querySelector(`[data-banco="${id}"]`).classList.toggle('active');
-    const btn = document.getElementById('btn-bancos');
-    if (btn) btn.disabled = bancosSelecionados.length === 0;
-  };
-  
-  function renderP4() {
-    if (bancosSelecionados.length === 0) { proximoPasso(); return; }
-    if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); return; }
-    const bId = bancosSelecionados[bancoIndexAtual];
-    const banco = BANCOS.find(b => b.id === bId);
-    if (!banco) { bancoIndexAtual++; renderP4(); return; }
-    const passos = INSTRUCOES_CONTA[bId] || INSTRUCOES_CONTA.default;
-    const ehCart = bId === 'carteira';
-    const jaTemConta = contasAdicionadas.some(c => c.banco === banco.nome || (banco.id === 'carteira' && c.tipo === 'carteira'));
-    
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu te ensina</div><div class="tatu-texto">${jaTemConta ? `Já tem ${banco.nome}. Outra conta ou próximo?` : `Conta do ${banco.nome}. ${ehCart ? 'Quanto tem em dinheiro?' : 'Segue os passos.'}`}</div></div></div>
-      <div class="step-titulo" style="display:flex;align-items:center;gap:10px;"><div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>${banco.nome}</div>
-      <div class="step-subtitulo">Banco ${bancoIndexAtual + 1} de ${bancosSelecionados.length}${jaTemConta ? ' • cadastrado' : ''}</div>
-      ${!ehCart ? `
-      <div class="instrucao-card"><div class="instrucao-titulo">📱 Passo a passo</div><ol class="passo-lista">${passos.map((p, i) => `<li class="passo-item"><div class="passo-num">${i + 1}</div><div>${p}</div></li>`).join('')}</ol></div>
-      <div class="opcoes-acao">
-        <div class="opcao-btn ia" onclick="abrirFoto('conta', '${bId}')"><div class="opcao-btn-icon">📸</div><div class="opcao-btn-titulo">${jaTemConta ? 'Mais uma' : 'Foto'}</div><div class="opcao-btn-sub">IA lê o saldo</div></div>
-        <div class="opcao-btn" onclick="manualConta('${bId}')"><div class="opcao-btn-icon">✍️</div><div class="opcao-btn-titulo">${jaTemConta ? 'Outra manual' : 'Manual'}</div><div class="opcao-btn-sub">Você preenche</div></div>
-      </div>` : `
-      <div class="form-card">
-        <div class="field"><label>Quanto tem em dinheiro?</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="cart-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
-        <button class="btn-form" onclick="salvarCart()">Salvar carteira</button>
-      </div>`}
-      ${contasAdicionadas.length > 0 ? `<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastradas (${contasAdicionadas.length})</div>${contasAdicionadas.map(c => `<div class="item-cadastrado"><div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">${c.icone}</div><div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini ${Number(c.saldo_inicial) >= 0 ? 'positivo' : 'danger'}">R$ ${formatarMoeda(c.saldo_inicial || 0)}</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirConta('${c.id}')">✕</div></div></div>`).join('')}</div>` : ''}`;
-    const ehUltimo = bancoIndexAtual + 1 === bancosSelecionados.length;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarBancoOuPasso()">‹</button><button class="btn btn-primary" onclick="proximoBancoOuPasso()">${ehUltimo ? 'Próximo passo →' : (jaTemConta ? 'Próximo banco →' : 'Pular esse →')}</button>`;
-  }
-  
-  window.voltarBancoOuPasso = function() {
-    if (bancoIndexAtual > 0) { bancoIndexAtual--; renderP4(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-    else voltarPasso();
-  };
-  
-  window.proximoBancoOuPasso = function() {
-    bancoIndexAtual++;
-    if (bancoIndexAtual >= bancosSelecionados.length) { bancoIndexAtual = 0; proximoPasso(); }
-    else { renderP4(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-  };
-  
-  window.excluirConta = async function(id) {
-    if (!confirm('Excluir?')) return;
-    try { await supabase.from('contas').delete().eq('id', id); contasAdicionadas = contasAdicionadas.filter(c => c.id !== id); renderP4(); }
-    catch (e) { alert('Erro: ' + e.message); }
-  };
-  
-  window.manualConta = function(bId) {
-    const banco = BANCOS.find(b => b.id === bId);
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Dados da conta ${banco.nome}.</div></div></div>
-      <div class="step-titulo">${banco.nome}</div>
-      <div class="form-card">
-        <div class="field"><label>Tipo</label><select id="mc-tipo"><option value="conta_corrente">🏦 Conta Corrente</option><option value="poupanca">🐷 Poupança</option><option value="investimento">📈 Investimento</option></select></div>
-        <div class="field"><label>Saldo atual (positivo ou negativo)</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mc-saldo" placeholder="0,00" oninput="formatarValorComSinal(this)"></div><div style="font-size:11px;color:var(--text-mute);margin-top:4px;">💡 Cheque especial? -500,00</div></div>
-        <button class="btn-form" onclick="salvarContaManual('${bId}')">Salvar conta</button>
-      </div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP4()">‹</button><button class="btn btn-primary" disabled>Cadastre</button>`;
-  };
-  
-  window.salvarContaManual = async function(bId) {
-    const tipo = document.getElementById('mc-tipo').value;
-    const saldo = valorParaNumero(document.getElementById('mc-saldo').value);
-    const banco = BANCOS.find(b => b.id === bId);
-    if (saldo === null || isNaN(saldo)) { alert('Informe o saldo'); return; }
-    const emojis = { 'conta_corrente': '🏦', 'poupanca': '🐷', 'investimento': '📈' };
-    try {
-      const { data, error } = await supabase.from('contas').insert({ user_id: usuario.id, nome: banco.nome, tipo, banco: banco.nome, cor: banco.cor, icone: emojis[tipo] || '🏦', saldo_inicial: saldo, padrao: contasAdicionadas.length === 0 }).select().single();
-      if (error) throw error;
-      contasAdicionadas.push(data);
-      await darXP(15, 'conta_setup', 'Setup: ' + banco.nome);
-      toast('+15 XP 🏦');
-      setTimeout(() => renderP4(), 800);
-    } catch (e) { alert('Erro: ' + e.message); }
-  };
-  
-  window.salvarCart = async function() {
-    const valor = valorParaNumero(document.getElementById('cart-val').value);
-    if (valor === null || isNaN(valor)) { alert('Informe o valor'); return; }
-    try {
-      const { data, error } = await supabase.from('contas').insert({ user_id: usuario.id, nome: 'Carteira', tipo: 'carteira', cor: '#84cc16', icone: '💵', saldo_inicial: valor, padrao: contasAdicionadas.length === 0 }).select().single();
-      if (error) throw error;
-      contasAdicionadas.push(data);
-      await darXP(15, 'carteira_setup', 'Setup: Carteira');
-      toast('+15 XP 💵');
-      setTimeout(() => renderP4(), 800);
-    } catch (e) { alert('Erro: ' + e.message); }
-  };
-  
-  function renderP5() {
-    if (temCartoes === null) { renderP5_Pergunta(); return; }
-    if (temCartoes === false) { proximoPasso(); return; }
-    if (bancosCartoes.length === 0) { renderP5_SelBancos(); return; }
-    if (bancoCartaoIdx >= bancosCartoes.length) { bancoCartaoIdx = 0; cartaoIdx = 0; renderP5_Resumo(); return; }
-    const bId = bancosCartoes[bancoCartaoIdx];
-    const qtd = qtdPorBanco[bId];
-    if (!qtd) { renderP5_Qtd(bId); return; }
-    if (cartaoIdx >= qtd) { cartaoIdx = 0; bancoCartaoIdx++; renderP5(); return; }
-    renderP5_CadCartao(bId);
-  }
-  
-  function renderP5_Pergunta() {
-    document.getElementById('container').innerHTML = `
-      ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Tem <strong>cartão de crédito</strong>?</div></div></div>
-      <div class="step-titulo">Tem cartão de crédito?</div>
-      <div class="sim-nao-grid">
-        <div class="sim-nao-btn sim" onclick="respCartoes(true)"><div class="sim-nao-btn-emoji">💳</div>Sim</div>
-        <div class="sim-nao-btn nao" onclick="respCartoes(false)"><div class="sim-nao-btn-emoji">🚫</div>Não</div>
-      </div>
-      ${cartoesAdicionados.length > 0 ? `<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastrados (${cartoesAdicionados.length})</div>${cartoesAdicionados.map(c => `<div class="item-cadastrado"><div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div><div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)}</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div></div>`).join('')}</div>` : ''}`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()" ${cartoesAdicionados.length === 0 ? 'disabled' : ''}>Continuar →</button>`;
-  }
-  
-  window.respCartoes = function(r) { temCartoes = r; if (r) renderP5_SelBancos(); else proximoPasso(); };
-  
-  window.excluirCartao = async function(id) {
-    if (!confirm('Excluir?')) return;
-    try {
-      await supabase.from('transacoes').delete().eq('conta_id', id);
-      await supabase.from('dividas').delete().eq('conta_id', id);
-      await supabase.from('contas').delete().eq('id', id);
-      cartoesAdicionados = cartoesAdicionados.filter(c => c.id !== id);
-      dividasAdicionadas = dividasAdicionadas.filter(d => d.conta_id !== id);
-      renderP5();
-    } catch (e) { alert('Erro: ' + e.message); }
-  };
-  
-  function renderP5_SelBancos() {
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">De quais bancos são os cartões?</div></div></div>
-      <div class="step-titulo">Bancos dos cartões</div>
-      <div class="secao-bancos-titulo">🇧🇷 Brasileiros</div>
-      <div class="bancos-grid">${BANCOS_BR.map(b => `<div class="banco-card ${bancosCartoes.includes(b.id) ? 'active' : ''}" data-bc="${b.id}" onclick="togBC('${b.id}')"><div class="banco-logo" style="background:${b.cor};${b.cor === '#FFEF38' ? 'color:#000;' : ''}">${b.sigla}</div><div class="banco-nome">${b.nome}</div></div>`).join('')}</div>
-      <div class="secao-bancos-titulo">🌎 Internacionais</div>
-      <div class="bancos-grid">${BANCOS_INTL.map(b => `<div class="banco-card ${bancosCartoes.includes(b.id) ? 'active' : ''}" data-bc="${b.id}" onclick="togBC('${b.id}')"><div class="banco-logo" style="background:${b.cor};">${b.sigla}</div><div class="banco-nome">${b.nome}</div></div>`).join('')}</div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="temCartoes = null; renderP5_Pergunta();">‹</button><button class="btn btn-primary" id="btn-bc" onclick="confBC()" ${bancosCartoes.length === 0 ? 'disabled' : ''}>Continuar →</button>`;
-  }
-  
-  window.togBC = function(id) {
-    const i = bancosCartoes.indexOf(id);
-    if (i >= 0) bancosCartoes.splice(i, 1); else bancosCartoes.push(id);
-    document.querySelector(`[data-bc="${id}"]`).classList.toggle('active');
-    document.getElementById('btn-bc').disabled = bancosCartoes.length === 0;
-  };
-  
-  window.confBC = function() { if (bancosCartoes.length === 0) return; bancoCartaoIdx = 0; cartaoIdx = 0; renderP5(); };
-  
-  function renderP5_Qtd(bId) {
-    const banco = BANCOS.find(b => b.id === bId);
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Quantos cartões do <strong>${banco.nome}</strong>?</div></div></div>
-      <div class="step-titulo" style="display:flex;align-items:center;gap:10px;"><div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>${banco.nome}</div>
-      <div class="step-subtitulo">Banco ${bancoCartaoIdx + 1} de ${bancosCartoes.length}</div>
-      <div class="qtd-grid">
-        <div class="qtd-btn" onclick="selQtd('${bId}', 1)">1</div>
-        <div class="qtd-btn" onclick="selQtd('${bId}', 2)">2</div>
-        <div class="qtd-btn" onclick="selQtd('${bId}', 3)">3</div>
-        <div class="qtd-btn" onclick="selQtd('${bId}', 4)">4+</div>
-      </div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltBC()">‹</button><button class="btn btn-primary" disabled>Escolha</button>`;
-  }
-  
-  window.selQtd = function(bId, qtd) { qtdPorBanco[bId] = qtd; cartaoIdx = 0; renderP5(); };
-  
-  window.voltBC = function() {
-    if (bancoCartaoIdx > 0) { bancoCartaoIdx--; cartaoIdx = 0; delete qtdPorBanco[bancosCartoes[bancoCartaoIdx]]; }
-    else { renderP5_SelBancos(); return; }
-    renderP5();
-  };
-  
-  function renderP5_CadCartao(bId) {
-    const banco = BANCOS.find(b => b.id === bId);
-    const qtd = qtdPorBanco[bId];
-    const passos = INSTRUCOES_CARTAO[bId] || INSTRUCOES_CARTAO.default;
-    const numC = cartaoIdx + 1;
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu te ensina</div><div class="tatu-texto">Cartão <strong>${numC} de ${qtd}</strong> do ${banco.nome}.</div></div></div>
-      <div class="step-titulo" style="display:flex;align-items:center;gap:10px;"><div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor === '#FFEF38' ? 'color:#000;' : ''}">${banco.sigla}</div>${banco.nome}</div>
-      <div class="step-subtitulo">Cartão ${numC}/${qtd} • Banco ${bancoCartaoIdx + 1}/${bancosCartoes.length}</div>
-      <div class="instrucao-card"><div class="instrucao-titulo">📱 Onde achar</div><ol class="passo-lista">${passos.map((p, i) => `<li class="passo-item"><div class="passo-num">${i + 1}</div><div>${p}</div></li>`).join('')}</ol></div>
-      <div class="opcoes-acao">
-        <div class="opcao-btn ia" onclick="abrirFoto('fatura', '${bId}')"><div class="opcao-btn-icon">📸</div><div class="opcao-btn-titulo">Foto fatura</div><div class="opcao-btn-sub">IA lê tudo</div></div>
-        <div class="opcao-btn" onclick="manualCartao('${bId}')"><div class="opcao-btn-icon">✍️</div><div class="opcao-btn-titulo">Manual</div><div class="opcao-btn-sub">Você preenche</div></div>
-      </div>
-      ${cartoesAdicionados.length > 0 ? `<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastrados (${cartoesAdicionados.length})</div>${cartoesAdicionados.map(c => `<div class="item-cadastrado"><div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div><div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)}</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div></div>`).join('')}</div>` : ''}`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltCartao()">‹</button><button class="btn btn-primary" onclick="pulaCartao()">Pular →</button>`;
-  }
-  
-  window.voltCartao = function() {
-    if (cartaoIdx > 0) { cartaoIdx--; renderP5(); }
-    else if (bancoCartaoIdx > 0) { voltBC(); }
-    else renderP5_SelBancos();
-  };
-  
-  window.pulaCartao = function() { cartaoIdx++; renderP5(); };
-  
-  window.manualCartao = function(bId) {
-    const banco = BANCOS.find(b => b.id === bId);
-    const qtd = qtdPorBanco[bId];
-    const sugNome = qtd === 1 ? banco.nome : `${banco.nome} ${cartaoIdx + 1}`;
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Dados do cartão ${banco.nome}.</div></div></div>
-      <div class="step-titulo">${banco.nome}</div>
-      <div class="form-card">
-        <div class="field"><label>Apelido</label><input type="text" id="c-nome" value="${sugNome}"></div>
-        <div class="field"><label>Limite total</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="c-lim" placeholder="0,00" oninput="formatarValor(this)"></div></div>
-        <div class="field-row"><div class="field"><label>Fechamento</label><input type="number" id="c-fec" placeholder="20" min="1" max="31"></div><div class="field"><label>Vencimento</label><input type="number" id="c-ven" placeholder="10" min="1" max="31"></div></div>
-        <button class="btn-form" onclick="confDadosCart('${bId}')">Continuar →</button>
-      </div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP5_CadCartao('${bId}')">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
-  };
-  
-  window.confDadosCart = function(bId) {
-    const nome = document.getElementById('c-nome').value.trim();
-    const lim = valorParaNumero(document.getElementById('c-lim').value);
-    const fec = parseInt(document.getElementById('c-fec').value) || null;
-    const ven = parseInt(document.getElementById('c-ven').value) || null;
-    if (!nome) { alert('Digite o apelido'); return; }
-    if (!lim || lim <= 0) { alert('Informe o limite'); return; }
-    cartaoTemp = { bancoId: bId, nome, limite: lim, fechamento: fec, vencimento: ven };
-    renderP5_PergFatura();
-  };
-  
-  function renderP5_PergFatura() {
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">${cartaoTemp.nome} tem fatura aberta?</div></div></div>
-      <div class="step-titulo">Tem fatura aberta?</div>
-      <div class="sim-nao-grid">
-        <div class="sim-nao-btn sim" onclick="respFat(true)"><div class="sim-nao-btn-emoji">💸</div>Sim</div>
-        <div class="sim-nao-btn nao" onclick="respFat(false)"><div class="sim-nao-btn-emoji">✨</div>Não, zerada</div>
-      </div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="manualCartao('${cartaoTemp.bancoId}')">‹</button><button class="btn btn-primary" disabled>Escolha</button>`;
-  }
-  
-  window.respFat = function(tem) {
-    if (!tem) salvarCartaoFinal({ valor: 0, paga: true, atrasada: false });
-    else renderP5_DadosFat();
-  };
-  
-  function renderP5_DadosFat() {
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Dados da fatura ${cartaoTemp.nome}:</div></div></div>
-      <div class="step-titulo">Dados da fatura</div>
-      <div class="form-card">
-        <div class="field"><label>Valor</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="f-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
-        <div class="field"><label>Status</label><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-          <div class="qtd-btn" data-st="aberta" onclick="selStat('aberta')" style="font-size:11px;padding:14px 4px;line-height:1.3;">📅<br>Aberta</div>
-          <div class="qtd-btn" data-st="paga" onclick="selStat('paga')" style="font-size:11px;padding:14px 4px;line-height:1.3;">✅<br>Paga</div>
-          <div class="qtd-btn" data-st="atrasada" onclick="selStat('atrasada')" style="font-size:11px;padding:14px 4px;line-height:1.3;">⚠️<br>Atrasada</div>
-        </div></div>
-        <button class="btn-form" onclick="confFat()">Salvar cartão →</button>
-      </div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP5_PergFatura()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
-  }
-  
-  window.selStat = function(s) {
-    statusFaturaTemp = s;
-    document.querySelectorAll('[data-st]').forEach(el => el.classList.remove('active'));
-    document.querySelector(`[data-st="${s}"]`).classList.add('active');
-  };
-  
-  window.confFat = function() {
-    const valor = valorParaNumero(document.getElementById('f-val').value);
-    if (!valor || valor <= 0) { alert('Informe o valor'); return; }
-    if (!statusFaturaTemp) { alert('Selecione status'); return; }
-    salvarCartaoFinal({ valor, paga: statusFaturaTemp === 'paga', atrasada: statusFaturaTemp === 'atrasada' });
-  };
-  
-  async function salvarCartaoFinal({ valor, paga, atrasada }) {
-    const { bancoId, nome, limite, fechamento, vencimento } = cartaoTemp;
-    const banco = BANCOS.find(b => b.id === bancoId);
-    try {
-      const { data: cart, error: e1 } = await supabase.from('contas').insert({ user_id: usuario.id, nome, tipo: 'cartao_credito', banco: banco.nome, cor: banco.cor, icone: '💳', limite, saldo_inicial: 0, dia_fechamento: fechamento, dia_vencimento: vencimento }).select().single();
-      if (e1) throw e1;
-      cartoesAdicionados.push(cart);
-      if (valor > 0) {
-        let dVenc;
-        if (atrasada) { const d = new Date(); d.setMonth(d.getMonth() - 1); if (vencimento) d.setDate(vencimento); dVenc = d.toISOString().split('T')[0]; }
-        else { const d = new Date(); if (vencimento) { d.setDate(vencimento); if (d < new Date()) d.setMonth(d.getMonth() + 1); } else d.setDate(d.getDate() + 30); dVenc = d.toISOString().split('T')[0]; }
-        if (!paga) {
-          const { data: div } = await supabase.from('dividas').insert({ user_id: usuario.id, credor: banco.nome, tipo: 'cartao', descricao: `Fatura ${nome}`, valor_original: valor, valor_atual: valor, data_vencimento: dVenc, data_inicio: new Date().toISOString().split('T')[0], status: 'ativa', prioridade: atrasada ? 1 : 2, conta_id: cart.id }).select().single();
-          if (div) { dividasAdicionadas.push(div); await supabase.from('transacoes').insert({ user_id: usuario.id, valor, descricao: `Fatura ${nome}`, data: dVenc, tipo: 'saida', conta_id: cart.id, divida_id: div.id, status: 'prevista' }); }
-        } else {
-          await supabase.from('transacoes').insert({ user_id: usuario.id, valor, descricao: `Fatura ${nome} (paga)`, data: dVenc, tipo: 'saida', conta_id: cart.id, status: 'realizada' });
-        }
-      }
-      await darXP(25, 'cartao_setup', 'Setup cartão: ' + nome);
-      toast(`+25 XP 💳 ${nome}`);
-      cartaoTemp = null; statusFaturaTemp = null;
-      setTimeout(() => { cartaoIdx++; renderP5(); }, 800);
-    } catch (e) { alert('Erro: ' + e.message); }
-  }
-  
-  function renderP5_Resumo() {
-    const totalDiv = dividasAdicionadas.filter(d => d.tipo === 'cartao').reduce((a, d) => a + Number(d.valor_atual || 0), 0);
-    const atrasadas = dividasAdicionadas.filter(d => d.tipo === 'cartao' && d.prioridade === 1).length;
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🎉</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Pronto! <strong>${cartoesAdicionados.length} cartões</strong>. ${totalDiv > 0 ? `Total: <strong>R$ ${formatarMoeda(totalDiv)}</strong>.` : ''} ${atrasadas > 0 ? `<br>⚠️ <strong>${atrasadas} atrasada${atrasadas > 1 ? 's' : ''}</strong>!` : ''}</div></div></div>
-      <div class="step-titulo">Cartões cadastrados</div>
-      ${cartoesAdicionados.map(c => `<div class="item-cadastrado"><div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor};">💳</div><div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite || 0)}</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div></div>`).join('')}`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">Próximo →</button>`;
-  }
-  
-  function renderP6() {
-    document.getElementById('container').innerHTML = `
-      ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>TODA</strong> renda que entra. Salário, freela, aluguel, comissão. Marca o tipo:</div></div></div>
-      <div class="step-titulo">Suas rendas mensais</div>
-      <div class="step-subtitulo">Toca no tipo da renda que quer cadastrar.</div>
-      <div class="categoria-grid">${CATEGORIAS_RENDA.map(c => `<div class="categoria-card ${c.id === 'outro' ? 'add' : ''}" onclick="abrirCadRenda('${c.id}')"><div class="categoria-emoji">${c.emoji}</div><div class="categoria-nome">${c.nome}</div></div>`).join('')}</div>
-      ${rendasAdicionadas.length > 0 ? `<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastradas (${rendasAdicionadas.length})</div>${rendasAdicionadas.map(r => `<div class="item-cadastrado"><div class="item-icone-mini" style="background:${r.cor || '#00d97e'}30;color:${r.cor || '#00d97e'};">${r.icone || '💰'}</div><div class="item-info-mini"><div class="item-nome-mini">${r.nome}</div><div class="item-valor-mini positivo">+R$ ${formatarMoeda(r.valor)}/mês</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirRenda('${r.id}')">✕</div></div></div>`).join('')}</div>` : ''}`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${rendasAdicionadas.length > 0 ? 'Continuar →' : 'Pular →'}</button>`;
-  }
-  
-  window.abrirCadRenda = function(catId) {
-    const cat = CATEGORIAS_RENDA.find(c => c.id === catId);
-    categoriaTemp = cat;
-    const sugNome = cat.id === 'outro' ? '' : cat.nome;
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>${cat.emoji} ${cat.nome}</strong>. Dados:</div></div></div>
-      <div class="step-titulo">Nova renda</div>
-      <div class="form-card">
-        <div class="field"><label>Nome</label><input type="text" id="mr-nome" placeholder="Digite o nome" value="${sugNome}"></div>
-        <div class="field"><label>Valor mensal</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mr-val" placeholder="0,00" oninput="formatarValor(this)"></div></div>
-        <div class="field"><label>Dia recebe (1-31)</label><input type="number" id="mr-dia" placeholder="5" min="1" max="31"></div>
-        <button class="btn-form" onclick="salvarRenda()">Salvar renda</button>
-      </div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP6()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
-  };
-  
-  window.excluirRenda = async function(id) {
-    if (!confirm('Excluir?')) return;
-    try { await supabase.from('transacoes').delete().eq('renda_id', id); await supabase.from('rendas').delete().eq('id', id); rendasAdicionadas = rendasAdicionadas.filter(r => r.id !== id); renderP6(); }
-    catch (e) { alert('Erro: ' + e.message); }
-  };
-  
-  window.salvarRenda = async function() {
-    const nome = document.getElementById('mr-nome').value.trim();
-    const val = valorParaNumero(document.getElementById('mr-val').value);
-    const dia = parseInt(document.getElementById('mr-dia').value) || null;
-    if (!nome) { alert('Digite o nome'); return; }
-    if (!val || val <= 0) { alert('Informe o valor'); return; }
-    const cat = categoriaTemp;
-    try {
-      const { data, error } = await supabase.from('rendas').insert({ user_id: usuario.id, nome, categoria: cat.id, valor: val, dia_recebimento: dia, cor: cat.cor, icone: cat.emoji }).select().single();
-      if (error) throw error;
-      rendasAdicionadas.push(data);
-      const totalRenda = rendasAdicionadas.reduce((a, r) => a + Number(r.valor || 0), 0);
-      await supabase.from('perfis').update({ renda_mensal: totalRenda }).eq('id', usuario.id);
-      const hoje = new Date();
-      const dUsar = dia || hoje.getDate();
-      let mes = hoje.getMonth();
-      if (dUsar <= hoje.getDate()) mes++;
-      const trans = [];
-      for (let i = 0; i < 12; i++) {
-        const d = new Date(hoje.getFullYear(), mes + i, dUsar);
-        trans.push({ user_id: usuario.id, valor: val, descricao: nome, data: d.toISOString().split('T')[0], tipo: 'entrada', renda_id: data.id, status: 'prevista', recorrente: true });
-      }
-      await supabase.from('transacoes').insert(trans);
-      await darXP(20, 'renda_setup', 'Setup renda: ' + nome);
-      toast(`+20 XP 💰 ${nome}`);
-      categoriaTemp = null;
-      setTimeout(() => renderP6(), 800);
-    } catch (e) { alert('Erro: ' + e.message); }
-  };
-  
-  // ============ PASSO 7 — DESPESAS v3.4.1 (com Foto/Manual) ============
-  function renderP7() {
-    document.getElementById('container').innerHTML = `
-      ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>Despesas fixas</strong>. Toca em cada tipo que você paga:</div></div></div>
-      <div class="step-titulo">Suas despesas</div>
-      <div class="step-subtitulo">Toca em cada tipo que você tem.</div>
-      <div class="categoria-grid">${CATEGORIAS_DESPESA.map(c => `<div class="categoria-card ${c.id === 'outro' ? 'add' : ''}" onclick="abrirCadDesp('${c.id}')"><div class="categoria-emoji">${c.emoji}</div><div class="categoria-nome">${c.nome}</div></div>`).join('')}</div>
-      ${despesasAdicionadas.length > 0 ? `<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastradas (${despesasAdicionadas.length})</div>${despesasAdicionadas.map(d => `<div class="item-cadastrado"><div class="item-icone-mini" style="background:${d.cor || '#ffb800'}30;color:${d.cor || '#ffb800'};">${d.icone || '📋'}</div><div class="item-info-mini"><div class="item-nome-mini">${d.nome}</div><div class="item-valor-mini danger">-R$ ${formatarMoeda(d.valor)}/mês</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDesp('${d.id}')">✕</div></div></div>`).join('')}</div>` : ''}`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${despesasAdicionadas.length > 0 ? 'Continuar →' : 'Pular →'}</button>`;
-  }
-  
-  window.abrirCadDesp = function(catId) {
-    const cat = CATEGORIAS_DESPESA.find(c => c.id === catId);
-    categoriaTemp = cat;
-    tipoRecorrenciaTemp = null;
-    renderP7_TipoRec(cat);
-  };
-  
-  window.renderP7_TipoRec = function(cat) {
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>${cat.emoji} ${cat.nome}</strong> é de qual tipo?</div></div></div>
-      <div class="step-titulo">Qual o tipo?</div>
-      <div class="step-subtitulo">Pra eu calcular certinho.</div>
-      <div class="tipo-recorrencia-grid">${TIPOS_RECORRENCIA.map(t => `<div class="tipo-rec-btn" data-tipo="${t.id}" onclick="selTipoRec('${t.id}')"><div class="tipo-rec-emoji">${t.emoji}</div><div class="tipo-rec-nome">${t.nome}</div><div class="tipo-rec-desc">${t.desc}</div></div>`).join('')}</div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP7()">‹</button><button class="btn btn-primary" id="btn-tipo" onclick="confirmaTipoRec()" disabled>Continuar →</button>`;
-  };
-  
-  window.selTipoRec = function(tId) {
-    tipoRecorrenciaTemp = tId;
-    document.querySelectorAll('[data-tipo]').forEach(el => el.classList.remove('active'));
-    document.querySelector(`[data-tipo="${tId}"]`).classList.add('active');
-    document.getElementById('btn-tipo').disabled = false;
-  };
-  
-  window.confirmaTipoRec = function() {
-    if (!tipoRecorrenciaTemp) return;
-    renderP7_FotoOuManual();
-  };
-  
-  window.renderP7_FotoOuManual = function() {
-    const cat = categoriaTemp;
-    const tipo = TIPOS_RECORRENCIA.find(t => t.id === tipoRecorrenciaTemp);
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>${cat.emoji} ${cat.nome}</strong> • ${tipo.emoji} ${tipo.nome}<br><br>Como prefere cadastrar?</div></div></div>
-      <div class="step-titulo">Foto ou manual?</div>
-      <div class="step-subtitulo">Tem boleto? Tira foto que eu leio.</div>
-      <div class="opcoes-acao">
-        <div class="opcao-btn ia" onclick="abrirFoto('boleto', null)"><div class="opcao-btn-icon">📸</div><div class="opcao-btn-titulo">Foto do boleto</div><div class="opcao-btn-sub">IA lê tudo</div></div>
-        <div class="opcao-btn" onclick="renderP7_Form()"><div class="opcao-btn-icon">✍️</div><div class="opcao-btn-titulo">Manual</div><div class="opcao-btn-sub">Você preenche</div></div>
-      </div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP7_TipoRec(categoriaTemp)">‹</button><button class="btn btn-primary" disabled>Escolha</button>`;
-  };
-  
-  window.renderP7_Form = function(dadosPreenchidos) {
-    const cat = categoriaTemp;
-    const tipo = TIPOS_RECORRENCIA.find(t => t.id === tipoRecorrenciaTemp);
-    const sugNome = dadosPreenchidos?.nome || (cat.id === 'outro' ? '' : cat.nome);
-    const sugVal = dadosPreenchidos?.valor ? Number(dadosPreenchidos.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '';
-    const sugDia = dadosPreenchidos?.dia || '';
-    const labelValor = tipo.id === 'parcelada' ? 'Valor da parcela' : 'Valor';
-    const ehParcelada = tipo.id === 'parcelada';
-    const veioDeFoto = !!dadosPreenchidos;
-    
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">${veioDeFoto ? '✅' : '🦔'}</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">${veioDeFoto ? `<strong>Li o boleto!</strong> Confirma os dados:` : `<strong>${cat.emoji} ${cat.nome}</strong> • ${tipo.emoji} ${tipo.nome}`}</div></div></div>
-      ${veioDeFoto ? `<div class="revisao-card"><div class="revisao-titulo">📸 Dados extraídos da foto</div></div>` : ''}
-      <div class="step-titulo">${veioDeFoto ? 'Revisar e salvar' : 'Dados'}</div>
-      <div class="form-card">
-        <div class="field"><label>Nome</label><input type="text" id="md-nome" placeholder="Digite o nome" value="${sugNome}"></div>
-        <div class="field"><label>${labelValor}</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="md-val" placeholder="0,00" value="${sugVal}" oninput="formatarValor(this)"></div></div>
-        ${ehParcelada ? `<div class="field"><label>Quantas parcelas restam?</label><input type="number" id="md-parcelas" placeholder="10" min="1" max="120"></div>` : ''}
-        <div class="field"><label>Dia vencimento (1-31)</label><input type="number" id="md-dia" placeholder="10" min="1" max="31" value="${sugDia}"></div>
-        <button class="btn-form" onclick="salvarDesp()">${veioDeFoto ? '✅ Confirmar e salvar' : 'Salvar despesa'}</button>
-        ${veioDeFoto ? `<button class="btn-form" style="background:var(--bg-elev);color:var(--text);margin-top:8px;" onclick="abrirFoto('boleto', null)">🔄 Refazer foto</button>` : ''}
-      </div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP7_FotoOuManual()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
-  };
-  
-  window.excluirDesp = async function(id) {
-    if (!confirm('Excluir?')) return;
-    try { await supabase.from('transacoes').delete().eq('compromisso_id', id); await supabase.from('compromissos').delete().eq('id', id); despesasAdicionadas = despesasAdicionadas.filter(d => d.id !== id); renderP7(); }
-    catch (e) { alert('Erro: ' + e.message); }
-  };
-  
-  window.salvarDesp = async function() {
-    const nome = document.getElementById('md-nome').value.trim();
-    const val = valorParaNumero(document.getElementById('md-val').value);
-    const dia = parseInt(document.getElementById('md-dia').value) || null;
-    if (!nome) { alert('Digite o nome'); return; }
-    if (!val || val <= 0) { alert('Informe o valor'); return; }
-    const cat = categoriaTemp;
-    const tipo = tipoRecorrenciaTemp;
-    const parcelasEl = document.getElementById('md-parcelas');
-    const parcelas = parcelasEl ? (parseInt(parcelasEl.value) || 1) : null;
-    await salvarDespesaCompleta(nome, cat, val, dia, tipo, parcelas);
-  };
-  
-  async function salvarDespesaCompleta(nome, cat, val, dia, tipo, parcelas) {
-    try {
-      const tipoDB = tipo === 'pontual' ? 'pontual' : 'recorrente';
-      const { data, error } = await supabase.from('compromissos').insert({ user_id: usuario.id, nome, categoria: cat.id, tipo: tipoDB, valor: val, dia_vencimento: dia, cor: cat.cor, icone: cat.emoji }).select().single();
-      if (error) throw error;
-      despesasAdicionadas.push(data);
-      const hoje = new Date();
-      const dUsar = dia || hoje.getDate();
-      let mes = hoje.getMonth();
-      if (dUsar <= hoje.getDate()) mes++;
-      const trans = [];
-      let qtdMeses;
-      if (tipo === 'mensal') qtdMeses = 12;
-      else if (tipo === 'pontual') qtdMeses = 1;
-      else if (tipo === 'parcelada') qtdMeses = parcelas;
-      else if (tipo === 'anual') qtdMeses = 1;
-      for (let i = 0; i < qtdMeses; i++) {
-        const d = tipo === 'anual' ? new Date(hoje.getFullYear() + i, mes, dUsar) : new Date(hoje.getFullYear(), mes + i, dUsar);
-        const descParcela = tipo === 'parcelada' ? `${nome} (${i+1}/${qtdMeses})` : nome;
-        trans.push({ user_id: usuario.id, valor: val, descricao: descParcela, data: d.toISOString().split('T')[0], tipo: 'saida', compromisso_id: data.id, status: 'prevista', recorrente: tipo !== 'pontual' });
-      }
-      await supabase.from('transacoes').insert(trans);
-      await darXP(15, 'despesa_setup', 'Setup despesa: ' + nome);
-      toast(`+15 XP 📋 ${nome}`);
-      categoriaTemp = null; tipoRecorrenciaTemp = null;
-      setTimeout(() => renderP7(), 800);
-    } catch (e) { alert('Erro: ' + e.message); }
-  }
-  
-  // ============ PASSO 8 — DÍVIDAS v3.4.1 (com Foto/Manual) ============
-  function renderP8() {
-    const outrasDivs = dividasAdicionadas.filter(d => d.tipo !== 'cartao');
-    document.getElementById('container').innerHTML = `
-      ${bannerRestauracao()}
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Toca em <strong>TODOS</strong> os tipos de dívida que você tem hoje. Quanto mais eu souber, melhor te ajudo a quitar:</div></div></div>
-      <div class="step-titulo">Suas dívidas</div>
-      <div class="step-subtitulo">Toca em cada tipo que você tem.</div>
-      <div class="categoria-grid">${CATEGORIAS_DIVIDA.map(c => `<div class="categoria-card ${c.id === 'outro' ? 'add' : ''}" onclick="abrirCadDiv('${c.id}')"><div class="categoria-emoji">${c.emoji}</div><div class="categoria-nome">${c.nome}</div></div>`).join('')}</div>
-      ${outrasDivs.length > 0 ? `<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastradas (${outrasDivs.length})</div>${outrasDivs.map(d => `<div class="item-cadastrado" style="border-color:var(--danger);"><div class="item-icone-mini" style="background:var(--danger-soft);color:var(--danger);">💸</div><div class="item-info-mini"><div class="item-nome-mini">${d.credor}</div><div class="item-valor-mini danger">R$ ${formatarMoeda(d.valor_atual)}</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDiv('${d.id}')">✕</div></div></div>`).join('')}</div>` : ''}`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${outrasDivs.length > 0 ? 'Continuar →' : 'Não tenho →'}</button>`;
-  }
-  
-  window.abrirCadDiv = function(catId) {
-    const cat = CATEGORIAS_DIVIDA.find(c => c.id === catId);
-    categoriaTemp = cat;
-    renderP8_FotoOuManual();
-  };
-  
-  window.renderP8_FotoOuManual = function() {
-    const cat = categoriaTemp;
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>${cat.emoji} ${cat.nome}</strong>. Como prefere cadastrar?</div></div></div>
-      <div class="step-titulo">Foto ou manual?</div>
-      <div class="step-subtitulo">Tem contrato/print? Eu leio.</div>
-      <div class="opcoes-acao">
-        <div class="opcao-btn ia" onclick="abrirFoto('contrato', null)"><div class="opcao-btn-icon">📸</div><div class="opcao-btn-titulo">Foto do contrato</div><div class="opcao-btn-sub">IA lê tudo</div></div>
-        <div class="opcao-btn" onclick="renderP8_Form()"><div class="opcao-btn-icon">✍️</div><div class="opcao-btn-titulo">Manual</div><div class="opcao-btn-sub">Você preenche</div></div>
-      </div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP8()">‹</button><button class="btn btn-primary" disabled>Escolha</button>`;
-  };
-  
-  window.renderP8_Form = function(dadosPreenchidos) {
-    const cat = categoriaTemp;
-    const sugCred = dadosPreenchidos?.credor || (cat.id === 'outro' ? '' : cat.nome);
-    const sugVal = dadosPreenchidos?.valor ? Number(dadosPreenchidos.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '';
-    const veioDeFoto = !!dadosPreenchidos;
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">${veioDeFoto ? '✅' : '🦔'}</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">${veioDeFoto ? '<strong>Li o contrato!</strong> Confirma:' : `<strong>${cat.emoji} ${cat.nome}</strong>. Conta os dados:`}</div></div></div>
-      ${veioDeFoto ? `<div class="revisao-card"><div class="revisao-titulo">📸 Dados extraídos da foto</div></div>` : ''}
-      <div class="step-titulo">${veioDeFoto ? 'Revisar e salvar' : 'Nova dívida'}</div>
-      <div class="form-card">
-        <div class="field"><label>Credor (com quem você deve)</label><input type="text" id="mdv-cred" placeholder="Digite o nome" value="${sugCred}"></div>
-        <div class="field"><label>Valor total em aberto</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mdv-val" placeholder="0,00" value="${sugVal}" oninput="formatarValor(this)"></div></div>
-        <div class="field"><label>Está atrasada?</label><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-          <div class="qtd-btn" data-atraso="nao" onclick="selAtraso('nao')" style="font-size:12px;padding:14px;">✅ Em dia</div>
-          <div class="qtd-btn" data-atraso="sim" onclick="selAtraso('sim')" style="font-size:12px;padding:14px;">⚠️ Atrasada</div>
-        </div></div>
-        <button class="btn-form" onclick="salvarDiv()">${veioDeFoto ? '✅ Confirmar e salvar' : 'Salvar dívida'}</button>
-        ${veioDeFoto ? `<button class="btn-form" style="background:var(--bg-elev);color:var(--text);margin-top:8px;" onclick="abrirFoto('contrato', null)">🔄 Refazer foto</button>` : ''}
-      </div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-back" onclick="renderP8_FotoOuManual()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
-  };
-  
-  window.selAtraso = function(s) {
-    atrasoTemp = s;
-    document.querySelectorAll('[data-atraso]').forEach(el => el.classList.remove('active'));
-    document.querySelector(`[data-atraso="${s}"]`).classList.add('active');
-  };
-  
-  window.excluirDiv = async function(id) {
-    if (!confirm('Excluir?')) return;
-    try { await supabase.from('dividas').delete().eq('id', id); dividasAdicionadas = dividasAdicionadas.filter(d => d.id !== id); renderP8(); }
-    catch (e) { alert('Erro: ' + e.message); }
-  };
-  
-  window.salvarDiv = async function() {
-    const cred = document.getElementById('mdv-cred').value.trim();
-    const val = valorParaNumero(document.getElementById('mdv-val').value);
-    if (!cred) { alert('Digite o credor'); return; }
-    if (!val || val <= 0) { alert('Informe o valor'); return; }
-    const cat = categoriaTemp;
-    const atrasada = atrasoTemp === 'sim';
-    const dv = new Date(); 
-    if (atrasada) dv.setMonth(dv.getMonth() - 1);
-    else dv.setDate(dv.getDate() + 30);
-    try {
-      const { data, error } = await supabase.from('dividas').insert({ user_id: usuario.id, credor: cred, tipo: cat.id, descricao: `${cat.nome}: ${cred}`, valor_original: val, valor_atual: val, data_vencimento: dv.toISOString().split('T')[0], data_inicio: new Date().toISOString().split('T')[0], status: 'ativa', prioridade: atrasada ? 1 : 2 }).select().single();
-      if (error) throw error;
-      dividasAdicionadas.push(data);
-      await darXP(15, 'divida_setup', 'Setup dívida: ' + cred);
-      toast(`+15 XP 💸 ${cred}`);
-      categoriaTemp = null; atrasoTemp = null;
-      setTimeout(() => renderP8(), 800);
-    } catch (e) { alert('Erro: ' + e.message); }
-  };
-  
-  async function renderP9() {
-    document.getElementById('container').innerHTML = `
-      <div class="ia-loading">
-        <div class="ia-spinner"></div>
-        <div class="ia-loading-titulo">🦔 Tatu analisando...</div>
-        <div class="ia-loading-sub">Montando plano AGRESSIVO</div>
-        <div class="ia-loading-passo" id="ia-passo">Calculando...</div>
-      </div>`;
-    document.getElementById('footer-content').innerHTML = '';
-    setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Identificando nível...'; }, 1500);
-    setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Definindo meta CURTA...'; }, 3500);
-    setTimeout(() => { const el = document.getElementById('ia-passo'); if (el) el.textContent = 'Plano 3-6 meses...'; }, 5500);
-    
-    const dados = {
-      objetivo_principal: objetivoPrincipal,
-      contas: contasAdicionadas.map(c => ({ nome: c.nome, tipo: c.tipo, saldo: c.saldo_inicial })),
-      cartoes: cartoesAdicionados.map(c => ({ nome: c.nome, limite: c.limite })),
-      rendas: rendasAdicionadas.map(r => ({ nome: r.nome, categoria: r.categoria, valor: r.valor })),
-      despesas: despesasAdicionadas.map(d => ({ nome: d.nome, categoria: d.categoria, valor: d.valor })),
-      dividas: dividasAdicionadas.map(d => ({ credor: d.credor, tipo: d.tipo, valor: d.valor_atual }))
-    };
-    
-    try {
-      const r = await fetch(IA_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }, body: JSON.stringify({ tipo: 'analisar_situacao_financeira', dados_financeiros: dados, max_tokens: 2500 }) });
-      const d = await r.json();
-      if (d.resultado && !d.resultado.erro) { analiseIA = d.resultado; await salvarTudo(); renderResultado(); }
-      else { await salvarSemAnalise(); renderErro(); }
-    } catch (e) { console.error(e); await salvarSemAnalise(); renderErro(); }
-  }
-  
-  async function salvarTudo() {
-    await supabase.from('perfis').update({ setup_concluido: true, setup_concluido_em: new Date().toISOString(), analise_setup: analiseIA, nivel_jornada: analiseIA?.situacao?.nivel_recomendado || 1 }).eq('id', usuario.id);
-    await darXP(100, 'setup_concluido', 'Setup completo!');
-  }
-  
-  async function salvarSemAnalise() {
-    await supabase.from('perfis').update({ setup_concluido: true, setup_concluido_em: new Date().toISOString() }).eq('id', usuario.id);
-    await darXP(50, 'setup_concluido_parcial', 'Setup parcial');
-  }
-  
-  function renderResultado() {
-    const a = analiseIA;
-    const s = a.situacao;
-    const nivel = s.nivel_recomendado || 2;
-    const jornadaPontos = [{ num: 1, nome: 'Diag.' }, { num: 2, nome: 'Resgate' }, { num: 3, nome: 'Estab.' }, { num: 4, nome: 'Cresc.' }, { num: 5, nome: 'Liberd.' }];
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🎉</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Analisei TUDO! Olha seu plano:</div></div></div>
-      <div class="nivel-card"><div class="nivel-label">Seu nível</div><div class="nivel-numero">${nivel}</div><div class="nivel-nome">${s.nivel_nome}</div></div>
-      <div class="jornada-card"><div class="jornada-titulo">Sua jornada</div><div class="jornada-pontos">${jornadaPontos.map(p => `<div class="ponto ${p.num === nivel ? 'atual' : p.num < nivel ? 'passou' : ''}"><div class="ponto-circle">${p.num}</div><div class="ponto-label">${p.nome}</div></div>`).join('')}</div></div>
-      <div class="analise-card"><div class="analise-titulo">📊 Sua situação</div><div class="situacao-grid">
-        <div class="situacao-item"><div class="situacao-label">Renda</div><div class="situacao-valor" style="color:var(--brand);">R$ ${formatarMoeda(s.renda_mensal)}</div></div>
-        <div class="situacao-item"><div class="situacao-label">Despesa</div><div class="situacao-valor" style="color:var(--warning);">R$ ${formatarMoeda(s.despesa_fixa_mensal)}</div></div>
-        <div class="situacao-item"><div class="situacao-label">Patrimônio</div><div class="situacao-valor" style="color:${s.patrimonio_liquido >= 0 ? 'var(--brand)' : 'var(--danger)'};">R$ ${formatarMoeda(s.patrimonio_liquido)}</div></div>
-        <div class="situacao-item"><div class="situacao-label">Dívidas</div><div class="situacao-valor" style="color:${s.total_dividas > 0 ? 'var(--danger)' : 'var(--brand)'};">R$ ${formatarMoeda(s.total_dividas)}</div></div>
-      </div></div>
-      <div class="analise-card"><div class="analise-titulo">🦔 Diagnóstico</div><div class="diagnostico-texto">${a.diagnostico}</div></div>
-      ${a.alertas && a.alertas.length > 0 ? `<div class="analise-card"><div class="analise-titulo">⚠️ Atenção</div>${a.alertas.map(al => `<div class="alerta-item"><span>⚠️</span><span>${al}</span></div>`).join('')}</div>` : ''}
-      ${a.primeira_meta ? `<div class="meta-card"><div class="meta-titulo-card">🎯 Primeira meta</div><div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px;">${a.primeira_meta.titulo}</div><div class="meta-info-row"><span class="meta-pill">💰 R$ ${formatarMoeda(a.primeira_meta.valor_alvo)}</span><span class="meta-pill">📅 ${a.primeira_meta.prazo_meses} meses</span></div><div class="meta-explicacao">${a.primeira_meta.explicacao}</div></div>` : ''}
-      ${a.mensagem_motivacional ? `<div class="tatu-bubble"><div class="tatu-emoji">💚</div><div class="tatu-content"><div class="tatu-titulo">Mensagem</div><div class="tatu-texto">${a.mensagem_motivacional}</div></div></div>` : ''}`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="irHome()">🚀 Topo o desafio!</button>`;
-    toast('+100 XP 🎉');
-  }
-  
-  function renderErro() {
-    document.getElementById('container').innerHTML = `
-      <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Setup completo! Análise depois pelo chat.</div></div></div>
-      <div class="form-card" style="text-align:center;padding:30px 20px;">
-        <div style="font-size:48px;margin-bottom:12px;">✅</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px;">Tudo cadastrado!</div>
-        <div style="font-size:13px;color:var(--text-mute);">${contasAdicionadas.length} contas, ${cartoesAdicionados.length} cartões, ${rendasAdicionadas.length} rendas, ${despesasAdicionadas.length} despesas, ${dividasAdicionadas.length} dívidas</div>
-      </div>`;
-    document.getElementById('footer-content').innerHTML = `<button class="btn btn-primary" onclick="irHome()">🚀 Ir ao app</button>`;
-  }
-  
-  window.irHome = function() { window.location.href = 'home.html?v=' + Date.now(); };
-  
-  window.abrirFoto = function(modo, alvo) { modoFoto = modo; alvoFoto = alvo; document.getElementById('input-foto').click(); };
-  
-  window.processarFoto = async function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    e.target.value = '';
-    document.getElementById('container').innerHTML = `
-      <div class="ia-loading">
-        <div class="ia-spinner"></div>
-        <div class="ia-loading-titulo">📸 Preparando...</div>
-        <div class="ia-loading-sub">IA Claude lendo</div>
-        <div class="ia-loading-passo" id="p-foto">Comprimindo...</div>
-      </div>`;
-    let base64;
-    try { base64 = await comprimirImagem(file, 1600, 0.85); const el = document.getElementById('p-foto'); if (el) el.textContent = 'IA lendo...'; }
-    catch (err) { alert('⚠️ Erro'); voltarAposFoto(); return; }
-    let tipoFn;
-    if (modoFoto === 'conta') tipoFn = 'analisar_conta';
-    else if (modoFoto === 'fatura') tipoFn = 'analisar_fatura_cartao';
-    else if (modoFoto === 'boleto') tipoFn = 'analisar_boleto';
-    else if (modoFoto === 'contrato') tipoFn = 'analisar_contrato';
-    try {
-      const r = await fetch(IA_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }, body: JSON.stringify({ tipo: tipoFn, imagem_base64: base64, max_tokens: 1500 }) });
-      const d = await r.json();
-      if (d.resultado && !d.resultado.erro) {
-        if (modoFoto === 'conta') await checarDivergenciaConta(d.resultado);
-        else if (modoFoto === 'fatura') await checarDivergenciaCartao(d.resultado);
-        else if (modoFoto === 'boleto') {
-          // 🆕 v3.4.1: leva pra tela de revisão antes de salvar
-          renderP7_Form({ nome: d.resultado.nome_despesa || d.resultado.descricao || categoriaTemp.nome, valor: d.resultado.valor || 0, dia: d.resultado.dia_vencimento || null });
-        }
-        else if (modoFoto === 'contrato') {
-          // 🆕 v3.4.1: leva pra tela de revisão antes de salvar
-          renderP8_Form({ credor: d.resultado.credor || d.resultado.banco_detectado || categoriaTemp.nome, valor: d.resultado.valor_total || d.resultado.valor_atual || 0 });
-        }
-      } else { alert('⚠️ ' + (d.resultado?.erro || 'erro')); voltarAposFoto(); }
-    } catch (err) { alert('Erro: ' + err.message); voltarAposFoto(); }
-  };
-  
-  function voltarAposFoto() {
-    if (modoFoto === 'conta') renderP4();
-    else if (modoFoto === 'fatura') renderP5();
-    else if (modoFoto === 'boleto') renderP7_FotoOuManual();
-    else if (modoFoto === 'contrato') renderP8_FotoOuManual();
-  }
-  
-  async function comprimirImagem(file, maxW = 1600, q = 0.85) {
-    return new Promise((res, rej) => {
-      const r = new FileReader();
-      r.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          let w = img.width, h = img.height;
-          if (w > maxW) { h = Math.round((h * maxW) / w); w = maxW; }
-          const c = document.createElement('canvas');
-          c.width = w; c.height = h;
-          const ctx = c.getContext('2d');
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = 'high';
-          ctx.drawImage(img, 0, 0, w, h);
-          let b64 = c.toDataURL('image/jpeg', q);
-          const kb = Math.round((b64.length * 0.75) / 1024);
-          if (kb > 4000 && q > 0.5) b64 = c.toDataURL('image/jpeg', 0.7);
-          res(b64);
-        };
-        img.onerror = () => rej(new Error('Erro'));
-        img.src = e.target.result;
-      };
-      r.onerror = () => rej(new Error('Erro'));
-      r.readAsDataURL(file);
-    });
-  }
-  
-  async function checarDivergenciaConta(r) {
-    const bancoSelecionado = BANCOS.find(b => b.id === alvoFoto);
-    const bancoDetectado = (r.banco_detectado || '').toLowerCase();
-    const nomeSelecionado = bancoSelecionado.nome.toLowerCase();
-    const houveDivergencia = bancoDetectado && !bancoDetectado.includes(nomeSelecionado) && !nomeSelecionado.includes(bancoDetectado);
-    if (houveDivergencia) {
-      dadosIAPendentes = r;
-      document.getElementById('container').innerHTML = `
-        <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu detectou</div><div class="tatu-texto">Você escolheu <strong>${bancoSelecionado.nome}</strong>, foto parece <strong>${r.banco_detectado}</strong>.</div></div></div>
-        <div class="aviso-divergencia"><div class="aviso-titulo">⚠️ Banco diferente</div><div class="aviso-texto">IA leu <strong>${r.banco_detectado}</strong>, você selecionou <strong>${bancoSelecionado.nome}</strong>.</div></div>
-        <div class="form-card"><div style="display:flex;flex-direction:column;gap:10px;">
-          <button class="btn-form" onclick="usarBancoSelecionado()">✅ Usar ${bancoSelecionado.nome}</button>
-          <button class="btn-form" style="background:var(--warning-soft);color:var(--warning);border:1px solid var(--warning);" onclick="cancelarFoto()">🔄 Cancelar</button>
-        </div></div>`;
-      document.getElementById('footer-content').innerHTML = '';
-      return;
-    }
-    await processarContaFinal(r, bancoSelecionado);
-  }
-  
-  window.usarBancoSelecionado = async function() {
-    const bancoSelecionado = BANCOS.find(b => b.id === alvoFoto);
-    await processarContaFinal(dadosIAPendentes, bancoSelecionado);
-    dadosIAPendentes = null;
-  };
-  
-  window.cancelarFoto = function() { dadosIAPendentes = null; voltarAposFoto(); };
-  
-  async function processarContaFinal(r, banco) {
-    const dados = { user_id: usuario.id, nome: banco.nome, tipo: r.tipo_conta || 'conta_corrente', banco: banco.nome, cor: banco.cor, icone: r.tipo_conta === 'poupanca' ? '🐷' : r.tipo_conta === 'investimento' ? '📈' : '🏦', saldo_inicial: r.saldo_atual || 0, padrao: contasAdicionadas.length === 0 };
-    try {
-      const { data, error } = await supabase.from('contas').insert(dados).select().single();
-      if (error) throw error;
-      contasAdicionadas.push(data);
-      await darXP(25, 'conta_ia', 'IA: ' + banco.nome);
-      toast(`+25 XP ✨ ${banco.nome}`);
-      setTimeout(() => renderP4(), 1000);
-    } catch (e) { alert('Erro: ' + e.message); renderP4(); }
-  }
-  
-  async function checarDivergenciaCartao(r) {
-    const bId = alvoFoto;
-    const bancoSelecionado = BANCOS.find(b => b.id === bId);
-    const bancoDetectado = (r.banco_detectado || '').toLowerCase();
-    const nomeSelecionado = bancoSelecionado.nome.toLowerCase();
-    const houveDivergencia = bancoDetectado && !bancoDetectado.includes(nomeSelecionado) && !nomeSelecionado.includes(bancoDetectado);
-    if (houveDivergencia) {
-      dadosIAPendentes = r;
-      document.getElementById('container').innerHTML = `
-        <div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu detectou</div><div class="tatu-texto">Cadastrando <strong>${bancoSelecionado.nome}</strong>, foto parece <strong>${r.banco_detectado}</strong>.</div></div></div>
-        <div class="aviso-divergencia"><div class="aviso-titulo">⚠️ Banco diferente</div><div class="aviso-texto">IA leu <strong>${r.banco_detectado}</strong>, você selecionou <strong>${bancoSelecionado.nome}</strong>.</div></div>
-        <div class="form-card"><div style="display:flex;flex-direction:column;gap:10px;">
-          <button class="btn-form" onclick="usarBancoCartaoSelecionado()">✅ Usar ${bancoSelecionado.nome}</button>
-          <button class="btn-form" style="background:var(--warning-soft);color:var(--warning);border:1px solid var(--warning);" onclick="cancelarFoto()">🔄 Cancelar</button>
-        </div></div>`;
-      document.getElementById('footer-content').innerHTML = '';
-      return;
-    }
-    await processarFaturaFinal(r, bancoSelecionado);
-  }
-  
-  window.usarBancoCartaoSelecionado = async function() {
-    const bId = alvoFoto;
-    const bancoSelecionado = BANCOS.find(b => b.id === bId);
-    await processarFaturaFinal(dadosIAPendentes, bancoSelecionado);
-    dadosIAPendentes = null;
-  };
-  
-  async function processarFaturaFinal(r, banco) {
-    const qtd = qtdPorBanco[banco.id];
-    const nomeBase = qtd === 1 ? banco.nome : `${banco.nome} ${cartaoIdx + 1}`;
-    const nome = r.nome_sugerido ? `${banco.nome} (${r.nome_sugerido})` : nomeBase;
-    const limite = r.limite_total || 0;
-    const fec = r.dia_fechamento || null;
-    const ven = r.dia_vencimento || null;
-    const valor = r.valor_fatura || 0;
-    const atrasada = r.esta_atrasada || false;
-    cartaoTemp = { bancoId: banco.id, nome, limite, fechamento: fec, vencimento: ven };
-    if (valor > 0) await salvarCartaoFinal({ valor, paga: false, atrasada });
-    else await salvarCartaoFinal({ valor: 0, paga: true, atrasada: false });
-  }
-  
-  window.formatarValor = function(input) {
-    let v = input.value.replace(/\D/g, '');
-    if (!v) { input.value = ''; return; }
-    v = (parseInt(v) / 100).toFixed(2);
-    input.value = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-  };
-  
-  window.formatarValorComSinal = function(input) {
-    const ehNeg = input.value.trim().startsWith('-');
-    let v = input.value.replace(/[^0-9]/g, '');
-    if (!v) { input.value = ''; return; }
-    v = (parseInt(v) / 100).toFixed(2);
-    const formatado = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-    input.value = (ehNeg ? '-' : '') + formatado;
-  };
-  
-  function valorParaNumero(str) {
-    if (!str) return 0;
-    const ehNeg = str.trim().startsWith('-');
-    const limpo = str.replace(/[^0-9,\.]/g, '').replace(/\./g, '').replace(',', '.');
-    const num = Number(limpo) || 0;
-    return ehNeg ? -num : num;
-  }
-  
-  function formatarMoeda(v) {
-    return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-  
-  async function darXP(xp, acao, descricao) {
-    try {
-      await supabase.from('historico_xp').insert({ user_id: usuario.id, acao, xp_ganho: xp, descricao });
-      const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).maybeSingle();
-      await supabase.from('gamificacao').update({ xp_total: (g?.xp_total || 0) + xp, ultima_atividade: new Date().toISOString().split('T')[0] }).eq('user_id', usuario.id);
-    } catch (e) { console.error('XP:', e); }
-  }
-  
-  function toast(texto) {
-    const t = document.getElementById('xp-toast');
-    t.textContent = texto;
-    t.style.display = 'block';
-    setTimeout(() => { t.style.display = 'none'; }, 2500);
-  }
-</script>
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const SUPABASE_URL='https://gmbsxrxqrxpbgyyvifcd.supabase.co';
+const SUPABASE_KEY='sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+const IA_URL='https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
+const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
+const TOTAL_PASSOS=9;
+const BANCOS_BR=[{id:'nubank',nome:'Nubank',cor:'#820AD1',sigla:'NU'},{id:'itau',nome:'Itaú',cor:'#EC7000',sigla:'IT'},{id:'bradesco',nome:'Bradesco',cor:'#CC092F',sigla:'BR'},{id:'santander',nome:'Santander',cor:'#EC0000',sigla:'SA'},{id:'bb',nome:'BB',cor:'#FFEF38',sigla:'BB'},{id:'caixa',nome:'Caixa',cor:'#005CA9',sigla:'CX'},{id:'inter',nome:'Inter',cor:'#FF7A00',sigla:'IN'},{id:'c6',nome:'C6 Bank',cor:'#1F1F1F',sigla:'C6'},{id:'picpay',nome:'PicPay',cor:'#21C25E',sigla:'PP'},{id:'mercadopago',nome:'M. Pago',cor:'#00B1EA',sigla:'MP'},{id:'pagbank',nome:'PagBank',cor:'#FCB814',sigla:'PB'},{id:'neon',nome:'Neon',cor:'#00FFB8',sigla:'NE'},{id:'porto',nome:'Porto',cor:'#00A1DE',sigla:'PO'},{id:'digio',nome:'Digio',cor:'#1E2A45',sigla:'DG'},{id:'xp',nome:'XP',cor:'#000',sigla:'XP'},{id:'btg',nome:'BTG',cor:'#001E50',sigla:'BT'},{id:'original',nome:'Original',cor:'#6BBB16',sigla:'OR'},{id:'pan',nome:'Pan',cor:'#0F4C81',sigla:'PN'},{id:'will',nome:'Will',cor:'#7B2FF6',sigla:'WL'},{id:'next',nome:'Next',cor:'#00FF5F',sigla:'NX'},{id:'bmg',nome:'BMG',cor:'#FF6900',sigla:'BM'}];
+const BANCOS_INTL=[{id:'wise',nome:'Wise',cor:'#9FE870',sigla:'WS'},{id:'nomad',nome:'Nomad',cor:'#0066FF',sigla:'NM'},{id:'revolut',nome:'Revolut',cor:'#191C1F',sigla:'RV'},{id:'avenue',nome:'Avenue',cor:'#000',sigla:'AV'}];
+const OUTROS=[{id:'carteira',nome:'Dinheiro',cor:'#84cc16',sigla:'💵'},{id:'outro',nome:'Outro',cor:'#555',sigla:'?'}];
+const BANCOS=[...BANCOS_BR,...BANCOS_INTL,...OUTROS];
+const CATEGORIAS_RENDA=[{id:'salario_clt',nome:'Salário CLT',emoji:'💼',cor:'#00d97e'},{id:'salario_pj',nome:'Salário PJ',emoji:'💼',cor:'#00d97e'},{id:'autonomo',nome:'Autônomo',emoji:'🛠️',cor:'#00d97e'},{id:'comissao',nome:'Comissão',emoji:'🎯',cor:'#00d97e'},{id:'freelance',nome:'Freelance',emoji:'💻',cor:'#00d97e'},{id:'aluguel_recebido',nome:'Aluguel rec.',emoji:'🏠',cor:'#00d97e'},{id:'dividendos',nome:'Dividendos',emoji:'📈',cor:'#00d97e'},{id:'bonus',nome:'Bônus',emoji:'🎁',cor:'#00d97e'},{id:'pensao',nome:'Pensão',emoji:'👨‍👩‍👧',cor:'#00d97e'},{id:'aposentadoria',nome:'Aposent.',emoji:'🏖️',cor:'#00d97e'},{id:'venda',nome:'Venda extra',emoji:'🛍️',cor:'#00d97e'},{id:'outro',nome:'+ Outra',emoji:'➕',cor:'#a3a3a3'}];
+const CATEGORIAS_DESPESA=[{id:'aluguel',nome:'Aluguel',emoji:'🏠',cor:'#00d97e'},{id:'condominio',nome:'Condomínio',emoji:'🏢',cor:'#14b8a6'},{id:'luz',nome:'Luz',emoji:'💡',cor:'#ffb800'},{id:'agua',nome:'Água',emoji:'💧',cor:'#38bdf8'},{id:'gas',nome:'Gás',emoji:'🔥',cor:'#ff6b35'},{id:'internet',nome:'Internet',emoji:'🌐',cor:'#a855f7'},{id:'telefone',nome:'Telefone',emoji:'📱',cor:'#a855f7'},{id:'streaming',nome:'Streaming',emoji:'🎬',cor:'#8b5cf6'},{id:'academia',nome:'Academia',emoji:'💪',cor:'#f59e0b'},{id:'plano_saude',nome:'Plano saúde',emoji:'🏥',cor:'#ef4444'},{id:'escola',nome:'Escola',emoji:'🎓',cor:'#3b82f6'},{id:'seguro',nome:'Seguro',emoji:'🛡️',cor:'#6366f1'},{id:'iptu',nome:'IPTU',emoji:'🏛️',cor:'#f59e0b'},{id:'ipva',nome:'IPVA',emoji:'🚗',cor:'#f59e0b'},{id:'combustivel',nome:'Combustível',emoji:'⛽',cor:'#ff6b35'},{id:'assinatura',nome:'Assinatura',emoji:'📺',cor:'#8b5cf6'},{id:'outro',nome:'+ Outra',emoji:'➕',cor:'#a3a3a3'}];
+const CATEGORIAS_DIVIDA=[{id:'emprestimo',nome:'Empréstimo',emoji:'💸',cor:'#ef4444'},{id:'financ_imovel',nome:'Financ. imóvel',emoji:'🏦',cor:'#ef4444'},{id:'financ_veiculo',nome:'Financ. veículo',emoji:'🚗',cor:'#ef4444'},{id:'cheque_especial',nome:'Cheque esp.',emoji:'🆘',cor:'#ef4444'},{id:'loja',nome:'Loja física',emoji:'🛍️',cor:'#ef4444'},{id:'carne',nome:'Carnê',emoji:'📋',cor:'#ef4444'},{id:'medica',nome:'Médica',emoji:'🏥',cor:'#ef4444'},{id:'estudantil',nome:'Estudantil',emoji:'🎓',cor:'#ef4444'},{id:'consignado',nome:'Consignado',emoji:'💼',cor:'#ef4444'},{id:'pessoal',nome:'Pessoal',emoji:'👨‍👩‍👧',cor:'#ef4444'},{id:'mercado',nome:'Mercado',emoji:'🛒',cor:'#ef4444'},{id:'outro',nome:'+ Outra',emoji:'➕',cor:'#a3a3a3'}];
+const TIPOS_RECORRENCIA=[{id:'mensal',nome:'Mensal',emoji:'🔄',desc:'Todo mês'},{id:'pontual',nome:'Pontual',emoji:'📌',desc:'Só essa vez'},{id:'parcelada',nome:'Parcelada',emoji:'📅',desc:'Em X vezes'},{id:'anual',nome:'Anual',emoji:'🎯',desc:'Tipo IPTU'}];
+const INSTRUCOES_CONTA={nubank:['Abre o app Nubank','Saldo no topo','Print'],itau:['Abre Itaú','"Saldo em conta"','Print'],bradesco:['Bradesco','"Saldo e Extrato"','Print'],santander:['Santander','Saldo na home','Print'],bb:['BB','"Saldo"','Print'],caixa:['Caixa','Saldo na home','Print'],inter:['Inter','Saldo principal','Print'],c6:['C6 Bank','Saldo na home','Print'],picpay:['PicPay','Saldo da carteira','Print'],pan:['App Pan','Saldo na home','Print'],will:['Will Bank','Saldo no topo','Print'],next:['Next','Saldo na home','Print'],bmg:['App BMG','Saldo','Print'],wise:['Wise','Saldo multimoeda','Print'],nomad:['Nomad','Saldo em dólar','Print'],revolut:['Revolut','Saldo home','Print'],avenue:['Avenue','Saldo USD','Print'],default:['Abre o app do banco','Acha o saldo','Print']};
+const INSTRUCOES_CARTAO={nubank:['Nubank → Cartão de crédito','Limite + fatura','Print'],itau:['Itaú → Menu → Cartões','Detalhes fatura','Print'],bradesco:['Bradesco → Cartões → Faturas','Print'],santander:['Santander → Cartões → Fatura','Print'],bb:['BB → Cartões → Fatura','Print'],inter:['Inter → Cartão → Fatura','Print'],c6:['C6 → Cartões → Fatura','Print'],pan:['Pan → Cartão de crédito','Fatura','Print'],will:['Will → Cartão → Fatura','Print'],next:['Next → Cartões → Fatura','Print'],bmg:['BMG → Cartão → Fatura','Print'],wise:['Wise → Card','Limite + fatura','Print'],nomad:['Nomad → Cartão','Limite + fatura','Print'],revolut:['Revolut → Card','Fatura mensal','Print'],avenue:['Avenue → Cartão','Fatura','Print'],default:['App → Cartões → Fatura','Print']};
 
+let usuario,perfil;
+let passoAtual=0,objetivoPrincipal=null;
+let bancosSelecionados=[],bancoIndexAtual=0;
+let contasAdicionadas=[],cartoesAdicionados=[],rendasAdicionadas=[],despesasAdicionadas=[],dividasAdicionadas=[];
+let analiseIA=null,temCartoes=null,bancosCartoes=[],bancoCartaoIdx=0,qtdPorBanco={},cartaoIdx=0;
+let cartaoTemp=null,statusFaturaTemp=null,modoFoto=null,alvoFoto=null,dadosIAPendentes=null;
+let restaurouEstado=false,categoriaTemp=null,tipoRecorrenciaTemp=null,atrasoTemp=null;
+let ultimoItemNovoId=null; // 🆕 v3.5: id do último item cadastrado pra piscar
+
+(async()=>{
+  const{data:{session}}=await supabase.auth.getSession();
+  if(!session){window.location.href='index.html?v='+Date.now();return}
+  usuario=session.user;
+  const{data:p}=await supabase.from('perfis').select('*').eq('id',usuario.id).maybeSingle();
+  perfil=p||{};
+  if(perfil.setup_concluido){window.location.href='home.html?v='+Date.now();return}
+  await reconstruirEstadoCompleto();
+  renderPasso();
+})();
+
+async function reconstruirEstadoCompleto(){
+  try{
+    objetivoPrincipal=perfil.objetivo_principal||null;
+    const[c,ca,r,d,di]=await Promise.all([
+      supabase.from('contas').select('*').eq('user_id',usuario.id).neq('tipo','cartao_credito').eq('ativa',true),
+      supabase.from('contas').select('*').eq('user_id',usuario.id).eq('tipo','cartao_credito').eq('ativa',true),
+      supabase.from('rendas').select('*').eq('user_id',usuario.id),
+      supabase.from('compromissos').select('*').eq('user_id',usuario.id),
+      supabase.from('dividas').select('*').eq('user_id',usuario.id).eq('status','ativa')
+    ]);
+    contasAdicionadas=c.data||[];cartoesAdicionados=ca.data||[];rendasAdicionadas=r.data||[];despesasAdicionadas=d.data||[];dividasAdicionadas=di.data||[];
+    const bu=new Set();
+    contasAdicionadas.forEach(c=>{const b=BANCOS.find(b=>b.nome===c.banco||(c.tipo==='carteira'&&b.id==='carteira'));if(b)bu.add(b.id)});
+    const bc=new Set(),qc={};
+    cartoesAdicionados.forEach(c=>{const b=BANCOS.find(b=>b.nome===c.banco);if(b){bc.add(b.id);qc[b.id]=(qc[b.id]||0)+1}});
+    bancosCartoes=Array.from(bc);qtdPorBanco=qc;
+    if(cartoesAdicionados.length>0)temCartoes=true;
+    passoAtual=perfil.setup_passo_atual||0;
+    if(bu.size>0)bancosSelecionados=Array.from(bu);
+    bancoIndexAtual=0;
+    if(contasAdicionadas.length>0||cartoesAdicionados.length>0||rendasAdicionadas.length>0||despesasAdicionadas.length>0||dividasAdicionadas.length>0||objetivoPrincipal)restaurouEstado=true;
+  }catch(e){console.error(e)}
+}
+
+function renderPasso(){
+  const pct=((passoAtual+1)/TOTAL_PASSOS)*100;
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('progress-num').textContent=`${passoAtual+1}/${TOTAL_PASSOS}`;
+  salvarProgresso();
+  [renderP1,renderP2,renderP3,renderP4,renderP5,renderP6,renderP7,renderP8,renderP9][passoAtual]();
+  // 🆕 v3.5: aplica pisca no último item cadastrado
+  if(ultimoItemNovoId){
+    setTimeout(()=>{
+      const el=document.querySelector(`[data-item-id="${ultimoItemNovoId}"]`);
+      if(el){
+        el.classList.add('novo');
+        el.scrollIntoView({behavior:'smooth',block:'center'});
+      }
+      setTimeout(()=>{ultimoItemNovoId=null},3500);
+    },100);
+  }
+}
+
+async function salvarProgresso(){try{await supabase.from('perfis').update({setup_passo_atual:passoAtual}).eq('id',usuario.id)}catch(e){}}
+
+function bannerRestauracao(){
+  if(!restaurouEstado)return'';
+  const i=[];
+  if(contasAdicionadas.length>0)i.push(`${contasAdicionadas.length} conta${contasAdicionadas.length===1?'':'s'}`);
+  if(cartoesAdicionados.length>0)i.push(`${cartoesAdicionados.length} cartão${cartoesAdicionados.length===1?'':'es'}`);
+  if(rendasAdicionadas.length>0)i.push(`${rendasAdicionadas.length} renda${rendasAdicionadas.length===1?'':'s'}`);
+  if(despesasAdicionadas.length>0)i.push(`${despesasAdicionadas.length} despesa${despesasAdicionadas.length===1?'':'s'}`);
+  if(dividasAdicionadas.length>0)i.push(`${dividasAdicionadas.length} dívida${dividasAdicionadas.length===1?'':'s'}`);
+  if(i.length===0)return'';
+  return`<div class="restaurando-banner"><div class="restaurando-emoji">🦔</div><div class="restaurando-texto">Continuando: <strong>${i.join(', ')}</strong>.</div></div>`;
+}
+
+window.proximoPasso=function(){if(passoAtual<TOTAL_PASSOS-1){passoAtual++;renderPasso();window.scrollTo({top:0,behavior:'smooth'})}};
+window.voltarPasso=function(){if(passoAtual>0){passoAtual--;bancoIndexAtual=0;bancoCartaoIdx=0;cartaoIdx=0;categoriaTemp=null;tipoRecorrenciaTemp=null;atrasoTemp=null;renderPasso();window.scrollTo({top:0,behavior:'smooth'})}};
+window.pularSetup=async function(){if(!confirm('Tem certeza? 🦔'))return;await supabase.from('perfis').update({setup_concluido:true,setup_concluido_em:new Date().toISOString()}).eq('id',usuario.id);window.location.href='home.html?v='+Date.now()};
+
+function renderP1(){
+  const n=perfil.nome||usuario.email?.split('@')[0]||'amigo';
+  const pn=n.split(' ')[0];
+  document.getElementById('container').innerHTML=`${bannerRestauracao()}<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu, seu gestor 24h</div><div class="tatu-texto">Oi <strong>${pn}</strong>! Sou o Tatu, seu gestor financeiro pessoal.<br><br>Vou passar uns <strong>30-60 minutos</strong> com você agora. <strong>Quanto mais info você me der aqui, mais eu te ajudo</strong>.<br><br>Bora?</div></div></div><div class="form-card" style="background:linear-gradient(135deg,var(--brand-soft) 0%,var(--bg-card) 100%);border-color:var(--brand)"><div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;margin-bottom:10px">📋 O que vamos cadastrar</div><div style="display:grid;gap:8px"><div style="display:flex;align-items:center;gap:10px;font-size:13px"><span>🎯</span> Seu objetivo</div><div style="display:flex;align-items:center;gap:10px;font-size:13px"><span>🏦</span> Contas</div><div style="display:flex;align-items:center;gap:10px;font-size:13px"><span>💳</span> Cartões + faturas</div><div style="display:flex;align-items:center;gap:10px;font-size:13px"><span>💰</span> Rendas</div><div style="display:flex;align-items:center;gap:10px;font-size:13px"><span>📋</span> Despesas fixas</div><div style="display:flex;align-items:center;gap:10px;font-size:13px"><span>💸</span> Dívidas</div><div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--brand);font-weight:700"><span>🎯</span> Análise IA + plano!</div></div></div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-primary" onclick="proximoPasso()">🚀 Bora!</button>`;
+}
+
+function renderP2(){
+  document.getElementById('container').innerHTML=`${bannerRestauracao()}<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Qual seu <strong>foco</strong> agora? Vou montar plano AGRESSIVO pra acelerar.</div></div></div><div class="step-titulo">Qual seu foco agora?</div><div class="step-subtitulo">Vou ajudar a resolver rápido.</div><div class="objetivo-list"><div class="objetivo-card ${objetivoPrincipal==='sair_dividas'?'selected':''}" data-val="sair_dividas" onclick="selObj('sair_dividas')"><div class="objetivo-emoji">🚨</div><div class="objetivo-info"><div class="objetivo-titulo">Sair das dívidas</div><div class="objetivo-desc">Quitar e limpar o nome</div></div></div><div class="objetivo-card ${objetivoPrincipal==='criar_reserva'?'selected':''}" data-val="criar_reserva" onclick="selObj('criar_reserva')"><div class="objetivo-emoji">🛡️</div><div class="objetivo-info"><div class="objetivo-titulo">Criar reserva</div><div class="objetivo-desc">Parar de viver no aperto</div></div></div><div class="objetivo-card ${objetivoPrincipal==='investir'?'selected':''}" data-val="investir" onclick="selObj('investir')"><div class="objetivo-emoji">📈</div><div class="objetivo-info"><div class="objetivo-titulo">Investir</div><div class="objetivo-desc">Fazer dinheiro trabalhar</div></div></div><div class="objetivo-card ${objetivoPrincipal==='liberdade'?'selected':''}" data-val="liberdade" onclick="selObj('liberdade')"><div class="objetivo-emoji">🚀</div><div class="objetivo-info"><div class="objetivo-titulo">Liberdade financeira</div><div class="objetivo-desc">Crescer patrimônio</div></div></div></div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" id="btn-obj" onclick="confirmarObjetivo()" ${!objetivoPrincipal?'disabled':''}>Continuar →</button>`;
+}
+
+window.selObj=function(v){objetivoPrincipal=v;document.querySelectorAll('.objetivo-card').forEach(c=>c.classList.remove('selected'));document.querySelector(`[data-val="${v}"]`).classList.add('selected');document.getElementById('btn-obj').disabled=false};
+window.confirmarObjetivo=async function(){if(!objetivoPrincipal)return;try{await supabase.from('perfis').update({objetivo_principal:objetivoPrincipal}).eq('id',usuario.id)}catch(e){}proximoPasso()};
+
+function renderP3(){
+  if(bancosSelecionados.length===0&&contasAdicionadas.length>0){contasAdicionadas.forEach(c=>{const b=BANCOS.find(b=>b.nome===c.banco||(c.tipo==='carteira'&&b.id==='carteira'));if(b&&!bancosSelecionados.includes(b.id))bancosSelecionados.push(b.id)})}
+  document.getElementById('container').innerHTML=`${bannerRestauracao()}<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Marca TODOS os bancos que usa. Inclui digitais, internacionais, carteira.</div></div></div><div class="step-titulo">Quais bancos você usa?</div><div class="step-subtitulo">Marca tudo - pode ser vários.</div><div class="secao-bancos-titulo">🇧🇷 Bancos brasileiros</div><div class="bancos-grid">${BANCOS_BR.map(b=>`<div class="banco-card ${bancosSelecionados.includes(b.id)?'active':''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')"><div class="banco-logo" style="background:${b.cor};${b.cor==='#FFEF38'?'color:#000;':''}">${b.sigla}</div><div class="banco-nome">${b.nome}</div></div>`).join('')}</div><div class="secao-bancos-titulo">🌎 Contas internacionais</div><div class="bancos-grid">${BANCOS_INTL.map(b=>`<div class="banco-card ${bancosSelecionados.includes(b.id)?'active':''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')"><div class="banco-logo" style="background:${b.cor}">${b.sigla}</div><div class="banco-nome">${b.nome}</div></div>`).join('')}</div><div class="secao-bancos-titulo">💵 Outros</div><div class="bancos-grid">${OUTROS.map(b=>`<div class="banco-card ${bancosSelecionados.includes(b.id)?'active':''}" data-banco="${b.id}" onclick="toggleBanco('${b.id}')"><div class="banco-logo" style="background:${b.cor}">${b.sigla}</div><div class="banco-nome">${b.nome}</div></div>`).join('')}</div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" id="btn-bancos" onclick="proximoPasso()" ${bancosSelecionados.length===0?'disabled':''}>Continuar →</button>`;
+}
+
+window.toggleBanco=function(id){const i=bancosSelecionados.indexOf(id);if(i>=0)bancosSelecionados.splice(i,1);else bancosSelecionados.push(id);document.querySelector(`[data-banco="${id}"]`).classList.toggle('active');const b=document.getElementById('btn-bancos');if(b)b.disabled=bancosSelecionados.length===0};
+
+function renderP4(){
+  if(bancosSelecionados.length===0){proximoPasso();return}
+  if(bancoIndexAtual>=bancosSelecionados.length){bancoIndexAtual=0;proximoPasso();return}
+  const bId=bancosSelecionados[bancoIndexAtual];
+  const banco=BANCOS.find(b=>b.id===bId);
+  if(!banco){bancoIndexAtual++;renderP4();return}
+  const passos=INSTRUCOES_CONTA[bId]||INSTRUCOES_CONTA.default;
+  const ehCart=bId==='carteira';
+  const jaTem=contasAdicionadas.some(c=>c.banco===banco.nome||(banco.id==='carteira'&&c.tipo==='carteira'));
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu te ensina</div><div class="tatu-texto">${jaTem?`Já tem ${banco.nome}. Outra conta ou próximo?`:`Conta do ${banco.nome}. ${ehCart?'Quanto tem em dinheiro?':'Segue os passos.'}`}</div></div></div><div class="step-titulo" style="display:flex;align-items:center;gap:10px"><div class="banco-logo" style="background:${banco.cor};width:36px;height:36px;font-size:12px;${banco.cor==='#FFEF38'?'color:#000;':''}">${banco.sigla}</div>${banco.nome}</div><div class="step-subtitulo">Banco ${bancoIndexAtual+1} de ${bancosSelecionados.length}${jaTem?' • cadastrado':''}</div>${!ehCart?`<div class="instrucao-card"><div class="instrucao-titulo">📱 Passo a passo</div><ol class="passo-lista">${passos.map((p,i)=>`<li class="passo-item"><div class="passo-num">${i+1}</div><div>${p}</div></li>`).join('')}</ol></div><div class="opcoes-acao"><div class="opcao-btn ia" onclick="abrirFoto('conta','${bId}')"><div class="opcao-btn-icon">📸</div><div class="opcao-btn-titulo">${jaTem?'Mais uma':'Foto'}</div><div class="opcao-btn-sub">IA lê o saldo</div></div><div class="opcao-btn" onclick="manualConta('${bId}')"><div class="opcao-btn-icon">✍️</div><div class="opcao-btn-titulo">${jaTem?'Outra manual':'Manual'}</div><div class="opcao-btn-sub">Você preenche</div></div></div>`:`<div class="form-card"><div class="field"><label>Quanto tem em dinheiro?</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="cart-val" placeholder="0,00" oninput="formatarValor(this)"></div></div><button class="btn-form" onclick="salvarCart()">Salvar carteira</button></div>`}${contasAdicionadas.length>0?`<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastradas (${contasAdicionadas.length})</div>${contasAdicionadas.map(c=>`<div class="item-cadastrado" data-item-id="${c.id}"><div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor}">${c.icone}</div><div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini ${Number(c.saldo_inicial)>=0?'positivo':'danger'}">R$ ${formatarMoeda(c.saldo_inicial||0)}</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirConta('${c.id}')">✕</div></div></div>`).join('')}</div>`:''}`;
+  const ult=bancoIndexAtual+1===bancosSelecionados.length;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="voltarBancoOuPasso()">‹</button><button class="btn btn-primary" onclick="proximoBancoOuPasso()">${ult?'Próximo passo →':(jaTem?'Próximo banco →':'Pular esse →')}</button>`;
+}
+
+window.voltarBancoOuPasso=function(){if(bancoIndexAtual>0){bancoIndexAtual--;renderP4();window.scrollTo({top:0,behavior:'smooth'})}else voltarPasso()};
+window.proximoBancoOuPasso=function(){bancoIndexAtual++;if(bancoIndexAtual>=bancosSelecionados.length){bancoIndexAtual=0;proximoPasso()}else{renderP4();window.scrollTo({top:0,behavior:'smooth'})}};
+window.excluirConta=async function(id){if(!confirm('Excluir?'))return;try{await supabase.from('contas').delete().eq('id',id);contasAdicionadas=contasAdicionadas.filter(c=>c.id!==id);renderP4()}catch(e){alert('Erro: '+e.message)}};
+
+window.manualConta=function(bId){
+  const b=BANCOS.find(b=>b.id===bId);
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Dados da conta ${b.nome}.</div></div></div><div class="step-titulo">${b.nome}</div><div class="form-card"><div class="field"><label>Tipo</label><select id="mc-tipo"><option value="conta_corrente">🏦 Conta Corrente</option><option value="poupanca">🐷 Poupança</option><option value="investimento">📈 Investimento</option></select></div><div class="field"><label>Saldo atual</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mc-saldo" placeholder="0,00" oninput="formatarValorComSinal(this)"></div><div style="font-size:11px;color:var(--text-mute);margin-top:4px">💡 Cheque especial? -500,00</div></div><button class="btn-form" onclick="salvarContaManual('${bId}')">Salvar conta</button></div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="renderP4()">‹</button><button class="btn btn-primary" disabled>Cadastre</button>`;
+};
+
+window.salvarContaManual=async function(bId){
+  const t=document.getElementById('mc-tipo').value;
+  const s=valorParaNumero(document.getElementById('mc-saldo').value);
+  const b=BANCOS.find(b=>b.id===bId);
+  if(s===null||isNaN(s)){alert('Informe o saldo');return}
+  const emojis={conta_corrente:'🏦',poupanca:'🐷',investimento:'📈'};
+  try{
+    const{data,error}=await supabase.from('contas').insert({user_id:usuario.id,nome:b.nome,tipo:t,banco:b.nome,cor:b.cor,icone:emojis[t]||'🏦',saldo_inicial:s,padrao:contasAdicionadas.length===0}).select().single();
+    if(error)throw error;
+    contasAdicionadas.push(data);
+    ultimoItemNovoId=data.id; // 🆕 marca pra piscar
+    await darXP(15,'conta_setup','Setup: '+b.nome);
+    toast(`✅ ${b.nome} • R$ ${formatarMoeda(s)}`);
+    setTimeout(()=>renderP4(),600);
+  }catch(e){alert('Erro: '+e.message)}
+};
+
+window.salvarCart=async function(){
+  const v=valorParaNumero(document.getElementById('cart-val').value);
+  if(v===null||isNaN(v)){alert('Informe o valor');return}
+  try{
+    const{data,error}=await supabase.from('contas').insert({user_id:usuario.id,nome:'Carteira',tipo:'carteira',cor:'#84cc16',icone:'💵',saldo_inicial:v,padrao:contasAdicionadas.length===0}).select().single();
+    if(error)throw error;
+    contasAdicionadas.push(data);
+    ultimoItemNovoId=data.id;
+    await darXP(15,'carteira_setup','Setup: Carteira');
+    toast(`✅ Carteira • R$ ${formatarMoeda(v)}`);
+    setTimeout(()=>renderP4(),600);
+  }catch(e){alert('Erro: '+e.message)}
+};
+
+function renderP5(){
+  if(temCartoes===null){renderP5_Pergunta();return}
+  if(temCartoes===false){proximoPasso();return}
+  if(bancosCartoes.length===0){renderP5_SelBancos();return}
+  if(bancoCartaoIdx>=bancosCartoes.length){bancoCartaoIdx=0;cartaoIdx=0;renderP5_Resumo();return}
+  const bId=bancosCartoes[bancoCartaoIdx];
+  const q=qtdPorBanco[bId];
+  if(!q){renderP5_Qtd(bId);return}
+  if(cartaoIdx>=q){cartaoIdx=0;bancoCartaoIdx++;renderP5();return}
+  renderP5_CadCartao(bId);
+}
+
+function renderP5_Pergunta(){
+  document.getElementById('container').innerHTML=`${bannerRestauracao()}<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Tem <strong>cartão de crédito</strong>?</div></div></div><div class="step-titulo">Tem cartão de crédito?</div><div class="sim-nao-grid"><div class="sim-nao-btn sim" onclick="respCartoes(true)"><div class="sim-nao-btn-emoji">💳</div>Sim</div><div class="sim-nao-btn nao" onclick="respCartoes(false)"><div class="sim-nao-btn-emoji">🚫</div>Não</div></div>${cartoesAdicionados.length>0?`<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastrados (${cartoesAdicionados.length})</div>${cartoesAdicionados.map(c=>`<div class="item-cadastrado" data-item-id="${c.id}"><div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor}">💳</div><div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite||0)}</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div></div>`).join('')}</div>`:''}`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()" ${cartoesAdicionados.length===0?'disabled':''}>Continuar →</button>`;
+}
+
+window.respCartoes=function(r){temCartoes=r;if(r)renderP5_SelBancos();else proximoPasso()};
+window.excluirCartao=async function(id){if(!confirm('Excluir?'))return;try{await supabase.from('transacoes').delete().eq('conta_id',id);await supabase.from('dividas').delete().eq('conta_id',id);await supabase.from('contas').delete().eq('id',id);cartoesAdicionados=cartoesAdicionados.filter(c=>c.id!==id);dividasAdicionadas=dividasAdicionadas.filter(d=>d.conta_id!==id);renderP5()}catch(e){alert('Erro: '+e.message)}};
+
+function renderP5_SelBancos(){
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">De quais bancos são os cartões?</div></div></div><div class="step-titulo">Bancos dos cartões</div><div class="secao-bancos-titulo">🇧🇷 Brasileiros</div><div class="bancos-grid">${BANCOS_BR.map(b=>`<div class="banco-card ${bancosCartoes.includes(b.id)?'active':''}" data-bc="${b.id}" onclick="togBC('${b.id}')"><div class="banco-logo" style="background:${b.cor};${b.cor==='#FFEF38'?'color:#000;':''}">${b.sigla}</div><div class="banco-nome">${b.nome}</div></div>`).join('')}</div><div class="secao-bancos-titulo">🌎 Internacionais</div><div class="bancos-grid">${BANCOS_INTL.map(b=>`<div class="banco-card ${bancosCartoes.includes(b.id)?'active':''}" data-bc="${b.id}" onclick="togBC('${b.id}')"><div class="banco-logo" style="background:${b.cor}">${b.sigla}</div><div class="banco-nome">${b.nome}</div></div>`).join('')}</div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="temCartoes=null;renderP5_Pergunta()">‹</button><button class="btn btn-primary" id="btn-bc" onclick="confBC()" ${bancosCartoes.length===0?'disabled':''}>Continuar →</button>`;
+}
+
+window.togBC=function(id){const i=bancosCartoes.indexOf(id);if(i>=0)bancosCartoes.splice(i,1);else bancosCartoes.push(id);document.querySelector(`[data-bc="${id}"]`).classList.toggle('active');document.getElementById('btn-bc').disabled=bancosCartoes.length===0};
+window.confBC=function(){if(bancosCartoes.length===0)return;bancoCartaoIdx=0;cartaoIdx=0;renderP5()};
+
+function renderP5_Qtd(bId){
+  const b=BANCOS.find(b=>b.id===bId);
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Quantos cartões do <strong>${b.nome}</strong>?</div></div></div><div class="step-titulo" style="display:flex;align-items:center;gap:10px"><div class="banco-logo" style="background:${b.cor};width:36px;height:36px;font-size:12px;${b.cor==='#FFEF38'?'color:#000;':''}">${b.sigla}</div>${b.nome}</div><div class="step-subtitulo">Banco ${bancoCartaoIdx+1} de ${bancosCartoes.length}</div><div class="qtd-grid"><div class="qtd-btn" onclick="selQtd('${bId}',1)">1</div><div class="qtd-btn" onclick="selQtd('${bId}',2)">2</div><div class="qtd-btn" onclick="selQtd('${bId}',3)">3</div><div class="qtd-btn" onclick="selQtd('${bId}',4)">4+</div></div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="voltBC()">‹</button><button class="btn btn-primary" disabled>Escolha</button>`;
+}
+
+window.selQtd=function(bId,q){qtdPorBanco[bId]=q;cartaoIdx=0;renderP5()};
+window.voltBC=function(){if(bancoCartaoIdx>0){bancoCartaoIdx--;cartaoIdx=0;delete qtdPorBanco[bancosCartoes[bancoCartaoIdx]]}else{renderP5_SelBancos();return}renderP5()};
+
+function renderP5_CadCartao(bId){
+  const b=BANCOS.find(b=>b.id===bId);
+  const q=qtdPorBanco[bId];
+  const passos=INSTRUCOES_CARTAO[bId]||INSTRUCOES_CARTAO.default;
+  const n=cartaoIdx+1;
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu te ensina</div><div class="tatu-texto">Cartão <strong>${n} de ${q}</strong> do ${b.nome}.</div></div></div><div class="step-titulo" style="display:flex;align-items:center;gap:10px"><div class="banco-logo" style="background:${b.cor};width:36px;height:36px;font-size:12px;${b.cor==='#FFEF38'?'color:#000;':''}">${b.sigla}</div>${b.nome}</div><div class="step-subtitulo">Cartão ${n}/${q} • Banco ${bancoCartaoIdx+1}/${bancosCartoes.length}</div><div class="instrucao-card"><div class="instrucao-titulo">📱 Onde achar</div><ol class="passo-lista">${passos.map((p,i)=>`<li class="passo-item"><div class="passo-num">${i+1}</div><div>${p}</div></li>`).join('')}</ol></div><div class="opcoes-acao"><div class="opcao-btn ia" onclick="abrirFoto('fatura','${bId}')"><div class="opcao-btn-icon">📸</div><div class="opcao-btn-titulo">Foto fatura</div><div class="opcao-btn-sub">IA lê tudo</div></div><div class="opcao-btn" onclick="manualCartao('${bId}')"><div class="opcao-btn-icon">✍️</div><div class="opcao-btn-titulo">Manual</div><div class="opcao-btn-sub">Você preenche</div></div></div>${cartoesAdicionados.length>0?`<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastrados (${cartoesAdicionados.length})</div>${cartoesAdicionados.map(c=>`<div class="item-cadastrado" data-item-id="${c.id}"><div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor}">💳</div><div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite||0)}</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div></div>`).join('')}</div>`:''}`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="voltCartao()">‹</button><button class="btn btn-primary" onclick="pulaCartao()">Pular →</button>`;
+}
+
+window.voltCartao=function(){if(cartaoIdx>0){cartaoIdx--;renderP5()}else if(bancoCartaoIdx>0){voltBC()}else renderP5_SelBancos()};
+window.pulaCartao=function(){cartaoIdx++;renderP5()};
+
+window.manualCartao=function(bId){
+  const b=BANCOS.find(b=>b.id===bId);
+  const q=qtdPorBanco[bId];
+  const sn=q===1?b.nome:`${b.nome} ${cartaoIdx+1}`;
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Dados do cartão ${b.nome}.</div></div></div><div class="step-titulo">${b.nome}</div><div class="form-card"><div class="field"><label>Apelido</label><input type="text" id="c-nome" value="${sn}"></div><div class="field"><label>Limite total</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="c-lim" placeholder="0,00" oninput="formatarValor(this)"></div></div><div class="field-row"><div class="field"><label>Fechamento</label><input type="number" id="c-fec" placeholder="20" min="1" max="31"></div><div class="field"><label>Vencimento</label><input type="number" id="c-ven" placeholder="10" min="1" max="31"></div></div><button class="btn-form" onclick="confDadosCart('${bId}')">Continuar →</button></div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="renderP5_CadCartao('${bId}')">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
+};
+
+window.confDadosCart=function(bId){
+  const n=document.getElementById('c-nome').value.trim();
+  const l=valorParaNumero(document.getElementById('c-lim').value);
+  const f=parseInt(document.getElementById('c-fec').value)||null;
+  const v=parseInt(document.getElementById('c-ven').value)||null;
+  if(!n){alert('Digite o apelido');return}
+  if(!l||l<=0){alert('Informe o limite');return}
+  cartaoTemp={bancoId:bId,nome:n,limite:l,fechamento:f,vencimento:v};
+  renderP5_PergFatura();
+};
+
+function renderP5_PergFatura(){
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">${cartaoTemp.nome} tem fatura aberta?</div></div></div><div class="step-titulo">Tem fatura aberta?</div><div class="sim-nao-grid"><div class="sim-nao-btn sim" onclick="respFat(true)"><div class="sim-nao-btn-emoji">💸</div>Sim</div><div class="sim-nao-btn nao" onclick="respFat(false)"><div class="sim-nao-btn-emoji">✨</div>Não, zerada</div></div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="manualCartao('${cartaoTemp.bancoId}')">‹</button><button class="btn btn-primary" disabled>Escolha</button>`;
+}
+
+window.respFat=function(t){if(!t)salvarCartaoFinal({valor:0,paga:true,atrasada:false});else renderP5_DadosFat()};
+
+function renderP5_DadosFat(){
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Dados da fatura ${cartaoTemp.nome}:</div></div></div><div class="step-titulo">Dados da fatura</div><div class="form-card"><div class="field"><label>Valor</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="f-val" placeholder="0,00" oninput="formatarValor(this)"></div></div><div class="field"><label>Status</label><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px"><div class="qtd-btn" data-st="aberta" onclick="selStat('aberta')" style="font-size:11px;padding:14px 4px;line-height:1.3">📅<br>Aberta</div><div class="qtd-btn" data-st="paga" onclick="selStat('paga')" style="font-size:11px;padding:14px 4px;line-height:1.3">✅<br>Paga</div><div class="qtd-btn" data-st="atrasada" onclick="selStat('atrasada')" style="font-size:11px;padding:14px 4px;line-height:1.3">⚠️<br>Atrasada</div></div></div><button class="btn-form" onclick="confFat()">Salvar cartão →</button></div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="renderP5_PergFatura()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
+}
+
+window.selStat=function(s){statusFaturaTemp=s;document.querySelectorAll('[data-st]').forEach(e=>e.classList.remove('active'));document.querySelector(`[data-st="${s}"]`).classList.add('active')};
+window.confFat=function(){const v=valorParaNumero(document.getElementById('f-val').value);if(!v||v<=0){alert('Informe o valor');return}if(!statusFaturaTemp){alert('Selecione status');return}salvarCartaoFinal({valor:v,paga:statusFaturaTemp==='paga',atrasada:statusFaturaTemp==='atrasada'})};
+
+async function salvarCartaoFinal({valor,paga,atrasada}){
+  const{bancoId,nome,limite,fechamento,vencimento}=cartaoTemp;
+  const banco=BANCOS.find(b=>b.id===bancoId);
+  try{
+    const{data:cart,error:e1}=await supabase.from('contas').insert({user_id:usuario.id,nome,tipo:'cartao_credito',banco:banco.nome,cor:banco.cor,icone:'💳',limite,saldo_inicial:0,dia_fechamento:fechamento,dia_vencimento:vencimento}).select().single();
+    if(e1)throw e1;
+    cartoesAdicionados.push(cart);
+    ultimoItemNovoId=cart.id;
+    if(valor>0){
+      let dV;
+      if(atrasada){const d=new Date();d.setMonth(d.getMonth()-1);if(vencimento)d.setDate(vencimento);dV=d.toISOString().split('T')[0]}
+      else{const d=new Date();if(vencimento){d.setDate(vencimento);if(d<new Date())d.setMonth(d.getMonth()+1)}else d.setDate(d.getDate()+30);dV=d.toISOString().split('T')[0]}
+      if(!paga){
+        const{data:div}=await supabase.from('dividas').insert({user_id:usuario.id,credor:banco.nome,tipo:'cartao',descricao:`Fatura ${nome}`,valor_original:valor,valor_atual:valor,data_vencimento:dV,data_inicio:new Date().toISOString().split('T')[0],status:'ativa',prioridade:atrasada?1:2,conta_id:cart.id}).select().single();
+        if(div){dividasAdicionadas.push(div);await supabase.from('transacoes').insert({user_id:usuario.id,valor,descricao:`Fatura ${nome}`,data:dV,tipo:'saida',conta_id:cart.id,divida_id:div.id,status:'prevista'})}
+      }else{
+        await supabase.from('transacoes').insert({user_id:usuario.id,valor,descricao:`Fatura ${nome} (paga)`,data:dV,tipo:'saida',conta_id:cart.id,status:'realizada'});
+      }
+    }
+    await darXP(25,'cartao_setup','Setup cartão: '+nome);
+    toast(`✅ ${nome} • Limite R$ ${formatarMoeda(limite)}`);
+    cartaoTemp=null;statusFaturaTemp=null;
+    setTimeout(()=>{cartaoIdx++;renderP5()},600);
+  }catch(e){alert('Erro: '+e.message)}
+}
+
+function renderP5_Resumo(){
+  const td=dividasAdicionadas.filter(d=>d.tipo==='cartao').reduce((a,d)=>a+Number(d.valor_atual||0),0);
+  const at=dividasAdicionadas.filter(d=>d.tipo==='cartao'&&d.prioridade===1).length;
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🎉</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Pronto! <strong>${cartoesAdicionados.length} cartões</strong>. ${td>0?`Total: <strong>R$ ${formatarMoeda(td)}</strong>.`:''} ${at>0?`<br>⚠️ <strong>${at} atrasada${at>1?'s':''}</strong>!`:''}</div></div></div><div class="step-titulo">Cartões cadastrados</div>${cartoesAdicionados.map(c=>`<div class="item-cadastrado" data-item-id="${c.id}"><div class="item-icone-mini" style="background:${c.cor}30;color:${c.cor}">💳</div><div class="item-info-mini"><div class="item-nome-mini">${c.nome}</div><div class="item-valor-mini">Limite: R$ ${formatarMoeda(c.limite||0)}</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirCartao('${c.id}')">✕</div></div></div>`).join('')}`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">Próximo →</button>`;
+}
+
+function renderP6(){
+  document.getElementById('container').innerHTML=`${bannerRestauracao()}<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>TODA</strong> renda que entra. Marca o tipo:</div></div></div><div class="step-titulo">Suas rendas mensais</div><div class="step-subtitulo">Toca no tipo da renda.</div><div class="categoria-grid">${CATEGORIAS_RENDA.map(c=>`<div class="categoria-card ${c.id==='outro'?'add':''}" onclick="abrirCadRenda('${c.id}')"><div class="categoria-emoji">${c.emoji}</div><div class="categoria-nome">${c.nome}</div></div>`).join('')}</div>${rendasAdicionadas.length>0?`<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastradas (${rendasAdicionadas.length})</div>${rendasAdicionadas.map(r=>`<div class="item-cadastrado" data-item-id="${r.id}"><div class="item-icone-mini" style="background:${r.cor||'#00d97e'}30;color:${r.cor||'#00d97e'}">${r.icone||'💰'}</div><div class="item-info-mini"><div class="item-nome-mini">${r.nome}</div><div class="item-valor-mini positivo">+R$ ${formatarMoeda(r.valor)}/mês</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirRenda('${r.id}')">✕</div></div></div>`).join('')}</div>`:''}`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${rendasAdicionadas.length>0?'Continuar →':'Pular →'}</button>`;
+}
+
+window.abrirCadRenda=function(catId){
+  const cat=CATEGORIAS_RENDA.find(c=>c.id===catId);
+  categoriaTemp=cat;
+  const sn=cat.id==='outro'?'':cat.nome;
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>${cat.emoji} ${cat.nome}</strong>. Dados:</div></div></div><div class="step-titulo">Nova renda</div><div class="form-card"><div class="field"><label>Nome</label><input type="text" id="mr-nome" placeholder="Digite o nome" value="${sn}"></div><div class="field"><label>Valor mensal</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mr-val" placeholder="0,00" oninput="formatarValor(this)"></div></div><div class="field"><label>Dia recebe (1-31)</label><input type="number" id="mr-dia" placeholder="5" min="1" max="31"></div><button class="btn-form" onclick="salvarRenda()">Salvar renda</button></div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="renderP6()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
+};
+
+window.excluirRenda=async function(id){if(!confirm('Excluir?'))return;try{await supabase.from('transacoes').delete().eq('renda_id',id);await supabase.from('rendas').delete().eq('id',id);rendasAdicionadas=rendasAdicionadas.filter(r=>r.id!==id);renderP6()}catch(e){alert('Erro: '+e.message)}};
+
+window.salvarRenda=async function(){
+  const n=document.getElementById('mr-nome').value.trim();
+  const v=valorParaNumero(document.getElementById('mr-val').value);
+  const d=parseInt(document.getElementById('mr-dia').value)||null;
+  if(!n){alert('Digite o nome');return}
+  if(!v||v<=0){alert('Informe o valor');return}
+  const cat=categoriaTemp;
+  try{
+    const{data,error}=await supabase.from('rendas').insert({user_id:usuario.id,nome:n,categoria:cat.id,valor:v,dia_recebimento:d,cor:cat.cor,icone:cat.emoji}).select().single();
+    if(error)throw error;
+    rendasAdicionadas.push(data);
+    ultimoItemNovoId=data.id;
+    const tr=rendasAdicionadas.reduce((a,r)=>a+Number(r.valor||0),0);
+    await supabase.from('perfis').update({renda_mensal:tr}).eq('id',usuario.id);
+    const h=new Date();
+    const du=d||h.getDate();
+    let m=h.getMonth();
+    if(du<=h.getDate())m++;
+    const ts=[];
+    for(let i=0;i<12;i++){const dt=new Date(h.getFullYear(),m+i,du);ts.push({user_id:usuario.id,valor:v,descricao:n,data:dt.toISOString().split('T')[0],tipo:'entrada',renda_id:data.id,status:'prevista',recorrente:true})}
+    await supabase.from('transacoes').insert(ts);
+    await darXP(20,'renda_setup','Setup renda: '+n);
+    toast(`✅ ${n} • +R$ ${formatarMoeda(v)}/mês`);
+    categoriaTemp=null;
+    setTimeout(()=>renderP6(),600);
+  }catch(e){alert('Erro: '+e.message)}
+};
+
+function renderP7(){
+  document.getElementById('container').innerHTML=`${bannerRestauracao()}<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>Despesas fixas</strong>. Toca em cada tipo:</div></div></div><div class="step-titulo">Suas despesas</div><div class="step-subtitulo">Toca em cada tipo que você tem.</div><div class="categoria-grid">${CATEGORIAS_DESPESA.map(c=>`<div class="categoria-card ${c.id==='outro'?'add':''}" onclick="abrirCadDesp('${c.id}')"><div class="categoria-emoji">${c.emoji}</div><div class="categoria-nome">${c.nome}</div></div>`).join('')}</div>${despesasAdicionadas.length>0?`<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastradas (${despesasAdicionadas.length})</div>${despesasAdicionadas.map(d=>`<div class="item-cadastrado" data-item-id="${d.id}"><div class="item-icone-mini" style="background:${d.cor||'#ffb800'}30;color:${d.cor||'#ffb800'}">${d.icone||'📋'}</div><div class="item-info-mini"><div class="item-nome-mini">${d.nome}</div><div class="item-valor-mini danger">-R$ ${formatarMoeda(d.valor)}/mês</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDesp('${d.id}')">✕</div></div></div>`).join('')}</div>`:''}`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${despesasAdicionadas.length>0?'Continuar →':'Pular →'}</button>`;
+}
+
+window.abrirCadDesp=function(catId){const cat=CATEGORIAS_DESPESA.find(c=>c.id===catId);categoriaTemp=cat;tipoRecorrenciaTemp=null;renderP7_TipoRec(cat)};
+
+window.renderP7_TipoRec=function(cat){
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>${cat.emoji} ${cat.nome}</strong> é de qual tipo?</div></div></div><div class="step-titulo">Qual o tipo?</div><div class="step-subtitulo">Pra eu calcular certinho.</div><div class="tipo-recorrencia-grid">${TIPOS_RECORRENCIA.map(t=>`<div class="tipo-rec-btn" data-tipo="${t.id}" onclick="selTipoRec('${t.id}')"><div class="tipo-rec-emoji">${t.emoji}</div><div class="tipo-rec-nome">${t.nome}</div><div class="tipo-rec-desc">${t.desc}</div></div>`).join('')}</div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="renderP7()">‹</button><button class="btn btn-primary" id="btn-tipo" onclick="confirmaTipoRec()" disabled>Continuar →</button>`;
+};
+
+window.selTipoRec=function(t){tipoRecorrenciaTemp=t;document.querySelectorAll('[data-tipo]').forEach(e=>e.classList.remove('active'));document.querySelector(`[data-tipo="${t}"]`).classList.add('active');document.getElementById('btn-tipo').disabled=false};
+window.confirmaTipoRec=function(){if(!tipoRecorrenciaTemp)return;renderP7_FotoOuManual()};
+
+window.renderP7_FotoOuManual=function(){
+  const cat=categoriaTemp;
+  const t=TIPOS_RECORRENCIA.find(x=>x.id===tipoRecorrenciaTemp);
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>${cat.emoji} ${cat.nome}</strong> • ${t.emoji} ${t.nome}<br><br>Como prefere cadastrar?</div></div></div><div class="step-titulo">Foto ou manual?</div><div class="step-subtitulo">Tem boleto? Tira foto que eu leio.</div><div class="opcoes-acao"><div class="opcao-btn ia" onclick="abrirFoto('boleto',null)"><div class="opcao-btn-icon">📸</div><div class="opcao-btn-titulo">Foto do boleto</div><div class="opcao-btn-sub">IA lê tudo</div></div><div class="opcao-btn" onclick="renderP7_Form()"><div class="opcao-btn-icon">✍️</div><div class="opcao-btn-titulo">Manual</div><div class="opcao-btn-sub">Você preenche</div></div></div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="renderP7_TipoRec(categoriaTemp)">‹</button><button class="btn btn-primary" disabled>Escolha</button>`;
+};
+
+window.renderP7_Form=function(dp){
+  const cat=categoriaTemp;
+  const t=TIPOS_RECORRENCIA.find(x=>x.id===tipoRecorrenciaTemp);
+  const sn=dp?.nome||(cat.id==='outro'?'':cat.nome);
+  const sv=dp?.valor?Number(dp.valor).toLocaleString('pt-BR',{minimumFractionDigits:2}):'';
+  const sd=dp?.dia||'';
+  const lv=t.id==='parcelada'?'Valor da parcela':'Valor';
+  const ep=t.id==='parcelada';
+  const vf=!!dp;
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">${vf?'✅':'🦔'}</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">${vf?`<strong>Li o boleto!</strong> Confirma:`:`<strong>${cat.emoji} ${cat.nome}</strong> • ${t.emoji} ${t.nome}`}</div></div></div>${vf?`<div class="revisao-card"><div class="revisao-titulo">📸 Dados extraídos da foto</div></div>`:''}<div class="step-titulo">${vf?'Revisar e salvar':'Dados'}</div><div class="form-card"><div class="field"><label>Nome</label><input type="text" id="md-nome" placeholder="Digite o nome" value="${sn}"></div><div class="field"><label>${lv}</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="md-val" placeholder="0,00" value="${sv}" oninput="formatarValor(this)"></div></div>${ep?`<div class="field"><label>Quantas parcelas restam?</label><input type="number" id="md-parcelas" placeholder="10" min="1" max="120"></div>`:''}<div class="field"><label>Dia vencimento (1-31)</label><input type="number" id="md-dia" placeholder="10" min="1" max="31" value="${sd}"></div><button class="btn-form" onclick="salvarDesp()">${vf?'✅ Confirmar e salvar':'Salvar despesa'}</button>${vf?`<button class="btn-form" style="background:var(--bg-elev);color:var(--text);margin-top:8px" onclick="abrirFoto('boleto',null)">🔄 Refazer foto</button>`:''}</div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="renderP7_FotoOuManual()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
+};
+
+window.excluirDesp=async function(id){if(!confirm('Excluir?'))return;try{await supabase.from('transacoes').delete().eq('compromisso_id',id);await supabase.from('compromissos').delete().eq('id',id);despesasAdicionadas=despesasAdicionadas.filter(d=>d.id!==id);renderP7()}catch(e){alert('Erro: '+e.message)}};
+
+window.salvarDesp=async function(){
+  const n=document.getElementById('md-nome').value.trim();
+  const v=valorParaNumero(document.getElementById('md-val').value);
+  const d=parseInt(document.getElementById('md-dia').value)||null;
+  if(!n){alert('Digite o nome');return}
+  if(!v||v<=0){alert('Informe o valor');return}
+  const cat=categoriaTemp;
+  const t=tipoRecorrenciaTemp;
+  const pe=document.getElementById('md-parcelas');
+  const p=pe?(parseInt(pe.value)||1):null;
+  await salvarDespesaCompleta(n,cat,v,d,t,p);
+};
+
+async function salvarDespesaCompleta(n,cat,v,d,t,p){
+  try{
+    const tDB=t==='pontual'?'pontual':'recorrente';
+    const{data,error}=await supabase.from('compromissos').insert({user_id:usuario.id,nome:n,categoria:cat.id,tipo:tDB,valor:v,dia_vencimento:d,cor:cat.cor,icone:cat.emoji}).select().single();
+    if(error)throw error;
+    despesasAdicionadas.push(data);
+    ultimoItemNovoId=data.id;
+    const h=new Date();
+    const du=d||h.getDate();
+    let m=h.getMonth();
+    if(du<=h.getDate())m++;
+    const ts=[];
+    let qm;
+    if(t==='mensal')qm=12;
+    else if(t==='pontual')qm=1;
+    else if(t==='parcelada')qm=p;
+    else if(t==='anual')qm=1;
+    for(let i=0;i<qm;i++){
+      const dt=t==='anual'?new Date(h.getFullYear()+i,m,du):new Date(h.getFullYear(),m+i,du);
+      const dp=t==='parcelada'?`${n} (${i+1}/${qm})`:n;
+      ts.push({user_id:usuario.id,valor:v,descricao:dp,data:dt.toISOString().split('T')[0],tipo:'saida',compromisso_id:data.id,status:'prevista',recorrente:t!=='pontual'});
+    }
+    await supabase.from('transacoes').insert(ts);
+    await darXP(15,'despesa_setup','Setup despesa: '+n);
+    toast(`✅ ${n} • -R$ ${formatarMoeda(v)}`);
+    categoriaTemp=null;tipoRecorrenciaTemp=null;
+    setTimeout(()=>renderP7(),600);
+  }catch(e){alert('Erro: '+e.message)}
+}
+
+function renderP8(){
+  const od=dividasAdicionadas.filter(d=>d.tipo!=='cartao');
+  document.getElementById('container').innerHTML=`${bannerRestauracao()}<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Toca em <strong>TODOS</strong> os tipos de dívida que você tem hoje:</div></div></div><div class="step-titulo">Suas dívidas</div><div class="step-subtitulo">Toca em cada tipo que você tem.</div><div class="categoria-grid">${CATEGORIAS_DIVIDA.map(c=>`<div class="categoria-card ${c.id==='outro'?'add':''}" onclick="abrirCadDiv('${c.id}')"><div class="categoria-emoji">${c.emoji}</div><div class="categoria-nome">${c.nome}</div></div>`).join('')}</div>${od.length>0?`<div class="lista-cadastrados"><div class="lista-cadastrados-titulo">✅ Cadastradas (${od.length})</div>${od.map(d=>`<div class="item-cadastrado" data-item-id="${d.id}" style="border-color:var(--danger)"><div class="item-icone-mini" style="background:var(--danger-soft);color:var(--danger)">💸</div><div class="item-info-mini"><div class="item-nome-mini">${d.credor}</div><div class="item-valor-mini danger">R$ ${formatarMoeda(d.valor_atual)}</div></div><div class="item-acoes"><div class="item-acao-btn danger" onclick="excluirDiv('${d.id}')">✕</div></div></div>`).join('')}</div>`:''}`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="voltarPasso()">‹</button><button class="btn btn-primary" onclick="proximoPasso()">${od.length>0?'Continuar →':'Não tenho →'}</button>`;
+}
+
+window.abrirCadDiv=function(catId){const cat=CATEGORIAS_DIVIDA.find(c=>c.id===catId);categoriaTemp=cat;renderP8_FotoOuManual()};
+
+window.renderP8_FotoOuManual=function(){
+  const cat=categoriaTemp;
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto"><strong>${cat.emoji} ${cat.nome}</strong>. Como prefere cadastrar?</div></div></div><div class="step-titulo">Foto ou manual?</div><div class="step-subtitulo">Tem contrato/print? Eu leio.</div><div class="opcoes-acao"><div class="opcao-btn ia" onclick="abrirFoto('contrato',null)"><div class="opcao-btn-icon">📸</div><div class="opcao-btn-titulo">Foto do contrato</div><div class="opcao-btn-sub">IA lê tudo</div></div><div class="opcao-btn" onclick="renderP8_Form()"><div class="opcao-btn-icon">✍️</div><div class="opcao-btn-titulo">Manual</div><div class="opcao-btn-sub">Você preenche</div></div></div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="renderP8()">‹</button><button class="btn btn-primary" disabled>Escolha</button>`;
+};
+
+window.renderP8_Form=function(dp){
+  const cat=categoriaTemp;
+  const sc=dp?.credor||(cat.id==='outro'?'':cat.nome);
+  const sv=dp?.valor?Number(dp.valor).toLocaleString('pt-BR',{minimumFractionDigits:2}):'';
+  const vf=!!dp;
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">${vf?'✅':'🦔'}</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">${vf?'<strong>Li o contrato!</strong> Confirma:':`<strong>${cat.emoji} ${cat.nome}</strong>. Conta os dados:`}</div></div></div>${vf?`<div class="revisao-card"><div class="revisao-titulo">📸 Dados extraídos da foto</div></div>`:''}<div class="step-titulo">${vf?'Revisar e salvar':'Nova dívida'}</div><div class="form-card"><div class="field"><label>Credor</label><input type="text" id="mdv-cred" placeholder="Digite o nome" value="${sc}"></div><div class="field"><label>Valor total em aberto</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="mdv-val" placeholder="0,00" value="${sv}" oninput="formatarValor(this)"></div></div><div class="field"><label>Está atrasada?</label><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><div class="qtd-btn" data-atraso="nao" onclick="selAtraso('nao')" style="font-size:12px;padding:14px">✅ Em dia</div><div class="qtd-btn" data-atraso="sim" onclick="selAtraso('sim')" style="font-size:12px;padding:14px">⚠️ Atrasada</div></div></div><button class="btn-form" onclick="salvarDiv()">${vf?'✅ Confirmar e salvar':'Salvar dívida'}</button>${vf?`<button class="btn-form" style="background:var(--bg-elev);color:var(--text);margin-top:8px" onclick="abrirFoto('contrato',null)">🔄 Refazer foto</button>`:''}</div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-back" onclick="renderP8_FotoOuManual()">‹</button><button class="btn btn-primary" disabled>Preencha</button>`;
+};
+
+window.selAtraso=function(s){atrasoTemp=s;document.querySelectorAll('[data-atraso]').forEach(e=>e.classList.remove('active'));document.querySelector(`[data-atraso="${s}"]`).classList.add('active')};
+window.excluirDiv=async function(id){if(!confirm('Excluir?'))return;try{await supabase.from('dividas').delete().eq('id',id);dividasAdicionadas=dividasAdicionadas.filter(d=>d.id!==id);renderP8()}catch(e){alert('Erro: '+e.message)}};
+
+window.salvarDiv=async function(){
+  const c=document.getElementById('mdv-cred').value.trim();
+  const v=valorParaNumero(document.getElementById('mdv-val').value);
+  if(!c){alert('Digite o credor');return}
+  if(!v||v<=0){alert('Informe o valor');return}
+  const cat=categoriaTemp;
+  const at=atrasoTemp==='sim';
+  const dv=new Date();
+  if(at)dv.setMonth(dv.getMonth()-1);else dv.setDate(dv.getDate()+30);
+  try{
+    const{data,error}=await supabase.from('dividas').insert({user_id:usuario.id,credor:c,tipo:cat.id,descricao:`${cat.nome}: ${c}`,valor_original:v,valor_atual:v,data_vencimento:dv.toISOString().split('T')[0],data_inicio:new Date().toISOString().split('T')[0],status:'ativa',prioridade:at?1:2}).select().single();
+    if(error)throw error;
+    dividasAdicionadas.push(data);
+    ultimoItemNovoId=data.id;
+    await darXP(15,'divida_setup','Setup dívida: '+c);
+    toast(`✅ ${c} • R$ ${formatarMoeda(v)}`);
+    categoriaTemp=null;atrasoTemp=null;
+    setTimeout(()=>renderP8(),600);
+  }catch(e){alert('Erro: '+e.message)}
+};
+
+async function renderP9(){
+  document.getElementById('container').innerHTML=`<div class="ia-loading"><div class="ia-spinner"></div><div class="ia-loading-titulo">🦔 Tatu analisando...</div><div class="ia-loading-sub">Montando plano AGRESSIVO</div><div class="ia-loading-passo" id="ia-passo">Calculando...</div></div>`;
+  document.getElementById('footer-content').innerHTML='';
+  setTimeout(()=>{const e=document.getElementById('ia-passo');if(e)e.textContent='Identificando nível...'},1500);
+  setTimeout(()=>{const e=document.getElementById('ia-passo');if(e)e.textContent='Definindo meta CURTA...'},3500);
+  setTimeout(()=>{const e=document.getElementById('ia-passo');if(e)e.textContent='Plano 3-6 meses...'},5500);
+  const dados={objetivo_principal:objetivoPrincipal,contas:contasAdicionadas.map(c=>({nome:c.nome,tipo:c.tipo,saldo:c.saldo_inicial})),cartoes:cartoesAdicionados.map(c=>({nome:c.nome,limite:c.limite})),rendas:rendasAdicionadas.map(r=>({nome:r.nome,categoria:r.categoria,valor:r.valor})),despesas:despesasAdicionadas.map(d=>({nome:d.nome,categoria:d.categoria,valor:d.valor})),dividas:dividasAdicionadas.map(d=>({credor:d.credor,tipo:d.tipo,valor:d.valor_atual}))};
+  try{
+    const r=await fetch(IA_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({tipo:'analisar_situacao_financeira',dados_financeiros:dados,max_tokens:2500})});
+    const d=await r.json();
+    if(d.resultado&&!d.resultado.erro){analiseIA=d.resultado;await salvarTudo();renderResultado()}
+    else{await salvarSemAnalise();renderErro()}
+  }catch(e){console.error(e);await salvarSemAnalise();renderErro()}
+}
+
+async function salvarTudo(){await supabase.from('perfis').update({setup_concluido:true,setup_concluido_em:new Date().toISOString(),analise_setup:analiseIA,nivel_jornada:analiseIA?.situacao?.nivel_recomendado||1}).eq('id',usuario.id);await darXP(100,'setup_concluido','Setup completo!')}
+async function salvarSemAnalise(){await supabase.from('perfis').update({setup_concluido:true,setup_concluido_em:new Date().toISOString()}).eq('id',usuario.id);await darXP(50,'setup_concluido_parcial','Setup parcial')}
+
+function renderResultado(){
+  const a=analiseIA;const s=a.situacao;const nv=s.nivel_recomendado||2;
+  const jp=[{num:1,nome:'Diag.'},{num:2,nome:'Resgate'},{num:3,nome:'Estab.'},{num:4,nome:'Cresc.'},{num:5,nome:'Liberd.'}];
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🎉</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Analisei TUDO! Olha seu plano:</div></div></div><div class="nivel-card"><div class="nivel-label">Seu nível</div><div class="nivel-numero">${nv}</div><div class="nivel-nome">${s.nivel_nome}</div></div><div class="jornada-card"><div class="jornada-titulo">Sua jornada</div><div class="jornada-pontos">${jp.map(p=>`<div class="ponto ${p.num===nv?'atual':p.num<nv?'passou':''}"><div class="ponto-circle">${p.num}</div><div class="ponto-label">${p.nome}</div></div>`).join('')}</div></div><div class="analise-card"><div class="analise-titulo">📊 Sua situação</div><div class="situacao-grid"><div class="situacao-item"><div class="situacao-label">Renda</div><div class="situacao-valor" style="color:var(--brand)">R$ ${formatarMoeda(s.renda_mensal)}</div></div><div class="situacao-item"><div class="situacao-label">Despesa</div><div class="situacao-valor" style="color:var(--warning)">R$ ${formatarMoeda(s.despesa_fixa_mensal)}</div></div><div class="situacao-item"><div class="situacao-label">Patrimônio</div><div class="situacao-valor" style="color:${s.patrimonio_liquido>=0?'var(--brand)':'var(--danger)'}">R$ ${formatarMoeda(s.patrimonio_liquido)}</div></div><div class="situacao-item"><div class="situacao-label">Dívidas</div><div class="situacao-valor" style="color:${s.total_dividas>0?'var(--danger)':'var(--brand)'}">R$ ${formatarMoeda(s.total_dividas)}</div></div></div></div><div class="analise-card"><div class="analise-titulo">🦔 Diagnóstico</div><div class="diagnostico-texto">${a.diagnostico}</div></div>${a.alertas&&a.alertas.length>0?`<div class="analise-card"><div class="analise-titulo">⚠️ Atenção</div>${a.alertas.map(al=>`<div class="alerta-item"><span>⚠️</span><span>${al}</span></div>`).join('')}</div>`:''}${a.primeira_meta?`<div class="meta-card"><div class="meta-titulo-card">🎯 Primeira meta</div><div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px">${a.primeira_meta.titulo}</div><div class="meta-info-row"><span class="meta-pill">💰 R$ ${formatarMoeda(a.primeira_meta.valor_alvo)}</span><span class="meta-pill">📅 ${a.primeira_meta.prazo_meses} meses</span></div><div class="meta-explicacao">${a.primeira_meta.explicacao}</div></div>`:''}${a.mensagem_motivacional?`<div class="tatu-bubble"><div class="tatu-emoji">💚</div><div class="tatu-content"><div class="tatu-titulo">Mensagem</div><div class="tatu-texto">${a.mensagem_motivacional}</div></div></div>`:''}`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-primary" onclick="irHome()">🚀 Topo o desafio!</button>`;
+  toast('+100 XP 🎉');
+}
+
+function renderErro(){
+  document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu</div><div class="tatu-texto">Setup completo! Análise depois pelo chat.</div></div></div><div class="form-card" style="text-align:center;padding:30px 20px"><div style="font-size:48px;margin-bottom:12px">✅</div><div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px">Tudo cadastrado!</div><div style="font-size:13px;color:var(--text-mute)">${contasAdicionadas.length} contas, ${cartoesAdicionados.length} cartões, ${rendasAdicionadas.length} rendas, ${despesasAdicionadas.length} despesas, ${dividasAdicionadas.length} dívidas</div></div>`;
+  document.getElementById('footer-content').innerHTML=`<button class="btn btn-primary" onclick="irHome()">🚀 Ir ao app</button>`;
+}
+
+window.irHome=function(){window.location.href='home.html?v='+Date.now()};
+window.abrirFoto=function(m,a){modoFoto=m;alvoFoto=a;document.getElementById('input-foto').click()};
+
+window.processarFoto=async function(e){
+  const f=e.target.files[0];if(!f)return;e.target.value='';
+  document.getElementById('container').innerHTML=`<div class="ia-loading"><div class="ia-spinner"></div><div class="ia-loading-titulo">📸 Preparando...</div><div class="ia-loading-sub">IA Claude lendo</div><div class="ia-loading-passo" id="p-foto">Comprimindo...</div></div>`;
+  let b64;
+  try{b64=await comprimirImagem(f,1600,0.85);const el=document.getElementById('p-foto');if(el)el.textContent='IA lendo...'}
+  catch(err){alert('⚠️ Erro');voltarAposFoto();return}
+  let tf;
+  if(modoFoto==='conta')tf='analisar_conta';
+  else if(modoFoto==='fatura')tf='analisar_fatura_cartao';
+  else if(modoFoto==='boleto')tf='analisar_boleto';
+  else if(modoFoto==='contrato')tf='analisar_contrato';
+  try{
+    const r=await fetch(IA_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({tipo:tf,imagem_base64:b64,max_tokens:1500})});
+    const d=await r.json();
+    if(d.resultado&&!d.resultado.erro){
+      if(modoFoto==='conta')await checarDivergenciaConta(d.resultado);
+      else if(modoFoto==='fatura')await checarDivergenciaCartao(d.resultado);
+      else if(modoFoto==='boleto')renderP7_Form({nome:d.resultado.nome_despesa||d.resultado.descricao||categoriaTemp.nome,valor:d.resultado.valor||0,dia:d.resultado.dia_vencimento||null});
+      else if(modoFoto==='contrato')renderP8_Form({credor:d.resultado.credor||d.resultado.banco_detectado||categoriaTemp.nome,valor:d.resultado.valor_total||d.resultado.valor_atual||0});
+    }else{alert('⚠️ '+(d.resultado?.erro||'erro'));voltarAposFoto()}
+  }catch(err){alert('Erro: '+err.message);voltarAposFoto()}
+};
+
+function voltarAposFoto(){if(modoFoto==='conta')renderP4();else if(modoFoto==='fatura')renderP5();else if(modoFoto==='boleto')renderP7_FotoOuManual();else if(modoFoto==='contrato')renderP8_FotoOuManual()}
+
+async function comprimirImagem(f,mW=1600,q=0.85){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=(e)=>{
+      const img=new Image();
+      img.onload=()=>{
+        let w=img.width,h=img.height;
+        if(w>mW){h=Math.round((h*mW)/w);w=mW}
+        const c=document.createElement('canvas');c.width=w;c.height=h;
+        const ctx=c.getContext('2d');ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(img,0,0,w,h);
+        let b=c.toDataURL('image/jpeg',q);
+        const kb=Math.round((b.length*0.75)/1024);
+        if(kb>4000&&q>0.5)b=c.toDataURL('image/jpeg',0.7);
+        res(b);
+      };img.onerror=()=>rej(new Error('Erro'));img.src=e.target.result;
+    };r.onerror=()=>rej(new Error('Erro'));r.readAsDataURL(f);
+  });
+}
+
+async function checarDivergenciaConta(r){
+  const bs=BANCOS.find(b=>b.id===alvoFoto);
+  const bd=(r.banco_detectado||'').toLowerCase();
+  const ns=bs.nome.toLowerCase();
+  const hd=bd&&!bd.includes(ns)&&!ns.includes(bd);
+  if(hd){
+    dadosIAPendentes=r;
+    document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu detectou</div><div class="tatu-texto">Você escolheu <strong>${bs.nome}</strong>, foto parece <strong>${r.banco_detectado}</strong>.</div></div></div><div class="aviso-divergencia"><div class="aviso-titulo">⚠️ Banco diferente</div><div class="aviso-texto">IA leu <strong>${r.banco_detectado}</strong>, você selecionou <strong>${bs.nome}</strong>.</div></div><div class="form-card"><div style="display:flex;flex-direction:column;gap:10px"><button class="btn-form" onclick="usarBancoSelecionado()">✅ Usar ${bs.nome}</button><button class="btn-form" style="background:var(--warning-soft);color:var(--warning);border:1px solid var(--warning)" onclick="cancelarFoto()">🔄 Cancelar</button></div></div>`;
+    document.getElementById('footer-content').innerHTML='';
+    return;
+  }
+  await processarContaFinal(r,bs);
+}
+
+window.usarBancoSelecionado=async function(){const bs=BANCOS.find(b=>b.id===alvoFoto);await processarContaFinal(dadosIAPendentes,bs);dadosIAPendentes=null};
+window.cancelarFoto=function(){dadosIAPendentes=null;voltarAposFoto()};
+
+async function processarContaFinal(r,banco){
+  const dados={user_id:usuario.id,nome:banco.nome,tipo:r.tipo_conta||'conta_corrente',banco:banco.nome,cor:banco.cor,icone:r.tipo_conta==='poupanca'?'🐷':r.tipo_conta==='investimento'?'📈':'🏦',saldo_inicial:r.saldo_atual||0,padrao:contasAdicionadas.length===0};
+  try{
+    const{data,error}=await supabase.from('contas').insert(dados).select().single();
+    if(error)throw error;
+    contasAdicionadas.push(data);
+    ultimoItemNovoId=data.id;
+    await darXP(25,'conta_ia','IA: '+banco.nome);
+    toast(`✅ ${banco.nome} • R$ ${formatarMoeda(r.saldo_atual||0)}`);
+    setTimeout(()=>renderP4(),700);
+  }catch(e){alert('Erro: '+e.message);renderP4()}
+}
+
+async function checarDivergenciaCartao(r){
+  const bs=BANCOS.find(b=>b.id===alvoFoto);
+  const bd=(r.banco_detectado||'').toLowerCase();
+  const ns=bs.nome.toLowerCase();
+  const hd=bd&&!bd.includes(ns)&&!ns.includes(bd);
+  if(hd){
+    dadosIAPendentes=r;
+    document.getElementById('container').innerHTML=`<div class="tatu-bubble"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu detectou</div><div class="tatu-texto">Cadastrando <strong>${bs.nome}</strong>, foto parece <strong>${r.banco_detectado}</strong>.</div></div></div><div class="aviso-divergencia"><div class="aviso-titulo">⚠️ Banco diferente</div><div class="aviso-texto">IA leu <strong>${r.banco_detectado}</strong>, você selecionou <strong>${bs.nome}</strong>.</div></div><div class="form-card"><div style="display:flex;flex-direction:column;gap:10px"><button class="btn-form" onclick="usarBancoCartaoSelecionado()">✅ Usar ${bs.nome}</button><button class="btn-form" style="background:var(--warning-soft);color:var(--warning);border:1px solid var(--warning)" onclick="cancelarFoto()">🔄 Cancelar</button></div></div>`;
+    document.getElementById('footer-content').innerHTML='';
+    return;
+  }
+  await processarFaturaFinal(r,bs);
+}
+
+window.usarBancoCartaoSelecionado=async function(){const bs=BANCOS.find(b=>b.id===alvoFoto);await processarFaturaFinal(dadosIAPendentes,bs);dadosIAPendentes=null};
+
+async function processarFaturaFinal(r,banco){
+  const q=qtdPorBanco[banco.id];
+  const nb=q===1?banco.nome:`${banco.nome} ${cartaoIdx+1}`;
+  const n=r.nome_sugerido?`${banco.nome} (${r.nome_sugerido})`:nb;
+  const l=r.limite_total||0;
+  const f=r.dia_fechamento||null;
+  const v=r.dia_vencimento||null;
+  const va=r.valor_fatura||0;
+  const at=r.esta_atrasada||false;
+  cartaoTemp={bancoId:banco.id,nome:n,limite:l,fechamento:f,vencimento:v};
+  if(va>0)await salvarCartaoFinal({valor:va,paga:false,atrasada:at});
+  else await salvarCartaoFinal({valor:0,paga:true,atrasada:false});
+}
+
+window.formatarValor=function(i){let v=i.value.replace(/\D/g,'');if(!v){i.value='';return}v=(parseInt(v)/100).toFixed(2);i.value=Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2})};
+window.formatarValorComSinal=function(i){const n=i.value.trim().startsWith('-');let v=i.value.replace(/[^0-9]/g,'');if(!v){i.value='';return}v=(parseInt(v)/100).toFixed(2);const f=Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2});i.value=(n?'-':'')+f};
+
+function valorParaNumero(s){if(!s)return 0;const n=s.trim().startsWith('-');const l=s.replace(/[^0-9,\.]/g,'').replace(/\./g,'').replace(',','.');const num=Number(l)||0;return n?-num:num}
+function formatarMoeda(v){return(Number(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
+
+async function darXP(xp,acao,desc){try{await supabase.from('historico_xp').insert({user_id:usuario.id,acao,xp_ganho:xp,descricao:desc});const{data:g}=await supabase.from('gamificacao').select('xp_total').eq('user_id',usuario.id).maybeSingle();await supabase.from('gamificacao').update({xp_total:(g?.xp_total||0)+xp,ultima_atividade:new Date().toISOString().split('T')[0]}).eq('user_id',usuario.id)}catch(e){console.error('XP:',e)}}
+
+function toast(t){const el=document.getElementById('xp-toast');el.textContent=t;el.style.display='block';setTimeout(()=>{el.style.display='none'},3000)}
+</script>
 </body>
 </html>
