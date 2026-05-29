@@ -37,6 +37,7 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .trans-card:active{transform:scale(0.99)}
 .trans-card.vencida{border-left:3px solid var(--danger)}
 .trans-card.hoje{border-left:3px solid var(--warning)}
+.trans-card.parcelada{border-left:3px solid var(--ia)}
 .trans-card.novo{animation:piscaItem 3.5s ease-out;background:var(--brand-soft);border-color:var(--brand);box-shadow:0 0 24px rgba(0,217,126,0.3)}
 @keyframes piscaItem{0%{transform:scale(0.95);opacity:0;background:var(--brand);border-color:var(--brand)}10%{transform:scale(1.02);opacity:1}30%{background:var(--brand-soft);transform:scale(1)}70%{background:var(--brand-soft);box-shadow:0 0 30px rgba(0,217,126,0.5)}100%{background:var(--bg-card);box-shadow:none}}
 .trans-icone{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
@@ -49,6 +50,7 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .trans-badge.prevista{background:var(--info-soft);color:var(--info)}
 .trans-badge.vencida{background:var(--danger-soft);color:var(--danger)}
 .trans-badge.hoje{background:var(--warning-soft);color:var(--warning)}
+.trans-badge.parcela{background:var(--ia-soft);color:var(--ia)}
 .trans-valor{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;white-space:nowrap}
 .trans-valor.entrada{color:var(--brand)}
 .trans-valor.saida{color:var(--danger)}
@@ -65,14 +67,14 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .fab-add{width:56px;height:56px;background:var(--brand);color:#001a0e;font-size:26px;font-weight:700}
 .audio-overlay{position:fixed;inset:0;background:rgba(10,10,10,0.95);z-index:9000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
 .audio-overlay.show{display:flex}
-.audio-modal{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:30px 24px;max-width:380px;width:100%;text-align:center}
+.audio-modal{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:24px;max-width:380px;width:100%;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .audio-titulo{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px}
-.audio-sub{font-size:13px;color:var(--text-mute);margin-bottom:24px;line-height:1.5}
-.mic-btn{width:140px;height:140px;border-radius:50%;background:linear-gradient(135deg,var(--ia) 0%,#9333ea 100%);border:none;color:#fff;font-size:56px;cursor:pointer;box-shadow:0 12px 40px rgba(168,85,247,0.5);margin:0 auto 20px;display:block;transition:transform 0.2s;position:relative}
+.audio-sub{font-size:13px;color:var(--text-mute);margin-bottom:20px;line-height:1.5}
+.mic-btn{width:140px;height:140px;border-radius:50%;background:linear-gradient(135deg,var(--ia) 0%,#9333ea 100%);border:none;color:#fff;font-size:56px;cursor:pointer;box-shadow:0 12px 40px rgba(168,85,247,0.5);margin:0 auto 20px;display:block;transition:transform 0.2s}
 .mic-btn:active{transform:scale(0.95)}
 .mic-btn.recording{animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{box-shadow:0 12px 40px rgba(168,85,247,0.5)}50%{box-shadow:0 12px 60px rgba(168,85,247,0.9);transform:scale(1.05)}}
-.mic-status{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--ia);margin-bottom:14px;min-height:22px}
+.mic-status{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--ia);margin-bottom:14px;min-height:22px;text-align:center}
 .mic-status.recording{color:var(--danger)}
 .transcricao-box{background:var(--bg-input);border:1px solid var(--border);border-radius:14px;padding:14px;min-height:80px;margin-bottom:16px;font-size:14px;line-height:1.5;text-align:left}
 .transcricao-box.placeholder{color:var(--text-faint);font-style:italic;text-align:center}
@@ -88,19 +90,23 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .btn-primary:disabled{opacity:0.4;cursor:not-allowed;background:var(--bg-elev);color:var(--text-faint)}
 .btn-secondary{background:var(--bg-elev);color:var(--text);border:1px solid var(--border)}
 .btn-secondary:active{background:var(--border)}
-.btn-danger{background:var(--danger);color:#fff}
 .btn-ia{background:var(--ia);color:#fff}
-.conf-modal{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:24px;max-width:380px;width:100%}
-.conf-titulo{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px}
-.conf-sub{font-size:12px;color:var(--text-mute);margin-bottom:18px}
-.conf-tatu-box{background:var(--ia-soft);border:1px solid rgba(168,85,247,0.3);border-radius:14px;padding:14px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
+.conf-tatu-box{background:var(--ia-soft);border:1px solid rgba(168,85,247,0.3);border-radius:14px;padding:14px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;text-align:left}
 .conf-tatu-emoji{font-size:28px}
 .conf-tatu-texto{font-size:13px;line-height:1.5;color:var(--text)}
 .conf-row{display:grid;grid-template-columns:100px 1fr;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
 .conf-label{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.05em;font-weight:600}
-.conf-valor{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700}
+.conf-valor{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;text-align:left}
 .conf-valor.entrada{color:var(--brand)}
 .conf-valor.saida{color:var(--danger)}
+.parcelas-preview{background:var(--bg-input);border-radius:12px;padding:12px;margin-top:14px;max-height:200px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.parcelas-titulo{font-family:'Space Grotesk',sans-serif;font-size:10px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px}
+.parcela-mini{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
+.parcela-mini:last-child{border-bottom:none}
+.parcela-mini-data{color:var(--text-mute)}
+.parcela-mini-valor{font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--danger)}
+.alerta-fin{background:var(--warning-soft);border:1px solid rgba(255,184,0,0.3);border-radius:12px;padding:12px;margin-top:14px;font-size:12px;line-height:1.5}
+.alerta-fin strong{color:var(--warning)}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
 .modal-overlay.show{display:flex}
 .modal{background:var(--bg-card);border-top:1px solid var(--border);border-radius:24px 24px 0 0;padding:20px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
@@ -176,7 +182,7 @@ const SUPABASE_KEY='sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
 const IA_URL='https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
 const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
 
-const CATEGORIAS={alimentacao:{e:'🍔',n:'Alimentação',c:'#ff6b35'},transporte:{e:'🚗',n:'Transporte',c:'#3b82f6'},moradia:{e:'🏠',n:'Moradia',c:'#00d97e'},lazer:{e:'🎮',n:'Lazer',c:'#8b5cf6'},saude:{e:'🏥',n:'Saúde',c:'#ef4444'},educacao:{e:'🎓',n:'Educação',c:'#3b82f6'},vestuario:{e:'👕',n:'Vestuário',c:'#ec4899'},compras:{e:'🛒',n:'Compras',c:'#f59e0b'},servicos:{e:'🛠️',n:'Serviços',c:'#14b8a6'},salario:{e:'💼',n:'Salário',c:'#00d97e'},transferencia:{e:'🔁',n:'Transferência',c:'#a855f7'},aluguel:{e:'🏠',n:'Aluguel',c:'#00d97e'},luz:{e:'💡',n:'Luz',c:'#ffb800'},agua:{e:'💧',n:'Água',c:'#38bdf8'},gas:{e:'🔥',n:'Gás',c:'#ff6b35'},internet:{e:'🌐',n:'Internet',c:'#a855f7'},streaming:{e:'🎬',n:'Streaming',c:'#8b5cf6'},academia:{e:'💪',n:'Academia',c:'#f59e0b'},plano_saude:{e:'🏥',n:'Plano saúde',c:'#ef4444'},combustivel:{e:'⛽',n:'Combustível',c:'#ff6b35'},outro:{e:'📌',n:'Outro',c:'#94a3b8'}};
+const CATEGORIAS={alimentacao:{e:'🍔',n:'Alimentação',c:'#ff6b35'},transporte:{e:'🚗',n:'Transporte',c:'#3b82f6'},moradia:{e:'🏠',n:'Moradia',c:'#00d97e'},lazer:{e:'🎮',n:'Lazer',c:'#8b5cf6'},saude:{e:'🏥',n:'Saúde',c:'#ef4444'},educacao:{e:'🎓',n:'Educação',c:'#3b82f6'},vestuario:{e:'👕',n:'Vestuário',c:'#ec4899'},compras:{e:'🛒',n:'Compras',c:'#f59e0b'},servicos:{e:'🛠️',n:'Serviços',c:'#14b8a6'},salario:{e:'💼',n:'Salário',c:'#00d97e'},transferencia:{e:'🔁',n:'Transferência',c:'#a855f7'},outro:{e:'📌',n:'Outro',c:'#94a3b8'}};
 
 let usuario,perfil;
 let contas=[];
@@ -185,6 +191,7 @@ let mesRef=new Date();
 let filtroAtual='todas';
 let recognition=null,isRecording=false,textoTranscrito='',propostaAudio=null;
 let ultimoItemNovoId=null;
+let parcelasPreview=[];
 
 (async()=>{
   const{data:{session}}=await supabase.auth.getSession();
@@ -245,13 +252,7 @@ function render(){
       <div class="filtro-pill ${filtroAtual==='previstas'?'active':''}" onclick="setFiltro('previstas')">Previstas</div>
       ${vencidas>0?`<div class="filtro-pill ${filtroAtual==='vencidas'?'active':''}" onclick="setFiltro('vencidas')" style="color:var(--danger);">⚠️ Vencidas (${vencidas})</div>`:''}
     </div>
-    ${lista.length===0?`
-      <div class="empty-state">
-        <div class="empty-emoji">🦔</div>
-        <div class="empty-titulo">Nada por aqui ainda</div>
-        <div class="empty-sub">Toque no 🎤 pra falar ou no + pra adicionar</div>
-      </div>
-    `:renderLista(lista,hoje)}
+    ${lista.length===0?`<div class="empty-state"><div class="empty-emoji">🦔</div><div class="empty-titulo">Nada por aqui ainda</div><div class="empty-sub">Toque no 🎤 pra falar ou no + pra adicionar</div></div>`:renderLista(lista,hoje)}
   `;
   
   if(ultimoItemNovoId){
@@ -285,11 +286,13 @@ function renderLista(lista,hoje){
       const cat=t.categoria?CATEGORIAS[t.categoria]:null;
       const emoji=cat?.e||(eEnt?'💰':'💸');
       const ehNovo=t.id===ultimoItemNovoId;
+      const eParc=t.parcelado||t.total_parcelas>1;
       let bClass='';
       let bdgHTML='';
       if(eVenc){bClass='vencida';bdgHTML=`<span class="trans-badge vencida">VENCIDA</span>`}
       else if(eHoje&&ePrev){bClass='hoje';bdgHTML=`<span class="trans-badge hoje">HOJE</span>`}
       else if(ePrev)bdgHTML=`<span class="trans-badge prevista">PREVISTA</span>`;
+      if(eParc&&t.numero_parcela&&t.total_parcelas){bdgHTML+=`<span class="trans-badge parcela">${t.numero_parcela}/${t.total_parcelas}</span>`;bClass+=' parcelada'}
       if(ehNovo)bClass+=' novo';
       html+=`<div class="trans-card ${bClass}" data-item-id="${t.id}" onclick="abrirAcoes('${t.id}')">
         <div class="trans-icone ${t.tipo}">${emoji}</div>
@@ -315,12 +318,12 @@ window.abrirAudio=function(){
 
 function renderAudio(){
   document.getElementById('audio-modal-content').innerHTML=`
-    <div class="audio-titulo">🎤 Falar transação</div>
-    <div class="audio-sub">Toque no microfone e fale. Toque de novo pra parar.</div>
+    <div class="audio-titulo" style="text-align:center;">🎤 Falar transação</div>
+    <div class="audio-sub" style="text-align:center;">Toque no microfone e fale. Toque de novo pra parar.</div>
     <button class="mic-btn ${isRecording?'recording':''}" id="mic-btn" onclick="toggleRec()">${isRecording?'⏹️':'🎤'}</button>
     <div class="mic-status ${isRecording?'recording':''}">${isRecording?'🔴 Ouvindo... fale agora':(textoTranscrito?'✅ Pronto!':'Toque pra falar')}</div>
     <div class="transcricao-box ${textoTranscrito?'':'placeholder'}" id="transcricao-box">${textoTranscrito||'O que você falar vai aparecer aqui...'}</div>
-    ${!textoTranscrito?`<div class="exemplos"><div class="exemplos-titulo">💡 Exemplos</div><div class="exemplo-item">paguei 15 reais no espetinho no Santander</div><div class="exemplo-item">recebi 300 do amigo João em dinheiro</div><div class="exemplo-item">gastei 80 reais de Uber no cartão Nubank</div></div>`:''}
+    ${!textoTranscrito?`<div class="exemplos"><div class="exemplos-titulo">💡 Exemplos</div><div class="exemplo-item">paguei 15 reais no espetinho no Santander</div><div class="exemplo-item">bolsa 600 em 6x no Nubank</div><div class="exemplo-item">carro 140 mil entrada mais 24 parcelas de 2500</div><div class="exemplo-item">pagamento 200 reais dia 17 de junho</div></div>`:''}
     <div class="audio-acoes">
       <button class="btn btn-secondary" onclick="fecharAudio()">Cancelar</button>
       <button class="btn btn-ia" onclick="processarAudio()" ${!textoTranscrito||isRecording?'disabled':''}>🦔 IA interpretar</button>
@@ -362,45 +365,123 @@ function pararGravacao(){
 window.processarAudio=async function(){
   if(!textoTranscrito)return;
   if(isRecording)pararGravacao();
-  document.getElementById('audio-modal-content').innerHTML=`<div class="ia-spinner"></div><div class="audio-titulo">🦔 Tatu interpretando...</div><div class="audio-sub">"${textoTranscrito}"</div>`;
+  document.getElementById('audio-modal-content').innerHTML=`<div class="ia-spinner"></div><div class="audio-titulo" style="text-align:center;">🦔 Tatu interpretando...</div><div class="audio-sub" style="text-align:center;">"${textoTranscrito}"</div>`;
   try{
-    const r=await fetch(IA_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({tipo:'interpretar_audio_transacao',texto:textoTranscrito,max_tokens:800})});
+    const r=await fetch(IA_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({tipo:'interpretar_audio_transacao',texto:textoTranscrito,max_tokens:1000})});
     const d=await r.json();
     if(d.resultado&&!d.resultado.erro){
       propostaAudio=d.resultado;
       propostaAudio.texto_original=textoTranscrito;
+      // 🆕 v6.2: calcula preview das parcelas se houver
+      calcularParcelasPreview();
       renderConfirmacao();
     }else{alert('🦔 '+(d.resultado?.erro||'Não entendi'));renderAudio()}
   }catch(e){alert('Erro: '+e.message);renderAudio()}
 };
 
+// 🆕 v6.2: calcula datas das parcelas usando fechamento/vencimento do cartão
+function calcularParcelasPreview(){
+  parcelasPreview=[];
+  const p=propostaAudio;
+  if(!p.parcelado||!p.num_parcelas)return;
+  
+  const numParc=Number(p.num_parcelas);
+  const valorParc=Number(p.valor_parcela)||(Number(p.valor)/numParc);
+  
+  // Tenta achar o cartão
+  let cartao=null;
+  if(p.cartao_mencionado){
+    const cm=p.cartao_mencionado.toLowerCase();
+    cartao=contas.find(c=>c.tipo==='cartao_credito'&&(c.nome.toLowerCase().includes(cm)||c.banco?.toLowerCase().includes(cm)));
+  }
+  
+  const hoje=new Date();
+  let primeiraData;
+  
+  if(cartao&&cartao.dia_fechamento&&cartao.dia_vencimento){
+    // Calcula: hoje > fechamento? Vai pra fatura próxima
+    const diaHoje=hoje.getDate();
+    const diaFec=Number(cartao.dia_fechamento);
+    const diaVen=Number(cartao.dia_vencimento);
+    primeiraData=new Date(hoje.getFullYear(),hoje.getMonth(),diaVen);
+    if(diaHoje>diaFec){
+      // já passou o fechamento → fatura do mês seguinte
+      primeiraData.setMonth(primeiraData.getMonth()+1);
+    }
+    if(diaVen<=diaFec&&primeiraData<hoje){
+      // vencimento já passou esse mês
+      primeiraData.setMonth(primeiraData.getMonth()+1);
+    }
+  }else{
+    // Sem cartão definido: usa 30 dias da data atual ou data mencionada
+    if(p.data_mencionada){
+      primeiraData=new Date(p.data_mencionada+'T12:00:00');
+    }else{
+      primeiraData=new Date(hoje);
+      primeiraData.setDate(primeiraData.getDate()+30);
+    }
+  }
+  
+  for(let i=0;i<numParc;i++){
+    const dt=new Date(primeiraData);
+    dt.setMonth(dt.getMonth()+i);
+    parcelasPreview.push({numero:i+1,total:numParc,data:dt.toISOString().split('T')[0],valor:valorParc});
+  }
+}
+
 function renderConfirmacao(){
   const p=propostaAudio;
   const cat=CATEGORIAS[p.categoria_sugerida]||CATEGORIAS.outro;
   let cs=null;
-  if(p.conta_mencionada){
-    const cm=p.conta_mencionada.toLowerCase();
+  if(p.conta_mencionada||p.cartao_mencionado){
+    const cm=(p.cartao_mencionado||p.conta_mencionada).toLowerCase();
     cs=contas.find(c=>c.nome.toLowerCase().includes(cm)||c.banco?.toLowerCase().includes(cm)||cm.includes(c.nome.toLowerCase().split(' ')[0]));
   }
+  
+  const eParc=p.parcelado&&p.num_parcelas;
+  const eFin=p.tipo_compra==='financiamento'&&p.tem_entrada;
+  const dataFinal=p.data_mencionada||new Date().toISOString().split('T')[0];
+  
+  let parcelasHTML='';
+  if(eParc&&parcelasPreview.length>0){
+    const primeira=parcelasPreview[0];
+    const ultima=parcelasPreview[parcelasPreview.length-1];
+    const dFmt=(d)=>new Date(d+'T12:00:00').toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'2-digit'});
+    parcelasHTML=`
+      <div class="parcelas-preview">
+        <div class="parcelas-titulo">📅 ${p.num_parcelas} parcelas de R$ ${fm(p.valor_parcela||(p.valor/p.num_parcelas))}</div>
+        <div class="parcela-mini"><span class="parcela-mini-data">1ª (${dFmt(primeira.data)})</span><span class="parcela-mini-valor">R$ ${fm(primeira.valor)}</span></div>
+        ${parcelasPreview.length>2?`<div class="parcela-mini"><span class="parcela-mini-data" style="font-style:italic;">... ${parcelasPreview.length-2} parcelas no meio ...</span><span></span></div>`:''}
+        ${parcelasPreview.length>1?`<div class="parcela-mini"><span class="parcela-mini-data">${ultima.numero}ª última (${dFmt(ultima.data)})</span><span class="parcela-mini-valor">R$ ${fm(ultima.valor)}</span></div>`:''}
+      </div>`;
+  }
+  
+  let alertaFin='';
+  if(eFin){
+    alertaFin=`<div class="alerta-fin"><strong>⚠️ Financiamento detectado!</strong><br>Vou criar:<br>• Entrada hoje: <strong>R$ ${fm(p.valor_entrada)}</strong><br>• Dívida de <strong>R$ ${fm(p.num_parcelas*(p.valor_parcela||0))}</strong> em ${p.num_parcelas}x</div>`;
+  }
+  
   document.getElementById('audio-modal-content').innerHTML=`
-    <div class="conf-modal">
-      <div class="conf-titulo">Confirma essa transação?</div>
-      <div class="conf-sub">Tatu entendeu o que você falou. Confere antes de salvar:</div>
-      <div class="conf-tatu-box">
-        <div class="conf-tatu-emoji">🦔</div>
-        <div class="conf-tatu-texto">Você disse: <em>"${p.texto_original}"</em></div>
-      </div>
-      <div class="conf-row"><div class="conf-label">Tipo</div><div class="conf-valor ${p.tipo}">${p.tipo==='entrada'?'💰 Entrada':'💸 Saída'}</div></div>
-      <div class="conf-row"><div class="conf-label">Valor</div><div class="conf-valor ${p.tipo}">${p.tipo==='entrada'?'+':'-'}R$ ${fm(p.valor)}</div></div>
-      <div class="conf-row"><div class="conf-label">Descrição</div><div class="conf-valor" style="font-size:14px;">${p.descricao}</div></div>
-      <div class="conf-row"><div class="conf-label">Categoria</div><div class="conf-valor" style="font-size:14px;">${cat.e} ${cat.n}</div></div>
-      ${cs?`<div class="conf-row"><div class="conf-label">Conta</div><div class="conf-valor" style="font-size:14px;">${cs.icone} ${cs.nome}</div></div>`:''}
-      <div style="margin-top:20px;display:flex;gap:10px;">
-        <button class="btn btn-secondary" onclick="editarAudio()">✏️ Editar</button>
-        <button class="btn btn-primary" onclick="salvarAudio('${cs?.id||''}')">✅ Salvar</button>
-      </div>
-      <button class="btn btn-secondary" onclick="renderAudio()" style="margin-top:8px;">🔄 Falar de novo</button>
-    </div>`;
+    <div class="audio-titulo">Confirma essa transação?</div>
+    <div class="audio-sub">Tatu entendeu o que você falou. Confere antes de salvar:</div>
+    <div class="conf-tatu-box">
+      <div class="conf-tatu-emoji">🦔</div>
+      <div class="conf-tatu-texto">Você disse: <em>"${p.texto_original}"</em></div>
+    </div>
+    <div class="conf-row"><div class="conf-label">Tipo</div><div class="conf-valor ${p.tipo}">${p.tipo==='entrada'?'💰 Entrada':'💸 Saída'}</div></div>
+    <div class="conf-row"><div class="conf-label">Valor total</div><div class="conf-valor ${p.tipo}">${p.tipo==='entrada'?'+':'-'}R$ ${fm(p.valor)}</div></div>
+    <div class="conf-row"><div class="conf-label">Descrição</div><div class="conf-valor" style="font-size:14px;">${p.descricao}</div></div>
+    <div class="conf-row"><div class="conf-label">Categoria</div><div class="conf-valor" style="font-size:14px;">${cat.e} ${cat.n}</div></div>
+    ${cs?`<div class="conf-row"><div class="conf-label">${eParc?'Cartão':'Conta'}</div><div class="conf-valor" style="font-size:14px;">${cs.icone} ${cs.nome}</div></div>`:''}
+    ${p.data_mencionada?`<div class="conf-row"><div class="conf-label">Data</div><div class="conf-valor" style="font-size:14px;">${new Date(p.data_mencionada+'T12:00:00').toLocaleDateString('pt-BR')}</div></div>`:''}
+    ${eParc?`<div class="conf-row"><div class="conf-label">Parcelas</div><div class="conf-valor" style="font-size:14px;color:var(--ia);">📦 ${p.num_parcelas}x de R$ ${fm(p.valor_parcela||(p.valor/p.num_parcelas))}</div></div>`:''}
+    ${parcelasHTML}
+    ${alertaFin}
+    <div style="margin-top:20px;display:flex;gap:10px;">
+      <button class="btn btn-secondary" onclick="editarAudio()">✏️ Editar</button>
+      <button class="btn btn-primary" onclick="salvarAudio('${cs?.id||''}')">✅ Salvar</button>
+    </div>
+    <button class="btn btn-secondary" onclick="renderAudio()" style="margin-top:8px;width:100%;">🔄 Falar de novo</button>`;
 }
 
 window.editarAudio=function(){const p=propostaAudio;fecharAudio();setTimeout(()=>abrirAddManualComDados(p),300)};
@@ -408,15 +489,58 @@ window.editarAudio=function(){const p=propostaAudio;fecharAudio();setTimeout(()=
 window.salvarAudio=async function(contaId){
   const p=propostaAudio;
   try{
-    const dataT=new Date().toISOString().split('T')[0];
-    const{data,error}=await supabase.from('transacoes').insert({user_id:usuario.id,valor:p.valor,descricao:p.descricao,tipo:p.tipo,categoria:p.categoria_sugerida||'outro',data:dataT,conta_id:contaId||null,status:'realizada'}).select().single();
-    if(error)throw error;
-    ultimoItemNovoId=data.id;
-    await darXP(15,'audio_transacao','Áudio');
-    toast(`✅ ${p.descricao} • ${p.tipo==='entrada'?'+':'-'}R$ ${fm(p.valor)}`);
+    const eParc=p.parcelado&&p.num_parcelas;
+    const eFin=p.tipo_compra==='financiamento'&&p.tem_entrada;
+    const grupoParc=eParc?crypto.randomUUID():null;
+    const hojeISO=new Date().toISOString().split('T')[0];
+    const dataPrimeira=p.data_mencionada||hojeISO;
+    
+    let primeiraId=null;
+    
+    if(eFin&&p.valor_entrada){
+      // 1. Cria saída ENTRADA hoje
+      const{data:tEntrada,error:e0}=await supabase.from('transacoes').insert({user_id:usuario.id,valor:p.valor_entrada,descricao:`${p.descricao} (entrada)`,tipo:'saida',categoria:p.categoria_sugerida||'compras',data:hojeISO,conta_id:contaId||null,status:'realizada'}).select().single();
+      if(e0)throw e0;
+      primeiraId=tEntrada.id;
+      
+      // 2. Cria DÍVIDA com o valor parcelado
+      const valorDivida=Number(p.num_parcelas)*Number(p.valor_parcela||0);
+      const dV=parcelasPreview[parcelasPreview.length-1]?.data||hojeISO;
+      const{data:divida}=await supabase.from('dividas').insert({user_id:usuario.id,credor:p.descricao,tipo:p.descricao.toLowerCase().includes('carro')||p.descricao.toLowerCase().includes('veículo')?'financ_veiculo':p.descricao.toLowerCase().includes('imóvel')||p.descricao.toLowerCase().includes('casa')?'financ_imovel':'financiamento',descricao:`Financiamento ${p.descricao}`,valor_original:valorDivida,valor_atual:valorDivida,data_vencimento:dV,data_inicio:hojeISO,status:'ativa',prioridade:2,num_parcelas:p.num_parcelas}).select().single();
+      
+      // 3. Cria N parcelas previstas
+      const parcelasInsert=parcelasPreview.map(pp=>({user_id:usuario.id,valor:pp.valor,descricao:`${p.descricao} (${pp.numero}/${pp.total})`,tipo:'saida',categoria:p.categoria_sugerida||'compras',data:pp.data,conta_id:contaId||null,status:'prevista',parcelado:true,grupo_parcela:grupoParc,numero_parcela:pp.numero,total_parcelas:pp.total,divida_id:divida?.id}));
+      await supabase.from('transacoes').insert(parcelasInsert);
+      
+      ultimoItemNovoId=primeiraId;
+      await darXP(30,'audio_financiamento','Áudio com financiamento');
+      toast(`✅ ${p.descricao} • Entrada + ${p.num_parcelas}x criados!`);
+    }
+    else if(eParc){
+      // Parcelado simples (sem financiamento): só cria as N parcelas previstas
+      const parcelasInsert=parcelasPreview.map(pp=>({user_id:usuario.id,valor:pp.valor,descricao:`${p.descricao} (${pp.numero}/${pp.total})`,tipo:p.tipo,categoria:p.categoria_sugerida||'outro',data:pp.data,conta_id:contaId||null,status:'prevista',parcelado:true,grupo_parcela:grupoParc,numero_parcela:pp.numero,total_parcelas:pp.total}));
+      const{data:inseridas,error}=await supabase.from('transacoes').insert(parcelasInsert).select();
+      if(error)throw error;
+      primeiraId=inseridas[0]?.id;
+      ultimoItemNovoId=primeiraId;
+      await darXP(20,'audio_parcelado','Áudio parcelado');
+      toast(`✅ ${p.descricao} • ${p.num_parcelas}x de R$ ${fm(p.valor_parcela)}`);
+    }
+    else{
+      // Simples: 1 transação só
+      const hoje=hojeISO;
+      const status=dataPrimeira>hoje?'prevista':'realizada';
+      const{data,error}=await supabase.from('transacoes').insert({user_id:usuario.id,valor:p.valor,descricao:p.descricao,tipo:p.tipo,categoria:p.categoria_sugerida||'outro',data:dataPrimeira,conta_id:contaId||null,status}).select().single();
+      if(error)throw error;
+      primeiraId=data.id;
+      ultimoItemNovoId=primeiraId;
+      await darXP(15,'audio_transacao','Áudio');
+      toast(`✅ ${p.descricao} • ${p.tipo==='entrada'?'+':'-'}R$ ${fm(p.valor)}`);
+    }
+    
     fecharAudio();
-    // 🆕 v6.1: navega pro mês certo
-    const dTrans=new Date(dataT+'T12:00:00');
+    // navega pro mês da primeira transação
+    const dTrans=new Date(dataPrimeira+'T12:00:00');
     if(dTrans.getMonth()!==mesRef.getMonth()||dTrans.getFullYear()!==mesRef.getFullYear()){
       mesRef=dTrans;
     }
@@ -427,7 +551,7 @@ window.salvarAudio=async function(contaId){
 window.fecharAudio=function(){
   if(isRecording)pararGravacao();
   document.getElementById('audio-overlay').classList.remove('show');
-  textoTranscrito='';propostaAudio=null;
+  textoTranscrito='';propostaAudio=null;parcelasPreview=[];
 };
 
 let tipoAtual='saida';
@@ -437,58 +561,26 @@ window.abrirAddManual=function(){abrirAddManualComDados(null)};
 function abrirAddManualComDados(dados){
   tipoAtual=dados?.tipo||'saida';
   const hoje=new Date().toISOString().split('T')[0];
-  const vf=dados&&dados.texto_original; // veio da foto/áudio
+  const vf=dados&&dados.texto_original;
   document.getElementById('modal-add-content').innerHTML=`
     <div class="modal-titulo">
       <span>${dados?.texto_original?'✏️ Editar transação':(dados?'✏️ Editar dados':'➕ Nova transação')}</span>
       <button class="modal-close" onclick="fecharModal('modal-add')">✕</button>
     </div>
     ${vf?`<div class="revisao-card"><div class="revisao-emoji">${dados.texto_original?'🎤':'📸'}</div><div class="revisao-texto"><strong>IA leu:</strong> "${dados.texto_original||'cupom'}"<br>Confere os dados:</div></div>`:''}
-    ${!dados?`
-      <div class="opc-foto" onclick="document.getElementById('input-foto').click()">
-        <div class="opc-foto-icon">📸</div>
-        <div class="opc-foto-content">
-          <div class="opc-foto-titulo">Foto do cupom/nota</div>
-          <div class="opc-foto-sub">IA Claude lê e preenche tudo</div>
-        </div>
-      </div>
-    `:''}
+    ${!dados?`<div class="opc-foto" onclick="document.getElementById('input-foto').click()"><div class="opc-foto-icon">📸</div><div class="opc-foto-content"><div class="opc-foto-titulo">Foto do cupom/nota</div><div class="opc-foto-sub">IA Claude lê e preenche tudo</div></div></div>`:''}
     <div class="tipo-tabs">
       <div class="tipo-tab entrada ${tipoAtual==='entrada'?'active':''}" onclick="selTipo('entrada')">💰 Entrada</div>
       <div class="tipo-tab saida ${tipoAtual==='saida'?'active':''}" onclick="selTipo('saida')">💸 Saída</div>
     </div>
-    <div class="field">
-      <label>Valor</label>
-      <div class="valor-input-wrapper">
-        <span class="valor-prefix">R$</span>
-        <input type="text" inputmode="decimal" id="m-val" placeholder="0,00" oninput="formatarValor(this)" value="${dados?.valor?Number(dados.valor).toFixed(2).replace('.',','):''}">
-      </div>
-    </div>
-    <div class="field">
-      <label>Descrição</label>
-      <input type="text" id="m-desc" placeholder="Digite uma descrição" value="${dados?.descricao||''}">
-    </div>
+    <div class="field"><label>Valor</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="m-val" placeholder="0,00" oninput="formatarValor(this)" value="${dados?.valor?Number(dados.valor).toFixed(2).replace('.',','):''}"></div></div>
+    <div class="field"><label>Descrição</label><input type="text" id="m-desc" placeholder="Digite uma descrição" value="${dados?.descricao||''}"></div>
     <div class="field-row">
-      <div class="field">
-        <label>Categoria</label>
-        <select id="m-cat">
-          ${Object.entries(CATEGORIAS).map(([k,v])=>`<option value="${k}" ${dados?.categoria_sugerida===k||dados?.categoria===k?'selected':''}>${v.e} ${v.n}</option>`).join('')}
-        </select>
-      </div>
-      <div class="field">
-        <label>Data</label>
-        <input type="date" id="m-data" value="${hoje}">
-      </div>
+      <div class="field"><label>Categoria</label><select id="m-cat">${Object.entries(CATEGORIAS).map(([k,v])=>`<option value="${k}" ${dados?.categoria_sugerida===k||dados?.categoria===k?'selected':''}>${v.e} ${v.n}</option>`).join('')}</select></div>
+      <div class="field"><label>Data</label><input type="date" id="m-data" value="${dados?.data_mencionada||hoje}"></div>
     </div>
-    <div class="field">
-      <label>Conta/Cartão</label>
-      <select id="m-conta">
-        <option value="">Nenhuma</option>
-        ${contas.map(c=>`<option value="${c.id}">${c.icone||''} ${c.nome}</option>`).join('')}
-      </select>
-    </div>
-    <button class="btn btn-primary" onclick="salvarManual()" style="width:100%;margin-top:10px;">${vf?'✅ Confirmar e salvar':'Salvar transação'}</button>
-  `;
+    <div class="field"><label>Conta/Cartão</label><select id="m-conta"><option value="">Nenhuma</option>${contas.map(c=>`<option value="${c.id}">${c.icone||''} ${c.nome}</option>`).join('')}</select></div>
+    <button class="btn btn-primary" onclick="salvarManual()" style="width:100%;margin-top:10px;">${vf?'✅ Confirmar e salvar':'Salvar transação'}</button>`;
   document.getElementById('modal-add').classList.add('show');
 }
 
@@ -510,7 +602,6 @@ window.salvarManual=async function(){
     await darXP(10,'transacao_manual','Manual');
     toast(`✅ ${desc} • ${tipoAtual==='entrada'?'+':'-'}R$ ${fm(valor)}`);
     fecharModal('modal-add');
-    // 🆕 v6.1: navega pro mês certo
     const dTrans=new Date(data+'T12:00:00');
     if(dTrans.getMonth()!==mesRef.getMonth()||dTrans.getFullYear()!==mesRef.getFullYear()){
       mesRef=dTrans;
@@ -524,7 +615,7 @@ window.processarFoto=async function(e){
   if(!file)return;
   e.target.value='';
   fecharModal('modal-add');
-  document.getElementById('audio-modal-content').innerHTML=`<div class="ia-spinner"></div><div class="audio-titulo">📸 Lendo cupom...</div><div class="audio-sub">Comprimindo + IA Claude analisando</div>`;
+  document.getElementById('audio-modal-content').innerHTML=`<div class="ia-spinner"></div><div class="audio-titulo" style="text-align:center;">📸 Lendo cupom...</div><div class="audio-sub" style="text-align:center;">Comprimindo + IA Claude analisando</div>`;
   document.getElementById('audio-overlay').classList.add('show');
   let base64;
   try{base64=await comprimirImg(file,1600,0.85)}
@@ -534,7 +625,6 @@ window.processarFoto=async function(e){
     const d=await r.json();
     document.getElementById('audio-overlay').classList.remove('show');
     if(d.resultado&&!d.resultado.erro&&d.resultado.valor_total){
-      // 🆕 v6.1: tela revisão antes de salvar
       const dadosFoto={tipo:'saida',valor:d.resultado.valor_total,descricao:d.resultado.estabelecimento||'Cupom',categoria_sugerida:d.resultado.categoria_sugerida||'compras',texto_original:'foto cupom'};
       toast('✨ IA leu o cupom! Confere os dados');
       setTimeout(()=>abrirAddManualComDados(dadosFoto),500);
@@ -579,14 +669,15 @@ window.abrirAcoes=function(id){
   if(!t)return;
   const eEnt=t.tipo==='entrada';
   const eRealiz=(t.status||'realizada')==='realizada';
+  const eParc=t.parcelado&&t.grupo_parcela;
   document.getElementById('acoes-content').innerHTML=`
     <div class="acoes-titulo">${t.descricao}</div>
-    <div class="acoes-sub">${eEnt?'+':'-'}R$ ${fm(t.valor)} • ${new Date(t.data+'T12:00:00').toLocaleDateString('pt-BR')}</div>
+    <div class="acoes-sub">${eEnt?'+':'-'}R$ ${fm(t.valor)} • ${new Date(t.data+'T12:00:00').toLocaleDateString('pt-BR')}${eParc?` • Parcela ${t.numero_parcela}/${t.total_parcelas}`:''}</div>
     ${!eRealiz?`<div class="acao-btn" onclick="marcarRealizada('${id}')"><div class="acao-icon brand">✓</div><div class="acao-info"><div class="acao-titulo">Marcar como realizada</div><div class="acao-info-sub">Confirma que aconteceu</div></div></div>`:''}
     <div class="acao-btn" onclick="editarTrans('${id}')"><div class="acao-icon">✏️</div><div class="acao-info"><div class="acao-titulo">Editar</div><div class="acao-info-sub">Alterar valor, descrição</div></div></div>
-    <div class="acao-btn" onclick="excluirTrans('${id}')"><div class="acao-icon danger">🗑️</div><div class="acao-info"><div class="acao-titulo" style="color:var(--danger);">Excluir</div><div class="acao-info-sub">Remove essa transação</div></div></div>
-    <button class="btn btn-secondary" onclick="fecharModal('modal-acoes')" style="width:100%;margin-top:14px;">Cancelar</button>
-  `;
+    <div class="acao-btn" onclick="excluirTrans('${id}')"><div class="acao-icon danger">🗑️</div><div class="acao-info"><div class="acao-titulo" style="color:var(--danger);">Excluir ${eParc?'essa parcela':''}</div><div class="acao-info-sub">${eParc?'Só essa, mantém as outras':'Remove essa transação'}</div></div></div>
+    ${eParc?`<div class="acao-btn" onclick="excluirGrupo('${t.grupo_parcela}')"><div class="acao-icon danger">🗑️</div><div class="acao-info"><div class="acao-titulo" style="color:var(--danger);">Excluir TODAS as ${t.total_parcelas} parcelas</div><div class="acao-info-sub">Remove o parcelamento inteiro</div></div></div>`:''}
+    <button class="btn btn-secondary" onclick="fecharModal('modal-acoes')" style="width:100%;margin-top:14px;">Cancelar</button>`;
   document.getElementById('modal-acoes').classList.add('show');
 };
 
@@ -619,6 +710,16 @@ window.excluirTrans=async function(id){
   }catch(e){alert('Erro: '+e.message)}
 };
 
+window.excluirGrupo=async function(grupoId){
+  if(!confirm('Excluir TODAS as parcelas desse parcelamento?'))return;
+  try{
+    await supabase.from('transacoes').delete().eq('grupo_parcela',grupoId);
+    toast('🗑️ Parcelamento excluído');
+    fecharModal('modal-acoes');
+    await carregar();
+  }catch(e){alert('Erro: '+e.message)}
+};
+
 window.fecharModal=function(id){document.getElementById(id).classList.remove('show')};
 
 window.formatarValor=function(input){
@@ -628,11 +729,7 @@ window.formatarValor=function(input){
   input.value=Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2});
 };
 
-function valorParaNum(s){
-  if(!s)return 0;
-  return Number(s.replace(/\./g,'').replace(',','.'))||0;
-}
-
+function valorParaNum(s){if(!s)return 0;return Number(s.replace(/\./g,'').replace(',','.'))||0}
 function fm(v){return(Number(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
 
 async function darXP(xp,acao,desc){
