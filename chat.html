@@ -4,169 +4,125 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0a0a0a">
-<title>Tatu • Chat</title>
+<title>Tatu • guardaí</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
-:root{--bg:#0a0a0a;--bg-card:#141414;--bg-elev:#1c1c1c;--bg-input:#181818;--border:#252525;--brand:#00d97e;--brand-soft:rgba(0,217,126,0.1);--danger:#ff4757;--ia:#a855f7;--ia-soft:rgba(168,85,247,0.1);--text:#fff;--text-mute:#a3a3a3;--text-faint:#525252}
-html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;height:100vh;overflow:hidden}
+:root{--bg:#0a0a0a;--bg-card:#141414;--bg-elev:#1c1c1c;--bg-input:#181818;--border:#252525;--border-strong:#353535;--brand:#00d97e;--brand-hover:#00ba6b;--brand-soft:rgba(0,217,126,0.1);--danger:#ff4757;--danger-soft:rgba(255,71,87,0.1);--warning:#ffb800;--warning-soft:rgba(255,184,0,0.1);--ia:#a855f7;--ia-soft:rgba(168,85,247,0.1);--text:#fff;--text-mute:#a3a3a3;--text-faint:#525252}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;min-height:100vh;overflow-x:hidden;height:100%}
+body{display:flex;flex-direction:column}
 input,textarea{color:#fff!important;-webkit-text-fill-color:#fff!important;caret-color:var(--brand)}
 input:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px var(--bg-input) inset!important;-webkit-text-fill-color:#fff!important}
 
-.app{display:flex;flex-direction:column;height:100vh;max-width:480px;margin:0 auto;background:var(--bg)}
+.header{padding:14px 20px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
+.header-back{width:36px;height:36px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px}
+.header-info{flex:1;display:flex;align-items:center;gap:10px}
+.tatu-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--ia) 0%,#9333ea 100%);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 0 16px rgba(168,85,247,0.4)}
+.header-titulo{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;line-height:1.1}
+.header-sub{font-size:11px;color:var(--brand);display:flex;align-items:center;gap:5px}
+.header-sub::before{content:'';width:6px;height:6px;background:var(--brand);border-radius:50%;display:inline-block;box-shadow:0 0 6px var(--brand)}
+.header-clear{width:36px;height:36px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);color:var(--text-mute);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
 
-.header{padding:14px 16px;background:var(--bg-card);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;z-index:50}
-.header-back{width:36px;height:36px;border-radius:10px;background:var(--bg-elev);border:1px solid var(--border);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px}
-.header-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--ia) 0%,#9333ea 100%);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;box-shadow:0 4px 16px rgba(168,85,247,0.3)}
-.header-info{flex:1;min-width:0}
-.header-nome{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700}
-.header-status{font-size:11px;color:var(--brand);display:flex;align-items:center;gap:4px}
-.header-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--brand);box-shadow:0 0 6px var(--brand)}
-.header-btn{width:36px;height:36px;border-radius:10px;background:var(--bg-elev);border:1px solid var(--border);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
+.messages{flex:1;overflow-y:auto;padding:20px;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:14px;padding-bottom:30px}
+.messages::-webkit-scrollbar{width:6px}
+.messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
-.contexto-banner{background:var(--brand-soft);border-bottom:1px solid rgba(0,217,126,0.2);padding:6px 16px;font-size:10px;color:var(--brand);text-align:center;font-family:'Space Grotesk',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;flex-shrink:0}
-
-.chat-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;display:flex;flex-direction:column;gap:10px}
-
-.msg{display:flex;gap:8px;max-width:85%;animation:msgIn 0.3s ease}
+.msg{max-width:88%;display:flex;flex-direction:column;gap:4px;animation:msgIn 0.3s ease}
 @keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.msg.user{align-self:flex-end;flex-direction:row-reverse}
-.msg.tatu{align-self:flex-start}
-.msg-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.msg.tatu .msg-avatar{background:linear-gradient(135deg,var(--ia) 0%,#9333ea 100%)}
-.msg.user .msg-avatar{background:var(--brand);color:#001a0e;font-size:14px;font-weight:700;font-family:'Space Grotesk',sans-serif}
-.msg-content{padding:11px 14px;border-radius:16px;font-size:14px;line-height:1.5;word-wrap:break-word}
-.msg.tatu .msg-content{background:var(--bg-card);border:1px solid var(--border);border-top-left-radius:4px}
-.msg.user .msg-content{background:var(--brand);color:#001a0e;border-top-right-radius:4px}
-.msg-content strong{font-weight:700}
-.msg-content em{font-style:italic;color:var(--text-mute)}
-.msg-tempo{font-size:9px;color:var(--text-faint);margin-top:4px;text-align:right}
-.msg.user .msg-tempo{color:rgba(0,26,14,0.6)}
+.msg.usuario{align-self:flex-end;align-items:flex-end}
+.msg.tatu{align-self:flex-start;align-items:flex-start}
+.msg-bubble{padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.5;word-wrap:break-word;white-space:pre-wrap}
+.msg.usuario .msg-bubble{background:var(--brand);color:#001a0e;border-bottom-right-radius:4px;font-weight:500}
+.msg.tatu .msg-bubble{background:var(--bg-card);border:1px solid var(--border);color:var(--text);border-bottom-left-radius:4px}
+.msg.tatu .msg-bubble strong{color:var(--brand);font-weight:700}
+.msg.tatu .msg-bubble em{color:var(--ia);font-style:normal;font-weight:500}
+.msg-tempo{font-size:10px;color:var(--text-faint);padding:0 6px;font-family:'Space Grotesk',sans-serif}
 
-.msg-content ul,.msg-content ol{margin:6px 0;padding-left:20px}
-.msg-content li{margin:3px 0}
-.msg-content p{margin:6px 0}
-.msg-content p:first-child{margin-top:0}
-.msg-content p:last-child{margin-bottom:0}
+.msg.tatu-loading .msg-bubble{display:flex;align-items:center;gap:8px;color:var(--text-mute);font-style:italic;padding:14px 18px}
+.tatu-dot{width:6px;height:6px;background:var(--ia);border-radius:50%;animation:dot 1.2s infinite}
+.tatu-dot:nth-child(2){animation-delay:0.2s}
+.tatu-dot:nth-child(3){animation-delay:0.4s}
+@keyframes dot{0%,60%,100%{transform:translateY(0);opacity:0.4}30%{transform:translateY(-4px);opacity:1}}
 
-.digitando{display:flex;gap:8px;align-self:flex-start;padding:8px 0}
-.digitando-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--ia) 0%,#9333ea 100%);display:flex;align-items:center;justify-content:center;font-size:16px}
-.digitando-bolha{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;border-top-left-radius:4px;padding:14px 18px;display:flex;gap:4px;align-items:center}
-.digitando-ponto{width:6px;height:6px;border-radius:50%;background:var(--ia);animation:bounce 1.4s infinite}
-.digitando-ponto:nth-child(2){animation-delay:0.2s}
-.digitando-ponto:nth-child(3){animation-delay:0.4s}
-@keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:0.5}30%{transform:translateY(-6px);opacity:1}}
+.sugestoes-wrap{padding:0 20px 16px;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-shrink:0}
+.sugestoes-wrap::-webkit-scrollbar{display:none}
+.sugestao-chip{background:var(--bg-card);border:1px solid var(--border);border-radius:100px;padding:9px 14px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;color:var(--text);cursor:pointer;flex-shrink:0;white-space:nowrap;transition:all 0.15s}
+.sugestao-chip:active{background:var(--brand-soft);border-color:var(--brand);transform:scale(0.97)}
 
-.sugestoes{display:flex;flex-direction:column;gap:8px;margin:8px 0}
-.sugestao-bubble{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13px;cursor:pointer;color:var(--text);align-self:flex-start;max-width:85%;transition:all 0.2s}
-.sugestao-bubble:active{background:var(--bg-elev);border-color:var(--ia);transform:scale(0.98)}
+.input-area{padding:14px 16px;padding-bottom:max(14px,env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--border);flex-shrink:0}
+.input-row{display:flex;gap:8px;align-items:flex-end;max-width:480px;margin:0 auto}
+.input-wrap{flex:1;background:var(--bg-input);border:1px solid var(--border);border-radius:24px;padding:4px;display:flex;align-items:flex-end;gap:0;min-height:48px}
+.input-wrap:focus-within{border-color:var(--brand)}
+.input-text{flex:1;background:transparent;border:none;color:var(--text);font-size:15px;font-family:'Inter',sans-serif;padding:10px 14px;outline:none;resize:none;max-height:120px;line-height:1.4;min-height:32px}
+.input-mic{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--ia) 0%,#9333ea 100%);border:none;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0;margin:0 2px}
+.input-mic:active{transform:scale(0.92)}
+.input-mic.recording{background:var(--danger);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,71,87,0.6)}50%{box-shadow:0 0 0 12px rgba(255,71,87,0)}}
+.input-send{width:48px;height:48px;border-radius:50%;background:var(--brand);border:none;color:#001a0e;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;font-weight:700;flex-shrink:0}
+.input-send:disabled{background:var(--bg-elev);color:var(--text-faint);cursor:not-allowed}
+.input-send:not(:disabled):active{transform:scale(0.95)}
 
-.input-area{padding:10px 12px;padding-bottom:max(10px,env(safe-area-inset-bottom));background:var(--bg-card);border-top:1px solid var(--border);flex-shrink:0}
-.input-row{display:flex;gap:8px;align-items:flex-end}
-.input-text-wrap{flex:1;background:var(--bg-input);border:1px solid var(--border);border-radius:22px;padding:6px 14px;display:flex;align-items:center;gap:8px;min-height:44px}
-.input-text-wrap:focus-within{border-color:var(--brand)}
-.input-text{flex:1;background:transparent;border:none;color:var(--text);font-size:15px;font-family:'Inter',sans-serif;padding:8px 0;resize:none;max-height:120px;line-height:1.4;outline:none}
-.input-text::placeholder{color:var(--text-faint)}
-.btn-mic,.btn-send{width:42px;height:42px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;flex-shrink:0}
-.btn-mic{background:linear-gradient(135deg,var(--ia) 0%,#9333ea 100%);color:#fff;box-shadow:0 4px 12px rgba(168,85,247,0.4)}
-.btn-mic:active{transform:scale(0.92)}
-.btn-mic.recording{animation:pulseMic 1.5s infinite}
-@keyframes pulseMic{0%,100%{box-shadow:0 4px 12px rgba(168,85,247,0.4)}50%{box-shadow:0 4px 20px rgba(255,71,87,0.6);background:var(--danger)}}
-.btn-send{background:var(--brand);color:#001a0e;font-size:16px;font-weight:700}
-.btn-send:active{transform:scale(0.92)}
-.btn-send:disabled{opacity:0.3;cursor:not-allowed}
+.empty-state{text-align:center;padding:30px 20px;animation:msgIn 0.4s ease}
+.empty-tatu{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--ia) 0%,#9333ea 100%);display:flex;align-items:center;justify-content:center;font-size:44px;margin:0 auto 14px;box-shadow:0 8px 32px rgba(168,85,247,0.4)}
+.empty-titulo{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px}
+.empty-sub{font-size:13px;color:var(--text-mute);line-height:1.5;max-width:300px;margin:0 auto 16px}
 
-.rec-overlay{position:fixed;inset:0;background:rgba(10,10,10,0.95);z-index:9000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
-.rec-overlay.show{display:flex}
-.rec-modal{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:28px;max-width:380px;width:100%;text-align:center}
-.rec-titulo{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px}
-.rec-sub{font-size:13px;color:var(--text-mute);margin-bottom:24px}
-.rec-mic{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--ia) 0%,#9333ea 100%);border:none;color:#fff;font-size:48px;margin:0 auto 20px;cursor:pointer;box-shadow:0 12px 40px rgba(168,85,247,0.5);display:flex;align-items:center;justify-content:center}
-.rec-mic.recording{animation:pulseMic 1.5s infinite}
-.rec-status{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--ia);margin-bottom:14px;min-height:22px}
-.rec-status.recording{color:var(--danger)}
-.rec-transcricao{background:var(--bg-input);border:1px solid var(--border);border-radius:14px;padding:14px;min-height:60px;margin-bottom:16px;font-size:14px;line-height:1.5;text-align:left}
-.rec-transcricao.placeholder{color:var(--text-faint);font-style:italic;text-align:center}
-.rec-acoes{display:flex;gap:8px}
-.btn{padding:12px;border-radius:12px;border:none;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;cursor:pointer;flex:1;min-height:44px}
-.btn-primary{background:var(--brand);color:#001a0e}
-.btn-secondary{background:var(--bg-elev);color:var(--text);border:1px solid var(--border)}
-.btn-primary:disabled{opacity:0.3;cursor:not-allowed;background:var(--bg-elev);color:var(--text-faint)}
-
-.menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;display:none;align-items:flex-end;justify-content:center}
-.menu-overlay.show{display:flex}
-.menu-content{background:var(--bg-card);border-top:1px solid var(--border);border-radius:24px 24px 0 0;padding:20px;max-width:480px;width:100%}
-.menu-item{padding:14px;display:flex;align-items:center;gap:14px;cursor:pointer;border-radius:12px}
-.menu-item:active{background:var(--bg-elev)}
-.menu-icon{width:36px;height:36px;border-radius:10px;background:var(--bg-input);display:flex;align-items:center;justify-content:center;font-size:18px}
-.menu-info{flex:1}
-.menu-titulo{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600}
-.menu-sub{font-size:11px;color:var(--text-mute);margin-top:2px}
-
-.welcome{text-align:center;padding:40px 20px;color:var(--text-mute)}
-.welcome-emoji{font-size:60px;margin-bottom:12px;display:inline-block;animation:wave 2s ease-in-out infinite}
-@keyframes wave{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
-.welcome-titulo{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:6px}
-.welcome-sub{font-size:13px;color:var(--text-mute);line-height:1.5;margin-bottom:20px}
+.gravando-banner{background:var(--danger-soft);border:1px solid rgba(255,71,87,0.4);border-radius:12px;padding:10px 14px;margin:0 16px 8px;display:flex;align-items:center;gap:10px;font-size:13px;animation:msgIn 0.2s ease}
+.gravando-dot{width:10px;height:10px;background:var(--danger);border-radius:50%;animation:blink 1s infinite}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0.3}}
 </style>
 </head>
 <body>
 
-<div class="app">
-  <div class="header">
-    <button class="header-back" onclick="window.location.href='home.html?v='+Date.now()">‹</button>
-    <div class="header-avatar">🦔</div>
-    <div class="header-info">
-      <div class="header-nome">Tatu</div>
-      <div class="header-status" id="status">online</div>
-    </div>
-    <button class="header-btn" onclick="abrirMenu()" title="Mais opções">⋮</button>
-  </div>
-  
-  <div class="contexto-banner" id="banner-contexto">🦔 Carregando seus dados...</div>
-  
-  <div class="chat-area" id="chat-area"></div>
-  
-  <div class="input-area">
-    <div class="input-row">
-      <button class="btn-mic" id="btn-mic" onclick="abrirGravacao()" title="Falar">🎤</button>
-      <div class="input-text-wrap">
-        <textarea class="input-text" id="input-msg" placeholder="Pergunta pro Tatu..." rows="1"></textarea>
-      </div>
-      <button class="btn-send" id="btn-send" onclick="enviarMsg()" disabled>↑</button>
+<div class="header">
+  <button class="header-back" onclick="window.location.href='home.html?v='+Date.now()">‹</button>
+  <div class="header-info">
+    <div class="tatu-avatar">🦔</div>
+    <div>
+      <div class="header-titulo">Tatu</div>
+      <div class="header-sub">Online • IA Claude</div>
     </div>
   </div>
+  <button class="header-clear" onclick="limparChat()" title="Limpar conversa">🗑</button>
 </div>
 
-<div class="rec-overlay" id="rec-overlay">
-  <div class="rec-modal" id="rec-modal"></div>
-</div>
+<div class="messages" id="messages"></div>
 
-<div class="menu-overlay" id="menu-overlay" onclick="if(event.target===this)fecharMenu()">
-  <div class="menu-content" onclick="event.stopPropagation()">
-    <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;margin-bottom:6px">Opções</div>
-    <div style="font-size:11px;color:var(--text-mute);margin-bottom:14px">Chat com Tatu</div>
-    <div class="menu-item" onclick="recarregarDados()"><div class="menu-icon">🔄</div><div class="menu-info"><div class="menu-titulo">Atualizar dados</div><div class="menu-sub">Recarrega contas, transações, dívidas</div></div></div>
-    <div class="menu-item" onclick="limparChat()"><div class="menu-icon" style="background:var(--danger-soft);color:var(--danger)">🗑️</div><div class="menu-info"><div class="menu-titulo" style="color:var(--danger)">Limpar conversa</div><div class="menu-sub">Apaga histórico desse chat</div></div></div>
-    <button class="btn btn-secondary" onclick="fecharMenu()" style="width:100%;margin-top:10px">Cancelar</button>
+<div id="sugestoes-area"></div>
+<div id="gravando-banner" style="display:none;"></div>
+
+<div class="input-area">
+  <div class="input-row">
+    <div class="input-wrap">
+      <textarea id="input-text" class="input-text" placeholder="Pergunta pro Tatu..." rows="1" oninput="autoresize(this);atualizarBotao()"></textarea>
+      <button class="input-mic" id="btn-mic" onclick="toggleRec()" title="Falar">🎤</button>
+    </div>
+    <button class="input-send" id="btn-send" onclick="enviar()" disabled>↑</button>
   </div>
 </div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
 const SUPABASE_URL='https://gmbsxrxqrxpbgyyvifcd.supabase.co';
 const SUPABASE_KEY='sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
 const IA_URL='https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
 const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
 
 let usuario,perfil;
-let dadosUsuario={contas:[],cartoes:[],transacoes:[],dividas:[],rendas:[],compromissos:[],resumo:{}};
 let mensagens=[];
-let recognition=null,isRecording=false,textoTranscrito='';
+let contextoUsuario='';
+let recognition=null,isRecording=false;
+let processando=false;
 
-const CHAVE_HIST='guardai_chat_historico';
+const SUGESTOES_INICIAIS=[
+  '📊 Como tô esse mês?',
+  '💸 Quanto eu devo?',
+  '🎯 Cadê meu plano?',
+  '💰 Quanto entra/sai?',
+  '📅 Contas dessa semana',
+  '💡 Onde posso economizar?'
+];
 
 (async()=>{
   const{data:{session}}=await supabase.auth.getSession();
@@ -174,348 +130,244 @@ const CHAVE_HIST='guardai_chat_historico';
   usuario=session.user;
   
   const{data:p}=await supabase.from('perfis').select('*').eq('id',usuario.id).maybeSingle();
-  if(!p){
-    await supabase.auth.signOut();
-    window.location.href='index.html?v='+Date.now();
-    return;
-  }
-  perfil=p;
+  perfil=p||{};
   
-  await carregarDados();
-  carregarHistorico();
-  setupInputs();
+  await montarContexto();
+  renderEmpty();
 })();
 
-async function carregarDados(){
+async function montarContexto(){
   try{
     const hoje=new Date().toISOString().split('T')[0];
-    const seisMesesAtras=new Date();
-    seisMesesAtras.setMonth(seisMesesAtras.getMonth()-6);
-    const ini=seisMesesAtras.toISOString().split('T')[0];
-    const tresMesesFrente=new Date();
-    tresMesesFrente.setMonth(tresMesesFrente.getMonth()+3);
-    const fim=tresMesesFrente.toISOString().split('T')[0];
+    const inicioMes=new Date(new Date().getFullYear(),new Date().getMonth(),1).toISOString().split('T')[0];
+    const fimMes=new Date(new Date().getFullYear(),new Date().getMonth()+1,0).toISOString().split('T')[0];
+    const proxSemana=new Date();proxSemana.setDate(proxSemana.getDate()+7);
     
-    const[c,t,d,r,co]=await Promise.all([
+    const[contas,rendas,despesas,dividas,transMes,transProxSemana,gam]=await Promise.all([
       supabase.from('contas').select('*').eq('user_id',usuario.id).eq('ativa',true),
-      supabase.from('transacoes').select('*').eq('user_id',usuario.id).gte('data',ini).lte('data',fim).order('data',{ascending:false}),
-      supabase.from('dividas').select('*').eq('user_id',usuario.id).eq('status','ativa'),
       supabase.from('rendas').select('*').eq('user_id',usuario.id),
-      supabase.from('compromissos').select('*').eq('user_id',usuario.id)
+      supabase.from('compromissos').select('*').eq('user_id',usuario.id),
+      supabase.from('dividas').select('*').eq('user_id',usuario.id).eq('status','ativa'),
+      supabase.from('transacoes').select('*').eq('user_id',usuario.id).gte('data',inicioMes).lte('data',fimMes).order('data',{ascending:false}),
+      supabase.from('transacoes').select('*').eq('user_id',usuario.id).gte('data',hoje).lte('data',proxSemana.toISOString().split('T')[0]).eq('status','prevista').eq('tipo','saida').order('data'),
+      supabase.from('gamificacao').select('*').eq('user_id',usuario.id).maybeSingle()
     ]);
     
-    const todasContas=c.data||[];
-    dadosUsuario.contas=todasContas.filter(x=>x.tipo!=='cartao_credito');
-    dadosUsuario.cartoes=todasContas.filter(x=>x.tipo==='cartao_credito');
-    dadosUsuario.transacoes=t.data||[];
-    dadosUsuario.dividas=d.data||[];
-    dadosUsuario.rendas=r.data||[];
-    dadosUsuario.compromissos=co.data||[];
+    const nome=perfil.nome||usuario.email?.split('@')[0]||'amigo';
+    const c=contas.data||[],r=rendas.data||[],d=despesas.data||[],di=dividas.data||[],tm=transMes.data||[],tps=transProxSemana.data||[];
+    const g=gam.data||{};
     
-    // Resumo calculado
-    const saldoTotal=dadosUsuario.contas.reduce((s,x)=>s+Number(x.saldo_inicial||0),0);
-    const dividasTotal=dadosUsuario.dividas.reduce((s,x)=>s+Number(x.valor_atual||0),0);
-    const rendaMensal=dadosUsuario.rendas.reduce((s,x)=>s+Number(x.valor||0),0);
-    const desp=dadosUsuario.compromissos.reduce((s,x)=>s+Number(x.valor||0),0);
-    const transHoje=dadosUsuario.transacoes.filter(x=>x.data===hoje);
-    const transMes=dadosUsuario.transacoes.filter(x=>{const dt=new Date(x.data+'T12:00:00');const ag=new Date();return dt.getMonth()===ag.getMonth()&&dt.getFullYear()===ag.getFullYear()});
-    const gastosMes=transMes.filter(x=>x.tipo==='saida'&&(x.status||'realizada')==='realizada').reduce((s,x)=>s+Number(x.valor||0),0);
-    const entradasMes=transMes.filter(x=>x.tipo==='entrada'&&(x.status||'realizada')==='realizada').reduce((s,x)=>s+Number(x.valor||0),0);
+    const contasNoCart=c.filter(x=>x.tipo!=='cartao_credito');
+    const cartoes=c.filter(x=>x.tipo==='cartao_credito');
+    const saldoContas=contasNoCart.reduce((a,x)=>a+Number(x.saldo_inicial||0),0);
+    const totalRenda=r.reduce((a,x)=>a+Number(x.valor||0),0);
+    const totalDespFixa=d.reduce((a,x)=>a+Number(x.valor||0),0);
+    const totalDividas=di.reduce((a,x)=>a+Number(x.valor_atual||0),0);
     
-    dadosUsuario.resumo={
-      saldoTotal,dividasTotal,rendaMensal,despesasFixas:desp,
-      patrimonioLiquido:saldoTotal-dividasTotal,
-      gastosMes,entradasMes,
-      qtdTransHoje:transHoje.length,
-      qtdContas:dadosUsuario.contas.length,
-      qtdCartoes:dadosUsuario.cartoes.length,
-      qtdDividas:dadosUsuario.dividas.length,
-      qtdRendas:dadosUsuario.rendas.length,
-      qtdDespesas:dadosUsuario.compromissos.length
-    };
+    const realizadasMes=tm.filter(t=>(t.status||'realizada')==='realizada');
+    const entradasMes=realizadasMes.filter(t=>t.tipo==='entrada').reduce((a,t)=>a+Number(t.valor),0);
+    const saidasMes=realizadasMes.filter(t=>t.tipo==='saida').reduce((a,t)=>a+Number(t.valor),0);
+    const vencidas=tm.filter(t=>t.status==='prevista'&&t.tipo==='saida'&&t.data<hoje);
     
-    document.getElementById('banner-contexto').innerHTML=`✅ Tatu sabe sobre ${dadosUsuario.transacoes.length} transações • ${dadosUsuario.contas.length} contas • ${dadosUsuario.dividas.length} dívidas`;
+    const niveis=['','Diagnóstico','Resgate','Estabilização','Construção','Liberdade'];
+    const objetivos={sair_dividas:'Sair das dívidas',criar_reserva:'Criar reserva de emergência',investir:'Investir',liberdade:'Liberdade financeira'};
+    
+    contextoUsuario=`PERFIL:
+- Nome: ${nome}
+- Objetivo atual: ${objetivos[perfil.objetivo_principal]||'Não definido'}
+- Nível na jornada: ${perfil.nivel_jornada||0} (${niveis[perfil.nivel_jornada||0]||'Diagnóstico'})
+- XP total: ${g.xp_total||0}
+- Streak: ${g.streak_atual||0} dias
+
+SITUAÇÃO ATUAL:
+- Saldo total nas contas: R$ ${fm(saldoContas)}
+- Renda mensal total: R$ ${fm(totalRenda)}
+- Despesas fixas mensais: R$ ${fm(totalDespFixa)}
+- Total em dívidas ativas: R$ ${fm(totalDividas)}
+- Sobra mensal estimada: R$ ${fm(totalRenda-totalDespFixa)}
+
+CONTAS (${contasNoCart.length}):
+${contasNoCart.map(x=>`- ${x.nome} (${x.banco||x.tipo}): R$ ${fm(x.saldo_inicial)}`).join('\n')||'Nenhuma'}
+
+CARTÕES (${cartoes.length}):
+${cartoes.map(x=>`- ${x.nome}: limite R$ ${fm(x.limite||0)}, vence dia ${x.dia_vencimento||'?'}, fecha dia ${x.dia_fechamento||'?'}`).join('\n')||'Nenhum'}
+
+RENDAS (${r.length}):
+${r.map(x=>`- ${x.nome}: R$ ${fm(x.valor)}/mês (dia ${x.dia_recebimento||'?'})`).join('\n')||'Nenhuma'}
+
+DESPESAS FIXAS (${d.length}):
+${d.map(x=>`- ${x.nome} (${x.categoria}): R$ ${fm(x.valor)}/mês`).join('\n')||'Nenhuma'}
+
+DÍVIDAS ATIVAS (${di.length}):
+${di.map(x=>`- ${x.credor} (${x.tipo}): R$ ${fm(x.valor_atual)} de R$ ${fm(x.valor_original)} • vence ${x.data_vencimento}`).join('\n')||'Nenhuma'}
+
+ESSE MÊS (${new Date().toLocaleDateString('pt-BR',{month:'long'})}):
+- Entradas realizadas: R$ ${fm(entradasMes)}
+- Saídas realizadas: R$ ${fm(saidasMes)}
+- Saldo do mês: R$ ${fm(entradasMes-saidasMes)}
+- Total transações: ${tm.length}
+- Contas vencidas em aberto: ${vencidas.length} (R$ ${fm(vencidas.reduce((a,t)=>a+Number(t.valor),0))})
+
+CONTAS A PAGAR PRÓXIMOS 7 DIAS (${tps.length}):
+${tps.slice(0,10).map(t=>`- ${t.data}: ${t.descricao} - R$ ${fm(t.valor)}`).join('\n')||'Nada agendado'}
+
+DATA DE HOJE: ${hoje}`;
+    
   }catch(e){
-    console.error('Erro carregando dados:',e);
-    document.getElementById('banner-contexto').innerHTML='⚠️ Erro carregando dados';
+    console.error('Erro montando contexto:',e);
+    contextoUsuario='Erro carregando dados do usuário.';
   }
 }
 
-function montarContextoSupabase(){
-  const r=dadosUsuario.resumo;
-  const fm=(v)=>(Number(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-  const hoje=new Date().toISOString().split('T')[0];
-  const meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-  const ag=new Date();
-  const dataLeg=`${ag.getDate()} de ${meses[ag.getMonth()]} de ${ag.getFullYear()}`;
-  
-  let ctx=`PERFIL DO USUÁRIO:
-- Nome: ${perfil.nome||'amigo'}
-- Objetivo: ${perfil.objetivo_principal||'não definido'}
-- Nível jornada: ${perfil.nivel_jornada||1}
-
-HOJE É: ${dataLeg} (${hoje})
-
-RESUMO FINANCEIRO:
-- Saldo total em contas: R$ ${fm(r.saldoTotal)}
-- Dívidas ativas: R$ ${fm(r.dividasTotal)}
-- Patrimônio líquido: R$ ${fm(r.patrimonioLiquido)}
-- Renda mensal estimada: R$ ${fm(r.rendaMensal)}
-- Despesas fixas estimadas: R$ ${fm(r.despesasFixas)}
-- Gastos esse mês (realizado): R$ ${fm(r.gastosMes)}
-- Entradas esse mês (realizado): R$ ${fm(r.entradasMes)}
-
-CONTAS (${dadosUsuario.contas.length}):
-${dadosUsuario.contas.map(c=>`- ${c.nome} (${c.tipo}, ${c.banco||'-'}): R$ ${fm(c.saldo_inicial)}`).join('\n')||'Nenhuma conta'}
-
-CARTÕES DE CRÉDITO (${dadosUsuario.cartoes.length}):
-${dadosUsuario.cartoes.map(c=>`- ${c.nome} (${c.banco}): limite R$ ${fm(c.limite||0)}, fechamento dia ${c.dia_fechamento||'-'}, vence dia ${c.dia_vencimento||'-'}`).join('\n')||'Nenhum cartão'}
-
-RENDAS RECORRENTES (${dadosUsuario.rendas.length}):
-${dadosUsuario.rendas.map(r=>`- ${r.nome}: R$ ${fm(r.valor)}/mês${r.dia_recebimento?' (recebe dia '+r.dia_recebimento+')':''}`).join('\n')||'Nenhuma renda'}
-
-DESPESAS FIXAS (${dadosUsuario.compromissos.length}):
-${dadosUsuario.compromissos.map(d=>`- ${d.nome} (${d.categoria}): R$ ${fm(d.valor)}${d.dia_vencimento?' (vence dia '+d.dia_vencimento+')':''}`).join('\n')||'Nenhuma despesa'}
-
-DÍVIDAS ATIVAS (${dadosUsuario.dividas.length}):
-${dadosUsuario.dividas.map(d=>`- ${d.credor} (${d.tipo}): R$ ${fm(d.valor_atual)} de R$ ${fm(d.valor_original)}, vence ${d.data_vencimento||'-'}, ${d.prioridade===1?'ATRASADA':'em dia'}`).join('\n')||'Nenhuma dívida'}
-
-TRANSAÇÕES (últimas 30):
-${dadosUsuario.transacoes.slice(0,30).map(t=>{const d=new Date(t.data+'T12:00:00').toLocaleDateString('pt-BR');return`- ${d} | ${t.tipo==='entrada'?'+':'-'}R$ ${fm(t.valor)} | ${t.descricao} | ${t.categoria||'sem cat'}${t.parcelado?` (${t.numero_parcela}/${t.total_parcelas})`:''} ${t.status==='prevista'?'[PREVISTA]':'[REALIZADA]'}`}).join('\n')||'Sem transações'}
-
-PARCELAMENTOS ATIVOS:
-${(()=>{const grp={};dadosUsuario.transacoes.filter(t=>t.parcelado&&t.grupo_parcela).forEach(t=>{if(!grp[t.grupo_parcela])grp[t.grupo_parcela]={desc:t.descricao.replace(/ \(\d+\/\d+\)$/,''),total:t.total_parcelas,realizadas:0,previstas:0,valor:Number(t.valor)};if((t.status||'realizada')==='realizada')grp[t.grupo_parcela].realizadas++;else grp[t.grupo_parcela].previstas++});return Object.values(grp).map(g=>`- ${g.desc}: ${g.realizadas}/${g.total} pagas, ${g.previstas} previstas, R$ ${fm(g.valor)}/parcela`).join('\n')||'Nenhum parcelamento'})()}`;
-  
-  return ctx;
-}
-
-function carregarHistorico(){
-  try{
-    const h=localStorage.getItem(CHAVE_HIST+'_'+usuario.id);
-    if(h){
-      mensagens=JSON.parse(h);
-      mensagens.forEach(m=>renderMsg(m,false));
-      scrollFim();
-    }else{
-      renderWelcome();
-    }
-  }catch(e){renderWelcome()}
-}
-
-function salvarHistorico(){
-  try{
-    const ultimas50=mensagens.slice(-50);
-    localStorage.setItem(CHAVE_HIST+'_'+usuario.id,JSON.stringify(ultimas50));
-  }catch(e){console.error(e)}
-}
-
-function renderWelcome(){
-  const nome=perfil.nome||'amigo';
-  const pn=nome.split(' ')[0];
-  document.getElementById('chat-area').innerHTML=`
-    <div class="welcome">
-      <div class="welcome-emoji">🦔</div>
-      <div class="welcome-titulo">Oi ${pn}!</div>
-      <div class="welcome-sub">Sou o Tatu, seu assessor financeiro 24h.<br>Pergunta o que quiser sobre suas finanças!</div>
-    </div>
-    <div class="sugestoes">
-      <div class="sugestao-bubble" onclick="enviarSugestao('Quanto eu gastei esse mês?')">💸 Quanto eu gastei esse mês?</div>
-      <div class="sugestao-bubble" onclick="enviarSugestao('Quais contas tenho a pagar essa semana?')">📅 Contas a pagar essa semana?</div>
-      <div class="sugestao-bubble" onclick="enviarSugestao('Como tá minha situação financeira?')">📊 Como tá minha situação?</div>
-      <div class="sugestao-bubble" onclick="enviarSugestao('Quanto falta pagar das minhas dívidas?')">💳 Quanto falta de dívidas?</div>
-      <div class="sugestao-bubble" onclick="enviarSugestao('Onde posso economizar?')">✂️ Onde posso economizar?</div>
+function renderEmpty(){
+  const nome=perfil.nome||usuario.email?.split('@')[0]||'amigo';
+  document.getElementById('messages').innerHTML=`
+    <div class="empty-state">
+      <div class="empty-tatu">🦔</div>
+      <div class="empty-titulo">Oi ${nome}! Tô aqui.</div>
+      <div class="empty-sub">Já sei tudo sobre sua vida financeira. Pergunta o que quiser — em texto ou áudio.</div>
     </div>
   `;
+  renderSugestoes();
 }
 
-function renderMsg(m,scroll=true){
-  // Limpa welcome
-  const w=document.querySelector('.welcome');
-  if(w)w.parentElement.removeChild(w);
-  const sgs=document.querySelector('.sugestoes');
-  if(sgs)sgs.parentElement.removeChild(sgs);
-  
-  const div=document.createElement('div');
-  div.className=`msg ${m.tipo}`;
-  const av=m.tipo==='tatu'?'🦔':(perfil.nome?perfil.nome[0].toUpperCase():'U');
-  const tempo=m.hora||new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  const conteudoHTML=formatarMarkdown(m.texto);
-  div.innerHTML=`<div class="msg-avatar">${av}</div><div class="msg-content">${conteudoHTML}<div class="msg-tempo">${tempo}</div></div>`;
-  document.getElementById('chat-area').appendChild(div);
-  if(scroll)scrollFim();
+function renderSugestoes(){
+  document.getElementById('sugestoes-area').innerHTML=`
+    <div class="sugestoes-wrap">
+      ${SUGESTOES_INICIAIS.map(s=>`<div class="sugestao-chip" onclick="usarSugestao('${s.replace(/'/g,"\\'")}')">${s}</div>`).join('')}
+    </div>`;
 }
 
-function formatarMarkdown(txt){
-  let h=txt;
-  // Escape HTML
-  h=h.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  // Bold
-  h=h.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
-  // Italic
-  h=h.replace(/(?<!\*)\*(?!\*)([^*]+)\*(?!\*)/g,'<em>$1</em>');
-  // Listas
-  const linhas=h.split('\n');
-  let resultado=[];
-  let listaAberta=false;
-  linhas.forEach(l=>{
-    if(/^[\-\*•] /.test(l)){
-      if(!listaAberta){resultado.push('<ul>');listaAberta=true}
-      resultado.push('<li>'+l.replace(/^[\-\*•] /,'')+'</li>');
-    }else{
-      if(listaAberta){resultado.push('</ul>');listaAberta=false}
-      if(l.trim())resultado.push('<p>'+l+'</p>');
-    }
-  });
-  if(listaAberta)resultado.push('</ul>');
-  return resultado.join('');
-}
-
-function showDigitando(){
-  const div=document.createElement('div');
-  div.className='digitando';
-  div.id='digitando';
-  div.innerHTML=`<div class="digitando-avatar">🦔</div><div class="digitando-bolha"><div class="digitando-ponto"></div><div class="digitando-ponto"></div><div class="digitando-ponto"></div></div>`;
-  document.getElementById('chat-area').appendChild(div);
-  scrollFim();
-}
-
-function hideDigitando(){
-  const e=document.getElementById('digitando');
-  if(e)e.remove();
-}
-
-function scrollFim(){
-  const a=document.getElementById('chat-area');
-  setTimeout(()=>{a.scrollTop=a.scrollHeight},50);
-}
-
-function setupInputs(){
-  const input=document.getElementById('input-msg');
-  const btn=document.getElementById('btn-send');
-  input.addEventListener('input',()=>{
-    input.style.height='auto';
-    input.style.height=Math.min(input.scrollHeight,120)+'px';
-    btn.disabled=!input.value.trim();
-  });
-  input.addEventListener('keydown',(e)=>{
-    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();if(input.value.trim())enviarMsg()}
-  });
-}
-
-window.enviarSugestao=function(t){
-  document.getElementById('input-msg').value=t;
-  document.getElementById('btn-send').disabled=false;
-  enviarMsg();
+window.usarSugestao=function(s){
+  document.getElementById('input-text').value=s.replace(/^[^\s]+\s/,'');
+  atualizarBotao();
+  enviar();
 };
 
-window.enviarMsg=async function(){
-  const input=document.getElementById('input-msg');
-  const texto=input.value.trim();
+function renderMensagens(){
+  if(mensagens.length===0){renderEmpty();return}
+  document.getElementById('sugestoes-area').innerHTML='';
+  const html=mensagens.map(m=>{
+    if(m.loading){
+      return`<div class="msg tatu tatu-loading"><div class="msg-bubble"><div class="tatu-dot"></div><div class="tatu-dot"></div><div class="tatu-dot"></div></div></div>`;
+    }
+    const tempo=new Date(m.tempo).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    return`<div class="msg ${m.role}"><div class="msg-bubble">${formatarTexto(m.texto)}</div><div class="msg-tempo">${tempo}</div></div>`;
+  }).join('');
+  document.getElementById('messages').innerHTML=html;
+  setTimeout(()=>{const m=document.getElementById('messages');m.scrollTop=m.scrollHeight},50);
+}
+
+function formatarTexto(t){
+  return t
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*([^\*]+)\*\*/g,'<strong>$1</strong>')
+    .replace(/(R\$\s?[\d.,]+)/g,'<em>$1</em>');
+}
+
+window.enviar=async function(){
+  if(processando)return;
+  const inp=document.getElementById('input-text');
+  const texto=inp.value.trim();
   if(!texto)return;
   
-  input.value='';
-  input.style.height='auto';
-  document.getElementById('btn-send').disabled=true;
+  processando=true;
+  inp.value='';
+  autoresize(inp);
+  atualizarBotao();
   
-  const msgUser={tipo:'user',texto,hora:new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})};
-  mensagens.push(msgUser);
-  renderMsg(msgUser);
-  
-  showDigitando();
-  document.getElementById('status').textContent='digitando...';
+  mensagens.push({role:'usuario',texto,tempo:Date.now()});
+  mensagens.push({role:'tatu',loading:true,tempo:Date.now()});
+  renderMensagens();
+  document.getElementById('sugestoes-area').innerHTML='';
   
   try{
-    const contexto=montarContextoSupabase();
+    const historicoStr=mensagens
+      .filter(m=>!m.loading)
+      .slice(-10,-1)
+      .map(m=>`${m.role==='usuario'?'Usuário':'Tatu'}: ${m.texto}`)
+      .join('\n');
     
-    // Monta histórico curto pras últimas trocas (memória do chat)
-    const ultimas5=mensagens.slice(-10,-1).map(m=>`${m.tipo==='user'?'Usuário':'Tatu'}: ${m.texto}`).join('\n');
-    const mensagemFinal=ultimas5?`HISTÓRICO RECENTE DO CHAT:\n${ultimas5}\n\nPERGUNTA ATUAL DO USUÁRIO: ${texto}`:texto;
+    const mensagemComContexto=`${historicoStr?'HISTÓRICO DA CONVERSA:\n'+historicoStr+'\n\n':''}PERGUNTA ATUAL DO USUÁRIO: ${texto}`;
     
     const r=await fetch(IA_URL,{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
-      body:JSON.stringify({tipo:'conversa',mensagem:mensagemFinal,contexto,max_tokens:1500})
+      body:JSON.stringify({
+        tipo:'conversa',
+        mensagem:mensagemComContexto,
+        contexto:contextoUsuario,
+        max_tokens:1500
+      })
     });
-    
     const d=await r.json();
-    hideDigitando();
-    document.getElementById('status').textContent='online';
     
-    if(d.resultado){
-      const resp=typeof d.resultado==='string'?d.resultado:(d.resultado.erro||'Não consegui processar.');
-      const msgTatu={tipo:'tatu',texto:resp,hora:new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})};
-      mensagens.push(msgTatu);
-      renderMsg(msgTatu);
-      salvarHistorico();
+    mensagens=mensagens.filter(m=>!m.loading);
+    
+    if(d.resultado&&typeof d.resultado==='string'){
+      mensagens.push({role:'tatu',texto:d.resultado,tempo:Date.now()});
+    }else if(d.resultado?.erro){
+      mensagens.push({role:'tatu',texto:'🦔 '+d.resultado.erro,tempo:Date.now()});
     }else{
-      const msgErr={tipo:'tatu',texto:'🦔 Deu erro aqui. Tenta de novo em alguns segundos?',hora:new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})};
-      mensagens.push(msgErr);
-      renderMsg(msgErr);
+      mensagens.push({role:'tatu',texto:'🦔 Algo deu errado. Tenta de novo?',tempo:Date.now()});
     }
+    renderMensagens();
   }catch(e){
-    hideDigitando();
-    document.getElementById('status').textContent='online';
-    const msgErr={tipo:'tatu',texto:'🦔 Não consegui falar com a IA agora. Verifica sua conexão e tenta de novo.',hora:new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})};
-    mensagens.push(msgErr);
-    renderMsg(msgErr);
+    mensagens=mensagens.filter(m=>!m.loading);
+    mensagens.push({role:'tatu',texto:'🦔 Erro de conexão: '+e.message,tempo:Date.now()});
+    renderMensagens();
   }
+  
+  processando=false;
 };
 
-window.abrirGravacao=function(){
+window.toggleRec=function(){if(isRecording)pararRec();else iniciarRec()};
+
+function iniciarRec(){
   if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){
     alert('🦔 Seu navegador não suporta áudio.\n\nUse Safari (iPhone) ou Chrome.');
     return;
   }
-  textoTranscrito='';isRecording=false;
-  renderRec();
-  document.getElementById('rec-overlay').classList.add('show');
-};
-
-function renderRec(){
-  document.getElementById('rec-modal').innerHTML=`
-    <div class="rec-titulo">🎤 Falar com Tatu</div>
-    <div class="rec-sub">Toque pra falar. Toque de novo pra parar.</div>
-    <button class="rec-mic ${isRecording?'recording':''}" onclick="toggleRec()">${isRecording?'⏹️':'🎤'}</button>
-    <div class="rec-status ${isRecording?'recording':''}">${isRecording?'🔴 Ouvindo... fale agora':(textoTranscrito?'✅ Pronto!':'Toque pra falar')}</div>
-    <div class="rec-transcricao ${textoTranscrito?'':'placeholder'}" id="rec-transc">${textoTranscrito||'O que você falar aparece aqui...'}</div>
-    <div class="rec-acoes">
-      <button class="btn btn-secondary" onclick="fecharRec()">Cancelar</button>
-      <button class="btn btn-primary" onclick="enviarAudio()" ${!textoTranscrito||isRecording?'disabled':''}>📤 Enviar</button>
-    </div>
-  `;
-}
-
-window.toggleRec=function(){
-  if(isRecording)pararRec();
-  else iniciarRec();
-};
-
-function iniciarRec(){
   const SR=window.webkitSpeechRecognition||window.SpeechRecognition;
   recognition=new SR();
   recognition.lang='pt-BR';
   recognition.continuous=true;
   recognition.interimResults=true;
-  let tF='',tI='';
+  
+  let tF='';
   recognition.onresult=(e)=>{
-    tI='';
+    let tI='';
     for(let i=e.resultIndex;i<e.results.length;i++){
       if(e.results[i].isFinal)tF+=e.results[i][0].transcript+' ';
       else tI+=e.results[i][0].transcript;
     }
-    textoTranscrito=(tF+tI).trim();
-    const box=document.getElementById('rec-transc');
-    if(box){box.textContent=textoTranscrito||'Ouvindo...';box.classList.remove('placeholder')}
+    const inp=document.getElementById('input-text');
+    inp.value=(tF+tI).trim();
+    autoresize(inp);
+    atualizarBotao();
   };
+  
   recognition.onerror=(e)=>{
     if(e.error==='no-speech')return;
-    if(e.error==='not-allowed')alert('🎤 Permissão negada. Libera no Safari.');
-    else alert('Erro: '+e.error);
+    if(e.error==='not-allowed')alert('🎤 Permissão de microfone negada.');
     pararRec();
   };
-  recognition.onend=()=>{if(isRecording){try{recognition.start()}catch(e){}}};
-  try{recognition.start();isRecording=true;renderRec()}
-  catch(e){alert('Erro: '+e.message)}
+  
+  recognition.onend=()=>{
+    if(isRecording){try{recognition.start()}catch(e){}}
+  };
+  
+  try{
+    recognition.start();
+    isRecording=true;
+    document.getElementById('btn-mic').classList.add('recording');
+    document.getElementById('btn-mic').textContent='⏹️';
+    document.getElementById('gravando-banner').style.display='flex';
+    document.getElementById('gravando-banner').className='gravando-banner';
+    document.getElementById('gravando-banner').innerHTML=`<div class="gravando-dot"></div><div>🔴 Gravando... toque no ⏹️ pra parar</div>`;
+  }catch(e){
+    alert('Erro iniciando gravação: '+e.message);
+  }
 }
 
 function pararRec(){
@@ -524,40 +376,33 @@ function pararRec(){
     try{recognition.stop()}catch(e){}
     recognition=null;
   }
-  renderRec();
+  document.getElementById('btn-mic').classList.remove('recording');
+  document.getElementById('btn-mic').textContent='🎤';
+  document.getElementById('gravando-banner').style.display='none';
 }
 
-window.fecharRec=function(){
-  if(isRecording)pararRec();
-  document.getElementById('rec-overlay').classList.remove('show');
-  textoTranscrito='';
+window.autoresize=function(el){
+  el.style.height='auto';
+  el.style.height=Math.min(el.scrollHeight,120)+'px';
 };
 
-window.enviarAudio=function(){
-  if(!textoTranscrito)return;
-  document.getElementById('input-msg').value=textoTranscrito;
-  document.getElementById('btn-send').disabled=false;
-  fecharRec();
-  enviarMsg();
-};
-
-window.abrirMenu=function(){document.getElementById('menu-overlay').classList.add('show')};
-window.fecharMenu=function(){document.getElementById('menu-overlay').classList.remove('show')};
-
-window.recarregarDados=async function(){
-  fecharMenu();
-  document.getElementById('banner-contexto').innerHTML='🔄 Atualizando dados...';
-  await carregarDados();
+window.atualizarBotao=function(){
+  const txt=document.getElementById('input-text').value.trim();
+  document.getElementById('btn-send').disabled=!txt||processando;
 };
 
 window.limparChat=function(){
-  if(!confirm('Limpar TODO o histórico desse chat?\n\n(Seus dados financeiros não são afetados)'))return;
+  if(mensagens.length===0)return;
+  if(!confirm('Limpar essa conversa?'))return;
   mensagens=[];
-  localStorage.removeItem(CHAVE_HIST+'_'+usuario.id);
-  document.getElementById('chat-area').innerHTML='';
-  renderWelcome();
-  fecharMenu();
+  renderEmpty();
 };
+
+function fm(v){return(Number(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
+
+document.getElementById('input-text').addEventListener('keydown',(e)=>{
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();enviar()}
+});
 </script>
 </body>
 </html>
