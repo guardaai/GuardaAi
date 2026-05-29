@@ -8,907 +8,647 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
-  :root {
-    --bg: #0a0a0a; --bg-card: #141414; --bg-elev: #1c1c1c; --bg-input: #181818;
-    --border: #252525; --border-strong: #353535;
-    --brand: #00d97e; --brand-hover: #00ba6b; --brand-soft: rgba(0, 217, 126, 0.1);
-    --danger: #ff4757; --danger-soft: rgba(255, 71, 87, 0.1);
-    --warning: #ffb800; --warning-soft: rgba(255, 184, 0, 0.1);
-    --info: #38bdf8; --info-soft: rgba(56, 189, 248, 0.1);
-    --ia: #a855f7; --ia-soft: rgba(168, 85, 247, 0.1);
-    --text: #ffffff; --text-mute: #a3a3a3; --text-faint: #525252;
-  }
-  html, body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh; overflow-x: hidden; }
-  body { padding-bottom: 120px; }
-  input, textarea, select { color: #fff !important; -webkit-text-fill-color: #fff !important; caret-color: var(--brand); }
-  input:-webkit-autofill, textarea:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px var(--bg-input) inset !important; -webkit-text-fill-color: #fff !important; }
-  
-  .header { padding: 16px 20px; background: var(--bg); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 12px; }
-  .header-back { width: 36px; height: 36px; border-radius: 10px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; }
-  .header-title { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; flex: 1; }
-  
-  .container { max-width: 480px; margin: 0 auto; padding: 16px 20px; }
-  
-  .mes-nav { display: flex; align-items: center; justify-content: space-between; background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 8px 4px; margin-bottom: 16px; }
-  .mes-nav-btn { width: 36px; height: 36px; border-radius: 8px; background: transparent; border: none; color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
-  .mes-nav-btn:active { background: var(--bg-elev); }
-  .mes-atual { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; text-transform: capitalize; }
-  
-  .resumo-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-  .resumo-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 12px; }
-  .resumo-label { font-size: 10px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; font-weight: 500; }
-  .resumo-valor { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; }
-  .resumo-valor.brand { color: var(--brand); }
-  .resumo-valor.danger { color: var(--danger); }
-  
-  .filtros { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
-  .filtros::-webkit-scrollbar { display: none; }
-  .filtro-pill { background: var(--bg-card); border: 1px solid var(--border); border-radius: 100px; padding: 8px 14px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; flex-shrink: 0; color: var(--text-mute); }
-  .filtro-pill.active { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
-  
-  .secao-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--text-mute); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin: 16px 4px 8px; }
-  
-  .trans-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
-  .trans-card:active { transform: scale(0.99); }
-  .trans-card.vencida { border-left: 3px solid var(--danger); }
-  .trans-card.hoje { border-left: 3px solid var(--warning); }
-  .trans-icone { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
-  .trans-icone.entrada { background: var(--brand-soft); color: var(--brand); }
-  .trans-icone.saida { background: var(--danger-soft); color: var(--danger); }
-  .trans-info { flex: 1; min-width: 0; }
-  .trans-desc { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .trans-data { font-size: 11px; color: var(--text-mute); display: flex; align-items: center; gap: 6px; }
-  .trans-badge { font-size: 9px; padding: 2px 5px; border-radius: 4px; font-weight: 700; text-transform: uppercase; }
-  .trans-badge.prevista { background: var(--info-soft); color: var(--info); }
-  .trans-badge.vencida { background: var(--danger-soft); color: var(--danger); }
-  .trans-badge.hoje { background: var(--warning-soft); color: var(--warning); }
-  .trans-valor { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; white-space: nowrap; }
-  .trans-valor.entrada { color: var(--brand); }
-  .trans-valor.saida { color: var(--danger); }
-  
-  .empty-state { background: var(--bg-card); border: 1px dashed var(--border-strong); border-radius: 14px; padding: 40px 20px; text-align: center; margin-top: 20px; }
-  .empty-emoji { font-size: 48px; margin-bottom: 12px; }
-  .empty-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-  .empty-sub { font-size: 13px; color: var(--text-mute); }
-  
-  .loader-circle { width: 32px; height: 32px; border: 3px solid var(--border); border-radius: 50%; border-top-color: var(--brand); animation: spin 0.8s linear infinite; margin: 40px auto; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  
-  /* === FABS (botões flutuantes) === */
-  .fabs-container { position: fixed; bottom: 24px; right: 20px; z-index: 50; display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
-  .fab { border-radius: 50%; border: none; cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
-  .fab:active { transform: scale(0.95); }
-  .fab-audio { width: 64px; height: 64px; background: linear-gradient(135deg, var(--ia) 0%, #9333ea 100%); color: #fff; font-size: 28px; box-shadow: 0 8px 24px rgba(168, 85, 247, 0.5); }
-  .fab-add { width: 56px; height: 56px; background: var(--brand); color: #001a0e; font-size: 26px; font-weight: 700; }
-  
-  /* === MODAL ÁUDIO === */
-  .audio-overlay { position: fixed; inset: 0; background: rgba(10,10,10,0.95); z-index: 9000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(8px); }
-  .audio-overlay.show { display: flex; }
-  .audio-modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 30px 24px; max-width: 380px; width: 100%; text-align: center; }
-  .audio-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 6px; }
-  .audio-sub { font-size: 13px; color: var(--text-mute); margin-bottom: 24px; line-height: 1.5; }
-  
-  .mic-btn { width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, var(--ia) 0%, #9333ea 100%); border: none; color: #fff; font-size: 56px; cursor: pointer; box-shadow: 0 12px 40px rgba(168, 85, 247, 0.5); margin: 0 auto 20px; display: block; transition: transform 0.2s; position: relative; }
-  .mic-btn:active { transform: scale(0.95); }
-  .mic-btn.recording { animation: pulse 1.5s infinite; }
-  @keyframes pulse { 0%, 100% { box-shadow: 0 12px 40px rgba(168, 85, 247, 0.5); } 50% { box-shadow: 0 12px 60px rgba(168, 85, 247, 0.9); transform: scale(1.05); } }
-  
-  .mic-status { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; color: var(--ia); margin-bottom: 14px; min-height: 22px; }
-  .mic-status.recording { color: var(--danger); }
-  
-  .transcricao-box { background: var(--bg-input); border: 1px solid var(--border); border-radius: 14px; padding: 14px; min-height: 80px; margin-bottom: 16px; font-size: 14px; line-height: 1.5; text-align: left; }
-  .transcricao-box.placeholder { color: var(--text-faint); font-style: italic; text-align: center; }
-  
-  .exemplos { background: var(--bg-input); border-radius: 12px; padding: 12px; margin-bottom: 16px; text-align: left; }
-  .exemplos-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 10px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; font-weight: 700; }
-  .exemplo-item { font-size: 12px; color: var(--text-mute); padding: 3px 0; font-style: italic; }
-  .exemplo-item::before { content: '"'; }
-  .exemplo-item::after { content: '"'; }
-  
-  .audio-acoes { display: flex; gap: 10px; }
-  .btn { padding: 14px; border-radius: 12px; border: none; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; flex: 1; min-height: 50px; }
-  .btn-primary { background: var(--brand); color: #001a0e; }
-  .btn-primary:active { background: var(--brand-hover); }
-  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; background: var(--bg-elev); color: var(--text-faint); }
-  .btn-secondary { background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); }
-  .btn-secondary:active { background: var(--border); }
-  .btn-danger { background: var(--danger); color: #fff; }
-  .btn-ia { background: var(--ia); color: #fff; }
-  
-  /* === MODAL DE CONFIRMAÇÃO ÁUDIO === */
-  .conf-modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 24px; max-width: 380px; width: 100%; }
-  .conf-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
-  .conf-sub { font-size: 12px; color: var(--text-mute); margin-bottom: 18px; }
-  .conf-tatu-box { background: var(--ia-soft); border: 1px solid rgba(168,85,247,0.3); border-radius: 14px; padding: 14px; margin-bottom: 16px; display: flex; gap: 10px; align-items: flex-start; }
-  .conf-tatu-emoji { font-size: 28px; }
-  .conf-tatu-texto { font-size: 13px; line-height: 1.5; color: var(--text); }
-  
-  .conf-row { display: grid; grid-template-columns: 100px 1fr; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
-  .conf-label { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
-  .conf-valor { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; }
-  .conf-valor.entrada { color: var(--brand); }
-  .conf-valor.saida { color: var(--danger); }
-  
-  /* === MODAL ADD MANUAL === */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; display: none; align-items: flex-end; justify-content: center; backdrop-filter: blur(4px); }
-  .modal-overlay.show { display: flex; }
-  .modal { background: var(--bg-card); border-top: 1px solid var(--border); border-radius: 24px 24px 0 0; padding: 20px; max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-  .modal-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
-  .modal-close { width: 32px; height: 32px; border-radius: 10px; background: var(--bg-elev); border: 1px solid var(--border); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
-  
-  .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 12px; color: var(--text-mute); margin-bottom: 6px; font-weight: 500; }
-  .field input, .field select, .field textarea { width: 100%; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; padding: 14px; color: var(--text); font-size: 16px; font-family: 'Inter', sans-serif; min-height: 48px; }
-  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--brand); }
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  
-  .tipo-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-  .tipo-tab { background: var(--bg-input); border: 2px solid var(--border); border-radius: 12px; padding: 12px; text-align: center; cursor: pointer; font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: var(--text-mute); }
-  .tipo-tab.active.entrada { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
-  .tipo-tab.active.saida { background: var(--danger-soft); border-color: var(--danger); color: var(--danger); }
-  
-  .valor-input-wrapper { display: flex; align-items: center; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
-  .valor-input-wrapper:focus-within { border-color: var(--brand); }
-  .valor-prefix { color: var(--text-mute); font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; margin-right: 6px; }
-  .valor-input-wrapper input { background: transparent; border: none; flex: 1; text-align: right; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; padding: 0; min-height: 0; }
-  
-  .opc-foto { background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 14px; text-align: center; cursor: pointer; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; }
-  .opc-foto:active { transform: scale(0.98); }
-  .opc-foto-icon { font-size: 28px; }
-  .opc-foto-content { flex: 1; text-align: left; }
-  .opc-foto-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: var(--ia); margin-bottom: 2px; }
-  .opc-foto-sub { font-size: 11px; color: var(--text-mute); }
-  
-  .upload-hidden { display: none; }
-  .ia-spinner { width: 40px; height: 40px; border: 3px solid var(--ia-soft); border-top-color: var(--ia); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 30px auto 16px; }
-  
-  /* === MODAL EDIT/DEL === */
-  .acoes-modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px 24px 0 0; padding: 20px; max-width: 480px; width: 100%; }
-  .acoes-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-  .acoes-sub { font-size: 11px; color: var(--text-mute); margin-bottom: 16px; }
-  .acao-btn { display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 12px; cursor: pointer; }
-  .acao-btn:active { background: var(--bg-elev); }
-  .acao-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--bg-input); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-  .acao-icon.brand { background: var(--brand-soft); color: var(--brand); }
-  .acao-icon.danger { background: var(--danger-soft); color: var(--danger); }
-  .acao-info { flex: 1; }
-  .acao-titulo { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; }
-  .acao-info-sub { font-size: 11px; color: var(--text-mute); }
-  
-  .xp-toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #001a0e; padding: 12px 20px; border-radius: 100px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; z-index: 9999; box-shadow: 0 8px 32px rgba(0, 217, 126, 0.4); display: none; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+:root{--bg:#0a0a0a;--bg-card:#141414;--bg-elev:#1c1c1c;--bg-input:#181818;--border:#252525;--border-strong:#353535;--brand:#00d97e;--brand-hover:#00ba6b;--brand-soft:rgba(0,217,126,0.1);--danger:#ff4757;--danger-soft:rgba(255,71,87,0.1);--warning:#ffb800;--warning-soft:rgba(255,184,0,0.1);--info:#38bdf8;--info-soft:rgba(56,189,248,0.1);--ia:#a855f7;--ia-soft:rgba(168,85,247,0.1);--text:#fff;--text-mute:#a3a3a3;--text-faint:#525252}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;min-height:100vh;overflow-x:hidden}
+body{padding-bottom:120px}
+input,textarea,select{color:#fff!important;-webkit-text-fill-color:#fff!important;caret-color:var(--brand)}
+input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px var(--bg-input) inset!important;-webkit-text-fill-color:#fff!important}
+.header{padding:16px 20px;background:var(--bg);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px}
+.header-back{width:36px;height:36px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px}
+.header-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;flex:1}
+.container{max-width:480px;margin:0 auto;padding:16px 20px}
+.mes-nav{display:flex;align-items:center;justify-content:space-between;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:8px 4px;margin-bottom:16px}
+.mes-nav-btn{width:36px;height:36px;border-radius:8px;background:transparent;border:none;color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
+.mes-nav-btn:active{background:var(--bg-elev)}
+.mes-atual{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;text-transform:capitalize}
+.resumo-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.resumo-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:12px}
+.resumo-label{font-size:10px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;font-weight:500}
+.resumo-valor{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700}
+.resumo-valor.brand{color:var(--brand)}
+.resumo-valor.danger{color:var(--danger)}
+.filtros{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.filtros::-webkit-scrollbar{display:none}
+.filtro-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:100px;padding:8px 14px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;color:var(--text-mute)}
+.filtro-pill.active{background:var(--brand-soft);border-color:var(--brand);color:var(--brand)}
+.secao-titulo{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:16px 4px 8px}
+.trans-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.3s}
+.trans-card:active{transform:scale(0.99)}
+.trans-card.vencida{border-left:3px solid var(--danger)}
+.trans-card.hoje{border-left:3px solid var(--warning)}
+.trans-card.novo{animation:piscaItem 3.5s ease-out;background:var(--brand-soft);border-color:var(--brand);box-shadow:0 0 24px rgba(0,217,126,0.3)}
+@keyframes piscaItem{0%{transform:scale(0.95);opacity:0;background:var(--brand);border-color:var(--brand)}10%{transform:scale(1.02);opacity:1}30%{background:var(--brand-soft);transform:scale(1)}70%{background:var(--brand-soft);box-shadow:0 0 30px rgba(0,217,126,0.5)}100%{background:var(--bg-card);box-shadow:none}}
+.trans-icone{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.trans-icone.entrada{background:var(--brand-soft);color:var(--brand)}
+.trans-icone.saida{background:var(--danger-soft);color:var(--danger)}
+.trans-info{flex:1;min-width:0}
+.trans-desc{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trans-data{font-size:11px;color:var(--text-mute);display:flex;align-items:center;gap:6px}
+.trans-badge{font-size:9px;padding:2px 5px;border-radius:4px;font-weight:700;text-transform:uppercase}
+.trans-badge.prevista{background:var(--info-soft);color:var(--info)}
+.trans-badge.vencida{background:var(--danger-soft);color:var(--danger)}
+.trans-badge.hoje{background:var(--warning-soft);color:var(--warning)}
+.trans-valor{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;white-space:nowrap}
+.trans-valor.entrada{color:var(--brand)}
+.trans-valor.saida{color:var(--danger)}
+.empty-state{background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:40px 20px;text-align:center;margin-top:20px}
+.empty-emoji{font-size:48px;margin-bottom:12px}
+.empty-titulo{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;margin-bottom:4px}
+.empty-sub{font-size:13px;color:var(--text-mute)}
+.loader-circle{width:32px;height:32px;border:3px solid var(--border);border-radius:50%;border-top-color:var(--brand);animation:spin 0.8s linear infinite;margin:40px auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.fabs-container{position:fixed;bottom:24px;right:20px;z-index:50;display:flex;flex-direction:column;gap:12px;align-items:flex-end}
+.fab{border-radius:50%;border:none;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;transition:transform 0.2s}
+.fab:active{transform:scale(0.95)}
+.fab-audio{width:64px;height:64px;background:linear-gradient(135deg,var(--ia) 0%,#9333ea 100%);color:#fff;font-size:28px;box-shadow:0 8px 24px rgba(168,85,247,0.5)}
+.fab-add{width:56px;height:56px;background:var(--brand);color:#001a0e;font-size:26px;font-weight:700}
+.audio-overlay{position:fixed;inset:0;background:rgba(10,10,10,0.95);z-index:9000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
+.audio-overlay.show{display:flex}
+.audio-modal{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:30px 24px;max-width:380px;width:100%;text-align:center}
+.audio-titulo{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px}
+.audio-sub{font-size:13px;color:var(--text-mute);margin-bottom:24px;line-height:1.5}
+.mic-btn{width:140px;height:140px;border-radius:50%;background:linear-gradient(135deg,var(--ia) 0%,#9333ea 100%);border:none;color:#fff;font-size:56px;cursor:pointer;box-shadow:0 12px 40px rgba(168,85,247,0.5);margin:0 auto 20px;display:block;transition:transform 0.2s;position:relative}
+.mic-btn:active{transform:scale(0.95)}
+.mic-btn.recording{animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 12px 40px rgba(168,85,247,0.5)}50%{box-shadow:0 12px 60px rgba(168,85,247,0.9);transform:scale(1.05)}}
+.mic-status{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--ia);margin-bottom:14px;min-height:22px}
+.mic-status.recording{color:var(--danger)}
+.transcricao-box{background:var(--bg-input);border:1px solid var(--border);border-radius:14px;padding:14px;min-height:80px;margin-bottom:16px;font-size:14px;line-height:1.5;text-align:left}
+.transcricao-box.placeholder{color:var(--text-faint);font-style:italic;text-align:center}
+.exemplos{background:var(--bg-input);border-radius:12px;padding:12px;margin-bottom:16px;text-align:left}
+.exemplos-titulo{font-family:'Space Grotesk',sans-serif;font-size:10px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;font-weight:700}
+.exemplo-item{font-size:12px;color:var(--text-mute);padding:3px 0;font-style:italic}
+.exemplo-item::before{content:'"'}
+.exemplo-item::after{content:'"'}
+.audio-acoes{display:flex;gap:10px}
+.btn{padding:14px;border-radius:12px;border:none;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;cursor:pointer;flex:1;min-height:50px}
+.btn-primary{background:var(--brand);color:#001a0e}
+.btn-primary:active{background:var(--brand-hover)}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;background:var(--bg-elev);color:var(--text-faint)}
+.btn-secondary{background:var(--bg-elev);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:active{background:var(--border)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-ia{background:var(--ia);color:#fff}
+.conf-modal{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:24px;max-width:380px;width:100%}
+.conf-titulo{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px}
+.conf-sub{font-size:12px;color:var(--text-mute);margin-bottom:18px}
+.conf-tatu-box{background:var(--ia-soft);border:1px solid rgba(168,85,247,0.3);border-radius:14px;padding:14px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
+.conf-tatu-emoji{font-size:28px}
+.conf-tatu-texto{font-size:13px;line-height:1.5;color:var(--text)}
+.conf-row{display:grid;grid-template-columns:100px 1fr;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+.conf-label{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.05em;font-weight:600}
+.conf-valor{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700}
+.conf-valor.entrada{color:var(--brand)}
+.conf-valor.saida{color:var(--danger)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.show{display:flex}
+.modal{background:var(--bg-card);border-top:1px solid var(--border);border-radius:24px 24px 0 0;padding:20px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.modal-titulo{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.modal-close{width:32px;height:32px;border-radius:10px;background:var(--bg-elev);border:1px solid var(--border);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;color:var(--text-mute);margin-bottom:6px;font-weight:500}
+.field input,.field select,.field textarea{width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:12px;padding:14px;color:var(--text);font-size:16px;font-family:'Inter',sans-serif;min-height:48px}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--brand)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tipo-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.tipo-tab{background:var(--bg-input);border:2px solid var(--border);border-radius:12px;padding:12px;text-align:center;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--text-mute)}
+.tipo-tab.active.entrada{background:var(--brand-soft);border-color:var(--brand);color:var(--brand)}
+.tipo-tab.active.saida{background:var(--danger-soft);border-color:var(--danger);color:var(--danger)}
+.valor-input-wrapper{display:flex;align-items:center;background:var(--bg-input);border:1px solid var(--border);border-radius:12px;padding:14px}
+.valor-input-wrapper:focus-within{border-color:var(--brand)}
+.valor-prefix{color:var(--text-mute);font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;margin-right:6px}
+.valor-input-wrapper input{background:transparent;border:none;flex:1;text-align:right;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;padding:0;min-height:0}
+.opc-foto{background:linear-gradient(135deg,var(--ia-soft) 0%,var(--bg-card) 100%);border:1px solid rgba(168,85,247,0.3);border-radius:12px;padding:14px;text-align:center;cursor:pointer;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.opc-foto:active{transform:scale(0.98)}
+.opc-foto-icon{font-size:28px}
+.opc-foto-content{flex:1;text-align:left}
+.opc-foto-titulo{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--ia);margin-bottom:2px}
+.opc-foto-sub{font-size:11px;color:var(--text-mute)}
+.upload-hidden{display:none}
+.ia-spinner{width:40px;height:40px;border:3px solid var(--ia-soft);border-top-color:var(--ia);border-radius:50%;animation:spin 0.8s linear infinite;margin:30px auto 16px}
+.revisao-card{background:linear-gradient(135deg,var(--ia-soft) 0%,var(--bg-card) 100%);border:1px solid var(--ia);border-radius:14px;padding:14px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start}
+.revisao-emoji{font-size:24px}
+.revisao-texto{font-size:13px;line-height:1.5;color:var(--text)}
+.revisao-texto strong{color:var(--ia)}
+.acoes-modal{background:var(--bg-card);border:1px solid var(--border);border-radius:24px 24px 0 0;padding:20px;max-width:480px;width:100%}
+.acoes-titulo{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;margin-bottom:4px}
+.acoes-sub{font-size:11px;color:var(--text-mute);margin-bottom:16px}
+.acao-btn{display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;cursor:pointer}
+.acao-btn:active{background:var(--bg-elev)}
+.acao-icon{width:40px;height:40px;border-radius:10px;background:var(--bg-input);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.acao-icon.brand{background:var(--brand-soft);color:var(--brand)}
+.acao-icon.danger{background:var(--danger-soft);color:var(--danger)}
+.acao-info{flex:1}
+.acao-titulo{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600}
+.acao-info-sub{font-size:11px;color:var(--text-mute)}
+.xp-toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--brand);color:#001a0e;padding:14px 24px;border-radius:100px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;z-index:9999;box-shadow:0 8px 32px rgba(0,217,126,0.4);display:none;max-width:90%;text-align:center;animation:toastIn 0.3s ease}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,-20px)}to{opacity:1;transform:translate(-50%,0)}}
 </style>
 </head>
 <body>
-
 <div class="header">
-  <button class="header-back" onclick="window.location.href='home.html?v=' + Date.now()">‹</button>
-  <div class="header-title">Transações</div>
-  <button class="header-back" onclick="window.location.href='dashboard.html?v=1'" title="Dashboard">📊</button>
+<button class="header-back" onclick="window.location.href='home.html?v=' + Date.now()">‹</button>
+<div class="header-title">Transações</div>
+<button class="header-back" onclick="window.location.href='dashboard.html?v=1'" title="Dashboard">📊</button>
 </div>
-
 <div class="container" id="container"><div class="loader-circle"></div></div>
-
 <div class="fabs-container">
-  <button class="fab fab-audio" onclick="abrirAudio()" title="Falar transação">🎤</button>
-  <button class="fab fab-add" onclick="abrirAddManual()" title="Adicionar manual">+</button>
+<button class="fab fab-audio" onclick="abrirAudio()" title="Falar transação">🎤</button>
+<button class="fab fab-add" onclick="abrirAddManual()" title="Adicionar manual">+</button>
 </div>
-
 <input type="file" id="input-foto" class="upload-hidden" accept="image/*" onchange="processarFoto(event)">
-
-<!-- MODAL ÁUDIO -->
 <div class="audio-overlay" id="audio-overlay">
-  <div class="audio-modal" id="audio-modal-content"></div>
+<div class="audio-modal" id="audio-modal-content"></div>
 </div>
-
-<!-- MODAL ADD MANUAL -->
 <div class="modal-overlay" id="modal-add" onclick="if(event.target===this)fecharModal('modal-add')">
-  <div class="modal" onclick="event.stopPropagation()" id="modal-add-content"></div>
+<div class="modal" onclick="event.stopPropagation()" id="modal-add-content"></div>
 </div>
-
-<!-- MODAL AÇÕES (edit/del) -->
 <div class="modal-overlay" id="modal-acoes" onclick="if(event.target===this)fecharModal('modal-acoes')">
-  <div class="acoes-modal" onclick="event.stopPropagation()" id="acoes-content"></div>
+<div class="acoes-modal" onclick="event.stopPropagation()" id="acoes-content"></div>
 </div>
-
 <div class="xp-toast" id="xp-toast">+10 XP</div>
 
 <script type="module">
-  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-  const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
-  const IA_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
-  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const SUPABASE_URL='https://gmbsxrxqrxpbgyyvifcd.supabase.co';
+const SUPABASE_KEY='sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+const IA_URL='https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
+const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const CATEGORIAS={alimentacao:{e:'🍔',n:'Alimentação',c:'#ff6b35'},transporte:{e:'🚗',n:'Transporte',c:'#3b82f6'},moradia:{e:'🏠',n:'Moradia',c:'#00d97e'},lazer:{e:'🎮',n:'Lazer',c:'#8b5cf6'},saude:{e:'🏥',n:'Saúde',c:'#ef4444'},educacao:{e:'🎓',n:'Educação',c:'#3b82f6'},vestuario:{e:'👕',n:'Vestuário',c:'#ec4899'},compras:{e:'🛒',n:'Compras',c:'#f59e0b'},servicos:{e:'🛠️',n:'Serviços',c:'#14b8a6'},salario:{e:'💼',n:'Salário',c:'#00d97e'},transferencia:{e:'🔁',n:'Transferência',c:'#a855f7'},aluguel:{e:'🏠',n:'Aluguel',c:'#00d97e'},luz:{e:'💡',n:'Luz',c:'#ffb800'},agua:{e:'💧',n:'Água',c:'#38bdf8'},gas:{e:'🔥',n:'Gás',c:'#ff6b35'},internet:{e:'🌐',n:'Internet',c:'#a855f7'},streaming:{e:'🎬',n:'Streaming',c:'#8b5cf6'},academia:{e:'💪',n:'Academia',c:'#f59e0b'},plano_saude:{e:'🏥',n:'Plano saúde',c:'#ef4444'},combustivel:{e:'⛽',n:'Combustível',c:'#ff6b35'},outro:{e:'📌',n:'Outro',c:'#94a3b8'}};
+
+let usuario,perfil;
+let contas=[];
+let transacoes=[];
+let mesRef=new Date();
+let filtroAtual='todas';
+let recognition=null,isRecording=false,textoTranscrito='',propostaAudio=null;
+let ultimoItemNovoId=null;
+
+(async()=>{
+  const{data:{session}}=await supabase.auth.getSession();
+  if(!session){window.location.href='index.html?v='+Date.now();return}
+  usuario=session.user;
+  const{data:p}=await supabase.from('perfis').select('*').eq('id',usuario.id).maybeSingle();
+  perfil=p||{};
+  await carregarContas();
+  await carregar();
+})();
+
+async function carregarContas(){
+  const{data}=await supabase.from('contas').select('*').eq('user_id',usuario.id).eq('ativa',true);
+  contas=data||[];
+}
+
+async function carregar(){
+  const ini=new Date(mesRef.getFullYear(),mesRef.getMonth(),1).toISOString().split('T')[0];
+  const fim=new Date(mesRef.getFullYear(),mesRef.getMonth()+1,0).toISOString().split('T')[0];
+  const{data}=await supabase.from('transacoes').select('*').eq('user_id',usuario.id).gte('data',ini).lte('data',fim).order('data',{ascending:false});
+  transacoes=data||[];
+  render();
+}
+
+function render(){
+  const meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  const mesNome=`${meses[mesRef.getMonth()]} de ${mesRef.getFullYear()}`;
+  const hoje=new Date().toISOString().split('T')[0];
   
-  const CATEGORIAS = {
-    alimentacao: { e: '🍔', n: 'Alimentação', c: '#ff6b35' },
-    transporte: { e: '🚗', n: 'Transporte', c: '#3b82f6' },
-    moradia: { e: '🏠', n: 'Moradia', c: '#00d97e' },
-    lazer: { e: '🎮', n: 'Lazer', c: '#8b5cf6' },
-    saude: { e: '🏥', n: 'Saúde', c: '#ef4444' },
-    educacao: { e: '🎓', n: 'Educação', c: '#3b82f6' },
-    vestuario: { e: '👕', n: 'Vestuário', c: '#ec4899' },
-    compras: { e: '🛒', n: 'Compras', c: '#f59e0b' },
-    servicos: { e: '🛠️', n: 'Serviços', c: '#14b8a6' },
-    salario: { e: '💼', n: 'Salário', c: '#00d97e' },
-    transferencia: { e: '🔁', n: 'Transferência', c: '#a855f7' },
-    outro: { e: '📌', n: 'Outro', c: '#94a3b8' }
-  };
+  let lista=transacoes;
+  if(filtroAtual==='entradas')lista=lista.filter(t=>t.tipo==='entrada');
+  else if(filtroAtual==='saidas')lista=lista.filter(t=>t.tipo==='saida');
+  else if(filtroAtual==='realizadas')lista=lista.filter(t=>(t.status||'realizada')==='realizada');
+  else if(filtroAtual==='previstas')lista=lista.filter(t=>t.status==='prevista');
+  else if(filtroAtual==='vencidas')lista=lista.filter(t=>t.status==='prevista'&&t.data<hoje);
   
-  let usuario, perfil;
-  let contas = [];
-  let transacoes = [];
-  let mesRef = new Date();
-  let filtroAtual = 'todas';
-  let recognition = null;
-  let isRecording = false;
-  let textoTranscrito = '';
-  let propostaAudio = null;
+  const realiz=transacoes.filter(t=>(t.status||'realizada')==='realizada');
+  const entradasReal=realiz.filter(t=>t.tipo==='entrada').reduce((a,t)=>a+Number(t.valor),0);
+  const saidasReal=realiz.filter(t=>t.tipo==='saida').reduce((a,t)=>a+Number(t.valor),0);
+  const previstas=transacoes.filter(t=>t.status==='prevista');
+  const vencidas=previstas.filter(t=>t.data<hoje&&t.tipo==='saida').length;
   
-  (async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) { window.location.href = 'index.html?v=' + Date.now(); return; }
-    usuario = session.user;
-    
-    const { data: p } = await supabase.from('perfis').select('*').eq('id', usuario.id).maybeSingle();
-    perfil = p || {};
-    
-    await carregarContas();
-    await carregar();
-  })();
+  document.getElementById('container').innerHTML=`
+    <div class="mes-nav">
+      <button class="mes-nav-btn" onclick="mudarMes(-1)">‹</button>
+      <div class="mes-atual">${mesNome}</div>
+      <button class="mes-nav-btn" onclick="mudarMes(1)">›</button>
+    </div>
+    <div class="resumo-cards">
+      <div class="resumo-card"><div class="resumo-label">↓ Entradas</div><div class="resumo-valor brand">R$ ${fm(entradasReal)}</div></div>
+      <div class="resumo-card"><div class="resumo-label">↑ Saídas</div><div class="resumo-valor danger">R$ ${fm(saidasReal)}</div></div>
+    </div>
+    <div class="filtros">
+      <div class="filtro-pill ${filtroAtual==='todas'?'active':''}" onclick="setFiltro('todas')">Todas (${transacoes.length})</div>
+      <div class="filtro-pill ${filtroAtual==='entradas'?'active':''}" onclick="setFiltro('entradas')">Entradas</div>
+      <div class="filtro-pill ${filtroAtual==='saidas'?'active':''}" onclick="setFiltro('saidas')">Saídas</div>
+      <div class="filtro-pill ${filtroAtual==='realizadas'?'active':''}" onclick="setFiltro('realizadas')">Realizadas</div>
+      <div class="filtro-pill ${filtroAtual==='previstas'?'active':''}" onclick="setFiltro('previstas')">Previstas</div>
+      ${vencidas>0?`<div class="filtro-pill ${filtroAtual==='vencidas'?'active':''}" onclick="setFiltro('vencidas')" style="color:var(--danger);">⚠️ Vencidas (${vencidas})</div>`:''}
+    </div>
+    ${lista.length===0?`
+      <div class="empty-state">
+        <div class="empty-emoji">🦔</div>
+        <div class="empty-titulo">Nada por aqui ainda</div>
+        <div class="empty-sub">Toque no 🎤 pra falar ou no + pra adicionar</div>
+      </div>
+    `:renderLista(lista,hoje)}
+  `;
   
-  async function carregarContas() {
-    const { data } = await supabase.from('contas').select('*').eq('user_id', usuario.id).eq('ativa', true);
-    contas = data || [];
+  if(ultimoItemNovoId){
+    setTimeout(()=>{
+      const el=document.querySelector(`[data-item-id="${ultimoItemNovoId}"]`);
+      if(el)el.scrollIntoView({behavior:'smooth',block:'center'});
+      setTimeout(()=>{ultimoItemNovoId=null},3800);
+    },200);
   }
-  
-  async function carregar() {
-    const ini = new Date(mesRef.getFullYear(), mesRef.getMonth(), 1).toISOString().split('T')[0];
-    const fim = new Date(mesRef.getFullYear(), mesRef.getMonth() + 1, 0).toISOString().split('T')[0];
-    const { data } = await supabase.from('transacoes')
-      .select('*')
-      .eq('user_id', usuario.id)
-      .gte('data', ini).lte('data', fim)
-      .order('data', { ascending: false });
-    transacoes = data || [];
-    render();
-  }
-  
-  function render() {
-    const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-    const mesNome = `${meses[mesRef.getMonth()]} de ${mesRef.getFullYear()}`;
-    
-    const hoje = new Date().toISOString().split('T')[0];
-    
-    let lista = transacoes;
-    if (filtroAtual === 'entradas') lista = lista.filter(t => t.tipo === 'entrada');
-    else if (filtroAtual === 'saidas') lista = lista.filter(t => t.tipo === 'saida');
-    else if (filtroAtual === 'realizadas') lista = lista.filter(t => (t.status || 'realizada') === 'realizada');
-    else if (filtroAtual === 'previstas') lista = lista.filter(t => t.status === 'prevista');
-    else if (filtroAtual === 'vencidas') lista = lista.filter(t => t.status === 'prevista' && t.data < hoje);
-    
-    const realiz = transacoes.filter(t => (t.status || 'realizada') === 'realizada');
-    const entradasReal = realiz.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
-    const saidasReal = realiz.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
-    
-    const previstas = transacoes.filter(t => t.status === 'prevista');
-    const vencidas = previstas.filter(t => t.data < hoje && t.tipo === 'saida').length;
-    
-    document.getElementById('container').innerHTML = `
-      <div class="mes-nav">
-        <button class="mes-nav-btn" onclick="mudarMes(-1)">‹</button>
-        <div class="mes-atual">${mesNome}</div>
-        <button class="mes-nav-btn" onclick="mudarMes(1)">›</button>
-      </div>
-      
-      <div class="resumo-cards">
-        <div class="resumo-card"><div class="resumo-label">↓ Entradas</div><div class="resumo-valor brand">R$ ${fm(entradasReal)}</div></div>
-        <div class="resumo-card"><div class="resumo-label">↑ Saídas</div><div class="resumo-valor danger">R$ ${fm(saidasReal)}</div></div>
-      </div>
-      
-      <div class="filtros">
-        <div class="filtro-pill ${filtroAtual==='todas'?'active':''}" onclick="setFiltro('todas')">Todas (${transacoes.length})</div>
-        <div class="filtro-pill ${filtroAtual==='entradas'?'active':''}" onclick="setFiltro('entradas')">Entradas</div>
-        <div class="filtro-pill ${filtroAtual==='saidas'?'active':''}" onclick="setFiltro('saidas')">Saídas</div>
-        <div class="filtro-pill ${filtroAtual==='realizadas'?'active':''}" onclick="setFiltro('realizadas')">Realizadas</div>
-        <div class="filtro-pill ${filtroAtual==='previstas'?'active':''}" onclick="setFiltro('previstas')">Previstas</div>
-        ${vencidas > 0 ? `<div class="filtro-pill ${filtroAtual==='vencidas'?'active':''}" onclick="setFiltro('vencidas')" style="color:var(--danger);">⚠️ Vencidas (${vencidas})</div>` : ''}
-      </div>
-      
-      ${lista.length === 0 ? `
-        <div class="empty-state">
-          <div class="empty-emoji">🦔</div>
-          <div class="empty-titulo">Nada por aqui ainda</div>
-          <div class="empty-sub">Toque no 🎤 pra falar ou no + pra adicionar</div>
+}
+
+function renderLista(lista,hoje){
+  const porData={};
+  lista.forEach(t=>{const d=t.data;if(!porData[d])porData[d]=[];porData[d].push(t)});
+  const datas=Object.keys(porData).sort().reverse();
+  let html='';
+  datas.forEach(d=>{
+    const data=new Date(d+'T12:00:00');
+    const hojeD=new Date(hoje+'T12:00:00');
+    const ontem=new Date(hojeD);ontem.setDate(ontem.getDate()-1);
+    let label=data.toLocaleDateString('pt-BR',{day:'numeric',month:'short',weekday:'short'});
+    if(d===hoje)label='HOJE';
+    else if(d===ontem.toISOString().split('T')[0])label='ONTEM';
+    else if(d>hoje)label=`EM ${Math.ceil((data-hojeD)/86400000)} DIA${Math.ceil((data-hojeD)/86400000)>1?'S':''} • ${label}`;
+    html+=`<div class="secao-titulo">${label}</div>`;
+    porData[d].forEach(t=>{
+      const eEnt=t.tipo==='entrada';
+      const ePrev=t.status==='prevista';
+      const eVenc=ePrev&&t.data<hoje;
+      const eHoje=t.data===hoje;
+      const cat=t.categoria?CATEGORIAS[t.categoria]:null;
+      const emoji=cat?.e||(eEnt?'💰':'💸');
+      const ehNovo=t.id===ultimoItemNovoId;
+      let bClass='';
+      let bdgHTML='';
+      if(eVenc){bClass='vencida';bdgHTML=`<span class="trans-badge vencida">VENCIDA</span>`}
+      else if(eHoje&&ePrev){bClass='hoje';bdgHTML=`<span class="trans-badge hoje">HOJE</span>`}
+      else if(ePrev)bdgHTML=`<span class="trans-badge prevista">PREVISTA</span>`;
+      if(ehNovo)bClass+=' novo';
+      html+=`<div class="trans-card ${bClass}" data-item-id="${t.id}" onclick="abrirAcoes('${t.id}')">
+        <div class="trans-icone ${t.tipo}">${emoji}</div>
+        <div class="trans-info">
+          <div class="trans-desc">${t.descricao}</div>
+          <div class="trans-data">${bdgHTML}${cat?.n||''}</div>
         </div>
-      ` : renderLista(lista, hoje)}
-    `;
-  }
-  
-  function renderLista(lista, hoje) {
-    const porData = {};
-    lista.forEach(t => {
-      const d = t.data;
-      if (!porData[d]) porData[d] = [];
-      porData[d].push(t);
+        <div class="trans-valor ${t.tipo}">${eEnt?'+':'-'}R$ ${fm(t.valor)}</div>
+      </div>`;
     });
-    
-    const datas = Object.keys(porData).sort().reverse();
-    let html = '';
-    
-    datas.forEach(d => {
-      const data = new Date(d + 'T12:00:00');
-      const hojeD = new Date(hoje + 'T12:00:00');
-      const ontem = new Date(hojeD); ontem.setDate(ontem.getDate() - 1);
-      
-      let label = data.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', weekday: 'short' });
-      if (d === hoje) label = 'HOJE';
-      else if (d === ontem.toISOString().split('T')[0]) label = 'ONTEM';
-      else if (d > hoje) label = `EM ${Math.ceil((data - hojeD) / 86400000)} DIA${Math.ceil((data - hojeD) / 86400000) > 1 ? 'S' : ''} • ${label}`;
-      
-      html += `<div class="secao-titulo">${label}</div>`;
-      porData[d].forEach(t => {
-        const eEnt = t.tipo === 'entrada';
-        const ePrev = t.status === 'prevista';
-        const eVenc = ePrev && t.data < hoje;
-        const eHoje = t.data === hoje;
-        const cat = t.categoria ? CATEGORIAS[t.categoria] : null;
-        const emoji = cat?.e || (eEnt ? '💰' : '💸');
-        
-        let bClass = '';
-        let bdgHTML = '';
-        if (eVenc) { bClass = 'vencida'; bdgHTML = `<span class="trans-badge vencida">VENCIDA</span>`; }
-        else if (eHoje && ePrev) { bClass = 'hoje'; bdgHTML = `<span class="trans-badge hoje">HOJE</span>`; }
-        else if (ePrev) bdgHTML = `<span class="trans-badge prevista">PREVISTA</span>`;
-        
-        html += `
-          <div class="trans-card ${bClass}" onclick="abrirAcoes('${t.id}')">
-            <div class="trans-icone ${t.tipo}">${emoji}</div>
-            <div class="trans-info">
-              <div class="trans-desc">${t.descricao}</div>
-              <div class="trans-data">${bdgHTML}${cat?.n || ''}</div>
-            </div>
-            <div class="trans-valor ${t.tipo}">${eEnt ? '+' : '-'}R$ ${fm(t.valor)}</div>
-          </div>
-        `;
-      });
-    });
-    
-    return html;
-  }
-  
-  window.mudarMes = function(dir) {
-    mesRef.setMonth(mesRef.getMonth() + dir);
-    carregar();
-  };
-  
-  window.setFiltro = function(f) {
-    filtroAtual = f;
-    render();
-  };
-  
-  // ============ ÁUDIO ============
-  
-  window.abrirAudio = function() {
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      alert('🦔 Seu navegador não suporta áudio.\n\nUse Safari (iPhone) ou Chrome.');
-      return;
+  });
+  return html;
+}
+
+window.mudarMes=function(dir){mesRef.setMonth(mesRef.getMonth()+dir);carregar()};
+window.setFiltro=function(f){filtroAtual=f;render()};
+
+window.abrirAudio=function(){
+  if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){alert('🦔 Seu navegador não suporta áudio.\n\nUse Safari (iPhone) ou Chrome.');return}
+  textoTranscrito='';isRecording=false;renderAudio();
+  document.getElementById('audio-overlay').classList.add('show');
+};
+
+function renderAudio(){
+  document.getElementById('audio-modal-content').innerHTML=`
+    <div class="audio-titulo">🎤 Falar transação</div>
+    <div class="audio-sub">Toque no microfone e fale. Toque de novo pra parar.</div>
+    <button class="mic-btn ${isRecording?'recording':''}" id="mic-btn" onclick="toggleRec()">${isRecording?'⏹️':'🎤'}</button>
+    <div class="mic-status ${isRecording?'recording':''}">${isRecording?'🔴 Ouvindo... fale agora':(textoTranscrito?'✅ Pronto!':'Toque pra falar')}</div>
+    <div class="transcricao-box ${textoTranscrito?'':'placeholder'}" id="transcricao-box">${textoTranscrito||'O que você falar vai aparecer aqui...'}</div>
+    ${!textoTranscrito?`<div class="exemplos"><div class="exemplos-titulo">💡 Exemplos</div><div class="exemplo-item">paguei 15 reais no espetinho no Santander</div><div class="exemplo-item">recebi 300 do amigo João em dinheiro</div><div class="exemplo-item">gastei 80 reais de Uber no cartão Nubank</div></div>`:''}
+    <div class="audio-acoes">
+      <button class="btn btn-secondary" onclick="fecharAudio()">Cancelar</button>
+      <button class="btn btn-ia" onclick="processarAudio()" ${!textoTranscrito||isRecording?'disabled':''}>🦔 IA interpretar</button>
+    </div>`;
+}
+
+window.toggleRec=function(){if(isRecording)pararGravacao();else iniciarGravacao()};
+
+function iniciarGravacao(){
+  const SR=window.webkitSpeechRecognition||window.SpeechRecognition;
+  recognition=new SR();
+  recognition.lang='pt-BR';recognition.continuous=true;recognition.interimResults=true;
+  let tF='',tI='';
+  recognition.onresult=(e)=>{
+    tI='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal)tF+=e.results[i][0].transcript+' ';
+      else tI+=e.results[i][0].transcript;
     }
-    textoTranscrito = '';
-    isRecording = false;
-    renderAudio();
-    document.getElementById('audio-overlay').classList.add('show');
+    textoTranscrito=(tF+tI).trim();
+    const box=document.getElementById('transcricao-box');
+    if(box){box.textContent=textoTranscrito||'Ouvindo...';box.classList.remove('placeholder')}
   };
-  
-  function renderAudio() {
-    document.getElementById('audio-modal-content').innerHTML = `
-      <div class="audio-titulo">🎤 Falar transação</div>
-      <div class="audio-sub">Toque no microfone e fale. Toque de novo pra parar.</div>
-      
-      <button class="mic-btn ${isRecording ? 'recording' : ''}" id="mic-btn" onclick="toggleRec()">${isRecording ? '⏹️' : '🎤'}</button>
-      
-      <div class="mic-status ${isRecording ? 'recording' : ''}" id="mic-status">
-        ${isRecording ? '🔴 Ouvindo... fale agora' : (textoTranscrito ? '✅ Pronto!' : 'Toque pra falar')}
+  recognition.onerror=(e)=>{
+    if(e.error==='no-speech')return;
+    if(e.error==='not-allowed')alert('🎤 Permissão negada. Libera nas configurações.');
+    else alert('Erro: '+e.error);
+    pararGravacao();
+  };
+  recognition.onend=()=>{if(isRecording){try{recognition.start()}catch(e){}}};
+  try{recognition.start();isRecording=true;renderAudio()}catch(e){alert('Erro: '+e.message)}
+}
+
+function pararGravacao(){
+  if(recognition){isRecording=false;try{recognition.stop()}catch(e){}recognition=null}
+  renderAudio();
+}
+
+window.processarAudio=async function(){
+  if(!textoTranscrito)return;
+  if(isRecording)pararGravacao();
+  document.getElementById('audio-modal-content').innerHTML=`<div class="ia-spinner"></div><div class="audio-titulo">🦔 Tatu interpretando...</div><div class="audio-sub">"${textoTranscrito}"</div>`;
+  try{
+    const r=await fetch(IA_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({tipo:'interpretar_audio_transacao',texto:textoTranscrito,max_tokens:800})});
+    const d=await r.json();
+    if(d.resultado&&!d.resultado.erro){
+      propostaAudio=d.resultado;
+      propostaAudio.texto_original=textoTranscrito;
+      renderConfirmacao();
+    }else{alert('🦔 '+(d.resultado?.erro||'Não entendi'));renderAudio()}
+  }catch(e){alert('Erro: '+e.message);renderAudio()}
+};
+
+function renderConfirmacao(){
+  const p=propostaAudio;
+  const cat=CATEGORIAS[p.categoria_sugerida]||CATEGORIAS.outro;
+  let cs=null;
+  if(p.conta_mencionada){
+    const cm=p.conta_mencionada.toLowerCase();
+    cs=contas.find(c=>c.nome.toLowerCase().includes(cm)||c.banco?.toLowerCase().includes(cm)||cm.includes(c.nome.toLowerCase().split(' ')[0]));
+  }
+  document.getElementById('audio-modal-content').innerHTML=`
+    <div class="conf-modal">
+      <div class="conf-titulo">Confirma essa transação?</div>
+      <div class="conf-sub">Tatu entendeu o que você falou. Confere antes de salvar:</div>
+      <div class="conf-tatu-box">
+        <div class="conf-tatu-emoji">🦔</div>
+        <div class="conf-tatu-texto">Você disse: <em>"${p.texto_original}"</em></div>
       </div>
-      
-      <div class="transcricao-box ${textoTranscrito ? '' : 'placeholder'}" id="transcricao-box">
-        ${textoTranscrito || 'O que você falar vai aparecer aqui...'}
+      <div class="conf-row"><div class="conf-label">Tipo</div><div class="conf-valor ${p.tipo}">${p.tipo==='entrada'?'💰 Entrada':'💸 Saída'}</div></div>
+      <div class="conf-row"><div class="conf-label">Valor</div><div class="conf-valor ${p.tipo}">${p.tipo==='entrada'?'+':'-'}R$ ${fm(p.valor)}</div></div>
+      <div class="conf-row"><div class="conf-label">Descrição</div><div class="conf-valor" style="font-size:14px;">${p.descricao}</div></div>
+      <div class="conf-row"><div class="conf-label">Categoria</div><div class="conf-valor" style="font-size:14px;">${cat.e} ${cat.n}</div></div>
+      ${cs?`<div class="conf-row"><div class="conf-label">Conta</div><div class="conf-valor" style="font-size:14px;">${cs.icone} ${cs.nome}</div></div>`:''}
+      <div style="margin-top:20px;display:flex;gap:10px;">
+        <button class="btn btn-secondary" onclick="editarAudio()">✏️ Editar</button>
+        <button class="btn btn-primary" onclick="salvarAudio('${cs?.id||''}')">✅ Salvar</button>
       </div>
-      
-      ${!textoTranscrito ? `
-        <div class="exemplos">
-          <div class="exemplos-titulo">💡 Exemplos</div>
-          <div class="exemplo-item">paguei 15 reais no espetinho no Santander</div>
-          <div class="exemplo-item">recebi 300 do amigo João em dinheiro</div>
-          <div class="exemplo-item">gastei 80 reais de Uber no cartão Nubank</div>
-        </div>
-      ` : ''}
-      
-      <div class="audio-acoes">
-        <button class="btn btn-secondary" onclick="fecharAudio()">Cancelar</button>
-        <button class="btn btn-ia" onclick="processarAudio()" ${!textoTranscrito || isRecording ? 'disabled' : ''}>🦔 IA interpretar</button>
-      </div>
-    `;
-  }
-  
-  window.toggleRec = function() {
-    if (isRecording) pararGravacao();
-    else iniciarGravacao();
-  };
-  
-  function iniciarGravacao() {
-    const SR = window.webkitSpeechRecognition || window.SpeechRecognition;
-    recognition = new SR();
-    recognition.lang = 'pt-BR';
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    
-    let textoFinal = '';
-    let textoInterim = '';
-    
-    recognition.onresult = (e) => {
-      textoInterim = '';
-      for (let i = e.resultIndex; i < e.results.length; i++) {
-        if (e.results[i].isFinal) textoFinal += e.results[i][0].transcript + ' ';
-        else textoInterim += e.results[i][0].transcript;
-      }
-      textoTranscrito = (textoFinal + textoInterim).trim();
-      const box = document.getElementById('transcricao-box');
-      if (box) {
-        box.textContent = textoTranscrito || 'Ouvindo...';
-        box.classList.remove('placeholder');
-      }
-    };
-    
-    recognition.onerror = (e) => {
-      console.error('Erro speech:', e.error);
-      if (e.error === 'no-speech') return;
-      if (e.error === 'not-allowed') alert('🎤 Permissão de microfone negada. Libera nas configurações.');
-      else alert('Erro ao gravar: ' + e.error);
-      pararGravacao();
-    };
-    
-    recognition.onend = () => {
-      if (isRecording) {
-        try { recognition.start(); } catch (e) {}
-      }
-    };
-    
-    try {
-      recognition.start();
-      isRecording = true;
-      renderAudio();
-    } catch (e) {
-      alert('Erro ao iniciar: ' + e.message);
-    }
-  }
-  
-  function pararGravacao() {
-    if (recognition) {
-      isRecording = false;
-      try { recognition.stop(); } catch (e) {}
-      recognition = null;
-    }
-    renderAudio();
-  }
-  
-  window.processarAudio = async function() {
-    if (!textoTranscrito) return;
-    if (isRecording) pararGravacao();
-    
-    document.getElementById('audio-modal-content').innerHTML = `
-      <div class="ia-spinner"></div>
-      <div class="audio-titulo">🦔 Tatu interpretando...</div>
-      <div class="audio-sub">"${textoTranscrito}"</div>
-    `;
-    
-    try {
-      const r = await fetch(IA_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
-        body: JSON.stringify({ tipo: 'interpretar_audio_transacao', texto: textoTranscrito, max_tokens: 800 })
-      });
-      const d = await r.json();
-      
-      if (d.resultado && !d.resultado.erro) {
-        propostaAudio = d.resultado;
-        propostaAudio.texto_original = textoTranscrito;
-        renderConfirmacao();
-      } else {
-        const erro = d.resultado?.erro || 'Não entendi';
-        alert('🦔 ' + erro);
-        renderAudio();
-      }
-    } catch (e) {
-      alert('Erro: ' + e.message);
-      renderAudio();
-    }
-  };
-  
-  function renderConfirmacao() {
-    const p = propostaAudio;
-    const cat = CATEGORIAS[p.categoria_sugerida] || CATEGORIAS.outro;
-    
-    // Tenta achar a conta mencionada
-    let contaSugerida = null;
-    if (p.conta_mencionada) {
-      const cm = p.conta_mencionada.toLowerCase();
-      contaSugerida = contas.find(c => 
-        c.nome.toLowerCase().includes(cm) || 
-        c.banco?.toLowerCase().includes(cm) ||
-        cm.includes(c.nome.toLowerCase().split(' ')[0])
-      );
-    }
-    
-    document.getElementById('audio-modal-content').innerHTML = `
-      <div class="conf-modal">
-        <div class="conf-titulo">Confirma essa transação?</div>
-        <div class="conf-sub">Tatu entendeu o que você falou. Confere antes de salvar:</div>
-        
-        <div class="conf-tatu-box">
-          <div class="conf-tatu-emoji">🦔</div>
-          <div class="conf-tatu-texto">Você disse: <em>"${p.texto_original}"</em></div>
-        </div>
-        
-        <div class="conf-row">
-          <div class="conf-label">Tipo</div>
-          <div class="conf-valor ${p.tipo}">${p.tipo === 'entrada' ? '💰 Entrada' : '💸 Saída'}</div>
-        </div>
-        <div class="conf-row">
-          <div class="conf-label">Valor</div>
-          <div class="conf-valor ${p.tipo}">${p.tipo === 'entrada' ? '+' : '-'}R$ ${fm(p.valor)}</div>
-        </div>
-        <div class="conf-row">
-          <div class="conf-label">Descrição</div>
-          <div class="conf-valor" style="font-size:14px;">${p.descricao}</div>
-        </div>
-        <div class="conf-row">
-          <div class="conf-label">Categoria</div>
-          <div class="conf-valor" style="font-size:14px;">${cat.e} ${cat.n}</div>
-        </div>
-        ${contaSugerida ? `
-          <div class="conf-row">
-            <div class="conf-label">Conta</div>
-            <div class="conf-valor" style="font-size:14px;">${contaSugerida.icone} ${contaSugerida.nome}</div>
-          </div>
-        ` : ''}
-        
-        <div style="margin-top:20px; display:flex; gap:10px;">
-          <button class="btn btn-secondary" onclick="editarAudio()">✏️ Editar</button>
-          <button class="btn btn-primary" onclick="salvarAudio('${contaSugerida?.id || ''}')">✅ Salvar</button>
-        </div>
-        <button class="btn btn-secondary" onclick="renderAudio()" style="margin-top:8px;">🔄 Falar de novo</button>
-      </div>
-    `;
-  }
-  
-  window.editarAudio = function() {
-    const p = propostaAudio;
+      <button class="btn btn-secondary" onclick="renderAudio()" style="margin-top:8px;">🔄 Falar de novo</button>
+    </div>`;
+}
+
+window.editarAudio=function(){const p=propostaAudio;fecharAudio();setTimeout(()=>abrirAddManualComDados(p),300)};
+
+window.salvarAudio=async function(contaId){
+  const p=propostaAudio;
+  try{
+    const dataT=new Date().toISOString().split('T')[0];
+    const{data,error}=await supabase.from('transacoes').insert({user_id:usuario.id,valor:p.valor,descricao:p.descricao,tipo:p.tipo,categoria:p.categoria_sugerida||'outro',data:dataT,conta_id:contaId||null,status:'realizada'}).select().single();
+    if(error)throw error;
+    ultimoItemNovoId=data.id;
+    await darXP(15,'audio_transacao','Áudio');
+    toast(`✅ ${p.descricao} • ${p.tipo==='entrada'?'+':'-'}R$ ${fm(p.valor)}`);
     fecharAudio();
-    setTimeout(() => abrirAddManualComDados(p), 300);
-  };
-  
-  window.salvarAudio = async function(contaId) {
-    const p = propostaAudio;
-    try {
-      await supabase.from('transacoes').insert({
-        user_id: usuario.id,
-        valor: p.valor,
-        descricao: p.descricao,
-        tipo: p.tipo,
-        categoria: p.categoria_sugerida || 'outro',
-        data: new Date().toISOString().split('T')[0],
-        conta_id: contaId || null,
-        status: 'realizada'
-      });
-      
-      await darXP(15, 'audio_transacao', 'Lançamento por áudio');
-      toast('+15 XP 🎤 Cadastrado!');
-      fecharAudio();
-      await carregar();
-    } catch (e) {
-      alert('Erro: ' + e.message);
+    // 🆕 v6.1: navega pro mês certo
+    const dTrans=new Date(dataT+'T12:00:00');
+    if(dTrans.getMonth()!==mesRef.getMonth()||dTrans.getFullYear()!==mesRef.getFullYear()){
+      mesRef=dTrans;
     }
-  };
-  
-  window.fecharAudio = function() {
-    if (isRecording) pararGravacao();
-    document.getElementById('audio-overlay').classList.remove('show');
-    textoTranscrito = '';
-    propostaAudio = null;
-  };
-  
-  // ============ ADD MANUAL ============
-  
-  let tipoAtual = 'saida';
-  
-  window.abrirAddManual = function() {
-    abrirAddManualComDados(null);
-  };
-  
-  function abrirAddManualComDados(dados) {
-    tipoAtual = dados?.tipo || 'saida';
-    const hoje = new Date().toISOString().split('T')[0];
-    
-    document.getElementById('modal-add-content').innerHTML = `
-      <div class="modal-titulo">
-        <span>${dados ? '✏️ Editar dados' : '➕ Nova transação'}</span>
-        <button class="modal-close" onclick="fecharModal('modal-add')">✕</button>
-      </div>
-      
-      ${!dados ? `
-        <div class="opc-foto" onclick="document.getElementById('input-foto').click()">
-          <div class="opc-foto-icon">📸</div>
-          <div class="opc-foto-content">
-            <div class="opc-foto-titulo">Foto do cupom/nota</div>
-            <div class="opc-foto-sub">IA Claude lê e preenche tudo</div>
-          </div>
+    await carregar();
+  }catch(e){alert('Erro: '+e.message)}
+};
+
+window.fecharAudio=function(){
+  if(isRecording)pararGravacao();
+  document.getElementById('audio-overlay').classList.remove('show');
+  textoTranscrito='';propostaAudio=null;
+};
+
+let tipoAtual='saida';
+
+window.abrirAddManual=function(){abrirAddManualComDados(null)};
+
+function abrirAddManualComDados(dados){
+  tipoAtual=dados?.tipo||'saida';
+  const hoje=new Date().toISOString().split('T')[0];
+  const vf=dados&&dados.texto_original; // veio da foto/áudio
+  document.getElementById('modal-add-content').innerHTML=`
+    <div class="modal-titulo">
+      <span>${dados?.texto_original?'✏️ Editar transação':(dados?'✏️ Editar dados':'➕ Nova transação')}</span>
+      <button class="modal-close" onclick="fecharModal('modal-add')">✕</button>
+    </div>
+    ${vf?`<div class="revisao-card"><div class="revisao-emoji">${dados.texto_original?'🎤':'📸'}</div><div class="revisao-texto"><strong>IA leu:</strong> "${dados.texto_original||'cupom'}"<br>Confere os dados:</div></div>`:''}
+    ${!dados?`
+      <div class="opc-foto" onclick="document.getElementById('input-foto').click()">
+        <div class="opc-foto-icon">📸</div>
+        <div class="opc-foto-content">
+          <div class="opc-foto-titulo">Foto do cupom/nota</div>
+          <div class="opc-foto-sub">IA Claude lê e preenche tudo</div>
         </div>
-      ` : ''}
-      
-      <div class="tipo-tabs">
-        <div class="tipo-tab entrada ${tipoAtual === 'entrada' ? 'active' : ''}" onclick="selTipo('entrada')">💰 Entrada</div>
-        <div class="tipo-tab saida ${tipoAtual === 'saida' ? 'active' : ''}" onclick="selTipo('saida')">💸 Saída</div>
       </div>
-      
+    `:''}
+    <div class="tipo-tabs">
+      <div class="tipo-tab entrada ${tipoAtual==='entrada'?'active':''}" onclick="selTipo('entrada')">💰 Entrada</div>
+      <div class="tipo-tab saida ${tipoAtual==='saida'?'active':''}" onclick="selTipo('saida')">💸 Saída</div>
+    </div>
+    <div class="field">
+      <label>Valor</label>
+      <div class="valor-input-wrapper">
+        <span class="valor-prefix">R$</span>
+        <input type="text" inputmode="decimal" id="m-val" placeholder="0,00" oninput="formatarValor(this)" value="${dados?.valor?Number(dados.valor).toFixed(2).replace('.',','):''}">
+      </div>
+    </div>
+    <div class="field">
+      <label>Descrição</label>
+      <input type="text" id="m-desc" placeholder="Digite uma descrição" value="${dados?.descricao||''}">
+    </div>
+    <div class="field-row">
       <div class="field">
-        <label>Valor</label>
-        <div class="valor-input-wrapper">
-          <span class="valor-prefix">R$</span>
-          <input type="text" inputmode="decimal" id="m-val" placeholder="0,00" oninput="formatarValor(this)" value="${dados?.valor ? Number(dados.valor).toFixed(2).replace('.', ',') : ''}">
-        </div>
-      </div>
-      
-      <div class="field">
-        <label>Descrição</label>
-        <input type="text" id="m-desc" placeholder="Digite uma descrição" value="${dados?.descricao || ''}">
-      </div>
-      
-      <div class="field-row">
-        <div class="field">
-          <label>Categoria</label>
-          <select id="m-cat">
-            ${Object.entries(CATEGORIAS).map(([k, v]) => `<option value="${k}" ${dados?.categoria_sugerida === k ? 'selected' : ''}>${v.e} ${v.n}</option>`).join('')}
-          </select>
-        </div>
-        <div class="field">
-          <label>Data</label>
-          <input type="date" id="m-data" value="${hoje}">
-        </div>
-      </div>
-      
-      <div class="field">
-        <label>Conta/Cartão</label>
-        <select id="m-conta">
-          <option value="">Nenhuma</option>
-          ${contas.map(c => `<option value="${c.id}">${c.icone || ''} ${c.nome}</option>`).join('')}
+        <label>Categoria</label>
+        <select id="m-cat">
+          ${Object.entries(CATEGORIAS).map(([k,v])=>`<option value="${k}" ${dados?.categoria_sugerida===k||dados?.categoria===k?'selected':''}>${v.e} ${v.n}</option>`).join('')}
         </select>
       </div>
-      
-      <button class="btn btn-primary" onclick="salvarManual()" style="width:100%;margin-top:10px;">Salvar transação</button>
-    `;
-    
-    document.getElementById('modal-add').classList.add('show');
-  }
-  
-  window.selTipo = function(t) {
-    tipoAtual = t;
-    document.querySelectorAll('.tipo-tab').forEach(tab => tab.classList.remove('active'));
-    document.querySelector(`.tipo-tab.${t}`).classList.add('active');
-  };
-  
-  window.salvarManual = async function() {
-    const valor = valorParaNum(document.getElementById('m-val').value);
-    const desc = document.getElementById('m-desc').value.trim();
-    const cat = document.getElementById('m-cat').value;
-    const data = document.getElementById('m-data').value;
-    const contaId = document.getElementById('m-conta').value;
-    
-    if (!valor || valor <= 0) { alert('Informe o valor'); return; }
-    if (!desc) { alert('Digite uma descrição'); return; }
-    
-    try {
-      const hoje = new Date().toISOString().split('T')[0];
-      await supabase.from('transacoes').insert({
-        user_id: usuario.id, valor, descricao: desc, tipo: tipoAtual,
-        categoria: cat, data, conta_id: contaId || null,
-        status: data > hoje ? 'prevista' : 'realizada'
-      });
-      await darXP(10, 'transacao_manual', 'Transação manual');
-      toast('+10 XP ✅ Cadastrada!');
-      fecharModal('modal-add');
-      await carregar();
-    } catch (e) { alert('Erro: ' + e.message); }
-  };
-  
-  // ============ FOTO CUPOM ============
-  
-  window.processarFoto = async function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    e.target.value = '';
-    
-    fecharModal('modal-add');
-    
-    document.getElementById('audio-modal-content').innerHTML = `
-      <div class="ia-spinner"></div>
-      <div class="audio-titulo">📸 Lendo cupom...</div>
-      <div class="audio-sub">Comprimindo + IA Claude analisando</div>
-    `;
-    document.getElementById('audio-overlay').classList.add('show');
-    
-    let base64;
-    try { base64 = await comprimirImg(file, 1600, 0.85); }
-    catch (err) { alert('Erro processando foto'); document.getElementById('audio-overlay').classList.remove('show'); return; }
-    
-    try {
-      const r = await fetch(IA_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
-        body: JSON.stringify({ tipo: 'ler_notinha', imagem_base64: base64, max_tokens: 1500 })
-      });
-      const d = await r.json();
-      
-      document.getElementById('audio-overlay').classList.remove('show');
-      
-      if (d.resultado && !d.resultado.erro && d.resultado.valor_total) {
-        const dadosFoto = {
-          tipo: 'saida',
-          valor: d.resultado.valor_total,
-          descricao: d.resultado.estabelecimento || 'Cupom',
-          categoria_sugerida: d.resultado.categoria_sugerida || 'compras'
-        };
-        toast('✨ IA leu o cupom!');
-        setTimeout(() => abrirAddManualComDados(dadosFoto), 500);
-      } else {
-        const erro = d.resultado?.erro || 'IA não conseguiu ler';
-        alert('🦔 ' + erro + '\n\nTenta cadastrar manual.');
-        abrirAddManual();
-      }
-    } catch (err) {
-      document.getElementById('audio-overlay').classList.remove('show');
-      alert('Erro: ' + err.message);
-    }
-  };
-  
-  async function comprimirImg(file, maxW = 1600, q = 0.85) {
-    return new Promise((res, rej) => {
-      const r = new FileReader();
-      r.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          let w = img.width, h = img.height;
-          if (w > maxW) { h = Math.round((h * maxW) / w); w = maxW; }
-          const c = document.createElement('canvas');
-          c.width = w; c.height = h;
-          const ctx = c.getContext('2d');
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = 'high';
-          ctx.drawImage(img, 0, 0, w, h);
-          let b64 = c.toDataURL('image/jpeg', q);
-          const kb = Math.round((b64.length * 0.75) / 1024);
-          if (kb > 4000 && q > 0.5) b64 = c.toDataURL('image/jpeg', 0.7);
-          res(b64);
-        };
-        img.onerror = () => rej(new Error('Erro'));
-        img.src = e.target.result;
-      };
-      r.onerror = () => rej(new Error('Erro'));
-      r.readAsDataURL(file);
-    });
-  }
-  
-  // ============ EDIT/DELETE ============
-  
-  window.abrirAcoes = function(id) {
-    const t = transacoes.find(x => x.id === id);
-    if (!t) return;
-    
-    const eEnt = t.tipo === 'entrada';
-    const eRealiz = (t.status || 'realizada') === 'realizada';
-    
-    document.getElementById('acoes-content').innerHTML = `
-      <div class="acoes-titulo">${t.descricao}</div>
-      <div class="acoes-sub">${eEnt ? '+' : '-'}R$ ${fm(t.valor)} • ${new Date(t.data + 'T12:00:00').toLocaleDateString('pt-BR')}</div>
-      
-      ${!eRealiz ? `
-        <div class="acao-btn" onclick="marcarRealizada('${id}')">
-          <div class="acao-icon brand">✓</div>
-          <div class="acao-info">
-            <div class="acao-titulo">Marcar como realizada</div>
-            <div class="acao-info-sub">Confirma que essa entrada/saída aconteceu</div>
-          </div>
-        </div>
-      ` : ''}
-      
-      <div class="acao-btn" onclick="editarTrans('${id}')">
-        <div class="acao-icon">✏️</div>
-        <div class="acao-info">
-          <div class="acao-titulo">Editar</div>
-          <div class="acao-info-sub">Alterar valor, descrição, etc</div>
-        </div>
+      <div class="field">
+        <label>Data</label>
+        <input type="date" id="m-data" value="${hoje}">
       </div>
-      
-      <div class="acao-btn" onclick="excluirTrans('${id}')">
-        <div class="acao-icon danger">🗑️</div>
-        <div class="acao-info">
-          <div class="acao-titulo" style="color:var(--danger);">Excluir</div>
-          <div class="acao-info-sub">Remove essa transação</div>
-        </div>
-      </div>
-      
-      <button class="btn btn-secondary" onclick="fecharModal('modal-acoes')" style="width:100%;margin-top:14px;">Cancelar</button>
-    `;
-    
-    document.getElementById('modal-acoes').classList.add('show');
-  };
-  
-  window.marcarRealizada = async function(id) {
-    try {
-      await supabase.from('transacoes').update({ status: 'realizada' }).eq('id', id);
-      toast('✅ Marcada como realizada!');
-      fecharModal('modal-acoes');
-      await carregar();
-    } catch (e) { alert('Erro: ' + e.message); }
-  };
-  
-  window.editarTrans = function(id) {
-    const t = transacoes.find(x => x.id === id);
-    if (!t) return;
-    fecharModal('modal-acoes');
-    setTimeout(() => {
-      abrirAddManualComDados({
-        tipo: t.tipo, valor: t.valor, descricao: t.descricao,
-        categoria_sugerida: t.categoria, _editando: t.id
-      });
-    }, 300);
-  };
-  
-  window.excluirTrans = async function(id) {
-    if (!confirm('Excluir essa transação?')) return;
-    try {
-      await supabase.from('transacoes').delete().eq('id', id);
-      toast('🗑️ Excluída');
-      fecharModal('modal-acoes');
-      await carregar();
-    } catch (e) { alert('Erro: ' + e.message); }
-  };
-  
-  // ============ UTILS ============
-  
-  window.fecharModal = function(id) {
-    document.getElementById(id).classList.remove('show');
-  };
-  
-  window.formatarValor = function(input) {
-    let v = input.value.replace(/\D/g, '');
-    if (!v) { input.value = ''; return; }
-    v = (parseInt(v) / 100).toFixed(2);
-    input.value = Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-  };
-  
-  function valorParaNum(s) {
-    if (!s) return 0;
-    return Number(s.replace(/\./g, '').replace(',', '.')) || 0;
-  }
-  
-  function fm(v) { return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-  
-  async function darXP(xp, acao, desc) {
-    try {
-      await supabase.from('historico_xp').insert({ user_id: usuario.id, acao, xp_ganho: xp, descricao: desc });
-      const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).maybeSingle();
-      await supabase.from('gamificacao').update({ xp_total: (g?.xp_total || 0) + xp, ultima_atividade: new Date().toISOString().split('T')[0] }).eq('user_id', usuario.id);
-    } catch (e) { console.error(e); }
-  }
-  
-  function toast(t) {
-    const e = document.getElementById('xp-toast');
-    e.textContent = t;
-    e.style.display = 'block';
-    setTimeout(() => { e.style.display = 'none'; }, 2500);
-  }
-</script>
+    </div>
+    <div class="field">
+      <label>Conta/Cartão</label>
+      <select id="m-conta">
+        <option value="">Nenhuma</option>
+        ${contas.map(c=>`<option value="${c.id}">${c.icone||''} ${c.nome}</option>`).join('')}
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="salvarManual()" style="width:100%;margin-top:10px;">${vf?'✅ Confirmar e salvar':'Salvar transação'}</button>
+  `;
+  document.getElementById('modal-add').classList.add('show');
+}
 
+window.selTipo=function(t){tipoAtual=t;document.querySelectorAll('.tipo-tab').forEach(tab=>tab.classList.remove('active'));document.querySelector(`.tipo-tab.${t}`).classList.add('active')};
+
+window.salvarManual=async function(){
+  const valor=valorParaNum(document.getElementById('m-val').value);
+  const desc=document.getElementById('m-desc').value.trim();
+  const cat=document.getElementById('m-cat').value;
+  const data=document.getElementById('m-data').value;
+  const contaId=document.getElementById('m-conta').value;
+  if(!valor||valor<=0){alert('Informe o valor');return}
+  if(!desc){alert('Digite uma descrição');return}
+  try{
+    const hoje=new Date().toISOString().split('T')[0];
+    const{data:novo,error}=await supabase.from('transacoes').insert({user_id:usuario.id,valor,descricao:desc,tipo:tipoAtual,categoria:cat,data,conta_id:contaId||null,status:data>hoje?'prevista':'realizada'}).select().single();
+    if(error)throw error;
+    ultimoItemNovoId=novo.id;
+    await darXP(10,'transacao_manual','Manual');
+    toast(`✅ ${desc} • ${tipoAtual==='entrada'?'+':'-'}R$ ${fm(valor)}`);
+    fecharModal('modal-add');
+    // 🆕 v6.1: navega pro mês certo
+    const dTrans=new Date(data+'T12:00:00');
+    if(dTrans.getMonth()!==mesRef.getMonth()||dTrans.getFullYear()!==mesRef.getFullYear()){
+      mesRef=dTrans;
+    }
+    await carregar();
+  }catch(e){alert('Erro: '+e.message)}
+};
+
+window.processarFoto=async function(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  e.target.value='';
+  fecharModal('modal-add');
+  document.getElementById('audio-modal-content').innerHTML=`<div class="ia-spinner"></div><div class="audio-titulo">📸 Lendo cupom...</div><div class="audio-sub">Comprimindo + IA Claude analisando</div>`;
+  document.getElementById('audio-overlay').classList.add('show');
+  let base64;
+  try{base64=await comprimirImg(file,1600,0.85)}
+  catch(err){alert('Erro processando foto');document.getElementById('audio-overlay').classList.remove('show');return}
+  try{
+    const r=await fetch(IA_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({tipo:'ler_notinha',imagem_base64:base64,max_tokens:1500})});
+    const d=await r.json();
+    document.getElementById('audio-overlay').classList.remove('show');
+    if(d.resultado&&!d.resultado.erro&&d.resultado.valor_total){
+      // 🆕 v6.1: tela revisão antes de salvar
+      const dadosFoto={tipo:'saida',valor:d.resultado.valor_total,descricao:d.resultado.estabelecimento||'Cupom',categoria_sugerida:d.resultado.categoria_sugerida||'compras',texto_original:'foto cupom'};
+      toast('✨ IA leu o cupom! Confere os dados');
+      setTimeout(()=>abrirAddManualComDados(dadosFoto),500);
+    }else{
+      alert('🦔 '+(d.resultado?.erro||'IA não conseguiu ler')+'\n\nTenta cadastrar manual.');
+      abrirAddManual();
+    }
+  }catch(err){
+    document.getElementById('audio-overlay').classList.remove('show');
+    alert('Erro: '+err.message);
+  }
+};
+
+async function comprimirImg(file,maxW=1600,q=0.85){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=(e)=>{
+      const img=new Image();
+      img.onload=()=>{
+        let w=img.width,h=img.height;
+        if(w>maxW){h=Math.round((h*maxW)/w);w=maxW}
+        const c=document.createElement('canvas');
+        c.width=w;c.height=h;
+        const ctx=c.getContext('2d');
+        ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+        ctx.drawImage(img,0,0,w,h);
+        let b64=c.toDataURL('image/jpeg',q);
+        const kb=Math.round((b64.length*0.75)/1024);
+        if(kb>4000&&q>0.5)b64=c.toDataURL('image/jpeg',0.7);
+        res(b64);
+      };
+      img.onerror=()=>rej(new Error('Erro'));
+      img.src=e.target.result;
+    };
+    r.onerror=()=>rej(new Error('Erro'));
+    r.readAsDataURL(file);
+  });
+}
+
+window.abrirAcoes=function(id){
+  const t=transacoes.find(x=>x.id===id);
+  if(!t)return;
+  const eEnt=t.tipo==='entrada';
+  const eRealiz=(t.status||'realizada')==='realizada';
+  document.getElementById('acoes-content').innerHTML=`
+    <div class="acoes-titulo">${t.descricao}</div>
+    <div class="acoes-sub">${eEnt?'+':'-'}R$ ${fm(t.valor)} • ${new Date(t.data+'T12:00:00').toLocaleDateString('pt-BR')}</div>
+    ${!eRealiz?`<div class="acao-btn" onclick="marcarRealizada('${id}')"><div class="acao-icon brand">✓</div><div class="acao-info"><div class="acao-titulo">Marcar como realizada</div><div class="acao-info-sub">Confirma que aconteceu</div></div></div>`:''}
+    <div class="acao-btn" onclick="editarTrans('${id}')"><div class="acao-icon">✏️</div><div class="acao-info"><div class="acao-titulo">Editar</div><div class="acao-info-sub">Alterar valor, descrição</div></div></div>
+    <div class="acao-btn" onclick="excluirTrans('${id}')"><div class="acao-icon danger">🗑️</div><div class="acao-info"><div class="acao-titulo" style="color:var(--danger);">Excluir</div><div class="acao-info-sub">Remove essa transação</div></div></div>
+    <button class="btn btn-secondary" onclick="fecharModal('modal-acoes')" style="width:100%;margin-top:14px;">Cancelar</button>
+  `;
+  document.getElementById('modal-acoes').classList.add('show');
+};
+
+window.marcarRealizada=async function(id){
+  try{
+    await supabase.from('transacoes').update({status:'realizada'}).eq('id',id);
+    ultimoItemNovoId=id;
+    toast('✅ Marcada como realizada!');
+    fecharModal('modal-acoes');
+    await carregar();
+  }catch(e){alert('Erro: '+e.message)}
+};
+
+window.editarTrans=function(id){
+  const t=transacoes.find(x=>x.id===id);
+  if(!t)return;
+  fecharModal('modal-acoes');
+  setTimeout(()=>{
+    abrirAddManualComDados({tipo:t.tipo,valor:t.valor,descricao:t.descricao,categoria_sugerida:t.categoria,_editando:t.id});
+  },300);
+};
+
+window.excluirTrans=async function(id){
+  if(!confirm('Excluir essa transação?'))return;
+  try{
+    await supabase.from('transacoes').delete().eq('id',id);
+    toast('🗑️ Excluída');
+    fecharModal('modal-acoes');
+    await carregar();
+  }catch(e){alert('Erro: '+e.message)}
+};
+
+window.fecharModal=function(id){document.getElementById(id).classList.remove('show')};
+
+window.formatarValor=function(input){
+  let v=input.value.replace(/\D/g,'');
+  if(!v){input.value='';return}
+  v=(parseInt(v)/100).toFixed(2);
+  input.value=Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2});
+};
+
+function valorParaNum(s){
+  if(!s)return 0;
+  return Number(s.replace(/\./g,'').replace(',','.'))||0;
+}
+
+function fm(v){return(Number(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
+
+async function darXP(xp,acao,desc){
+  try{
+    await supabase.from('historico_xp').insert({user_id:usuario.id,acao,xp_ganho:xp,descricao:desc});
+    const{data:g}=await supabase.from('gamificacao').select('xp_total').eq('user_id',usuario.id).maybeSingle();
+    await supabase.from('gamificacao').update({xp_total:(g?.xp_total||0)+xp,ultima_atividade:new Date().toISOString().split('T')[0]}).eq('user_id',usuario.id);
+  }catch(e){console.error(e)}
+}
+
+function toast(t){
+  const e=document.getElementById('xp-toast');
+  e.textContent=t;
+  e.style.display='block';
+  setTimeout(()=>{e.style.display='none'},3500);
+}
+</script>
 </body>
 </html>
