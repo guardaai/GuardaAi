@@ -77,7 +77,6 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .trans-valor.entrada{color:var(--brand)}
 .trans-valor.saida{color:var(--danger)}
 .trans-valor.nocartao{color:var(--text-mute)}
-/* 🆕 CARD EXPANSÍVEL DO CARTÃO DE CRÉDITO (prévia da fatura) */
 .cartao-card{background:linear-gradient(135deg,var(--info-soft) 0%,var(--bg-card) 100%);border:1px solid rgba(56,189,248,0.3);border-radius:16px;margin-bottom:10px;overflow:hidden}
 .cartao-head{display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer}
 .cartao-head:active{background:rgba(56,189,248,0.05)}
@@ -147,6 +146,9 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .conf-valor{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;text-align:left}
 .conf-valor.entrada{color:var(--brand)}
 .conf-valor.saida{color:var(--danger)}
+.conf-conta-edit{margin:10px 0 4px;padding:10px;background:var(--bg-input);border:1px solid var(--border);border-radius:12px}
+.conf-conta-edit label{display:block;font-size:10px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.05em;font-weight:700;margin-bottom:6px}
+.conf-conta-edit select{width:100%;background:var(--bg-elev);border:1px solid var(--border);border-radius:10px;padding:12px;color:#fff;font-size:15px;font-family:'Inter',sans-serif;min-height:46px}
 .parcelas-preview{background:var(--bg-input);border-radius:12px;padding:12px;margin-top:14px;max-height:200px;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .parcelas-titulo{font-family:'Space Grotesk',sans-serif;font-size:10px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px}
 .parcela-mini{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
@@ -244,7 +246,8 @@ let filtroAtual='todas';
 let recognition=null,isRecording=false,textoTranscrito='',propostaAudio=null;
 let ultimoItemNovoId=null;
 let parcelasPreview=[];
-let cartoesAbertos=new Set(); // 🆕 quais cards de cartão estão expandidos
+let cartoesAbertos=new Set();
+let contaResolvidaId=''; // 🆕 conta escolhida na confirmação do áudio (editável)
 
 (async()=>{
   const{data:{session}}=await supabase.auth.getSession();
@@ -264,6 +267,42 @@ async function carregarContas(){
 
 function noCartaoCredito(t){
   return t.tipo==='saida' && t.conta_id && cartoesCreditoIds.has(t.conta_id);
+}
+
+// 🆕 resolve a conta certa a partir do que a IA entendeu, respeitando crédito x débito.
+// Regra: se o texto/IA indica CRÉDITO -> prioriza contas tipo cartao_credito.
+//        se indica DÉBITO -> prioriza contas que NÃO são cartao_credito.
+//        senão -> primeira que casar o nome.
+function resolverConta(p){
+  const nomeMencionado=(p.cartao_mencionado||p.conta_mencionada||'').toLowerCase().trim();
+  const textoTudo=((p.texto_original||'')+' '+nomeMencionado).toLowerCase();
+  if(!nomeMencionado)return null;
+
+  // detecta intenção de crédito/débito pelo texto falado
+  const querCredito=/cr[ée]dito|cart[ãa]o de cr[ée]dito|no cr[ée]dito/.test(textoTudo) || !!p.cartao_mencionado || p.parcelado;
+  const querDebito=/d[ée]bito|na conta|conta corrente|no d[ée]bito/.test(textoTudo);
+
+  const casaNome=(c)=>{
+    const cn=(c.nome||'').toLowerCase();
+    const cb=(c.banco||'').toLowerCase();
+    return cn.includes(nomeMencionado)||cb.includes(nomeMencionado)||nomeMencionado.includes(cn.split(' ')[0])||(cb&&nomeMencionado.includes(cb.split(' ')[0]));
+  };
+
+  const candidatos=contas.filter(casaNome);
+  if(candidatos.length===0)return null;
+  if(candidatos.length===1)return candidatos[0];
+
+  // mais de um candidato (ex: Nubank débito + Nubank crédito) -> usa a intenção
+  if(querCredito){
+    const cred=candidatos.find(c=>c.tipo==='cartao_credito');
+    if(cred)return cred;
+  }
+  if(querDebito){
+    const deb=candidatos.find(c=>c.tipo!=='cartao_credito');
+    if(deb)return deb;
+  }
+  // sem intenção clara: devolve o primeiro
+  return candidatos[0];
 }
 
 async function carregar(){
@@ -298,11 +337,9 @@ function render(){
   const vencidas=vencidasArr.length;
   const totalVencido=vencidasArr.reduce((a,t)=>a+Number(t.valor),0);
 
-  // 🆕 separa as transações de crédito (vão pros cards) do resto (lista normal)
   const transCredito=lista.filter(t=>noCartaoCredito(t));
   const transNormais=lista.filter(t=>!noCartaoCredito(t));
 
-  // 🆕 agrupa crédito por cartão
   const porCartao={};
   transCredito.forEach(t=>{
     if(!porCartao[t.conta_id])porCartao[t.conta_id]=[];
@@ -361,7 +398,6 @@ function render(){
   }
 }
 
-// 🆕 renderiza um card expansível por cartão de crédito com prévia da fatura
 function renderCartoes(porCartao,hoje){
   const ids=Object.keys(porCartao);
   if(ids.length===0)return '';
@@ -483,7 +519,7 @@ function renderAudio(){
     <button class="mic-btn ${isRecording?'recording':''}" id="mic-btn" onclick="toggleRec()">${isRecording?'⏹️':'🎤'}</button>
     <div class="mic-status ${isRecording?'recording':''}">${isRecording?'🔴 Ouvindo... fale agora':(textoTranscrito?'✅ Pronto!':'Toque pra falar')}</div>
     <div class="transcricao-box ${textoTranscrito?'':'placeholder'}" id="transcricao-box">${textoTranscrito||'O que você falar vai aparecer aqui...'}</div>
-    ${!textoTranscrito?`<div class="exemplos"><div class="exemplos-titulo">💡 Exemplos</div><div class="exemplo-item">paguei 15 reais no espetinho no Santander</div><div class="exemplo-item">churrasco 30 reais no crédito Nubank</div><div class="exemplo-item">bolsa 600 em 6x no Nubank</div><div class="exemplo-item">pagamento 200 reais dia 17 de junho</div></div>`:''}
+    ${!textoTranscrito?`<div class="exemplos"><div class="exemplos-titulo">💡 Exemplos</div><div class="exemplo-item">paguei 15 reais no espetinho no débito Santander</div><div class="exemplo-item">churrasco 30 reais no crédito Nubank</div><div class="exemplo-item">bolsa 600 em 6x no crédito Nubank</div><div class="exemplo-item">pagamento 200 reais dia 17 de junho</div></div>`:''}
     <div class="audio-acoes">
       <button class="btn btn-secondary" onclick="fecharAudio()">Cancelar</button>
       <button class="btn btn-ia" onclick="processarAudio()" ${!textoTranscrito||isRecording?'disabled':''}>🦔 IA interpretar</button>
@@ -546,16 +582,14 @@ function calcularParcelasPreview(){
   const numParc=Number(p.num_parcelas);
   const valorParc=Number(p.valor_parcela)||(Number(p.valor)/numParc);
 
-  let cartao=null;
-  if(p.cartao_mencionado){
-    const cm=p.cartao_mencionado.toLowerCase();
-    cartao=contas.find(c=>c.tipo==='cartao_credito'&&(c.nome.toLowerCase().includes(cm)||c.banco?.toLowerCase().includes(cm)));
-  }
+  // 🆕 usa o resolverConta pra achar o cartão certo (crédito)
+  const cartao=resolverConta(p);
+  const ehCartaoCred=cartao&&cartao.tipo==='cartao_credito';
 
   const hoje=new Date();
   let primeiraData;
 
-  if(cartao&&cartao.dia_fechamento&&cartao.dia_vencimento){
+  if(ehCartaoCred&&cartao.dia_fechamento&&cartao.dia_vencimento){
     const diaHoje=hoje.getDate();
     const diaFec=Number(cartao.dia_fechamento);
     const diaVen=Number(cartao.dia_vencimento);
@@ -585,15 +619,12 @@ function calcularParcelasPreview(){
 function renderConfirmacao(){
   const p=propostaAudio;
   const cat=CATEGORIAS[p.categoria_sugerida]||CATEGORIAS.outro;
-  let cs=null;
-  if(p.conta_mencionada||p.cartao_mencionado){
-    const cm=(p.cartao_mencionado||p.conta_mencionada).toLowerCase();
-    cs=contas.find(c=>c.nome.toLowerCase().includes(cm)||c.banco?.toLowerCase().includes(cm)||cm.includes(c.nome.toLowerCase().split(' ')[0]));
-  }
+  // 🆕 usa o resolverConta (respeita crédito x débito)
+  const cs=resolverConta(p);
+  contaResolvidaId=cs?.id||'';
 
   const eParc=p.parcelado&&p.num_parcelas;
   const eFin=p.tipo_compra==='financiamento'&&p.tem_entrada;
-  const dataFinal=p.data_mencionada||new Date().toISOString().split('T')[0];
 
   let parcelasHTML='';
   if(eParc&&parcelasPreview.length>0){
@@ -614,6 +645,10 @@ function renderConfirmacao(){
     alertaFin=`<div class="alerta-fin"><strong>⚠️ Financiamento detectado!</strong><br>Vou criar:<br>• Entrada hoje: <strong>R$ ${fm(p.valor_entrada)}</strong><br>• Dívida de <strong>R$ ${fm(p.num_parcelas*(p.valor_parcela||0))}</strong> em ${p.num_parcelas}x</div>`;
   }
 
+  // 🆕 seletor de conta SEMPRE visível na confirmação, já com a conta resolvida selecionada.
+  // Assim, se a IA errar crédito/débito, você corrige aqui antes de salvar.
+  const opcoesConta=`<option value="">Nenhuma</option>`+contas.map(c=>`<option value="${c.id}" ${c.id===contaResolvidaId?'selected':''}>${c.icone||''} ${c.nome}${c.tipo==='cartao_credito'?' (crédito)':''}</option>`).join('');
+
   document.getElementById('audio-modal-content').innerHTML=`
     <div class="audio-titulo">Confirma essa transação?</div>
     <div class="audio-sub">Tatu entendeu o que você falou. Confere antes de salvar:</div>
@@ -625,19 +660,39 @@ function renderConfirmacao(){
     <div class="conf-row"><div class="conf-label">Valor total</div><div class="conf-valor ${p.tipo}">${p.tipo==='entrada'?'+':'-'}R$ ${fm(p.valor)}</div></div>
     <div class="conf-row"><div class="conf-label">Descrição</div><div class="conf-valor" style="font-size:14px;">${p.descricao}</div></div>
     <div class="conf-row"><div class="conf-label">Categoria</div><div class="conf-valor" style="font-size:14px;">${cat.e} ${cat.n}</div></div>
-    ${cs?`<div class="conf-row"><div class="conf-label">${eParc?'Cartão':'Conta'}</div><div class="conf-valor" style="font-size:14px;">${cs.icone} ${cs.nome}</div></div>`:''}
     ${p.data_mencionada?`<div class="conf-row"><div class="conf-label">Data</div><div class="conf-valor" style="font-size:14px;">${new Date(p.data_mencionada+'T12:00:00').toLocaleDateString('pt-BR')}</div></div>`:''}
     ${eParc?`<div class="conf-row"><div class="conf-label">Parcelas</div><div class="conf-valor" style="font-size:14px;color:var(--ia);">📦 ${p.num_parcelas}x de R$ ${fm(p.valor_parcela||(p.valor/p.num_parcelas))}</div></div>`:''}
+    <div class="conf-conta-edit">
+      <label>💳 Conta / Cartão ${cs?'(Tatu escolheu — confere!)':''}</label>
+      <select id="conf-conta" onchange="window.contaResolvidaManual(this.value)">${opcoesConta}</select>
+    </div>
     ${parcelasHTML}
     ${alertaFin}
     <div style="margin-top:20px;display:flex;gap:10px;">
-      <button class="btn btn-secondary" onclick="editarAudio()">✏️ Editar</button>
-      <button class="btn btn-primary" onclick="salvarAudio('${cs?.id||''}')">✅ Salvar</button>
+      <button class="btn btn-secondary" onclick="editarAudio()">✏️ Editar tudo</button>
+      <button class="btn btn-primary" onclick="salvarAudioResolvido()">✅ Salvar</button>
     </div>
     <button class="btn btn-secondary" onclick="renderAudio()" style="margin-top:8px;width:100%;">🔄 Falar de novo</button>`;
 }
 
-window.editarAudio=function(){const p=propostaAudio;fecharAudio();setTimeout(()=>abrirAddManualComDados(p),300)};
+// 🆕 quando você troca a conta no seletor da confirmação
+window.contaResolvidaManual=function(id){
+  contaResolvidaId=id;
+  // se virou cartão de crédito e é parcelado, recalcula as datas pelo ciclo
+  const p=propostaAudio;
+  if(p&&p.parcelado&&p.num_parcelas){
+    const c=contas.find(x=>x.id===id);
+    p.cartao_mencionado=c?c.nome:p.cartao_mencionado;
+    calcularParcelasPreview();
+  }
+};
+
+// 🆕 salva usando a conta resolvida/escolhida
+window.salvarAudioResolvido=function(){
+  salvarAudio(contaResolvidaId);
+};
+
+window.editarAudio=function(){const p=propostaAudio;fecharAudio();setTimeout(()=>abrirAddManualComDados({...p,conta_id:contaResolvidaId}),300)};
 
 window.salvarAudio=async function(contaId){
   const p=propostaAudio;
@@ -698,7 +753,7 @@ window.salvarAudio=async function(contaId){
 window.fecharAudio=function(){
   if(isRecording)pararGravacao();
   document.getElementById('audio-overlay').classList.remove('show');
-  textoTranscrito='';propostaAudio=null;parcelasPreview=[];
+  textoTranscrito='';propostaAudio=null;parcelasPreview=[];contaResolvidaId='';
 };
 
 let tipoAtual='saida';
@@ -760,7 +815,6 @@ window.salvarManual=async function(editandoId){
   try{
     const hoje=new Date().toISOString().split('T')[0];
     if(editandoId){
-      // 🆕 editar = ATUALIZAR a transação existente (antes criava uma nova)
       const{error}=await supabase.from('transacoes').update({valor,descricao:desc,tipo:tipoAtual,categoria:cat,data,conta_id:contaId||null,status:data>hoje?'prevista':'realizada'}).eq('id',editandoId);
       if(error)throw error;
       ultimoItemNovoId=editandoId;
@@ -869,7 +923,6 @@ window.editarTrans=function(id){
   if(!t)return;
   fecharModal('modal-acoes');
   setTimeout(()=>{
-    // 🆕 agora passa conta_id de volta e marca _editando (antes criava nova e perdia o cartão)
     abrirAddManualComDados({tipo:t.tipo,valor:t.valor,descricao:t.descricao,categoria_sugerida:t.categoria,data_mencionada:t.data,conta_id:t.conta_id,_editando:t.id,texto_original:null});
   },300);
 };
