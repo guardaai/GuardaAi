@@ -22,7 +22,8 @@ input:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px var(--bg-input) inset!imp
 .header-titulo{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;line-height:1.1}
 .header-sub{font-size:11px;color:var(--brand);display:flex;align-items:center;gap:5px}
 .header-sub::before{content:'';width:6px;height:6px;background:var(--brand);border-radius:50%;display:inline-block;box-shadow:0 0 6px var(--brand)}
-.header-clear{width:36px;height:36px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);color:var(--text-mute);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
+.header-btn{width:36px;height:36px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);color:var(--text-mute);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0}
+.header-btn.ativo{background:var(--ia-soft);border-color:var(--ia);color:var(--ia)}
 
 .messages{flex:1;overflow-y:auto;padding:20px;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:14px;padding-bottom:30px}
 .messages::-webkit-scrollbar{width:6px}
@@ -37,7 +38,11 @@ input:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px var(--bg-input) inset!imp
 .msg.tatu .msg-bubble{background:var(--bg-card);border:1px solid var(--border);color:var(--text);border-bottom-left-radius:4px}
 .msg.tatu .msg-bubble strong{color:var(--brand);font-weight:700}
 .msg.tatu .msg-bubble em{color:var(--ia);font-style:normal;font-weight:500}
+.msg-row{display:flex;align-items:center;gap:8px}
 .msg-tempo{font-size:10px;color:var(--text-faint);padding:0 6px;font-family:'Space Grotesk',sans-serif}
+.msg-falar{font-size:13px;color:var(--text-faint);cursor:pointer;padding:2px 4px}
+.msg-falar:active{transform:scale(0.9)}
+.msg-falar.falando{color:var(--ia)}
 
 .msg.tatu-loading .msg-bubble{display:flex;align-items:center;gap:8px;color:var(--text-mute);font-style:italic;padding:14px 18px}
 .tatu-dot{width:6px;height:6px;background:var(--ia);border-radius:50%;animation:dot 1.2s infinite}
@@ -84,7 +89,8 @@ input:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px var(--bg-input) inset!imp
       <div class="header-sub">Online • IA Claude</div>
     </div>
   </div>
-  <button class="header-clear" onclick="limparChat()" title="Limpar conversa">🗑</button>
+  <button class="header-btn" id="btn-voz" onclick="toggleVoz()" title="Tatu ler em voz alta">🔇</button>
+  <button class="header-btn" onclick="limparChat()" title="Limpar conversa">🗑</button>
 </div>
 
 <div class="messages" id="messages"></div>
@@ -114,6 +120,7 @@ let mensagens=[];
 let contextoUsuario='';
 let recognition=null,isRecording=false;
 let processando=false;
+let vozLigada=false;
 
 const SUGESTOES_INICIAIS=[
   '📊 Como tô esse mês?',
@@ -143,19 +150,21 @@ async function montarContexto(){
     const fimMes=new Date(new Date().getFullYear(),new Date().getMonth()+1,0).toISOString().split('T')[0];
     const proxSemana=new Date();proxSemana.setDate(proxSemana.getDate()+7);
     
-    const[contas,rendas,despesas,dividas,transMes,transProxSemana,gam]=await Promise.all([
+    const[contas,rendas,despesas,dividas,transMes,transProxSemana,gam,metas]=await Promise.all([
       supabase.from('contas').select('*').eq('user_id',usuario.id).eq('ativa',true),
       supabase.from('rendas').select('*').eq('user_id',usuario.id),
       supabase.from('compromissos').select('*').eq('user_id',usuario.id),
       supabase.from('dividas').select('*').eq('user_id',usuario.id).eq('status','ativa'),
       supabase.from('transacoes').select('*').eq('user_id',usuario.id).gte('data',inicioMes).lte('data',fimMes).order('data',{ascending:false}),
       supabase.from('transacoes').select('*').eq('user_id',usuario.id).gte('data',hoje).lte('data',proxSemana.toISOString().split('T')[0]).eq('status','prevista').eq('tipo','saida').order('data'),
-      supabase.from('gamificacao').select('*').eq('user_id',usuario.id).maybeSingle()
+      supabase.from('gamificacao').select('*').eq('user_id',usuario.id).maybeSingle(),
+      supabase.from('metas').select('*').eq('user_id',usuario.id)
     ]);
     
     const nome=perfil.nome||usuario.email?.split('@')[0]||'amigo';
     const c=contas.data||[],r=rendas.data||[],d=despesas.data||[],di=dividas.data||[],tm=transMes.data||[],tps=transProxSemana.data||[];
     const g=gam.data||{};
+    const me=metas.data||[];
     
     const contasNoCart=c.filter(x=>x.tipo!=='cartao_credito');
     const cartoes=c.filter(x=>x.tipo==='cartao_credito');
@@ -168,6 +177,18 @@ async function montarContexto(){
     const entradasMes=realizadasMes.filter(t=>t.tipo==='entrada').reduce((a,t)=>a+Number(t.valor),0);
     const saidasMes=realizadasMes.filter(t=>t.tipo==='saida').reduce((a,t)=>a+Number(t.valor),0);
     const vencidas=tm.filter(t=>t.status==='prevista'&&t.tipo==='saida'&&t.data<hoje);
+    
+    // gastos do mês por categoria (só saídas realizadas)
+    const porCat={};
+    realizadasMes.filter(t=>t.tipo==='saida').forEach(t=>{const k=t.categoria||'outro';porCat[k]=(porCat[k]||0)+Number(t.valor||0)});
+    const catOrdenada=Object.entries(porCat).sort((a,b)=>b[1]-a[1]);
+    
+    // últimas transações detalhadas (até 25)
+    const ultimas=tm.slice(0,25);
+    
+    // dívidas de juros (agiota)
+    const agiotas=di.filter(x=>x.juros_rola===true&&Number(x.juros_mensal)>0);
+    const totalJurosMes=agiotas.reduce((a,x)=>a+Number(x.valor_atual)*Number(x.juros_mensal)/100,0);
     
     const niveis=['','Diagnóstico','Resgate','Estabilização','Construção','Liberdade'];
     const objetivos={sair_dividas:'Sair das dívidas',criar_reserva:'Criar reserva de emergência',investir:'Investir',liberdade:'Liberdade financeira'};
@@ -199,7 +220,11 @@ DESPESAS FIXAS (${d.length}):
 ${d.map(x=>`- ${x.nome} (${x.categoria}): R$ ${fm(x.valor)}/mês`).join('\n')||'Nenhuma'}
 
 DÍVIDAS ATIVAS (${di.length}):
-${di.map(x=>`- ${x.credor} (${x.tipo}): R$ ${fm(x.valor_atual)} de R$ ${fm(x.valor_original)} • vence ${x.data_vencimento}`).join('\n')||'Nenhuma'}
+${di.map(x=>`- ${x.credor} (${x.tipo}): R$ ${fm(x.valor_atual)} de R$ ${fm(x.valor_original)}${x.juros_rola?` • 🔴 JUROS ${x.juros_mensal}%/mês (R$ ${fm(Number(x.valor_atual)*Number(x.juros_mensal)/100)}/mês) que rola no saldo`:''} • vence ${x.data_vencimento}`).join('\n')||'Nenhuma'}
+${agiotas.length>0?`\n⚠️ ATENÇÃO: ${agiotas.length} dívida(s) de juros (agiota) custando R$ ${fm(totalJurosMes)}/mês só de juros. PRIORIDADE.`:''}
+
+METAS (${me.length}):
+${me.map(x=>{const pct=x.valor_alvo>0?Math.round((Number(x.valor_atual)/Number(x.valor_alvo))*100):0;return `- ${x.nome} (${x.tipo}): R$ ${fm(x.valor_atual)} de R$ ${fm(x.valor_alvo)} (${pct}%)`}).join('\n')||'Nenhuma'}
 
 ESSE MÊS (${new Date().toLocaleDateString('pt-BR',{month:'long'})}):
 - Entradas realizadas: R$ ${fm(entradasMes)}
@@ -207,6 +232,12 @@ ESSE MÊS (${new Date().toLocaleDateString('pt-BR',{month:'long'})}):
 - Saldo do mês: R$ ${fm(entradasMes-saidasMes)}
 - Total transações: ${tm.length}
 - Contas vencidas em aberto: ${vencidas.length} (R$ ${fm(vencidas.reduce((a,t)=>a+Number(t.valor),0))})
+
+GASTOS DO MÊS POR CATEGORIA:
+${catOrdenada.map(([cat,val])=>`- ${cat}: R$ ${fm(val)}`).join('\n')||'Nenhum gasto'}
+
+ÚLTIMAS TRANSAÇÕES (até 25 mais recentes do mês):
+${ultimas.map(t=>`- ${t.data} • ${t.tipo==='entrada'?'+':'-'}R$ ${fm(t.valor)} • ${t.descricao||t.categoria||'?'}${t.status==='prevista'?' (prevista)':''}`).join('\n')||'Nenhuma'}
 
 CONTAS A PAGAR PRÓXIMOS 7 DIAS (${tps.length}):
 ${tps.slice(0,10).map(t=>`- ${t.data}: ${t.descricao} - R$ ${fm(t.valor)}`).join('\n')||'Nada agendado'}
@@ -247,16 +278,23 @@ window.usarSugestao=function(s){
 function renderMensagens(){
   if(mensagens.length===0){renderEmpty();return}
   document.getElementById('sugestoes-area').innerHTML='';
-  const html=mensagens.map(m=>{
+  const html=mensagens.map((m,idx)=>{
     if(m.loading){
       return`<div class="msg tatu tatu-loading"><div class="msg-bubble"><div class="tatu-dot"></div><div class="tatu-dot"></div><div class="tatu-dot"></div></div></div>`;
     }
     const tempo=new Date(m.tempo).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-    return`<div class="msg ${m.role}"><div class="msg-bubble">${formatarTexto(m.texto)}</div><div class="msg-tempo">${tempo}</div></div>`;
+    const falarBtn=m.role==='tatu'?`<span class="msg-falar" onclick="falarMsg(${idx})" title="Ouvir">🔊</span>`:'';
+    return`<div class="msg ${m.role}"><div class="msg-bubble">${formatarTexto(m.texto)}</div><div class="msg-row"><div class="msg-tempo">${tempo}</div>${falarBtn}</div></div>`;
   }).join('');
   document.getElementById('messages').innerHTML=html;
   setTimeout(()=>{const m=document.getElementById('messages');m.scrollTop=m.scrollHeight},50);
 }
+
+window.falarMsg=function(idx){
+  const m=mensagens[idx];
+  if(!m||m.role!=='tatu')return;
+  falar(m.texto);
+};
 
 function formatarTexto(t){
   return t
@@ -265,11 +303,39 @@ function formatarTexto(t){
     .replace(/(R\$\s?[\d.,]+)/g,'<em>$1</em>');
 }
 
+// ===== VOZ: Tatu lê em voz alta =====
+function limparPraFala(t){
+  return t.replace(/\*\*/g,'').replace(/[*_#`]/g,'').replace(/🦔|🔴|⚠️|✅|💪|🎯|💰|📊|💸|📅|💡|🎉|🚀/g,'').trim();
+}
+function falar(texto){
+  if(!('speechSynthesis' in window))return;
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(limparPraFala(texto));
+  u.lang='pt-BR';
+  u.rate=1.05;
+  u.pitch=1.0;
+  const vozes=window.speechSynthesis.getVoices();
+  const vozBR=vozes.find(v=>v.lang==='pt-BR')||vozes.find(v=>v.lang&&v.lang.startsWith('pt'));
+  if(vozBR)u.voice=vozBR;
+  window.speechSynthesis.speak(u);
+}
+window.toggleVoz=function(){
+  vozLigada=!vozLigada;
+  const b=document.getElementById('btn-voz');
+  b.textContent=vozLigada?'🔊':'🔇';
+  b.classList.toggle('ativo',vozLigada);
+  if(!vozLigada&&'speechSynthesis' in window)window.speechSynthesis.cancel();
+  // dispara carregamento das vozes (alguns navegadores precisam)
+  if(vozLigada&&'speechSynthesis' in window)window.speechSynthesis.getVoices();
+};
+
 window.enviar=async function(){
   if(processando)return;
   const inp=document.getElementById('input-text');
   const texto=inp.value.trim();
   if(!texto)return;
+  
+  if(isRecording)pararRec();
   
   processando=true;
   inp.value='';
@@ -282,21 +348,20 @@ window.enviar=async function(){
   document.getElementById('sugestoes-area').innerHTML='';
   
   try{
-    const historicoStr=mensagens
+    // histórico nativo pro Tatu (últimas trocas, sem a pergunta atual e sem loading)
+    const historico=mensagens
       .filter(m=>!m.loading)
-      .slice(-10,-1)
-      .map(m=>`${m.role==='usuario'?'Usuário':'Tatu'}: ${m.texto}`)
-      .join('\n');
-    
-    const mensagemComContexto=`${historicoStr?'HISTÓRICO DA CONVERSA:\n'+historicoStr+'\n\n':''}PERGUNTA ATUAL DO USUÁRIO: ${texto}`;
+      .slice(-11,-1)
+      .map(m=>({role:m.role==='usuario'?'user':'assistant',content:m.texto}));
     
     const r=await fetch(IA_URL,{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
       body:JSON.stringify({
         tipo:'conversa',
-        mensagem:mensagemComContexto,
+        mensagem:texto,
         contexto:contextoUsuario,
+        historico:historico,
         max_tokens:1500
       })
     });
@@ -304,14 +369,17 @@ window.enviar=async function(){
     
     mensagens=mensagens.filter(m=>!m.loading);
     
+    let respostaTatu='';
     if(d.resultado&&typeof d.resultado==='string'){
-      mensagens.push({role:'tatu',texto:d.resultado,tempo:Date.now()});
+      respostaTatu=d.resultado;
     }else if(d.resultado?.erro){
-      mensagens.push({role:'tatu',texto:'🦔 '+d.resultado.erro,tempo:Date.now()});
+      respostaTatu='🦔 '+d.resultado.erro;
     }else{
-      mensagens.push({role:'tatu',texto:'🦔 Algo deu errado. Tenta de novo?',tempo:Date.now()});
+      respostaTatu='🦔 Algo deu errado. Tenta de novo?';
     }
+    mensagens.push({role:'tatu',texto:respostaTatu,tempo:Date.now()});
     renderMensagens();
+    if(vozLigada)falar(respostaTatu);
   }catch(e){
     mensagens=mensagens.filter(m=>!m.loading);
     mensagens.push({role:'tatu',texto:'🦔 Erro de conexão: '+e.message,tempo:Date.now()});
@@ -394,6 +462,7 @@ window.atualizarBotao=function(){
 window.limparChat=function(){
   if(mensagens.length===0)return;
   if(!confirm('Limpar essa conversa?'))return;
+  if('speechSynthesis' in window)window.speechSynthesis.cancel();
   mensagens=[];
   renderEmpty();
 };
@@ -404,5 +473,6 @@ document.getElementById('input-text').addEventListener('keydown',(e)=>{
   if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();enviar()}
 });
 </script>
+<script src="polish.js?v=1"></script>
 </body>
 </html>
