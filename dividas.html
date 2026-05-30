@@ -31,6 +31,10 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .tatu-nota-emoji{font-size:20px;flex-shrink:0}
 .tatu-nota-txt{font-size:12px;line-height:1.5;color:var(--text)}
 .tatu-nota-txt strong{color:var(--ia)}
+.alerta-agiota{background:linear-gradient(135deg,var(--danger-soft) 0%,var(--bg-card) 100%);border:1px solid rgba(255,71,87,0.4);border-radius:14px;padding:12px 14px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
+.alerta-agiota-emoji{font-size:20px;flex-shrink:0}
+.alerta-agiota-txt{font-size:12px;line-height:1.5;color:var(--text)}
+.alerta-agiota-txt strong{color:var(--danger)}
 .filtros{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
 .filtros::-webkit-scrollbar{display:none}
 .filtro-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:100px;padding:8px 14px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;color:var(--text-mute);white-space:nowrap}
@@ -40,6 +44,7 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .divida-card.atrasada{border-left:3px solid var(--danger)}
 .divida-card.urgente{border-left:3px solid var(--warning)}
 .divida-card.fatura{border-left:3px solid var(--info)}
+.divida-card.juros{border-left:3px solid var(--danger);background:linear-gradient(135deg,rgba(255,71,87,0.06) 0%,var(--bg-card) 60%)}
 .divida-card.paga{opacity:0.65;border-left:3px solid var(--brand)}
 .divida-card:active{transform:scale(0.99)}
 .divida-card.novo{animation:piscaItem 3.5s ease-out;background:var(--brand-soft);border-color:var(--brand);box-shadow:0 0 24px rgba(0,217,126,0.3);opacity:1!important}
@@ -47,6 +52,7 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .div-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
 .div-icone{width:44px;height:44px;border-radius:12px;background:var(--danger-soft);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 .div-icone.fatura{background:var(--info-soft);color:var(--info)}
+.div-icone.juros{background:var(--danger);color:#fff}
 .div-icone.paga{background:var(--brand-soft);color:var(--brand)}
 .div-info{flex:1;min-width:0}
 .div-credor{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:2px}
@@ -59,11 +65,15 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .div-badge.atrasada{background:var(--danger-soft);color:var(--danger)}
 .div-badge.urgente{background:var(--warning-soft);color:var(--warning)}
 .div-badge.normal{background:var(--info-soft);color:var(--info)}
+.div-badge.juros{background:var(--danger);color:#fff}
 .div-badge.paga{background:var(--brand-soft);color:var(--brand)}
 .div-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
 .div-meta-item{background:var(--bg-elev);padding:4px 10px;border-radius:100px;font-size:11px;color:var(--text-mute);font-family:'Space Grotesk',sans-serif;font-weight:600}
 .div-meta-item.pago{background:var(--brand-soft);color:var(--brand)}
 .div-meta-item.abatido{background:var(--info-soft);color:var(--info)}
+.div-meta-item.juros{background:var(--danger-soft);color:var(--danger)}
+.div-juros-aviso{background:var(--danger-soft);border:1px solid rgba(255,71,87,0.3);border-radius:10px;padding:8px 10px;margin-bottom:10px;font-size:11px;line-height:1.45;color:var(--text)}
+.div-juros-aviso strong{color:var(--danger)}
 .div-progresso{height:6px;background:var(--bg-elev);border-radius:100px;overflow:hidden;margin-bottom:10px}
 .div-progresso-fill{height:100%;background:linear-gradient(90deg,var(--brand) 0%,var(--brand-hover) 100%);border-radius:100px;transition:width 0.5s}
 .div-acao-btn{width:100%;padding:10px;border-radius:10px;background:linear-gradient(135deg,var(--ia-soft) 0%,var(--bg-elev) 100%);border:1px solid rgba(168,85,247,0.3);color:var(--ia);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
@@ -90,6 +100,12 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .valor-input-wrapper:focus-within{border-color:var(--brand)}
 .valor-prefix{color:var(--text-mute);font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;margin-right:6px}
 .valor-input-wrapper input{background:transparent;border:none;flex:1;text-align:right;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;padding:0;min-height:0;color:#fff!important;-webkit-text-fill-color:#fff!important}
+.juros-box{background:linear-gradient(135deg,var(--danger-soft) 0%,var(--bg-input) 100%);border:1px solid rgba(255,71,87,0.4);border-radius:12px;padding:14px;margin-bottom:14px;display:none}
+.juros-box.show{display:block}
+.juros-box-titulo{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:var(--danger);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.juros-box-valor{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:var(--danger);margin-bottom:6px}
+.juros-box-sub{font-size:11px;color:var(--text);line-height:1.5}
+.juros-box-sub strong{color:var(--danger)}
 .pag-resumo{background:var(--bg-input);border-radius:12px;padding:12px;margin-bottom:14px}
 .pag-resumo-linha{display:flex;justify-content:space-between;padding:5px 0;font-size:13px}
 .pag-resumo-linha.total{border-top:1px solid var(--border);margin-top:4px;padding-top:8px;font-family:'Space Grotesk',sans-serif;font-weight:700}
@@ -167,9 +183,10 @@ const SUPABASE_KEY='sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
 const IA_URL='https://gmbsxrxqrxpbgyyvifcd.supabase.co/functions/v1/claude-chat';
 const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
 
-const TIPOS_DIV={cartao:{e:'💳',n:'Cartão'},emprestimo:{e:'💸',n:'Empréstimo'},financiamento:{e:'🏦',n:'Financiamento'},financ_imovel:{e:'🏦',n:'Financ. imóvel'},financ_veiculo:{e:'🚗',n:'Financ. veículo'},cheque_especial:{e:'🆘',n:'Cheque Especial'},loja:{e:'🛍️',n:'Loja'},carne:{e:'📋',n:'Carnê'},medica:{e:'🏥',n:'Médica'},estudantil:{e:'🎓',n:'Estudantil'},consignado:{e:'💼',n:'Consignado'},pessoal:{e:'👨‍👩‍👧',n:'Pessoal'},mercado:{e:'🛒',n:'Mercado'},outro:{e:'📌',n:'Outro'}};
+const TIPOS_DIV={cartao:{e:'💳',n:'Cartão'},juros_rotativo:{e:'🔴',n:'Juros mensal (rola no saldo)'},emprestimo:{e:'💸',n:'Empréstimo'},financiamento:{e:'🏦',n:'Financiamento'},financ_imovel:{e:'🏦',n:'Financ. imóvel'},financ_veiculo:{e:'🚗',n:'Financ. veículo'},cheque_especial:{e:'🆘',n:'Cheque Especial'},loja:{e:'🛍️',n:'Loja'},carne:{e:'📋',n:'Carnê'},medica:{e:'🏥',n:'Médica'},estudantil:{e:'🎓',n:'Estudantil'},consignado:{e:'💼',n:'Consignado'},pessoal:{e:'👨‍👩‍👧',n:'Pessoal'},mercado:{e:'🛒',n:'Mercado'},outro:{e:'📌',n:'Outro'}};
 
 function ehFatura(d){return d.tipo==='cartao'}
+function ehJuros(d){return d.tipo==='juros_rotativo'}
 
 let usuario;
 let dividas=[];
@@ -179,6 +196,7 @@ let dividaIdNegoc=null;
 let ultimoItemNovoId=null;
 let salvando=false;
 let pagandoParcial=false;
+let tipoAddAtual='emprestimo';
 
 (async()=>{
   const{data:{session}}=await supabase.auth.getSession();
@@ -190,7 +208,6 @@ let pagandoParcial=false;
 
 async function carregarContas(){
   const{data}=await supabase.from('contas').select('id,nome,icone,tipo').eq('user_id',usuario.id).eq('ativa',true);
-  // só contas reais (não cartão de crédito) servem pra pagar dívida
   contas=(data||[]).filter(c=>c.tipo!=='cartao_credito');
 }
 
@@ -198,6 +215,12 @@ async function carregar(){
   const{data}=await supabase.from('dividas').select('*').eq('user_id',usuario.id).order('prioridade',{ascending:true}).order('data_vencimento',{ascending:true});
   dividas=data||[];
   render();
+}
+
+// juros do mês de uma dívida de juros = % sobre o saldo atual
+function jurosDoMes(d){
+  if(!ehJuros(d)||!d.juros_mensal)return 0;
+  return Number(d.valor_atual)*Number(d.juros_mensal)/100;
 }
 
 function render(){
@@ -212,6 +235,10 @@ function render(){
   const atrasadas=ativas.filter(d=>d.data_vencimento<hoje);
   const totalReal=dividaReal.reduce((a,d)=>a+Number(d.valor_atual),0);
   const totalFatura=faturas.reduce((a,d)=>a+Number(d.valor_atual),0);
+
+  // 🆕 dívidas de juros ativas e quanto sangram por mês
+  const dividasJuros=ativas.filter(d=>ehJuros(d));
+  const totalJurosMes=dividasJuros.reduce((a,d)=>a+jurosDoMes(d),0);
 
   let lista=[];
   let modoSecoes=false;
@@ -234,6 +261,12 @@ function render(){
           <div class="tot-valor">R$ ${fm(totalFatura)}</div>
           <div class="tot-sub">${faturas.length} fatura${faturas.length===1?'':'s'} • some quando paga</div>
         </div>
+      </div>
+    `:''}
+    ${totalJurosMes>0?`
+      <div class="alerta-agiota">
+        <div class="alerta-agiota-emoji">🔴</div>
+        <div class="alerta-agiota-txt"><strong>Tatu (atenção máxima):</strong> Suas dívidas de juros te custam <strong>R$ ${fm(totalJurosMes)} por mês</strong> só de juros. Isso é dinheiro que evapora todo mês sem abater nada. <strong>Prioridade nº1: quitar essas.</strong></div>
       </div>
     `:''}
     ${ativas.length>0?`
@@ -297,6 +330,7 @@ function renderDivida(d,hoje){
   const tipo=TIPOS_DIV[d.tipo]||TIPOS_DIV.outro;
   const ePaga=d.status==='paga';
   const eFatura=ehFatura(d);
+  const eJuros=ehJuros(d);
   const eAtr=!ePaga&&d.data_vencimento<hoje;
   const dias=Math.ceil((new Date(d.data_vencimento)-new Date(hoje))/86400000);
   const eUrg=!ePaga&&!eAtr&&dias<=7;
@@ -305,6 +339,7 @@ function renderDivida(d,hoje){
   let cClass='';
   let bdg='';
   if(ePaga){cClass='paga';bdg=`<div class="div-badge paga">✓ PAGA</div>`}
+  else if(eJuros){cClass='juros';bdg=`<div class="div-badge juros">🔴 ${d.juros_mensal}%/MÊS</div>`}
   else if(eAtr){cClass='atrasada';bdg=`<div class="div-badge atrasada">${eFatura?'FATURA VENCIDA':'ATRASADA'}</div>`}
   else if(eUrg){cClass='urgente';bdg=`<div class="div-badge urgente">EM ${dias}D</div>`}
   else{cClass=eFatura?'fatura':'';bdg=`<div class="div-badge normal">VENCE EM ${dias}D</div>`}
@@ -313,17 +348,19 @@ function renderDivida(d,hoje){
 
   const dataPagaFmt=ePaga&&d.atualizado_em?new Date(d.atualizado_em).toLocaleDateString('pt-BR'):null;
 
-  // 🆕 quanto já foi abatido (valor_original - valor_atual)
   const orig=Number(d.valor_original||d.valor_atual);
   const atual=Number(d.valor_atual);
   const abatido=orig-atual;
   const temAbatimento=!ePaga&&abatido>0.01&&orig>0;
   const pctPago=temAbatimento?Math.min(100,Math.round((abatido/orig)*100)):0;
 
+  // 🆕 juros do mês (só pra dívida de juros)
+  const jm=eJuros&&!ePaga?jurosDoMes(d):0;
+
   return `
     <div class="divida-card ${cClass}" data-item-id="${d.id}" onclick="abrirAcoes('${d.id}')">
       <div class="div-top">
-        <div class="div-icone ${ePaga?'paga':(eFatura&&!eAtr?'fatura':'')}">${ePaga?'✓':tipo.e}</div>
+        <div class="div-icone ${ePaga?'paga':(eJuros?'juros':(eFatura&&!eAtr?'fatura':''))}">${ePaga?'✓':tipo.e}</div>
         <div class="div-info">
           <div class="div-credor">${d.credor}</div>
           <div class="div-tipo">${tipo.n}${d.descricao&&d.descricao!==`Dívida ${d.credor}`?' • '+d.descricao:''}</div>
@@ -333,11 +370,13 @@ function renderDivida(d,hoje){
           ${bdg}
         </div>
       </div>
+      ${eJuros&&!ePaga?`<div class="div-juros-aviso">🔴 Esse empréstimo te custa <strong>R$ ${fm(jm)}/mês</strong> só de juros (${d.juros_mensal}% sobre R$ ${fm(atual)}). Pagar só o juros <strong>não diminui</strong> a dívida — pra abater, pague o juros + um extra.</div>`:''}
       ${temAbatimento?`<div class="div-progresso"><div class="div-progresso-fill" style="width:${pctPago}%;"></div></div>`:''}
       <div class="div-meta">
-        ${ePaga&&dataPagaFmt?`<div class="div-meta-item pago">✓ PAGO em ${dataPagaFmt}</div>`:`<div class="div-meta-item">📅 ${new Date(d.data_vencimento+'T12:00:00').toLocaleDateString('pt-BR')}</div>`}
+        ${ePaga&&dataPagaFmt?`<div class="div-meta-item pago">✓ PAGO em ${dataPagaFmt}</div>`:`<div class="div-meta-item">📅 ${eJuros?'Juros vence dia '+new Date(d.data_vencimento+'T12:00:00').getDate():new Date(d.data_vencimento+'T12:00:00').toLocaleDateString('pt-BR')}</div>`}
+        ${eJuros&&!ePaga?`<div class="div-meta-item juros">🔴 R$ ${fm(jm)}/mês de juros</div>`:''}
         ${temAbatimento?`<div class="div-meta-item abatido">✓ já abateu R$ ${fm(abatido)} (${pctPago}%)</div>`:''}
-        ${d.juros_mensal?`<div class="div-meta-item">📈 ${d.juros_mensal}%/mês</div>`:''}
+        ${!eJuros&&d.juros_mensal?`<div class="div-meta-item">📈 ${d.juros_mensal}%/mês</div>`:''}
       </div>
       ${!ePaga?`<button class="div-acao-btn" onclick="event.stopPropagation();abrirNegociador('${d.id}')">🦔 Negociar com Tatu</button>`:''}
     </div>
@@ -349,6 +388,7 @@ window.setFiltro=function(f){filtroAtual=f;render()};
 window.abrirAdd=function(dados){
   salvando=false;
   const vf=dados&&dados._daIA;
+  tipoAddAtual=dados?.tipo||'emprestimo';
   document.getElementById('modal-add-content').innerHTML=`
     <div class="modal-titulo">
       <span>${dados?._editando?'✏️ Editar dívida':(vf?'✏️ Revisar e salvar':'➕ Nova dívida')}</span>
@@ -367,19 +407,55 @@ window.abrirAdd=function(dados){
     <div class="field"><label>Credor (quem você deve)</label><input type="text" id="d-cred" placeholder="Digite o credor" value="${dados?.credor||''}"></div>
     <div class="field">
       <label>Tipo</label>
-      <select id="d-tipo">
-        ${Object.entries(TIPOS_DIV).map(([k,v])=>`<option value="${k}" ${dados?.tipo===k?'selected':''}>${v.e} ${v.n}</option>`).join('')}
+      <select id="d-tipo" onchange="onTipoChange()">
+        ${Object.entries(TIPOS_DIV).map(([k,v])=>`<option value="${k}" ${(dados?.tipo||'emprestimo')===k?'selected':''}>${v.e} ${v.n}</option>`).join('')}
       </select>
     </div>
     <div class="field"><label>Descrição (opcional)</label><input type="text" id="d-desc" placeholder="Detalhes" value="${dados?.descricao||''}"></div>
-    <div class="field"><label>Valor atual</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="d-val" placeholder="0,00" oninput="formatarValor(this)" value="${dados?.valor_atual?Number(dados.valor_atual).toFixed(2).replace('.',','):''}"></div></div>
+    <div class="field"><label id="lbl-valor">Valor atual</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="d-val" placeholder="0,00" oninput="formatarValor(this);atualizaJurosBox()" value="${dados?.valor_atual?Number(dados.valor_atual).toFixed(2).replace('.',','):''}"></div></div>
     <div class="field-row">
-      <div class="field"><label>Vencimento</label><input type="date" id="d-venc" value="${dados?.data_vencimento||new Date(Date.now()+30*86400000).toISOString().split('T')[0]}"></div>
-      <div class="field"><label>Juros %/mês</label><input type="number" id="d-juros" step="0.1" placeholder="0" value="${dados?.juros_mensal||''}"></div>
+      <div class="field"><label id="lbl-venc">Vencimento</label><input type="date" id="d-venc" value="${dados?.data_vencimento||new Date(Date.now()+30*86400000).toISOString().split('T')[0]}"></div>
+      <div class="field"><label>Juros %/mês</label><input type="number" id="d-juros" step="0.1" placeholder="0" oninput="atualizaJurosBox()" value="${dados?.juros_mensal||''}"></div>
+    </div>
+    <div class="juros-box" id="juros-box">
+      <div class="juros-box-titulo">🔴 Atenção: dívida de juros</div>
+      <div class="juros-box-valor" id="juros-box-valor">R$ 0,00<span style="font-size:13px;color:var(--text-mute);">/mês</span></div>
+      <div class="juros-box-sub" id="juros-box-sub"></div>
     </div>
     <button class="btn btn-primary" id="btn-salvar" onclick="salvar('${dados?._editando||''}')">${vf?'✅ Confirmar e salvar':'Salvar dívida'}</button>
   `;
   document.getElementById('modal-add').classList.add('show');
+  onTipoChange();
+};
+
+// 🆕 troca de labels e mostra/esconde o box de juros conforme o tipo
+window.onTipoChange=function(){
+  const sel=document.getElementById('d-tipo');
+  if(!sel)return;
+  tipoAddAtual=sel.value;
+  const eJuros=tipoAddAtual==='juros_rotativo';
+  const lblValor=document.getElementById('lbl-valor');
+  const lblVenc=document.getElementById('lbl-venc');
+  if(lblValor)lblValor.textContent=eJuros?'Quanto você pegou (saldo devedor)':'Valor atual';
+  if(lblVenc)lblVenc.textContent=eJuros?'Dia que paga o juros':'Vencimento';
+  atualizaJurosBox();
+};
+
+// 🆕 calcula e mostra o juros ao vivo
+window.atualizaJurosBox=function(){
+  const box=document.getElementById('juros-box');
+  if(!box)return;
+  if(tipoAddAtual!=='juros_rotativo'){box.classList.remove('show');return}
+  const saldo=valorParaNum(document.getElementById('d-val').value);
+  const taxa=parseFloat(document.getElementById('d-juros').value)||0;
+  const jm=saldo*taxa/100;
+  box.classList.add('show');
+  document.getElementById('juros-box-valor').innerHTML=`R$ ${fm(jm)}<span style="font-size:13px;color:var(--text-mute);">/mês</span>`;
+  if(saldo>0&&taxa>0){
+    document.getElementById('juros-box-sub').innerHTML=`Todo mês nascem <strong>R$ ${fm(jm)}</strong> de juros sobre os R$ ${fm(saldo)}. Pagar só isso <strong>não abate nada</strong> — o saldo continua R$ ${fm(saldo)}. Pra diminuir, pague o juros + um valor extra.`;
+  }else{
+    document.getElementById('juros-box-sub').innerHTML=`Preencha o saldo e a taxa pra eu calcular quanto te custa por mês.`;
+  }
 };
 
 window.salvar=async function(editandoId){
@@ -390,16 +466,21 @@ window.salvar=async function(editandoId){
   const val=valorParaNum(document.getElementById('d-val').value);
   const venc=document.getElementById('d-venc').value;
   const juros=parseFloat(document.getElementById('d-juros').value)||null;
+  const eJuros=tipo==='juros_rotativo';
 
   if(!cred){alert('Digite o credor');return}
   if(!val||val<=0){alert('Informe o valor');return}
+  if(eJuros&&(!juros||juros<=0)){alert('🦔 Pra dívida de juros, informe a taxa % ao mês (ex: 5)');return}
 
   salvando=true;
   const btn=document.getElementById('btn-salvar');
   if(btn){btn.disabled=true;btn.textContent='Salvando...'}
 
   try{
+    const jm=eJuros?(val*juros/100):null;
     const dados={credor:cred,tipo,descricao:desc||`Dívida ${cred}`,valor_atual:val,data_vencimento:venc,juros_mensal:juros};
+    // 🆕 pra dívida de juros, guarda o juros do mês em valor_minimo_mensal
+    if(eJuros)dados.valor_minimo_mensal=jm;
 
     if(editandoId){
       const{error}=await supabase.from('dividas').update(dados).eq('id',editandoId);
@@ -407,12 +488,18 @@ window.salvar=async function(editandoId){
       ultimoItemNovoId=editandoId;
       toast(`✏️ ${cred} atualizada!`);
     }else{
-      const{data,error}=await supabase.from('dividas').insert({...dados,user_id:usuario.id,valor_original:val,data_inicio:new Date().toISOString().split('T')[0],status:'ativa',prioridade:venc<new Date().toISOString().split('T')[0]?1:2}).select().single();
+      // dívida de juros entra como prioridade MÁXIMA (1)
+      const prioridade=eJuros?1:(venc<new Date().toISOString().split('T')[0]?1:2);
+      const{data,error}=await supabase.from('dividas').insert({...dados,user_id:usuario.id,valor_original:val,data_inicio:new Date().toISOString().split('T')[0],status:'ativa',prioridade}).select().single();
       if(error)throw error;
       ultimoItemNovoId=data.id;
       filtroAtual=tipo==='cartao'?'faturas':'real';
       await darXP(15,'divida_add','Dívida adicionada');
-      toast(`✅ ${cred} • R$ ${fm(val)}`);
+      if(eJuros){
+        toast(`🔴 ${cred} • R$ ${fm(jm)}/mês de juros`);
+      }else{
+        toast(`✅ ${cred} • R$ ${fm(val)}`);
+      }
     }
 
     fecharModal('modal-add');
@@ -425,12 +512,14 @@ window.salvar=async function(editandoId){
   }
 };
 
-// ============== 🆕 PAGAMENTO PARCIAL ==============
+// ============== PAGAMENTO PARCIAL ==============
 window.abrirPagar=function(id){
   fecharModal('modal-acoes');
   const d=dividas.find(x=>x.id===id);
   if(!d)return;
   pagandoParcial=false;
+  const eJuros=ehJuros(d);
+  const jm=eJuros?jurosDoMes(d):0;
   setTimeout(()=>{
     const atual=Number(d.valor_atual);
     const opcoesConta=contas.length>0
@@ -443,16 +532,18 @@ window.abrirPagar=function(id){
       </div>
       <div class="pag-resumo">
         <div class="pag-resumo-linha"><span class="pag-resumo-label">Saldo devedor hoje</span><span class="pag-resumo-val danger">R$ ${fm(atual)}</span></div>
+        ${eJuros?`<div class="pag-resumo-linha"><span class="pag-resumo-label">🔴 Juros desse mês (${d.juros_mensal}%)</span><span class="pag-resumo-val danger">R$ ${fm(jm)}</span></div>`:''}
       </div>
-      <div class="field"><label>Quanto você pagou?</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="p-val" placeholder="0,00" oninput="formatarValor(this);previewPagar(${atual})"></div></div>
+      ${eJuros?`<div class="juros-box show" style="margin-bottom:14px;"><div class="juros-box-sub">🦔 <strong>Atenção:</strong> pagar só os R$ ${fm(jm)} do juros <strong>não abate</strong> o saldo (continua R$ ${fm(atual)}). Pra diminuir de verdade, pague <strong>mais que R$ ${fm(jm)}</strong> — o que passar disso abate o saldo.</div></div>`:''}
+      <div class="field"><label>Quanto você pagou?</label><div class="valor-input-wrapper"><span class="valor-prefix">R$</span><input type="text" inputmode="decimal" id="p-val" placeholder="0,00" oninput="formatarValor(this);previewPagar(${atual},${eJuros?jm:0})"></div></div>
       <div class="pag-atalhos">
-        <div class="pag-atalho" onclick="setPagVal(${(atual/2)})">Metade</div>
-        <div class="pag-atalho" onclick="setPagVal(${atual})">Tudo (quitar)</div>
+        ${eJuros?`<div class="pag-atalho" onclick="setPagVal(${jm})">Só o juros (R$ ${fm(jm)})</div>`:`<div class="pag-atalho" onclick="setPagVal(${(atual/2)})">Metade</div>`}
+        <div class="pag-atalho" onclick="setPagVal(${atual})">${eJuros?'Quitar tudo':'Tudo (quitar)'}</div>
       </div>
       ${contas.length>0?`<div class="field"><label>De qual conta saiu?</label><select id="p-conta">${opcoesConta}<option value="">Não vincular conta</option></select></div>`:`<div class="pag-resumo" style="font-size:11px;color:var(--text-mute);">🦔 Você ainda não tem contas cadastradas. O pagamento vai ser registrado sem conta vinculada.</div>`}
       <div class="field"><label>Data do pagamento</label><input type="date" id="p-data" value="${new Date().toISOString().split('T')[0]}"></div>
       <div id="p-preview"></div>
-      <button class="btn btn-primary" id="btn-pagar" onclick="confirmarPagar('${id}',${atual})">Confirmar pagamento</button>
+      <button class="btn btn-primary" id="btn-pagar" data-atual="${atual}" data-juros="${eJuros?jm:0}" onclick="confirmarPagar('${id}',${atual},${eJuros?jm:0})">Confirmar pagamento</button>
     `;
     document.getElementById('modal-pagar').classList.add('show');
   },300);
@@ -462,15 +553,41 @@ window.setPagVal=function(v){
   const el=document.getElementById('p-val');
   if(!el)return;
   el.value=Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2});
-  const atual=Number(document.getElementById('btn-pagar').getAttribute('onclick').match(/,([\d.]+)\)/)[1]);
-  previewPagar(atual);
+  const btn=document.getElementById('btn-pagar');
+  const atual=Number(btn.getAttribute('data-atual'));
+  const jm=Number(btn.getAttribute('data-juros'));
+  previewPagar(atual,jm);
 };
 
-window.previewPagar=function(atual){
+window.previewPagar=function(atual,jm){
   const pago=valorParaNum(document.getElementById('p-val').value);
   const box=document.getElementById('p-preview');
   if(!box)return;
   if(!pago||pago<=0){box.innerHTML='';return}
+
+  // 🆕 dívida de juros: separa o que é juros do que abate
+  if(jm>0){
+    const abate=Math.max(0,pago-jm);
+    const novoSaldo=Math.max(0,atual-abate);
+    if(novoSaldo<=0.009){
+      box.innerHTML=`<div class="pag-resumo"><div class="pag-resumo-linha total"><span class="pag-resumo-label">🎉 Quita a dívida!</span><span class="pag-resumo-val brand">R$ 0,00</span></div></div>`;
+    }else if(pago<=jm){
+      box.innerHTML=`<div class="pag-resumo">
+        <div class="pag-resumo-linha"><span class="pag-resumo-label">Vai pro juros do mês</span><span class="pag-resumo-val danger">R$ ${fm(pago)}</span></div>
+        <div class="pag-resumo-linha"><span class="pag-resumo-label">Abate do saldo</span><span class="pag-resumo-val">R$ 0,00</span></div>
+        <div class="pag-resumo-linha total"><span class="pag-resumo-label">⚠️ Saldo continua</span><span class="pag-resumo-val danger">R$ ${fm(atual)}</span></div>
+      </div>`;
+    }else{
+      box.innerHTML=`<div class="pag-resumo">
+        <div class="pag-resumo-linha"><span class="pag-resumo-label">Juros do mês</span><span class="pag-resumo-val danger">R$ ${fm(jm)}</span></div>
+        <div class="pag-resumo-linha"><span class="pag-resumo-label">Abate do saldo</span><span class="pag-resumo-val brand">R$ ${fm(abate)}</span></div>
+        <div class="pag-resumo-linha total"><span class="pag-resumo-label">Novo saldo devedor</span><span class="pag-resumo-val danger">R$ ${fm(novoSaldo)}</span></div>
+      </div>`;
+    }
+    return;
+  }
+
+  // dívida normal
   const novoSaldo=atual-pago;
   if(novoSaldo<=0.009){
     box.innerHTML=`<div class="pag-resumo"><div class="pag-resumo-linha total"><span class="pag-resumo-label">🎉 Quita a dívida!</span><span class="pag-resumo-val brand">R$ 0,00</span></div></div>`;
@@ -482,7 +599,7 @@ window.previewPagar=function(atual){
   }
 };
 
-window.confirmarPagar=async function(id,atual){
+window.confirmarPagar=async function(id,atual,jm){
   if(pagandoParcial)return;
   const d=dividas.find(x=>x.id===id);
   if(!d)return;
@@ -491,23 +608,38 @@ window.confirmarPagar=async function(id,atual){
   const dataPag=document.getElementById('p-data').value||new Date().toISOString().split('T')[0];
 
   if(!pago||pago<=0){alert('Informe quanto você pagou');return}
-  if(pago>atual+0.01){
-    if(!confirm(`Você pagou R$ ${fm(pago)}, mais que o saldo de R$ ${fm(atual)}. Quer quitar a dívida mesmo assim?`))return;
+  if(pago>atual+jm+0.01){
+    if(!confirm(`Você pagou R$ ${fm(pago)}, mais que o necessário. Quer quitar a dívida mesmo assim?`))return;
   }
 
   pagandoParcial=true;
   const btn=document.getElementById('btn-pagar');
   if(btn){btn.disabled=true;btn.textContent='Salvando...'}
 
-  const novoSaldo=Math.max(0,atual-pago);
+  // 🆕 dívida de juros: o que abate é o que passou do juros do mês
+  let abate, novoSaldo, soJuros=false;
+  if(jm>0){
+    abate=Math.max(0,pago-jm);
+    novoSaldo=Math.max(0,atual-abate);
+    soJuros=pago<=jm;
+  }else{
+    abate=pago;
+    novoSaldo=Math.max(0,atual-pago);
+  }
   const vaiQuitar=novoSaldo<=0.009;
 
   try{
-    // 1) registra a saída real na tabela transacoes (conta no fluxo de caixa)
+    // 1) registra a saída real na tabela transacoes
+    let descPag;
+    if(jm>0){
+      descPag=vaiQuitar?`Quitação ${d.credor}`:(soJuros?`Juros ${d.credor} (mês)`:`Pagamento ${d.credor} (juros + abate)`);
+    }else{
+      descPag=`Pagamento ${d.credor}${vaiQuitar?' (quitação)':' (parcial)'}`;
+    }
     await supabase.from('transacoes').insert({
       user_id:usuario.id,
       valor:pago,
-      descricao:`Pagamento ${d.credor}${vaiQuitar?' (quitação)':' (parcial)'}`,
+      descricao:descPag,
       tipo:'saida',
       categoria:'outro',
       data:dataPag,
@@ -516,10 +648,12 @@ window.confirmarPagar=async function(id,atual){
       status:'realizada'
     });
 
-    // 2) atualiza a dívida: abate o saldo. Se zerou, marca paga.
+    // 2) atualiza a dívida
     const update=vaiQuitar
       ? {valor_atual:0,status:'paga',atualizado_em:new Date().toISOString()}
       : {valor_atual:novoSaldo,atualizado_em:new Date().toISOString()};
+    // pra dívida de juros, recalcula o juros do mês com o novo saldo
+    if(jm>0&&!vaiQuitar)update.valor_minimo_mensal=novoSaldo*Number(d.juros_mensal)/100;
     const{error}=await supabase.from('dividas').update(update).eq('id',id);
     if(error)throw error;
 
@@ -529,9 +663,12 @@ window.confirmarPagar=async function(id,atual){
       await darXP(50,'divida_quitada','Dívida quitada (pagamento)');
       toast(`🎉 ${d.credor} • QUITADA!`);
       filtroAtual='pagas';
+    }else if(soJuros){
+      await darXP(10,'divida_juros_mes','Pagou juros do mês');
+      toast(`🔴 ${d.credor} • juros do mês pago • saldo segue R$ ${fm(novoSaldo)}`);
     }else{
       await darXP(20,'divida_pagamento_parcial','Pagamento parcial');
-      toast(`💪 ${d.credor} • abateu R$ ${fm(pago)} • falta R$ ${fm(novoSaldo)}`);
+      toast(`💪 ${d.credor} • abateu R$ ${fm(abate)} • falta R$ ${fm(novoSaldo)}`);
     }
 
     fecharModal('modal-pagar');
@@ -600,7 +737,7 @@ window.abrirAcoes=function(id){
     ${!ePaga?`
       <div class="acao-btn" onclick="abrirPagar('${id}')">
         <div class="acao-icon brand">💰</div>
-        <div><div class="acao-info-titulo">Pagar um valor</div><div class="acao-info-sub">Abate total ou parcial do saldo</div></div>
+        <div><div class="acao-info-titulo">Pagar um valor</div><div class="acao-info-sub">${ehJuros(d)?'Juros do mês ou abater o saldo':'Abate total ou parcial do saldo'}</div></div>
       </div>
       <div class="acao-btn" onclick="abrirNegociador('${id}')">
         <div class="acao-icon ia">🦔</div>
@@ -655,7 +792,6 @@ window.desmarcarPaga=async function(id){
   const d=dividas.find(x=>x.id===id);
   if(!d)return;
   try{
-    // volta pra ativa; restaura o saldo pro valor original se tinha sido zerado
     const restaura=Number(d.valor_atual)<=0.009?Number(d.valor_original||0):Number(d.valor_atual);
     const{error}=await supabase.from('dividas').update({status:'ativa',valor_atual:restaura,atualizado_em:new Date().toISOString()}).eq('id',id);
     if(error)throw error;
