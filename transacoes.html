@@ -247,7 +247,7 @@ let usuario,perfil;
 let contas=[];
 let cartoesCreditoIds=new Set();
 let transacoes=[];        // transações cuja DATA cai no mês
-let transFaturaMes=[];    // 🆕 transações de crédito cuja FATURA_COMPETENCIA é o mês (data pode ser de outro mês)
+let transFaturaMes=[];    // transações de crédito cuja FATURA_COMPETENCIA é o mês (data pode ser de outro mês)
 let mesRef=new Date();
 let filtroAtual='todas';
 let recognition=null,isRecording=false,textoTranscrito='',propostaAudio=null;
@@ -276,34 +276,26 @@ function noCartaoCredito(t){
   return t.tipo==='saida' && t.conta_id && cartoesCreditoIds.has(t.conta_id);
 }
 
-// 🆕 competência (mês da fatura) no formato "AAAA-MM"
 function competenciaDoMes(d){
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
 }
 
-// 🆕 dado um cartão e uma data de compra, calcula a fatura em que ela cai.
-// Retorna {competencia:"AAAA-MM", vencimento:Date, fechamento:Date}. Null se faltar ciclo.
 function calcularFatura(cartao,dataCompra){
   if(!cartao||!cartao.dia_fechamento||!cartao.dia_vencimento)return null;
   const diaFec=Number(cartao.dia_fechamento);
   const diaVen=Number(cartao.dia_vencimento);
   const dc=new Date(dataCompra+'T12:00:00');
-
-  // fechamento do mês da compra
   let anoF=dc.getFullYear(), mesF=dc.getMonth();
-  // se a compra é DEPOIS do dia de fechamento, ela entra no ciclo que fecha no mês seguinte
   if(dc.getDate()>diaFec){
     mesF+=1;
   }
   const fechamento=new Date(anoF,mesF,diaFec,12,0,0);
-  // vencimento: se o dia de vencimento é <= dia de fechamento, vence no mês seguinte ao fechamento
   let mesV=mesF;
   if(diaVen<=diaFec)mesV+=1;
   const vencimento=new Date(anoF,mesV,diaVen,12,0,0);
   return {competencia:competenciaDoMes(vencimento),vencimento,fechamento};
 }
 
-// 🆕 resolve a conta certa respeitando crédito x débito
 function resolverConta(p){
   const nomeMencionado=(p.cartao_mencionado||p.conta_mencionada||'').toLowerCase().trim();
   const textoTudo=((p.texto_original||'')+' '+nomeMencionado).toLowerCase();
@@ -328,11 +320,9 @@ async function carregar(){
   const fim=new Date(mesRef.getFullYear(),mesRef.getMonth()+1,0).toISOString().split('T')[0];
   const comp=competenciaDoMes(mesRef);
 
-  // transações cuja DATA cai no mês (como antes)
   const{data}=await supabase.from('transacoes').select('*').eq('user_id',usuario.id).gte('data',ini).lte('data',fim).order('data',{ascending:false});
   transacoes=data||[];
 
-  // 🆕 transações de crédito cuja FATURA_COMPETENCIA é esse mês (a data pode ser de qualquer mês)
   const{data:fat}=await supabase.from('transacoes').select('*').eq('user_id',usuario.id).eq('fatura_competencia',comp).order('data',{ascending:false});
   transFaturaMes=fat||[];
 
@@ -356,24 +346,20 @@ function render(){
   const previstas=transacoes.filter(t=>t.status==='prevista');
   const aPagar=previstas.filter(t=>t.tipo==='saida'&&!noCartaoCredito(t)).reduce((a,t)=>a+Number(t.valor),0);
   const aReceber=previstas.filter(t=>t.tipo==='entrada').reduce((a,t)=>a+Number(t.valor),0);
-  // 🆕 total no cartão = soma das transações cuja FATURA cai nesse mês (competência)
   const noCartao=transFaturaMes.reduce((a,t)=>a+Number(t.valor),0);
   const saldoPrevisto=(entradasReal+aReceber)-(saidasReal+aPagar);
   const vencidasArr=previstas.filter(t=>t.data<hoje&&t.tipo==='saida'&&!noCartaoCredito(t));
   const vencidas=vencidasArr.length;
   const totalVencido=vencidasArr.reduce((a,t)=>a+Number(t.valor),0);
 
-  // 🆕 lista normal = transações do mês que NÃO são de cartão de crédito
   const transNormais=lista.filter(t=>!noCartaoCredito(t));
 
-  // 🆕 agrupa as transações da FATURA do mês (competência) por cartão
   const porCartao={};
   transFaturaMes.forEach(t=>{
     if(!porCartao[t.conta_id])porCartao[t.conta_id]=[];
     porCartao[t.conta_id].push(t);
   });
 
-  // respeita o filtro: se está filtrando algo que não é "todas/saidas", esconde os cards de cartão
   const mostraCartoes=(filtroAtual==='todas'||filtroAtual==='saidas');
 
   document.getElementById('container').innerHTML=`
@@ -539,8 +525,15 @@ window.setFiltro=function(f){filtroAtual=f;render()};
 
 window.abrirAudio=function(){
   if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){alert('🦔 Seu navegador não suporta áudio.\n\nUse Safari (iPhone) ou Chrome.');return}
-  textoTranscrito='';isRecording=false;renderAudio();
+  textoTranscrito='';isRecording=false;propostaAudio=null;parcelasPreview=[];renderAudio();
   document.getElementById('audio-overlay').classList.add('show');
+};
+
+// 🆕 zera tudo e volta pra tela de gravação limpa (corrige o "Falar de novo" travado)
+window.voltarAFalar=function(){
+  if(isRecording)pararGravacao();
+  textoTranscrito='';propostaAudio=null;parcelasPreview=[];contaResolvidaId='';isRecording=false;
+  renderAudio();
 };
 
 function renderAudio(){
@@ -700,18 +693,17 @@ function renderConfirmacao(){
       <button class="btn btn-secondary" onclick="editarAudio()">✏️ Editar tudo</button>
       <button class="btn btn-primary" onclick="salvarAudioResolvido()">✅ Salvar</button>
     </div>
-    <button class="btn btn-secondary" onclick="renderAudio()" style="margin-top:8px;width:100%;">🔄 Falar de novo</button>`;
+    <button class="btn btn-secondary" onclick="voltarAFalar()" style="margin-top:8px;width:100%;">🔄 Falar de novo</button>`;
 
   atualizarAvisoFatura();
 }
 
-// 🆕 mostra o aviso do Tatu sobre em qual fatura a compra à vista no crédito vai cair
 function atualizarAvisoFatura(){
   const box=document.getElementById('conf-fatura-box');
   if(!box)return;
   box.innerHTML='';
   const p=propostaAudio;
-  if(!p||p.parcelado)return; // parcelado já mostra as datas das parcelas
+  if(!p||p.parcelado)return;
   const cartao=contas.find(c=>c.id===contaResolvidaId);
   if(!cartao||cartao.tipo!=='cartao_credito')return;
   const dataCompra=p.data_mencionada||new Date().toISOString().split('T')[0];
@@ -790,7 +782,6 @@ window.salvarAudio=async function(contaId){
       toast(`✅ ${p.descricao} • ${p.num_parcelas}x de R$ ${fm(p.valor_parcela)}`);
     }
     else{
-      // 🆕 compra à vista: se for crédito, calcula a fatura e grava a competência
       const fat=ehCred?calcularFatura(cartaoSel,dataPrimeira):null;
       const status=dataPrimeira>hojeISO?'prevista':'realizada';
       const{data,error}=await supabase.from('transacoes').insert({user_id:usuario.id,valor:p.valor,descricao:p.descricao,tipo:p.tipo,categoria:p.categoria_sugerida||'outro',data:dataPrimeira,conta_id:contaId||null,status,fatura_competencia:fat?fat.competencia:null}).select().single();
@@ -807,7 +798,6 @@ window.salvarAudio=async function(contaId){
     }
 
     fecharAudio();
-    // 🆕 navega pro mês da FATURA (se foi crédito) ou pro mês da data
     let mesDestino;
     if(ehCred){
       const fat=calcularFatura(cartaoSel,dataPrimeira);
@@ -917,7 +907,6 @@ window.salvarManual=async function(editandoId){
       toast(`✅ ${desc} • ${tipoAtual==='entrada'?'+':'-'}R$ ${fm(valor)}`);
     }
     fecharModal('modal-add');
-    // navega pro mês certo (fatura se crédito, senão data)
     let mesDestino;
     if(fat){
       mesDestino=new Date(Number(fat.competencia.split('-')[0]),Number(fat.competencia.split('-')[1])-1,1);
@@ -987,7 +976,6 @@ async function comprimirImg(file,maxW=1600,q=0.85){
 }
 
 window.abrirAcoes=function(id){
-  // 🆕 procura tanto na lista do mês quanto na lista da fatura
   const t=transacoes.find(x=>x.id===id)||transFaturaMes.find(x=>x.id===id);
   if(!t)return;
   const eEnt=t.tipo==='entrada';
