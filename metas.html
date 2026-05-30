@@ -44,7 +44,6 @@
   
   body { padding-bottom: 100px; }
 
-  /* 🆕 FIX iOS: força texto branco em todos os inputs (autofill/foco não escurece mais) */
   input, textarea, select {
     color: #fff !important;
     -webkit-text-fill-color: #fff !important;
@@ -129,6 +128,114 @@
     margin-bottom: 10px;
     padding: 0 4px;
   }
+
+  /* ===== PLANO DO TATU ===== */
+  .plano-tatu {
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .plano-tatu.foco {
+    background: linear-gradient(135deg, var(--purple-soft) 0%, var(--bg-card) 65%);
+    border: 1px solid rgba(168,85,247,0.45);
+  }
+  .plano-tatu.alerta {
+    background: linear-gradient(135deg, var(--danger-soft) 0%, var(--bg-card) 65%);
+    border: 1px solid rgba(255,71,87,0.45);
+  }
+  .plano-tatu.ok {
+    background: linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 65%);
+    border: 1px solid rgba(0,217,126,0.45);
+  }
+  .plano-tatu::before {
+    content: '';
+    position: absolute;
+    top: -40%; right: -20%;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(168,85,247,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .plano-tatu.alerta::before { background: radial-gradient(circle, rgba(255,71,87,0.18) 0%, transparent 70%); }
+  .plano-tatu.ok::before { background: radial-gradient(circle, rgba(0,217,126,0.18) 0%, transparent 70%); }
+  .plano-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .plano-emoji { font-size: 34px; flex-shrink: 0; line-height: 1; }
+  .plano-badge {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 2px;
+  }
+  .plano-tatu.foco .plano-badge { color: var(--purple); }
+  .plano-tatu.alerta .plano-badge { color: var(--danger); }
+  .plano-tatu.ok .plano-badge { color: var(--brand); }
+  .plano-titulo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .plano-texto {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text);
+    position: relative;
+    margin-bottom: 14px;
+  }
+  .plano-texto strong { font-weight: 700; }
+  .plano-tatu.foco .plano-texto strong { color: var(--purple); }
+  .plano-tatu.alerta .plano-texto strong { color: var(--danger); }
+  .plano-tatu.ok .plano-texto strong { color: var(--brand); }
+  .plano-numeros {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .plano-pill {
+    background: var(--bg-elev);
+    border-radius: 100px;
+    padding: 6px 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .plano-pill.danger { background: var(--danger-soft); color: var(--danger); }
+  .plano-pill.brand { background: var(--brand-soft); color: var(--brand); }
+  .plano-acoes { position: relative; display: flex; flex-direction: column; gap: 8px; }
+  .plano-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .plano-btn.principal { background: var(--purple); color: #fff; }
+  .plano-btn.principal:active { background: #9333ea; transform: scale(0.985); }
+  .plano-tatu.alerta .plano-btn.principal { background: var(--danger); color: #fff; }
+  .plano-tatu.ok .plano-btn.principal { background: var(--brand); color: #001a0e; }
+  .plano-btn.principal:disabled { opacity: 0.5; cursor: not-allowed; }
+  .plano-btn.linkar {
+    background: transparent;
+    color: var(--text-mute);
+    border: 1px solid var(--border);
+  }
+  .plano-loader { text-align: center; padding: 30px 10px; }
   
   .reserva-card {
     background: var(--bg-card);
@@ -671,6 +778,18 @@
     color: var(--danger);
     border: 1px solid rgba(255, 71, 87, 0.3);
   }
+
+  .conflito-box {
+    background: var(--warning-soft);
+    border: 1px solid rgba(255,184,0,0.4);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .conflito-box strong { color: var(--warning); }
   
   .detalhe-grid {
     background: var(--bg-input);
@@ -753,12 +872,20 @@
 <body>
 
 <div class="header">
-  <button class="back-btn" onclick="window.location.href='home.html?v=1'">‹</button>
+  <button class="back-btn" onclick="window.location.href='home.html?v=2'">‹</button>
   <div class="header-title">Metas</div>
-  <div class="brand-mark-mini" onclick="window.location.href='home.html?v=1'"></div>
+  <div class="brand-mark-mini" onclick="window.location.href='home.html?v=2'"></div>
 </div>
 
 <div class="container">
+
+  <!-- 🆕 PLANO DO TATU -->
+  <div class="section" id="plano-section">
+    <div class="section-title">🦔 Plano do Tatu</div>
+    <div id="plano-container">
+      <div class="plano-tatu foco"><div class="plano-loader"><div class="loader-circle"></div></div></div>
+    </div>
+  </div>
 
   <div class="tatu-bubble">
     <div class="tatu-emoji">🦔</div>
@@ -841,6 +968,9 @@
     </div>
     <div class="modal-body">
       <div class="msg" id="msg-objetivo"></div>
+
+      <!-- 🆕 alerta de conflito agiota -->
+      <div class="conflito-box hidden" id="conflito-objetivo"></div>
       
       <div class="field">
         <label>Qual é o objetivo?</label>
@@ -968,6 +1098,11 @@
   let iconeSelecionado = '🎯';
   let corSelecionada = '#00d97e';
   let modoAddValor = null;
+
+  // 🆕 estado do Plano do Tatu
+  let planoTatu = null;       // resultado do cálculo
+  let metaQuitacao = null;    // meta tipo 'quitar_divida' já criada (se houver)
+  let temAgiotaAtivo = false; // pra alerta de conflito
   
   const icones = ['🎯','✈️','🚗','🏠','💍','📱','💻','🎓','💼','🏖️','🎮','📷','🎸','🚴','⌚','🛋️','🐕','💎','🏔️','🎂','💄','🛒'];
   const cores = ['#00d97e','#38bdf8','#a855f7','#ffb800','#ff4757','#ec4899','#06b6d4','#f97316','#84cc16','#8b5cf6','#14b8a6','#ef4444'];
@@ -985,9 +1120,12 @@
   })();
   
   async function carregarTudo() {
-    const [pRes, mRes] = await Promise.all([
+    const [pRes, mRes, rRes, cRes, dRes] = await Promise.all([
       supabase.from('perfis').select('*').eq('id', usuario.id).single(),
-      supabase.from('metas').select('*').eq('user_id', usuario.id).order('criado_em', { ascending: false })
+      supabase.from('metas').select('*').eq('user_id', usuario.id).order('criado_em', { ascending: false }),
+      supabase.from('rendas').select('valor,ativo').eq('user_id', usuario.id),
+      supabase.from('compromissos').select('valor,ativo').eq('user_id', usuario.id),
+      supabase.from('dividas').select('*').eq('user_id', usuario.id).eq('status', 'ativa')
     ]);
     
     perfil = pRes.data;
@@ -995,11 +1133,280 @@
     
     reserva = metas.find(m => m.tipo === 'reserva_emergencia');
     objetivos = metas.filter(m => m.tipo === 'objetivo');
+    metaQuitacao = metas.find(m => m.tipo === 'quitar_divida') || null;
+
+    // 🦔 calcula o Plano do Tatu
+    const rendas = rRes.data || [];
+    const compromissos = cRes.data || [];
+    const dividas = dRes.data || [];
+    planoTatu = calcularPlanoTatu(rendas, compromissos, dividas);
+    temAgiotaAtivo = planoTatu && planoTatu.tipo === 'agiota_ok' || (planoTatu && planoTatu.tipo === 'agiota_travado');
     
+    renderPlanoTatu();
     renderReserva();
     renderObjetivos();
     renderTatu();
   }
+
+  // ===== MOTOR DO PLANO DO TATU =====
+  function calcularPlanoTatu(rendas, compromissos, dividas) {
+    const rendaMensal = rendas.filter(r => r.ativo !== false).reduce((a, r) => a + Number(r.valor || 0), 0);
+    const despesaMensal = compromissos.filter(c => c.ativo !== false).reduce((a, c) => a + Number(c.valor || 0), 0);
+    const sobra = rendaMensal - despesaMensal;
+
+    const agiotas = dividas.filter(d => d.juros_rola === true && Number(d.juros_mensal) > 0);
+    const dividasNormais = dividas.filter(d => !(d.juros_rola === true && Number(d.juros_mensal) > 0));
+
+    // Sem dados de renda → não dá pra prescrever
+    if (rendaMensal <= 0) {
+      return { tipo: 'sem_dados', rendaMensal, despesaMensal, sobra };
+    }
+
+    // 1) Tem agiota: é a prioridade absoluta
+    if (agiotas.length > 0) {
+      // ataca o de maior juros mensal (em R$) primeiro
+      const alvo = agiotas.slice().sort((a, b) =>
+        (Number(b.valor_atual) * Number(b.juros_mensal)) - (Number(a.valor_atual) * Number(a.juros_mensal))
+      )[0];
+      const saldo = Number(alvo.valor_atual);
+      const taxa = Number(alvo.juros_mensal) / 100;
+      const jurosMes = saldo * taxa;
+      const totalJurosTodos = agiotas.reduce((a, d) => a + Number(d.valor_atual) * Number(d.juros_mensal) / 100, 0);
+
+      // sobra não cobre nem o juros do alvo → travado
+      if (sobra <= jurosMes) {
+        return {
+          tipo: 'agiota_travado',
+          rendaMensal, despesaMensal, sobra,
+          alvo, saldo, jurosMes, totalJurosTodos,
+          qtdAgiotas: agiotas.length
+        };
+      }
+
+      // simula mês a mês: quanto tempo até zerar jogando a sobra
+      const meses = simularQuitacao(saldo, taxa, sobra);
+      return {
+        tipo: 'agiota_ok',
+        rendaMensal, despesaMensal, sobra,
+        alvo, saldo, jurosMes, totalJurosTodos,
+        meses,
+        qtdAgiotas: agiotas.length
+      };
+    }
+
+    // 2) Sem agiota, mas tem dívida normal
+    if (dividasNormais.length > 0) {
+      const hoje = new Date().toISOString().split('T')[0];
+      // prioriza atrasada, depois maior saldo
+      const alvo = dividasNormais.slice().sort((a, b) => {
+        const aAtr = a.data_vencimento && a.data_vencimento < hoje ? 1 : 0;
+        const bAtr = b.data_vencimento && b.data_vencimento < hoje ? 1 : 0;
+        if (aAtr !== bAtr) return bAtr - aAtr;
+        return Number(b.valor_atual) - Number(a.valor_atual);
+      })[0];
+      const saldo = Number(alvo.valor_atual);
+      const totalDividas = dividasNormais.reduce((a, d) => a + Number(d.valor_atual), 0);
+
+      if (sobra <= 0) {
+        return { tipo: 'divida_sem_sobra', rendaMensal, despesaMensal, sobra, alvo, saldo, totalDividas };
+      }
+      const meses = Math.max(1, Math.ceil(saldo / sobra));
+      return { tipo: 'divida_ok', rendaMensal, despesaMensal, sobra, alvo, saldo, totalDividas, meses };
+    }
+
+    // 3) Sem dívida nenhuma
+    return { tipo: 'sem_dividas', rendaMensal, despesaMensal, sobra };
+  }
+
+  // simula quitação de dívida de juros rotativo, mês a mês
+  function simularQuitacao(saldoInicial, taxaMensal, aporteMensal) {
+    let saldo = saldoInicial;
+    let meses = 0;
+    const LIMITE = 600; // teto de segurança (50 anos)
+    while (saldo > 0.009 && meses < LIMITE) {
+      const juros = saldo * taxaMensal;
+      saldo = saldo + juros - aporteMensal; // juros nasce, aporte abate
+      meses++;
+      if (saldo < 0) saldo = 0;
+    }
+    return meses >= LIMITE ? null : meses;
+  }
+
+  function prazoTexto(meses) {
+    if (meses == null) return 'muito tempo';
+    if (meses <= 1) return '1 mês';
+    if (meses < 12) return `${meses} meses`;
+    const anos = Math.floor(meses / 12);
+    const m = meses % 12;
+    if (m === 0) return anos === 1 ? '1 ano' : `${anos} anos`;
+    return `${anos}a ${m}m`;
+  }
+
+  function renderPlanoTatu() {
+    const c = document.getElementById('plano-container');
+    const p = planoTatu;
+    if (!p) { document.getElementById('plano-section').style.display = 'none'; return; }
+    document.getElementById('plano-section').style.display = 'block';
+
+    // sem dados de renda
+    if (p.tipo === 'sem_dados') {
+      c.innerHTML = `
+        <div class="plano-tatu foco">
+          <div class="plano-head"><div class="plano-emoji">🦔</div><div>
+            <div class="plano-badge">Plano do Tatu</div>
+            <div class="plano-titulo">Me conta quanto você ganha</div>
+          </div></div>
+          <div class="plano-texto">Pra eu montar seu plano, preciso saber sua <strong>renda</strong> e suas <strong>despesas fixas</strong>. Cadastra lá na Vida Financeira que eu calculo na hora quanto sobra e o que dá pra fazer.</div>
+          <div class="plano-acoes"><button class="plano-btn principal" onclick="window.location.href='contas.html?v=3'">Cadastrar renda e despesas →</button></div>
+        </div>`;
+      return;
+    }
+
+    // agiota OK: dá pra quitar
+    if (p.tipo === 'agiota_ok') {
+      const jaCriada = metaQuitacao != null;
+      c.innerHTML = `
+        <div class="plano-tatu foco">
+          <div class="plano-head"><div class="plano-emoji">🦔</div><div>
+            <div class="plano-badge">Plano do Tatu · prioridade nº1</div>
+            <div class="plano-titulo">Matar o juros de ${p.alvo.credor}</div>
+          </div></div>
+          <div class="plano-texto">Você sobra <strong>R$ ${fm(p.sobra)}/mês</strong>. Jogando isso na dívida de <strong>${p.alvo.credor}</strong> (R$ ${fm(p.saldo)} a ${p.alvo.juros_mensal}% ao mês), você quita em <strong>${prazoTexto(p.meses)}</strong>. Depois disso, esse dinheiro vira seu de novo. Bora?</div>
+          <div class="plano-numeros">
+            <span class="plano-pill danger">🔴 Juros hoje: R$ ${fm(p.jurosMes)}/mês</span>
+            <span class="plano-pill">💪 Sobra: R$ ${fm(p.sobra)}/mês</span>
+            <span class="plano-pill brand">🏁 Quita em ${prazoTexto(p.meses)}</span>
+          </div>
+          <div class="plano-acoes">
+            ${jaCriada
+              ? `<button class="plano-btn principal" onclick="window.location.href='dividas.html?v=8'">Ver dívida e abater →</button>`
+              : `<button class="plano-btn principal" id="btn-criar-plano" onclick="criarMetaQuitacao()">🎯 Topar o desafio · criar meta</button>`}
+            <button class="plano-btn linkar" onclick="window.location.href='dividas.html?v=8'">Ver minhas dívidas</button>
+          </div>
+        </div>`;
+      return;
+    }
+
+    // agiota travado: sobra não cobre o juros
+    if (p.tipo === 'agiota_travado') {
+      const faltaPraCobrir = p.jurosMes - p.sobra;
+      c.innerHTML = `
+        <div class="plano-tatu alerta">
+          <div class="plano-head"><div class="plano-emoji">🦔</div><div>
+            <div class="plano-badge">Plano do Tatu · alerta</div>
+            <div class="plano-titulo">Preciso ser sincero com você</div>
+          </div></div>
+          <div class="plano-texto">A dívida de <strong>${p.alvo.credor}</strong> gera <strong>R$ ${fm(p.jurosMes)}/mês</strong> de juros, e hoje sobra <strong>R$ ${fm(p.sobra)}/mês</strong> no seu orçamento. Jogar dinheiro aí agora é enxugar gelo — o saldo não cai. <strong>Antes de atacar, a gente precisa OU renegociar essa taxa OU achar mais R$ ${fm(faltaPraCobrir)}/mês</strong> (cortando um gasto ou aumentando renda). Eu te ajudo nos dois.</div>
+          <div class="plano-numeros">
+            <span class="plano-pill danger">🔴 Juros: R$ ${fm(p.jurosMes)}/mês</span>
+            <span class="plano-pill">Sobra: R$ ${fm(p.sobra)}/mês</span>
+          </div>
+          <div class="plano-acoes">
+            <button class="plano-btn principal" onclick="window.location.href='dividas.html?v=8'">🦔 Renegociar com o Tatu →</button>
+            <button class="plano-btn linkar" onclick="window.location.href='contas.html?v=3'">Revisar meus gastos</button>
+          </div>
+        </div>`;
+      return;
+    }
+
+    // dívida normal, com sobra
+    if (p.tipo === 'divida_ok') {
+      const jaCriada = metaQuitacao != null;
+      c.innerHTML = `
+        <div class="plano-tatu foco">
+          <div class="plano-head"><div class="plano-emoji">🦔</div><div>
+            <div class="plano-badge">Plano do Tatu · prioridade</div>
+            <div class="plano-titulo">Quitar ${p.alvo.credor}</div>
+          </div></div>
+          <div class="plano-texto">Você sobra <strong>R$ ${fm(p.sobra)}/mês</strong>. Focando isso em <strong>${p.alvo.credor}</strong> (R$ ${fm(p.saldo)}), você quita em <strong>${prazoTexto(p.meses)}</strong> e tira esse peso das costas. Vamos nessa?</div>
+          <div class="plano-numeros">
+            <span class="plano-pill">💪 Sobra: R$ ${fm(p.sobra)}/mês</span>
+            <span class="plano-pill brand">🏁 Quita em ${prazoTexto(p.meses)}</span>
+          </div>
+          <div class="plano-acoes">
+            ${jaCriada
+              ? `<button class="plano-btn principal" onclick="window.location.href='dividas.html?v=8'">Ver dívida e abater →</button>`
+              : `<button class="plano-btn principal" id="btn-criar-plano" onclick="criarMetaQuitacao()">🎯 Topar o desafio · criar meta</button>`}
+            <button class="plano-btn linkar" onclick="window.location.href='dividas.html?v=8'">Ver minhas dívidas</button>
+          </div>
+        </div>`;
+      return;
+    }
+
+    // dívida normal, sem sobra
+    if (p.tipo === 'divida_sem_sobra') {
+      c.innerHTML = `
+        <div class="plano-tatu alerta">
+          <div class="plano-head"><div class="plano-emoji">🦔</div><div>
+            <div class="plano-badge">Plano do Tatu · atenção</div>
+            <div class="plano-titulo">Hoje não sobra pra atacar</div>
+          </div></div>
+          <div class="plano-texto">Suas despesas estão consumindo toda a renda (sobra <strong>R$ ${fm(p.sobra)}/mês</strong>). Antes de quitar a dívida de <strong>${p.alvo.credor}</strong>, precisamos liberar um respiro no orçamento. Bora olhar onde dá pra cortar?</div>
+          <div class="plano-acoes">
+            <button class="plano-btn principal" onclick="window.location.href='contas.html?v=3'">Revisar meus gastos →</button>
+            <button class="plano-btn linkar" onclick="window.location.href='dividas.html?v=8'">Ver minhas dívidas</button>
+          </div>
+        </div>`;
+      return;
+    }
+
+    // sem dívidas
+    if (p.tipo === 'sem_dividas') {
+      const temReserva = reserva != null;
+      const reservaCompleta = temReserva && Number(reserva.valor_atual) >= Number(reserva.valor_alvo);
+      let titulo, texto, btn;
+      if (!temReserva) {
+        titulo = 'Hora de blindar você';
+        texto = `Sem dívidas e sobrando <strong>R$ ${fm(p.sobra)}/mês</strong> — você tá num bom lugar! O próximo passo da jornada é montar sua <strong>reserva de emergência</strong>, seu colete à prova de bala.`;
+        btn = `<button class="plano-btn principal" onclick="abrirModalReserva()">🛡️ Montar reserva →</button>`;
+      } else if (!reservaCompleta) {
+        titulo = 'Reforçar a reserva';
+        texto = `Sem dívidas, sobrando <strong>R$ ${fm(p.sobra)}/mês</strong>. Continua reforçando a reserva — falta <strong>R$ ${fm(Math.max(0, reserva.valor_alvo - reserva.valor_atual))}</strong> pra ela ficar completa.`;
+        btn = `<button class="plano-btn principal" onclick="abrirAddValorReserva()">+ Adicionar à reserva</button>`;
+      } else {
+        titulo = 'Hora de fazer o dinheiro render';
+        texto = `Sem dívidas, reserva completa e sobrando <strong>R$ ${fm(p.sobra)}/mês</strong>. Você chegou na parte boa: agora é definir um objetivo e fazer esse dinheiro trabalhar pra você. 🚀`;
+        btn = `<button class="plano-btn principal" onclick="abrirModalNovoObjetivo()">🎯 Criar um objetivo →</button>`;
+      }
+      c.innerHTML = `
+        <div class="plano-tatu ok">
+          <div class="plano-head"><div class="plano-emoji">🦔</div><div>
+            <div class="plano-badge">Plano do Tatu</div>
+            <div class="plano-titulo">${titulo}</div>
+          </div></div>
+          <div class="plano-texto">${texto}</div>
+          <div class="plano-acoes">${btn}</div>
+        </div>`;
+      return;
+    }
+  }
+
+  window.criarMetaQuitacao = async function() {
+    const p = planoTatu;
+    if (!p || !p.alvo) return;
+    const btn = document.getElementById('btn-criar-plano');
+    if (btn) { btn.disabled = true; btn.textContent = 'Criando...'; }
+
+    const payload = {
+      user_id: usuario.id,
+      tipo: 'quitar_divida',
+      nome: 'Quitar ' + p.alvo.credor,
+      valor_alvo: Number(p.saldo),
+      valor_atual: 0,
+      prazo: null,
+      cor: '#a855f7',
+      icone: '🦔'
+    };
+    const result = await supabase.from('metas').insert(payload);
+    if (result.error) {
+      alert('Erro ao criar a meta: ' + result.error.message);
+      if (btn) { btn.disabled = false; btn.textContent = '🎯 Topar o desafio · criar meta'; }
+      return;
+    }
+    await darXP(40, 'meta_tatu_criada', 'Plano do Tatu: quitar ' + p.alvo.credor);
+    mostrarToast('🦔 Desafio aceito! +40 XP');
+    await carregarTudo();
+  };
   
   function setupPickers() {
     document.getElementById('icone-grid').innerHTML = icones.map(i => 
@@ -1024,6 +1431,7 @@
   function formatarMoeda(v) {
     return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
+  const fm = formatarMoeda;
   
   window.formatarValor = function(input) {
     let v = input.value.replace(/\D/g, '');
@@ -1279,6 +1687,17 @@
     document.getElementById('f-atual').value = '';
     document.getElementById('f-prazo').value = '';
     document.getElementById('msg-objetivo').className = 'msg';
+
+    // 🆕 alerta de conflito: tem agiota ativo? Tatu avisa antes de investir/guardar
+    const cf = document.getElementById('conflito-objetivo');
+    if (temAgiotaAtivo && planoTatu && planoTatu.alvo) {
+      cf.classList.remove('hidden');
+      cf.innerHTML = `🦔 <strong>Antes de criar:</strong> você tem uma dívida de juros (${planoTatu.alvo.credor}) comendo <strong>R$ ${fm(planoTatu.jurosMes)}/mês</strong>. Nenhum objetivo rende mais do que esse juros te custa. Minha sugestão honesta: <strong>mata o agiota primeiro</strong>. Mas se quiser criar mesmo assim, fica à vontade.`;
+    } else {
+      cf.classList.add('hidden');
+      cf.innerHTML = '';
+    }
+
     setupPickers();
     document.getElementById('modal-objetivo').classList.add('show');
   };
@@ -1388,6 +1807,7 @@
     document.getElementById('f-atual').value = formatarMoeda(o.valor_atual);
     document.getElementById('f-prazo').value = o.prazo || '';
     document.getElementById('msg-objetivo').className = 'msg';
+    document.getElementById('conflito-objetivo').classList.add('hidden');
     setupPickers();
     
     fecharModal('modal-detalhe');
@@ -1413,6 +1833,7 @@
   };
   
   window.abrirAddValorReserva = function() {
+    if (!reserva) { abrirModalReserva(); return; }
     modoAddValor = { tipo: 'reserva', meta: reserva };
     document.getElementById('f-add-valor').value = '';
     document.getElementById('msg-add-valor').className = 'msg';
@@ -1438,8 +1859,6 @@
     const novoValor = Number(modoAddValor.meta.valor_atual) + v;
     const batido = novoValor >= modoAddValor.meta.valor_alvo;
     
-    // 🆕 update seguro: garante que o valor_atual sempre salva,
-    // mesmo se as colunas concluida/data_conclusao não existirem na tabela
     let result = await supabase.from('metas').update({ valor_atual: novoValor }).eq('id', modoAddValor.meta.id);
     if (result.error) {
       document.getElementById('msg-add-valor').className = 'msg show msg-error';
@@ -1448,7 +1867,6 @@
       btn.textContent = 'Adicionar';
       return;
     }
-    // tenta marcar conclusão à parte (se as colunas não existirem, ignora sem quebrar)
     if (batido) {
       try { await supabase.from('metas').update({ concluida: true, data_conclusao: new Date().toISOString() }).eq('id', modoAddValor.meta.id); } catch(e){}
     }
