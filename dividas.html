@@ -18,28 +18,41 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .header-back{width:36px;height:36px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px}
 .header-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;flex:1}
 .container{max-width:480px;margin:0 auto;padding:16px 20px}
-.totalizador{background:linear-gradient(135deg,var(--danger-soft) 0%,var(--bg-card) 100%);border:1px solid rgba(255,71,87,0.3);border-radius:18px;padding:18px;margin-bottom:16px}
-.tot-label{font-family:'Space Grotesk',sans-serif;font-size:10px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;font-weight:700}
-.tot-valor{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;color:var(--danger);letter-spacing:-0.02em;margin-bottom:4px}
-.tot-sub{font-size:12px;color:var(--text-mute)}
+.tot-duplo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.tot-box{border-radius:18px;padding:16px}
+.tot-box.real{background:linear-gradient(135deg,var(--danger-soft) 0%,var(--bg-card) 100%);border:1px solid rgba(255,71,87,0.3)}
+.tot-box.fatura{background:linear-gradient(135deg,var(--info-soft) 0%,var(--bg-card) 100%);border:1px solid rgba(56,189,248,0.3)}
+.tot-label{font-family:'Space Grotesk',sans-serif;font-size:10px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;font-weight:700}
+.tot-valor{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;letter-spacing:-0.02em;margin-bottom:4px;word-break:break-word}
+.tot-box.real .tot-valor{color:var(--danger)}
+.tot-box.fatura .tot-valor{color:var(--info)}
+.tot-sub{font-size:11px;color:var(--text-mute);line-height:1.4}
+.tatu-nota{background:var(--ia-soft);border:1px solid rgba(168,85,247,0.3);border-radius:14px;padding:12px 14px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
+.tatu-nota-emoji{font-size:20px;flex-shrink:0}
+.tatu-nota-txt{font-size:12px;line-height:1.5;color:var(--text)}
+.tatu-nota-txt strong{color:var(--ia)}
 .filtros{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
 .filtros::-webkit-scrollbar{display:none}
-.filtro-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:100px;padding:8px 14px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;color:var(--text-mute)}
+.filtro-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:100px;padding:8px 14px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;color:var(--text-mute);white-space:nowrap}
 .filtro-pill.active{background:var(--brand-soft);border-color:var(--brand);color:var(--brand)}
+.secao-label{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.1em;font-weight:700;margin:18px 0 10px 2px}
 .divida-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer;transition:all 0.3s}
 .divida-card.atrasada{border-left:3px solid var(--danger)}
 .divida-card.urgente{border-left:3px solid var(--warning)}
+.divida-card.fatura{border-left:3px solid var(--info)}
 .divida-card.paga{opacity:0.6}
 .divida-card:active{transform:scale(0.99)}
 .divida-card.novo{animation:piscaItem 3.5s ease-out;background:var(--brand-soft);border-color:var(--brand);box-shadow:0 0 24px rgba(0,217,126,0.3);opacity:1!important}
 @keyframes piscaItem{0%{transform:scale(0.95);opacity:0;background:var(--brand);border-color:var(--brand)}10%{transform:scale(1.02);opacity:1}30%{background:var(--brand-soft);transform:scale(1)}70%{background:var(--brand-soft);box-shadow:0 0 30px rgba(0,217,126,0.5)}100%{background:var(--bg-card);box-shadow:none}}
 .div-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
 .div-icone{width:44px;height:44px;border-radius:12px;background:var(--danger-soft);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.div-icone.fatura{background:var(--info-soft);color:var(--info)}
 .div-info{flex:1;min-width:0}
 .div-credor{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:2px}
 .div-tipo{font-size:11px;color:var(--text-mute)}
 .div-valor-wrapper{text-align:right;flex-shrink:0}
 .div-valor{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--danger)}
+.div-valor.fatura{color:var(--info)}
 .div-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:700;text-transform:uppercase;display:inline-block;margin-top:4px}
 .div-badge.atrasada{background:var(--danger-soft);color:var(--danger)}
 .div-badge.urgente{background:var(--warning-soft);color:var(--warning)}
@@ -84,6 +97,7 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .btn{padding:14px;border-radius:12px;border:none;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;cursor:pointer;min-height:50px}
 .btn-primary{background:var(--brand);color:#001a0e;width:100%}
 .btn-primary:active{background:var(--brand-hover)}
+.btn-primary:disabled{opacity:0.5;cursor:not-allowed}
 .btn-secondary{background:var(--bg-elev);color:var(--text);border:1px solid var(--border)}
 .acoes-modal{background:var(--bg-card);border-top:1px solid var(--border);border-radius:24px 24px 0 0;padding:20px;max-width:480px;width:100%}
 .acao-btn{display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;cursor:pointer}
@@ -135,11 +149,15 @@ const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
 
 const TIPOS_DIV={cartao:{e:'💳',n:'Cartão'},emprestimo:{e:'💸',n:'Empréstimo'},financiamento:{e:'🏦',n:'Financiamento'},financ_imovel:{e:'🏦',n:'Financ. imóvel'},financ_veiculo:{e:'🚗',n:'Financ. veículo'},cheque_especial:{e:'🆘',n:'Cheque Especial'},loja:{e:'🛍️',n:'Loja'},carne:{e:'📋',n:'Carnê'},medica:{e:'🏥',n:'Médica'},estudantil:{e:'🎓',n:'Estudantil'},consignado:{e:'💼',n:'Consignado'},pessoal:{e:'👨‍👩‍👧',n:'Pessoal'},mercado:{e:'🛒',n:'Mercado'},outro:{e:'📌',n:'Outro'}};
 
+// 🆕 Fatura de cartão = compromisso do mês (some quando paga). Resto = dívida real.
+function ehFatura(d){return d.tipo==='cartao'}
+
 let usuario;
 let dividas=[];
-let filtroAtual='ativas';
+let filtroAtual='real';
 let dividaIdNegoc=null;
-let ultimoItemNovoId=null; // 🆕
+let ultimoItemNovoId=null;
+let salvando=false; // 🆕 trava anti duplo-clique
 
 (async()=>{
   const{data:{session}}=await supabase.auth.getSession();
@@ -157,32 +175,56 @@ async function carregar(){
 function render(){
   const hoje=new Date().toISOString().split('T')[0];
   const ativas=dividas.filter(d=>d.status==='ativa');
+
+  // Separação: fatura vencida e não paga CONTA como dívida real (regra cravada)
+  const faturas=ativas.filter(d=>ehFatura(d)&&d.data_vencimento>=hoje);
+  const emprestimos=ativas.filter(d=>!ehFatura(d));
+  const faturasVencidas=ativas.filter(d=>ehFatura(d)&&d.data_vencimento<hoje);
+  const dividaReal=[...emprestimos,...faturasVencidas]; // o que o Tatu ataca
+
   const atrasadas=ativas.filter(d=>d.data_vencimento<hoje);
-  const total=ativas.reduce((a,d)=>a+Number(d.valor_atual),0);
-  const totalAtr=atrasadas.reduce((a,d)=>a+Number(d.valor_atual),0);
-  
-  let lista=dividas;
-  if(filtroAtual==='ativas')lista=lista.filter(d=>d.status==='ativa');
+  const totalReal=dividaReal.reduce((a,d)=>a+Number(d.valor_atual),0);
+  const totalFatura=faturas.reduce((a,d)=>a+Number(d.valor_atual),0);
+
+  let lista=[];
+  let modoSecoes=false;
+  if(filtroAtual==='real')lista=dividaReal;
+  else if(filtroAtual==='faturas')lista=faturas;
   else if(filtroAtual==='atrasadas')lista=atrasadas;
-  else if(filtroAtual==='pagas')lista=lista.filter(d=>d.status==='paga');
-  
+  else if(filtroAtual==='pagas')lista=dividas.filter(d=>d.status==='paga');
+  else if(filtroAtual==='todas'){lista=dividas;modoSecoes=true}
+
   document.getElementById('container').innerHTML=`
     ${ativas.length>0?`
-      <div class="totalizador">
-        <div class="tot-label">💸 Total em dívidas</div>
-        <div class="tot-valor">R$ ${fm(total)}</div>
-        <div class="tot-sub">${ativas.length} dívida${ativas.length===1?'':'s'} ativa${ativas.length===1?'':'s'}${atrasadas.length>0?` • ⚠️ ${atrasadas.length} atrasada${atrasadas.length===1?'':'s'} (R$ ${fm(totalAtr)})`:''}</div>
+      <div class="tot-duplo">
+        <div class="tot-box real">
+          <div class="tot-label">💸 Dívida real</div>
+          <div class="tot-valor">R$ ${fm(totalReal)}</div>
+          <div class="tot-sub">${dividaReal.length} item${dividaReal.length===1?'':'s'}${faturasVencidas.length>0?` • inclui ${faturasVencidas.length} fatura venc.`:''}</div>
+        </div>
+        <div class="tot-box fatura">
+          <div class="tot-label">💳 Faturas do mês</div>
+          <div class="tot-valor">R$ ${fm(totalFatura)}</div>
+          <div class="tot-sub">${faturas.length} fatura${faturas.length===1?'':'s'} • some quando paga</div>
+        </div>
+      </div>
+    `:''}
+    ${ativas.length>0?`
+      <div class="tatu-nota">
+        <div class="tatu-nota-emoji">🦔</div>
+        <div class="tatu-nota-txt"><strong>Tatu:</strong> Fatura de cartão é gasto do mês, some quando você paga. <strong>Dívida real</strong> é o que eu vou te ajudar a eliminar de verdade.</div>
       </div>
     `:''}
     <div class="filtros">
-      <div class="filtro-pill ${filtroAtual==='ativas'?'active':''}" onclick="setFiltro('ativas')">Ativas (${ativas.length})</div>
+      <div class="filtro-pill ${filtroAtual==='real'?'active':''}" onclick="setFiltro('real')">💸 Dívida real (${dividaReal.length})</div>
+      <div class="filtro-pill ${filtroAtual==='faturas'?'active':''}" onclick="setFiltro('faturas')">💳 Faturas (${faturas.length})</div>
       ${atrasadas.length>0?`<div class="filtro-pill ${filtroAtual==='atrasadas'?'active':''}" onclick="setFiltro('atrasadas')" style="color:var(--danger);">⚠️ Atrasadas (${atrasadas.length})</div>`:''}
       <div class="filtro-pill ${filtroAtual==='pagas'?'active':''}" onclick="setFiltro('pagas')">Pagas</div>
       <div class="filtro-pill ${filtroAtual==='todas'?'active':''}" onclick="setFiltro('todas')">Todas</div>
     </div>
-    ${lista.length===0?renderEmpty():lista.map(d=>renderDivida(d,hoje)).join('')}
+    ${modoSecoes?renderSecoes(dividaReal,faturas,hoje):(lista.length===0?renderEmpty():lista.map(d=>renderDivida(d,hoje)).join(''))}
   `;
-  
+
   if(ultimoItemNovoId){
     setTimeout(()=>{
       const el=document.querySelector(`[data-item-id="${ultimoItemNovoId}"]`);
@@ -192,7 +234,27 @@ function render(){
   }
 }
 
+function renderSecoes(real,faturas,hoje){
+  let html='';
+  if(real.length>0){
+    html+=`<div class="secao-label">💸 Dívida real</div>`;
+    html+=real.map(d=>renderDivida(d,hoje)).join('');
+  }
+  if(faturas.length>0){
+    html+=`<div class="secao-label">💳 Faturas do mês</div>`;
+    html+=faturas.map(d=>renderDivida(d,hoje)).join('');
+  }
+  if(real.length===0&&faturas.length===0)html=renderEmpty();
+  return html;
+}
+
 function renderEmpty(){
+  if(filtroAtual==='real'){
+    return `<div class="empty-state"><div class="empty-emoji">🎉</div><div class="empty-titulo">Sem dívida real!</div><div class="empty-sub">Você não tem empréstimos nem faturas vencidas. Mandou bem!</div></div>`;
+  }
+  if(filtroAtual==='faturas'){
+    return `<div class="empty-state"><div class="empty-emoji">💳</div><div class="empty-titulo">Nenhuma fatura aberta</div><div class="empty-sub">Suas faturas do mês aparecem aqui</div></div>`;
+  }
   if(filtroAtual==='ativas'&&dividas.length===0){
     return `<div class="empty-state"><div class="empty-emoji">🎉</div><div class="empty-titulo">Sem dívidas!</div><div class="empty-sub">Você tá limpo. Continua assim!</div></div>`;
   }
@@ -202,30 +264,31 @@ function renderEmpty(){
 function renderDivida(d,hoje){
   const tipo=TIPOS_DIV[d.tipo]||TIPOS_DIV.outro;
   const ePaga=d.status==='paga';
+  const eFatura=ehFatura(d);
   const eAtr=!ePaga&&d.data_vencimento<hoje;
   const dias=Math.ceil((new Date(d.data_vencimento)-new Date(hoje))/86400000);
   const eUrg=!ePaga&&!eAtr&&dias<=7;
   const ehNovo=d.id===ultimoItemNovoId;
-  
+
   let cClass='';
   let bdg='';
   if(ePaga){cClass='paga';bdg=`<div class="div-badge paga">✓ PAGA</div>`}
-  else if(eAtr){cClass='atrasada';bdg=`<div class="div-badge atrasada">ATRASADA</div>`}
+  else if(eAtr){cClass='atrasada';bdg=`<div class="div-badge atrasada">${eFatura?'FATURA VENCIDA':'ATRASADA'}</div>`}
   else if(eUrg){cClass='urgente';bdg=`<div class="div-badge urgente">EM ${dias}D</div>`}
-  else bdg=`<div class="div-badge normal">VENCE EM ${dias}D</div>`;
-  
+  else{cClass=eFatura?'fatura':'';bdg=`<div class="div-badge normal">VENCE EM ${dias}D</div>`}
+
   if(ehNovo)cClass+=' novo';
-  
+
   return `
     <div class="divida-card ${cClass}" data-item-id="${d.id}" onclick="abrirAcoes('${d.id}')">
       <div class="div-top">
-        <div class="div-icone">${tipo.e}</div>
+        <div class="div-icone ${eFatura&&!eAtr?'fatura':''}">${tipo.e}</div>
         <div class="div-info">
           <div class="div-credor">${d.credor}</div>
           <div class="div-tipo">${tipo.n}${d.descricao&&d.descricao!==`Dívida ${d.credor}`?' • '+d.descricao:''}</div>
         </div>
         <div class="div-valor-wrapper">
-          <div class="div-valor">R$ ${fm(d.valor_atual)}</div>
+          <div class="div-valor ${eFatura&&!eAtr?'fatura':''}">R$ ${fm(d.valor_atual)}</div>
           ${bdg}
         </div>
       </div>
@@ -242,7 +305,8 @@ function renderDivida(d,hoje){
 window.setFiltro=function(f){filtroAtual=f;render()};
 
 window.abrirAdd=function(dados){
-  const vf=dados&&dados._daIA; // veio da foto
+  salvando=false;
+  const vf=dados&&dados._daIA;
   document.getElementById('modal-add-content').innerHTML=`
     <div class="modal-titulo">
       <span>${dados?._editando?'✏️ Editar dívida':(vf?'✏️ Revisar e salvar':'➕ Nova dívida')}</span>
@@ -271,25 +335,30 @@ window.abrirAdd=function(dados){
       <div class="field"><label>Vencimento</label><input type="date" id="d-venc" value="${dados?.data_vencimento||new Date(Date.now()+30*86400000).toISOString().split('T')[0]}"></div>
       <div class="field"><label>Juros %/mês</label><input type="number" id="d-juros" step="0.1" placeholder="0" value="${dados?.juros_mensal||''}"></div>
     </div>
-    <button class="btn btn-primary" onclick="salvar('${dados?._editando||''}')">${vf?'✅ Confirmar e salvar':'Salvar dívida'}</button>
+    <button class="btn btn-primary" id="btn-salvar" onclick="salvar('${dados?._editando||''}')">${vf?'✅ Confirmar e salvar':'Salvar dívida'}</button>
   `;
   document.getElementById('modal-add').classList.add('show');
 };
 
 window.salvar=async function(editandoId){
+  if(salvando)return; // 🆕 trava duplo-clique
   const cred=document.getElementById('d-cred').value.trim();
   const tipo=document.getElementById('d-tipo').value;
   const desc=document.getElementById('d-desc').value.trim();
   const val=valorParaNum(document.getElementById('d-val').value);
   const venc=document.getElementById('d-venc').value;
   const juros=parseFloat(document.getElementById('d-juros').value)||null;
-  
+
   if(!cred){alert('Digite o credor');return}
   if(!val||val<=0){alert('Informe o valor');return}
-  
+
+  salvando=true;
+  const btn=document.getElementById('btn-salvar');
+  if(btn){btn.disabled=true;btn.textContent='Salvando...'}
+
   try{
     const dados={credor:cred,tipo,descricao:desc||`Dívida ${cred}`,valor_atual:val,data_vencimento:venc,juros_mensal:juros};
-    
+
     if(editandoId){
       await supabase.from('dividas').update(dados).eq('id',editandoId);
       ultimoItemNovoId=editandoId;
@@ -298,13 +367,19 @@ window.salvar=async function(editandoId){
       const{data,error}=await supabase.from('dividas').insert({...dados,user_id:usuario.id,valor_original:val,data_inicio:new Date().toISOString().split('T')[0],status:'ativa',prioridade:venc<new Date().toISOString().split('T')[0]?1:2}).select().single();
       if(error)throw error;
       ultimoItemNovoId=data.id;
+      filtroAtual=tipo==='cartao'?'faturas':'real'; // 🆕 vai pra aba certa
       await darXP(15,'divida_add','Dívida adicionada');
       toast(`✅ ${cred} • R$ ${fm(val)}`);
     }
-    
+
     fecharModal('modal-add');
     await carregar();
-  }catch(e){alert('Erro: '+e.message)}
+  }catch(e){
+    alert('Erro: '+e.message);
+  }finally{
+    salvando=false;
+    if(btn){btn.disabled=false}
+  }
 };
 
 window.processarFoto=async function(e){
@@ -312,23 +387,23 @@ window.processarFoto=async function(e){
   if(!file)return;
   e.target.value='';
   fecharModal('modal-add');
-  
+
   document.getElementById('negociador-content').innerHTML=`
     <div class="ia-spinner"></div>
     <div class="ia-titulo">📸 Lendo contrato...</div>
     <div class="ia-sub">Comprimindo + IA Claude analisando</div>
   `;
   document.getElementById('modal-negociador').classList.add('show');
-  
+
   let base64;
   try{base64=await comprimirImg(file,1600,0.85)}
   catch(err){alert('Erro processando foto');fecharModal('modal-negociador');return}
-  
+
   try{
     const r=await fetch(IA_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({tipo:'analisar_contrato',imagem_base64:base64,max_tokens:1500})});
     const d=await r.json();
     fecharModal('modal-negociador');
-    
+
     if(d.resultado&&!d.resultado.erro&&d.resultado.valor_total){
       const dados={
         credor:d.resultado.credor||'Credor',
@@ -355,11 +430,11 @@ window.abrirAcoes=function(id){
   const d=dividas.find(x=>x.id===id);
   if(!d)return;
   const ePaga=d.status==='paga';
-  
+
   document.getElementById('acoes-content').innerHTML=`
     <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;margin-bottom:4px;">${d.credor}</div>
     <div style="font-size:11px;color:var(--text-mute);margin-bottom:16px;">R$ ${fm(d.valor_atual)} • ${(TIPOS_DIV[d.tipo]||TIPOS_DIV.outro).n}</div>
-    
+
     ${!ePaga?`
       <div class="acao-btn" onclick="abrirNegociador('${id}')">
         <div class="acao-icon ia">🦔</div>
@@ -371,10 +446,10 @@ window.abrirAcoes=function(id){
       </div>
       <div class="acao-btn" onclick="marcarPaga('${id}')">
         <div class="acao-icon brand">✓</div>
-        <div><div class="acao-info-titulo">Marcar como paga</div><div class="acao-info-sub">Quitada</div></div>
+        <div><div class="acao-info-titulo">Marcar como paga</div><div class="acao-info-sub">${ehFatura(d)?'Fatura quitada':'Quitada'}</div></div>
       </div>
     `:''}
-    
+
     <div class="acao-btn" onclick="editar('${id}')">
       <div class="acao-icon">✏️</div>
       <div><div class="acao-info-titulo">Editar</div><div class="acao-info-sub">Alterar dados</div></div>
@@ -383,7 +458,7 @@ window.abrirAcoes=function(id){
       <div class="acao-icon danger">🗑️</div>
       <div><div class="acao-info-titulo" style="color:var(--danger);">Excluir</div><div class="acao-info-sub">Remove a dívida</div></div>
     </div>
-    
+
     <button class="btn btn-secondary" onclick="fecharModal('modal-acoes')" style="width:100%;margin-top:14px;">Cancelar</button>
   `;
   document.getElementById('modal-acoes').classList.add('show');
@@ -426,20 +501,20 @@ window.abrirNegociador=async function(id){
   fecharModal('modal-acoes');
   const d=dividas.find(x=>x.id===id);
   if(!d)return;
-  
+
   document.getElementById('negociador-content').innerHTML=`
     <div class="ia-spinner"></div>
     <div class="ia-titulo">🦔 Tatu preparando...</div>
     <div class="ia-sub">Gerando script de negociação personalizado</div>
   `;
   document.getElementById('modal-negociador').classList.add('show');
-  
+
   try{
     const r=await fetch(IA_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({tipo:'negociar_divida',divida:{credor:d.credor,tipo:d.tipo,valor_atual:d.valor_atual,juros_mensal:d.juros_mensal,atrasada:d.data_vencimento<new Date().toISOString().split('T')[0]},max_tokens:1500})});
     const data=await r.json();
-    
+
     const script=(data.resultado||'Não consegui gerar agora. Tenta de novo!').toString();
-    
+
     document.getElementById('negociador-content').innerHTML=`
       <div class="modal-titulo">
         <span>🦔 Negociador Tatu</span>
@@ -493,26 +568,26 @@ window.processarNegoc=async function(e){
   const file=e.target.files[0];
   if(!file)return;
   e.target.value='';
-  
+
   document.getElementById('negociador-content').innerHTML=`
     <div class="ia-spinner"></div>
     <div class="ia-titulo">📸 Analisando ofertas...</div>
     <div class="ia-sub">IA Claude lendo o print de negociação</div>
   `;
   document.getElementById('modal-negociador').classList.add('show');
-  
+
   let base64;
   try{base64=await comprimirImg(file,1600,0.85)}
   catch(err){alert('Erro');fecharModal('modal-negociador');return}
-  
+
   try{
     const r=await fetch(IA_URL,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({tipo:'analisar_negociacao',imagem_base64:base64,max_tokens:1500})});
     const d=await r.json();
-    
+
     if(d.resultado&&!d.resultado.erro){
       const res=d.resultado;
       const ofertasHTML=res.ofertas_negociacao&&res.ofertas_negociacao.length>0?res.ofertas_negociacao.map((o,i)=>`<div style="background:var(--bg-elev);border-radius:10px;padding:10px;margin-bottom:8px;font-size:13px;"><strong>Opção ${i+1}:</strong> ${o}</div>`).join(''):'<div style="color:var(--text-mute);font-size:13px;">Nenhuma oferta detectada</div>';
-      
+
       document.getElementById('negociador-content').innerHTML=`
         <div class="modal-titulo">
           <span>📸 Análise IA</span>
@@ -598,5 +673,6 @@ function toast(t){
   setTimeout(()=>{e.style.display='none'},3500);
 }
 </script>
+<script src="polish.js?v=1"></script>
 </body>
 </html>
