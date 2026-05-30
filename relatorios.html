@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0a0a">
+<title>Relatórios • guardaí</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+:root{--bg:#0a0a0a;--bg-card:#141414;--bg-elev:#1c1c1c;--bg-input:#181818;--border:#252525;--border-strong:#353535;--brand:#00d97e;--brand-hover:#00ba6b;--brand-soft:rgba(0,217,126,0.1);--danger:#ff4757;--danger-soft:rgba(255,71,87,0.1);--warning:#ffb800;--warning-soft:rgba(255,184,0,0.1);--info:#38bdf8;--info-soft:rgba(56,189,248,0.1);--ia:#a855f7;--ia-soft:rgba(168,85,247,0.1);--text:#fff;--text-mute:#a3a3a3;--text-faint:#525252}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;min-height:100vh;overflow-x:hidden}
+body{padding-bottom:60px}
+input,select{color:#fff!important;-webkit-text-fill-color:#fff!important;caret-color:var(--brand)}
+.header{padding:16px 20px;background:var(--bg);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px}
+.header-back{width:36px;height:36px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px}
+.header-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;flex:1}
+.brand-mark-mini{width:28px;height:28px;background:var(--brand);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.brand-mark-mini::before{content:'';width:10px;height:10px;border:2px solid var(--bg);border-radius:3px;border-top:none;border-right:none}
+.container{max-width:480px;margin:0 auto;padding:16px 20px}
+
+/* período */
+.periodo-nav{display:flex;align-items:center;justify-content:space-between;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:10px 12px;margin-bottom:12px}
+.periodo-seta{width:34px;height:34px;border-radius:9px;background:var(--bg-elev);border:1px solid var(--border);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.periodo-seta:active{background:var(--brand-soft)}
+.periodo-seta:disabled{opacity:0.3}
+.periodo-label{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;text-align:center;flex:1;text-transform:capitalize}
+.periodo-sub{font-size:10px;color:var(--text-mute);font-weight:400;text-transform:none}
+.tabs-periodo{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs-periodo::-webkit-scrollbar{display:none}
+.tab-p{background:var(--bg-card);border:1px solid var(--border);border-radius:100px;padding:7px 14px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;color:var(--text-mute);white-space:nowrap}
+.tab-p.active{background:var(--brand-soft);border-color:var(--brand);color:var(--brand)}
+
+.toggle-rp{display:flex;background:var(--bg-elev);border:1px solid var(--border);border-radius:100px;padding:3px;margin-bottom:16px}
+.toggle-rp-opt{flex:1;text-align:center;padding:8px;border-radius:100px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:var(--text-mute);transition:all 0.2s}
+.toggle-rp-opt.active{background:var(--brand);color:#001a0e}
+.toggle-rp-opt.active.prev{background:var(--info);color:#04222e}
+
+/* tatu insight */
+.tatu-insight{background:var(--ia-soft);border:1px solid rgba(168,85,247,0.3);border-radius:14px;padding:13px 14px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
+.tatu-insight-emoji{font-size:22px;flex-shrink:0}
+.tatu-insight-txt{font-size:12.5px;line-height:1.5;color:var(--text)}
+.tatu-insight-txt strong{color:var(--ia)}
+
+/* bloco entra vs sai */
+.bloco{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:14px}
+.bloco-titulo{font-family:'Space Grotesk',sans-serif;font-size:12px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.es-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.es-box{border-radius:12px;padding:12px}
+.es-box.entra{background:var(--brand-soft)}
+.es-box.sai{background:var(--danger-soft)}
+.es-label{font-size:10px;text-transform:uppercase;letter-spacing:0.06em;font-weight:700;margin-bottom:4px}
+.es-box.entra .es-label{color:var(--brand)}
+.es-box.sai .es-label{color:var(--danger)}
+.es-valor{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;letter-spacing:-0.02em;word-break:break-word}
+.es-box.entra .es-valor{color:var(--brand)}
+.es-box.sai .es-valor{color:var(--danger)}
+.es-barra{height:12px;background:var(--bg-elev);border-radius:100px;overflow:hidden;display:flex;margin-bottom:8px}
+.es-barra-entra{height:100%;background:var(--brand);transition:width 0.6s cubic-bezier(0.4,0,0.2,1)}
+.es-barra-sai{height:100%;background:var(--danger);transition:width 0.6s cubic-bezier(0.4,0,0.2,1)}
+.es-saldo{text-align:center;padding-top:6px}
+.es-saldo-label{font-size:11px;color:var(--text-mute);margin-bottom:2px}
+.es-saldo-valor{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;letter-spacing:-0.02em}
+.es-saldo-valor.pos{color:var(--brand)}
+.es-saldo-valor.neg{color:var(--danger)}
+
+/* categorias */
+.cat-row{margin-bottom:13px}
+.cat-row:last-child{margin-bottom:0}
+.cat-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.cat-nome{font-size:13px;font-weight:600;display:flex;align-items:center;gap:7px}
+.cat-emoji{font-size:16px}
+.cat-valores{text-align:right}
+.cat-valor{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700}
+.cat-pct{font-size:10px;color:var(--text-mute)}
+.cat-barra{height:8px;background:var(--bg-elev);border-radius:100px;overflow:hidden}
+.cat-barra-fill{height:100%;border-radius:100px;transition:width 0.6s cubic-bezier(0.4,0,0.2,1)}
+
+/* contas */
+.conta-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}
+.conta-row:last-child{border-bottom:none}
+.conta-icone{width:38px;height:38px;border-radius:10px;background:var(--bg-elev);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.conta-info{flex:1;min-width:0}
+.conta-nome{font-size:13px;font-weight:600;margin-bottom:1px}
+.conta-qtd{font-size:10px;color:var(--text-mute)}
+.conta-valor{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:var(--danger);flex-shrink:0}
+
+.empty-bloco{text-align:center;padding:26px 10px;color:var(--text-mute);font-size:13px}
+.empty-bloco-emoji{font-size:36px;margin-bottom:8px;opacity:0.6}
+
+.loader-circle{width:32px;height:32px;border:3px solid var(--border);border-radius:50%;border-top-color:var(--brand);animation:spin 0.8s linear infinite;margin:60px auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.filtro-cat-wrap{margin-bottom:16px}
+.filtro-cat-label{font-size:11px;color:var(--text-mute);margin-bottom:6px;font-weight:500}
+.filtro-cat-select{width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:12px;padding:13px;color:var(--text);font-size:15px;font-family:'Inter',sans-serif;min-height:46px}
+.filtro-cat-select:focus{outline:none;border-color:var(--brand)}
+
+.resumo-mini{display:flex;gap:8px;margin-bottom:16px}
+.resumo-mini-box{flex:1;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:10px 12px;text-align:center}
+.resumo-mini-label{font-size:9px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;font-weight:700}
+.resumo-mini-valor{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700}
+.resumo-mini-valor.entra{color:var(--brand)}
+.resumo-mini-valor.sai{color:var(--danger)}
+</style>
+</head>
+<body>
+<div class="header">
+<button class="header-back" onclick="window.location.href='home.html?v='+Date.now()">‹</button>
+<div class="header-title">Relatórios 360°</div>
+<div class="brand-mark-mini" onclick="window.location.href='home.html?v='+Date.now()"></div>
+</div>
+<div class="container" id="container"><div class="loader-circle"></div></div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const SUPABASE_URL='https://gmbsxrxqrxpbgyyvifcd.supabase.co';
+const SUPABASE_KEY='sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const MESES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const MESES_CURTO=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+
+// emojis por categoria (fallback genérico)
+const CAT_EMOJI={alimentacao:'🍽️',alimentação:'🍽️',mercado:'🛒',transporte:'🚗',combustivel:'⛽',combustível:'⛽',moradia:'🏠',aluguel:'🏠',casa:'🏠',lazer:'🎮',saude:'🏥',saúde:'🏥',educacao:'🎓',educação:'🎓',vestuario:'👕',vestuário:'👕',roupa:'👕',contas:'📄',cartao:'💳',cartão:'💳',assinatura:'📺',assinaturas:'📺',pet:'🐕',beleza:'💄',viagem:'✈️',presente:'🎁',investimento:'📈',salario:'💼',salário:'💼',renda:'💰',freela:'💻',outro:'📌',outros:'📌'};
+const CORES_CAT=['#00d97e','#38bdf8','#a855f7','#ffb800','#ff4757','#ec4899','#06b6d4','#f97316','#84cc16','#8b5cf6','#14b8a6','#fb923c'];
+
+let usuario;
+let contas=[];
+let transacoesTodas=[];
+let periodoTipo='mes'; // hoje | semana | mes | ano | tudo
+let refDate=new Date();
+let modo='realizada'; // realizada | prevista
+let filtroCategoria='__all__';
+
+(async()=>{
+  const{data:{session}}=await supabase.auth.getSession();
+  if(!session){window.location.href='index.html?v='+Date.now();return}
+  usuario=session.user;
+  refDate.setHours(12,0,0,0);
+  await carregar();
+})();
+
+async function carregar(){
+  const [cRes,tRes]=await Promise.all([
+    supabase.from('contas').select('id,nome,icone,tipo').eq('user_id',usuario.id),
+    supabase.from('transacoes').select('id,valor,descricao,tipo,categoria,data,status,conta_id').eq('user_id',usuario.id)
+  ]);
+  contas=cRes.data||[];
+  transacoesTodas=tRes.data||[];
+  render();
+}
+
+function rangeDoPeriodo(){
+  const d=new Date(refDate);d.setHours(12,0,0,0);
+  let ini,fim,label,sub='';
+  if(periodoTipo==='hoje'){
+    ini=new Date(d);fim=new Date(d);
+    label=d.toLocaleDateString('pt-BR',{day:'2-digit',month:'long'});
+  }else if(periodoTipo==='semana'){
+    const dow=d.getDay();
+    ini=new Date(d);ini.setDate(d.getDate()-dow);
+    fim=new Date(ini);fim.setDate(ini.getDate()+6);
+    label='Semana';
+    sub=`${ini.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})} – ${fim.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}`;
+  }else if(periodoTipo==='mes'){
+    ini=new Date(d.getFullYear(),d.getMonth(),1,12);
+    fim=new Date(d.getFullYear(),d.getMonth()+1,0,12);
+    label=MESES[d.getMonth()];sub=String(d.getFullYear());
+  }else if(periodoTipo==='ano'){
+    ini=new Date(d.getFullYear(),0,1,12);
+    fim=new Date(d.getFullYear(),11,31,12);
+    label=String(d.getFullYear());
+  }else{ // tudo
+    ini=new Date(2000,0,1,12);fim=new Date(2099,11,31,12);
+    label='Desde sempre';
+  }
+  return {ini:ini.toISOString().split('T')[0],fim:fim.toISOString().split('T')[0],label,sub};
+}
+
+function navPeriodo(dir){
+  const d=new Date(refDate);
+  if(periodoTipo==='hoje')d.setDate(d.getDate()+dir);
+  else if(periodoTipo==='semana')d.setDate(d.getDate()+7*dir);
+  else if(periodoTipo==='mes')d.setMonth(d.getMonth()+dir);
+  else if(periodoTipo==='ano')d.setFullYear(d.getFullYear()+dir);
+  refDate=d;refDate.setHours(12,0,0,0);
+  render();
+}
+window.navPeriodo=navPeriodo;
+
+window.setPeriodoTipo=function(t){periodoTipo=t;refDate=new Date();refDate.setHours(12,0,0,0);render()};
+window.setModo=function(m){modo=m;render()};
+window.setFiltroCat=function(v){filtroCategoria=v;render()};
+
+function catEmoji(cat){
+  const k=(cat||'outro').toLowerCase().trim();
+  return CAT_EMOJI[k]||'📌';
+}
+function catNome(cat){
+  if(!cat)return 'Sem categoria';
+  return cat.charAt(0).toUpperCase()+cat.slice(1);
+}
+
+function render(){
+  const {ini,fim,label,sub}=rangeDoPeriodo();
+
+  // filtra por período + modo (status) + categoria
+  let txs=transacoesTodas.filter(t=>t.data>=ini&&t.data<=fim);
+  if(modo==='realizada')txs=txs.filter(t=>t.status==='realizada'||!t.status);
+  else txs=txs.filter(t=>t.status==='prevista'||t.status==='realizada'); // previsto = realizadas + previstas (visão futura total)
+  if(filtroCategoria!=='__all__')txs=txs.filter(t=>(t.categoria||'outro')===filtroCategoria);
+
+  const entradas=txs.filter(t=>t.tipo==='entrada');
+  const saidas=txs.filter(t=>t.tipo==='saida');
+  const totalEntra=entradas.reduce((a,t)=>a+Number(t.valor||0),0);
+  const totalSai=saidas.reduce((a,t)=>a+Number(t.valor||0),0);
+  const saldo=totalEntra-totalSai;
+
+  // categorias (só saídas)
+  const porCat={};
+  saidas.forEach(t=>{
+    const k=(t.categoria||'outro');
+    porCat[k]=(porCat[k]||0)+Number(t.valor||0);
+  });
+  const catArr=Object.entries(porCat).map(([k,v])=>({cat:k,valor:v})).sort((a,b)=>b.valor-a.valor);
+  const maxCat=catArr.length>0?catArr[0].valor:0;
+
+  // por conta (só saídas)
+  const porConta={};
+  saidas.forEach(t=>{
+    const k=t.conta_id||'__sem__';
+    porConta[k]=(porConta[k]||0)+Number(t.valor||0);
+  });
+  const contaArr=Object.entries(porConta).map(([k,v])=>{
+    const c=contas.find(x=>x.id===k);
+    const qtd=saidas.filter(t=>(t.conta_id||'__sem__')===k).length;
+    return {id:k,nome:c?c.nome:'Sem conta',icone:c?(c.icone||'🏦'):'❓',valor:v,qtd};
+  }).sort((a,b)=>b.valor-a.valor);
+
+  // categorias disponíveis pro filtro (todas que aparecem em qualquer período)
+  const todasCats=[...new Set(transacoesTodas.filter(t=>t.tipo==='saida').map(t=>t.categoria||'outro'))].sort();
+
+  // barras entra/sai proporcionais
+  const maxES=Math.max(totalEntra,totalSai,1);
+  const pctEntra=(totalEntra/maxES)*100;
+  const pctSai=(totalSai/maxES)*100;
+
+  const temDados=txs.length>0;
+  const podeAvancar=periodoTipo!=='tudo';
+
+  document.getElementById('container').innerHTML=`
+    <div class="tabs-periodo">
+      ${[['hoje','Hoje'],['semana','Semana'],['mes','Mês'],['ano','Ano'],['tudo','Tudo']].map(([k,n])=>
+        `<div class="tab-p ${periodoTipo===k?'active':''}" onclick="setPeriodoTipo('${k}')">${n}</div>`).join('')}
+    </div>
+
+    ${periodoTipo!=='tudo'?`
+      <div class="periodo-nav">
+        <button class="periodo-seta" onclick="navPeriodo(-1)">‹</button>
+        <div class="periodo-label">${label}${sub?`<div class="periodo-sub">${sub}</div>`:''}</div>
+        <button class="periodo-seta" onclick="navPeriodo(1)" ${podeAvancar?'':'disabled'}>›</button>
+      </div>
+    `:''}
+
+    <div class="toggle-rp">
+      <div class="toggle-rp-opt ${modo==='realizada'?'active':''}" onclick="setModo('realizada')">✓ Realizado</div>
+      <div class="toggle-rp-opt prev ${modo==='prevista'?'active prev':''}" onclick="setModo('prevista')">📅 Previsto</div>
+    </div>
+
+    ${temDados?renderInsight(catArr,totalEntra,totalSai,saldo,maxCat):''}
+
+    <!-- ENTRA VS SAI -->
+    <div class="bloco">
+      <div class="bloco-titulo">⚖️ Entra vs Sai</div>
+      <div class="es-grid">
+        <div class="es-box entra"><div class="es-label">Entrou</div><div class="es-valor">R$ ${fm(totalEntra)}</div></div>
+        <div class="es-box sai"><div class="es-label">Saiu</div><div class="es-valor">R$ ${fm(totalSai)}</div></div>
+      </div>
+      <div class="es-barra">
+        <div class="es-barra-entra" style="width:${pctEntra/2}%;"></div>
+        <div style="flex:1;"></div>
+        <div class="es-barra-sai" style="width:${pctSai/2}%;"></div>
+      </div>
+      <div class="es-saldo">
+        <div class="es-saldo-label">${saldo>=0?'Sobrou no período':'Faltou no período'}</div>
+        <div class="es-saldo-valor ${saldo>=0?'pos':'neg'}">${saldo<0?'- ':''}R$ ${fm(Math.abs(saldo))}</div>
+      </div>
+    </div>
+
+    <!-- FILTRO CATEGORIA -->
+    ${todasCats.length>0?`
+      <div class="filtro-cat-wrap">
+        <div class="filtro-cat-label">Filtrar por categoria</div>
+        <select class="filtro-cat-select" onchange="setFiltroCat(this.value)">
+          <option value="__all__" ${filtroCategoria==='__all__'?'selected':''}>Todas as categorias</option>
+          ${todasCats.map(c=>`<option value="${c}" ${filtroCategoria===c?'selected':''}>${catEmoji(c)} ${catNome(c)}</option>`).join('')}
+        </select>
+      </div>
+    `:''}
+
+    <!-- PRA ONDE VAI -->
+    <div class="bloco">
+      <div class="bloco-titulo">🎯 Pra onde vai seu dinheiro</div>
+      ${catArr.length>0?catArr.map((c,i)=>{
+        const pct=totalSai>0?Math.round((c.valor/totalSai)*100):0;
+        const larg=maxCat>0?(c.valor/maxCat)*100:0;
+        const cor=CORES_CAT[i%CORES_CAT.length];
+        return `
+          <div class="cat-row">
+            <div class="cat-top">
+              <div class="cat-nome"><span class="cat-emoji">${catEmoji(c.cat)}</span> ${catNome(c.cat)}</div>
+              <div class="cat-valores"><div class="cat-valor">R$ ${fm(c.valor)}</div><div class="cat-pct">${pct}% dos gastos</div></div>
+            </div>
+            <div class="cat-barra"><div class="cat-barra-fill" style="width:${larg}%;background:${cor};"></div></div>
+          </div>`;
+      }).join(''):`<div class="empty-bloco"><div class="empty-bloco-emoji">🍃</div>Nenhum gasto nesse período</div>`}
+    </div>
+
+    <!-- POR CONTA -->
+    <div class="bloco">
+      <div class="bloco-titulo">🏦 De onde saiu (contas e cartões)</div>
+      ${contaArr.length>0?contaArr.map(c=>`
+        <div class="conta-row">
+          <div class="conta-icone">${c.icone}</div>
+          <div class="conta-info"><div class="conta-nome">${c.nome}</div><div class="conta-qtd">${c.qtd} transaç${c.qtd===1?'ão':'ões'}</div></div>
+          <div class="conta-valor">R$ ${fm(c.valor)}</div>
+        </div>
+      `).join(''):`<div class="empty-bloco"><div class="empty-bloco-emoji">🏦</div>Nenhuma saída por conta nesse período</div>`}
+    </div>
+  `;
+}
+
+function renderInsight(catArr,entra,sai,saldo,maxCat){
+  let msg='';
+  if(sai===0&&entra===0){
+    return '';
+  }else if(catArr.length>0){
+    const top=catArr[0];
+    const pct=sai>0?Math.round((top.valor/sai)*100):0;
+    if(saldo<0){
+      msg=`No vermelho nesse período: saiu <strong>R$ ${fm(sai)}</strong> e entrou <strong>R$ ${fm(entra)}</strong>. Seu maior gasto foi <strong>${catNome(top.cat)}</strong> (${pct}%). Bora ver onde dá pra cortar?`;
+    }else if(pct>=40){
+      msg=`<strong>${catNome(top.cat)}</strong> levou <strong>${pct}%</strong> de tudo que você gastou (R$ ${fm(top.valor)}). É seu maior ralo — fica de olho nesse.`;
+    }else{
+      msg=`Você sobrou <strong>R$ ${fm(saldo)}</strong> nesse período. 👏 Maior gasto foi <strong>${catNome(top.cat)}</strong> (R$ ${fm(top.valor)}, ${pct}%).`;
+    }
+  }else if(entra>0){
+    msg=`Entrou <strong>R$ ${fm(entra)}</strong> e nenhum gasto registrado nesse período. 🎉`;
+  }
+  if(!msg)return '';
+  return `<div class="tatu-insight"><div class="tatu-insight-emoji">🦔</div><div class="tatu-insight-txt"><strong>Tatu:</strong> ${msg}</div></div>`;
+}
+
+function fm(v){return(Number(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
+</script>
+<script src="polish.js?v=1"></script>
+</body>
+</html>
