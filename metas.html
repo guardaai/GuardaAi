@@ -43,6 +43,17 @@
   }
   
   body { padding-bottom: 100px; }
+
+  /* 🆕 FIX iOS: força texto branco em todos os inputs (autofill/foco não escurece mais) */
+  input, textarea, select {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    caret-color: var(--brand);
+  }
+  input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--bg-input) inset !important;
+    -webkit-text-fill-color: #fff !important;
+  }
   
   .header {
     padding: 16px 20px;
@@ -106,7 +117,6 @@
     padding: 20px;
   }
   
-  /* SEÇÃO */
   .section { margin-bottom: 20px; }
   
   .section-title {
@@ -120,7 +130,6 @@
     padding: 0 4px;
   }
   
-  /* RESERVA - CARD ESPECIAL */
   .reserva-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -279,7 +288,6 @@
     border-color: var(--brand);
   }
   
-  /* OBJETIVO */
   .objetivo-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -361,7 +369,6 @@
     color: var(--text-mute);
   }
   
-  /* CONCLUÍDA */
   .objetivo-card.concluida {
     border-color: var(--brand);
     background: linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-card) 100%);
@@ -372,7 +379,6 @@
     color: var(--brand);
   }
   
-  /* TATU */
   .tatu-bubble {
     display: flex;
     gap: 12px;
@@ -395,7 +401,6 @@
   
   .tatu-text strong { color: var(--text); }
   
-  /* EMPTY */
   .empty {
     background: var(--bg-card);
     border: 1px dashed var(--border-strong);
@@ -421,7 +426,6 @@
     margin: 0 auto 14px;
   }
   
-  /* FAB */
   .fab {
     position: fixed;
     bottom: 24px;
@@ -447,7 +451,6 @@
     background: var(--brand-hover);
   }
   
-  /* MODAL */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -515,7 +518,6 @@
   
   .modal-body { padding: 0 24px 24px; }
   
-  /* ICONE PICKER */
   .icone-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -540,7 +542,6 @@
     border-color: var(--brand);
   }
   
-  /* CORES */
   .cor-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -560,7 +561,6 @@
     transform: scale(1.1);
   }
   
-  /* FIELD */
   .field { margin-bottom: 14px; }
   
   .field label {
@@ -623,6 +623,8 @@
     font-weight: 700;
     font-size: 24px;
     padding: 0;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
   }
   
   .info-box {
@@ -758,7 +760,6 @@
 
 <div class="container">
 
-  <!-- TATU -->
   <div class="tatu-bubble">
     <div class="tatu-emoji">🦔</div>
     <div class="tatu-text" id="tatu-msg">
@@ -766,7 +767,6 @@
     </div>
   </div>
 
-  <!-- RESERVA -->
   <div class="section">
     <div class="section-title">🛡️ Reserva de emergência</div>
     <div id="reserva-container">
@@ -774,7 +774,6 @@
     </div>
   </div>
   
-  <!-- OBJETIVOS -->
   <div class="section">
     <div class="section-title">🎯 Meus objetivos</div>
     <div id="objetivos-container"></div>
@@ -784,7 +783,6 @@
 
 <button class="fab" onclick="abrirModalNovoObjetivo()">+ Novo objetivo</button>
 
-<!-- MODAL RESERVA SETUP -->
 <div class="modal-overlay" id="modal-reserva">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -834,7 +832,6 @@
   </div>
 </div>
 
-<!-- MODAL OBJETIVO -->
 <div class="modal-overlay" id="modal-objetivo">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -887,7 +884,6 @@
   </div>
 </div>
 
-<!-- MODAL DETALHE OBJETIVO -->
 <div class="modal-overlay" id="modal-detalhe">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -930,7 +926,6 @@
   </div>
 </div>
 
-<!-- MODAL ADICIONAR VALOR -->
 <div class="modal-overlay" id="modal-add-valor">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -1055,7 +1050,6 @@
     return Math.max(diff, 1);
   }
   
-  /* ===== TATU ===== */
   function renderTatu() {
     const el = document.getElementById('tatu-msg');
     if (!reserva) {
@@ -1076,7 +1070,6 @@
     }
   }
   
-  /* ===== RESERVA ===== */
   function renderReserva() {
     const container = document.getElementById('reserva-container');
     
@@ -1187,7 +1180,6 @@
     btn.disabled = true;
     btn.textContent = 'Salvando...';
     
-    // Atualiza perfil
     await supabase.from('perfis').update({ 
       meta_reserva_meses: meses,
       atualizado_em: new Date().toISOString()
@@ -1228,7 +1220,6 @@
     await carregarTudo();
   };
   
-  /* ===== OBJETIVOS ===== */
   function renderObjetivos() {
     const container = document.getElementById('objetivos-container');
     
@@ -1412,7 +1403,6 @@
     await carregarTudo();
   };
   
-  /* ===== ADD VALOR ===== */
   window.abrirAddValor = function() {
     modoAddValor = { tipo: 'objetivo', meta: detalheAtual };
     document.getElementById('f-add-valor').value = '';
@@ -1448,22 +1438,28 @@
     const novoValor = Number(modoAddValor.meta.valor_atual) + v;
     const batido = novoValor >= modoAddValor.meta.valor_alvo;
     
-    const upd = { valor_atual: novoValor };
-    if (batido && !modoAddValor.meta.concluida) {
-      upd.concluida = true;
-      upd.data_conclusao = new Date().toISOString();
+    // 🆕 update seguro: garante que o valor_atual sempre salva,
+    // mesmo se as colunas concluida/data_conclusao não existirem na tabela
+    let result = await supabase.from('metas').update({ valor_atual: novoValor }).eq('id', modoAddValor.meta.id);
+    if (result.error) {
+      document.getElementById('msg-add-valor').className = 'msg show msg-error';
+      document.getElementById('msg-add-valor').textContent = 'Erro ao salvar: ' + result.error.message;
+      btn.disabled = false;
+      btn.textContent = 'Adicionar';
+      return;
+    }
+    // tenta marcar conclusão à parte (se as colunas não existirem, ignora sem quebrar)
+    if (batido) {
+      try { await supabase.from('metas').update({ concluida: true, data_conclusao: new Date().toISOString() }).eq('id', modoAddValor.meta.id); } catch(e){}
     }
     
-    await supabase.from('metas').update(upd).eq('id', modoAddValor.meta.id);
-    
-    // XP
     if (batido) {
       const xp = modoAddValor.tipo === 'reserva' ? 1000 : 200;
       await darXP(xp, 'meta_concluida', 'Meta batida: ' + modoAddValor.meta.nome);
-      const { data: g } = await supabase.from('gamificacao').select('total_metas_batidas').eq('user_id', usuario.id).single();
-      await supabase.from('gamificacao').update({
-        total_metas_batidas: (g?.total_metas_batidas || 0) + 1
-      }).eq('user_id', usuario.id);
+      try {
+        const { data: g } = await supabase.from('gamificacao').select('total_metas_batidas').eq('user_id', usuario.id).single();
+        await supabase.from('gamificacao').update({ total_metas_batidas: (g?.total_metas_batidas || 0) + 1 }).eq('user_id', usuario.id);
+      } catch(e){}
       mostrarToast(`🎉 +${xp} XP — Meta batida!`);
     } else {
       await darXP(10, 'valor_meta', 'Aporte em meta');
@@ -1476,16 +1472,17 @@
     await carregarTudo();
   };
   
-  /* ===== HELPERS ===== */
   async function darXP(xp, acao, descricao) {
-    await supabase.from('historico_xp').insert({
-      user_id: usuario.id, acao, xp_ganho: xp, descricao
-    });
-    const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).single();
-    await supabase.from('gamificacao').update({
-      xp_total: (g?.xp_total || 0) + xp,
-      ultima_atividade: new Date().toISOString().split('T')[0]
-    }).eq('user_id', usuario.id);
+    try {
+      await supabase.from('historico_xp').insert({
+        user_id: usuario.id, acao, xp_ganho: xp, descricao
+      });
+      const { data: g } = await supabase.from('gamificacao').select('xp_total').eq('user_id', usuario.id).single();
+      await supabase.from('gamificacao').update({
+        xp_total: (g?.xp_total || 0) + xp,
+        ultima_atividade: new Date().toISOString().split('T')[0]
+      }).eq('user_id', usuario.id);
+    } catch(e) { console.error(e); }
   }
   
   function mostrarToast(texto) {
@@ -1499,6 +1496,6 @@
     document.getElementById(id).classList.remove('show');
   };
 </script>
-
+<script src="polish.js?v=1"></script>
 </body>
 </html>
