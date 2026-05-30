@@ -198,6 +198,7 @@ const TIPOS_DIV={cartao:{e:'💳',n:'Cartão'},emprestimo:{e:'💸',n:'Emprésti
 
 const MESES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 const JUROS_MESES_GERAR=12;
+const MARCA_JUROS='[JUROS_MENSAL]'; // 🆕 marca na descrição pra identificar (grupo_recorrencia é UUID, não dá pra usar texto)
 
 function ehFatura(d){return d.tipo==='cartao'}
 function ehJuros(d){return d.juros_rola===true}
@@ -240,23 +241,25 @@ function diaCobranca(d){
   return Number(d.dia_cobranca_juros)|| (d.data_vencimento?new Date(d.data_vencimento+'T12:00:00').getDate():10);
 }
 
+// 🆕 apaga os juros previstos FUTUROS dessa dívida — identifica por divida_id + recorrente + marca na descrição
 async function apagarJurosFuturos(dividaId){
   const hoje=new Date().toISOString().split('T')[0];
   const{error}=await supabase.from('transacoes').delete()
     .eq('user_id',usuario.id)
-    .eq('grupo_recorrencia','juros_'+dividaId)
+    .eq('divida_id',dividaId)
+    .eq('recorrente',true)
     .eq('status','prevista')
     .gte('data',hoje);
   if(error)console.error('apagarJurosFuturos',error);
 }
 
-// 🆕 agora RETORNA o erro (se houver) em vez de engolir, pra eu saber o que falhou
+// 🆕 gera os juros — SEM grupo_recorrencia (que é UUID). Usa divida_id + recorrente + marca na descrição
 async function gerarJurosFuturos(divida){
   const saldo=Number(divida.valor_atual);
   const taxa=Number(divida.juros_mensal);
   if(!saldo||saldo<=0||!taxa||taxa<=0)return {error:{message:'saldo ou taxa zerados'}};
   const valorJuros=Math.round((saldo*taxa/100)*100)/100;
-  const dia=Math.min(28,diaCobranca(divida)); // 🆕 trava em 28 pra não estourar em meses curtos (fev)
+  const dia=Math.min(28,diaCobranca(divida));
   const hoje=new Date();
   hoje.setHours(12,0,0,0);
 
@@ -269,13 +272,12 @@ async function gerarJurosFuturos(divida){
     linhas.push({
       user_id:usuario.id,
       valor:valorJuros,
-      descricao:`Juros ${divida.credor} (${taxa}% s/ saldo)`,
+      descricao:`Juros ${divida.credor} (${taxa}% s/ saldo) ${MARCA_JUROS}`,
       tipo:'saida',
       categoria:'outro',
       data:dt.toISOString().split('T')[0],
       status:'prevista',
       recorrente:true,
-      grupo_recorrencia:'juros_'+divida.id,
       divida_id:divida.id
     });
   }
@@ -591,7 +593,6 @@ window.salvar=async function(editandoId){
       if(error)throw error;
       ultimoItemNovoId=data.id;
       filtroAtual=tipo==='cartao'?'faturas':'real';
-      // 🆕 gera as cobranças e AVISA se falhar
       if(eJuros){
         const{error:errJuros}=await gerarJurosFuturos(data);
         if(errJuros){
