@@ -1103,6 +1103,7 @@
   let planoTatu = null;       // resultado do cálculo
   let metaQuitacao = null;    // meta tipo 'quitar_divida' já criada (se houver)
   let temAgiotaAtivo = false; // pra alerta de conflito
+  let todasDividas = [];      // dívidas ativas (pra cruzar progresso da quitação)
   
   const icones = ['🎯','✈️','🚗','🏠','💍','📱','💻','🎓','💼','🏖️','🎮','📷','🎸','🚴','⌚','🛋️','🐕','💎','🏔️','🎂','💄','🛒'];
   const cores = ['#00d97e','#38bdf8','#a855f7','#ffb800','#ff4757','#ec4899','#06b6d4','#f97316','#84cc16','#8b5cf6','#14b8a6','#ef4444'];
@@ -1139,8 +1140,17 @@
     const rendas = rRes.data || [];
     const compromissos = cRes.data || [];
     const dividas = dRes.data || [];
+    todasDividas = dividas;
     planoTatu = calcularPlanoTatu(rendas, compromissos, dividas);
-    temAgiotaAtivo = planoTatu && planoTatu.tipo === 'agiota_ok' || (planoTatu && planoTatu.tipo === 'agiota_travado');
+    temAgiotaAtivo = (planoTatu && planoTatu.tipo === 'agiota_ok') || (planoTatu && planoTatu.tipo === 'agiota_travado');
+
+    // 🆕 se a meta de quitação existe mas está órfã (sem divida_id), amarra na dívida do Tatu
+    if (metaQuitacao && !metaQuitacao.divida_id && planoTatu && planoTatu.alvo) {
+      try {
+        await supabase.from('metas').update({ divida_id: planoTatu.alvo.id }).eq('id', metaQuitacao.id);
+        metaQuitacao.divida_id = planoTatu.alvo.id;
+      } catch(e){}
+    }
     
     renderPlanoTatu();
     renderReserva();
@@ -1265,6 +1275,43 @@
     // agiota OK: dá pra quitar
     if (p.tipo === 'agiota_ok') {
       const jaCriada = metaQuitacao != null;
+
+      // 🆕 se a meta já existe, mostra o PROGRESSO real da quitação
+      if (jaCriada) {
+        // acha a dívida amarrada à meta (pelo divida_id) pra calcular o quanto já abateu
+        const div = todasDividas.find(d => d.id === metaQuitacao.divida_id) || p.alvo;
+        const original = Number(metaQuitacao.valor_alvo) || Number(div.valor_atual) || 0;
+        const atual = Number(div.valor_atual) || 0;
+        const abatido = Math.max(0, original - atual);
+        const pct = original > 0 ? Math.min(100, Math.round((abatido / original) * 100)) : 0;
+        const quitada = atual <= 0.009;
+
+        c.innerHTML = `
+          <div class="plano-tatu ${quitada ? 'ok' : 'foco'}">
+            <div class="plano-head"><div class="plano-emoji">${quitada ? '🎉' : '🦔'}</div><div>
+              <div class="plano-badge">Plano do Tatu · ${quitada ? 'missão cumprida' : 'em andamento'}</div>
+              <div class="plano-titulo">${quitada ? 'Você matou o ' + div.credor + '!' : 'Matando o juros de ' + div.credor}</div>
+            </div></div>
+            <div class="plano-texto">
+              ${quitada
+                ? `Acabou! Você quitou a dívida de <strong>${div.credor}</strong>. Aquele juros de R$ ${fm(p.jurosMes)}/mês <strong>nunca mais</strong> sai do seu bolso. Esse dinheiro agora é seu. 🚀`
+                : `Você já abateu <strong>R$ ${fm(abatido)}</strong> dos R$ ${fm(original)}. Falta <strong>R$ ${fm(atual)}</strong>. Continua jogando sua sobra de R$ ${fm(p.sobra)}/mês que você chega lá em <strong>${prazoTexto(p.meses)}</strong>.`}
+            </div>
+            <div class="progress" style="margin-bottom:14px;">
+              <div class="progress-fill" style="width:${pct}%;background:${quitada ? 'var(--brand)' : 'var(--purple)'};"></div>
+            </div>
+            <div class="plano-numeros">
+              <span class="plano-pill brand">✅ Abateu: R$ ${fm(abatido)} (${pct}%)</span>
+              ${!quitada ? `<span class="plano-pill danger">🔴 Falta: R$ ${fm(atual)}</span>` : ''}
+            </div>
+            <div class="plano-acoes">
+              <button class="plano-btn principal" onclick="window.location.href='dividas.html?v=8'">${quitada ? 'Ver minhas dívidas →' : 'Ver dívida e abater →'}</button>
+              ${quitada ? `<button class="plano-btn linkar" onclick="removerMetaQuitacao()">Concluir e limpar</button>` : ''}
+            </div>
+          </div>`;
+        return;
+      }
+
       c.innerHTML = `
         <div class="plano-tatu foco">
           <div class="plano-head"><div class="plano-emoji">🦔</div><div>
@@ -1278,9 +1325,7 @@
             <span class="plano-pill brand">🏁 Quita em ${prazoTexto(p.meses)}</span>
           </div>
           <div class="plano-acoes">
-            ${jaCriada
-              ? `<button class="plano-btn principal" onclick="window.location.href='dividas.html?v=8'">Ver dívida e abater →</button>`
-              : `<button class="plano-btn principal" id="btn-criar-plano" onclick="criarMetaQuitacao()">🎯 Topar o desafio · criar meta</button>`}
+            <button class="plano-btn principal" id="btn-criar-plano" onclick="criarMetaQuitacao()">🎯 Topar o desafio · criar meta</button>
             <button class="plano-btn linkar" onclick="window.location.href='dividas.html?v=8'">Ver minhas dívidas</button>
           </div>
         </div>`;
@@ -1397,14 +1442,29 @@
       cor: '#a855f7',
       icone: '🦔'
     };
+    // 🆕 amarra a meta à dívida pelo id (coluna divida_id criada via SQL)
+    try { payload.divida_id = p.alvo.id; } catch(e){}
     const result = await supabase.from('metas').insert(payload);
     if (result.error) {
-      alert('Erro ao criar a meta: ' + result.error.message);
-      if (btn) { btn.disabled = false; btn.textContent = '🎯 Topar o desafio · criar meta'; }
-      return;
+      // se falhar por causa do divida_id, tenta sem ele (fallback)
+      delete payload.divida_id;
+      const retry = await supabase.from('metas').insert(payload);
+      if (retry.error) {
+        alert('Erro ao criar a meta: ' + retry.error.message);
+        if (btn) { btn.disabled = false; btn.textContent = '🎯 Topar o desafio · criar meta'; }
+        return;
+      }
     }
     await darXP(40, 'meta_tatu_criada', 'Plano do Tatu: quitar ' + p.alvo.credor);
     mostrarToast('🦔 Desafio aceito! +40 XP');
+    await carregarTudo();
+  };
+
+  window.removerMetaQuitacao = async function() {
+    if (!metaQuitacao) return;
+    if (!confirm('🦔 Limpar o plano cumprido? O Tatu vai montar o próximo passo pra você.')) return;
+    try { await supabase.from('metas').delete().eq('id', metaQuitacao.id); } catch(e){}
+    mostrarToast('🎉 Plano concluído!');
     await carregarTudo();
   };
   
