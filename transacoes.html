@@ -22,12 +22,30 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .mes-nav-btn{width:36px;height:36px;border-radius:8px;background:transparent;border:none;color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
 .mes-nav-btn:active{background:var(--bg-elev)}
 .mes-atual{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;text-transform:capitalize}
-.resumo-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.resumo-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .resumo-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:12px}
 .resumo-label{font-size:10px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;font-weight:500}
 .resumo-valor{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700}
 .resumo-valor.brand{color:var(--brand)}
 .resumo-valor.danger{color:var(--danger)}
+.resumo-valor.warning{color:var(--warning)}
+.resumo-valor.info{color:var(--info)}
+.painel-mes{background:linear-gradient(135deg,var(--bg-elev) 0%,var(--bg-card) 100%);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:16px}
+.painel-linha{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
+.painel-linha+.painel-linha{border-top:1px solid var(--border)}
+.painel-label{font-size:12px;color:var(--text-mute);display:flex;align-items:center;gap:6px}
+.painel-val{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700}
+.painel-val.danger{color:var(--danger)}
+.painel-val.warning{color:var(--warning)}
+.painel-val.brand{color:var(--brand)}
+.painel-saldo{margin-top:8px;padding-top:10px;border-top:2px solid var(--border-strong);display:flex;align-items:center;justify-content:space-between}
+.painel-saldo-label{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--text)}
+.painel-saldo-val{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700}
+.tatu-cutuca{background:var(--warning-soft);border:1px solid rgba(255,184,0,0.4);border-radius:14px;padding:12px 14px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
+.tatu-cutuca-emoji{font-size:22px;flex-shrink:0}
+.tatu-cutuca-txt{font-size:12px;line-height:1.5;color:var(--text);flex:1}
+.tatu-cutuca-txt strong{color:var(--warning)}
+.tatu-cutuca-btn{background:var(--warning);color:#1a1400;border:none;border-radius:8px;padding:6px 12px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;cursor:pointer;margin-top:8px}
 .filtros{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
 .filtros::-webkit-scrollbar{display:none}
 .filtro-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:100px;padding:8px 14px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;color:var(--text-mute)}
@@ -220,20 +238,28 @@ function render(){
   const meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
   const mesNome=`${meses[mesRef.getMonth()]} de ${mesRef.getFullYear()}`;
   const hoje=new Date().toISOString().split('T')[0];
-  
+
   let lista=transacoes;
   if(filtroAtual==='entradas')lista=lista.filter(t=>t.tipo==='entrada');
   else if(filtroAtual==='saidas')lista=lista.filter(t=>t.tipo==='saida');
   else if(filtroAtual==='realizadas')lista=lista.filter(t=>(t.status||'realizada')==='realizada');
   else if(filtroAtual==='previstas')lista=lista.filter(t=>t.status==='prevista');
   else if(filtroAtual==='vencidas')lista=lista.filter(t=>t.status==='prevista'&&t.data<hoje);
-  
+
   const realiz=transacoes.filter(t=>(t.status||'realizada')==='realizada');
   const entradasReal=realiz.filter(t=>t.tipo==='entrada').reduce((a,t)=>a+Number(t.valor),0);
   const saidasReal=realiz.filter(t=>t.tipo==='saida').reduce((a,t)=>a+Number(t.valor),0);
   const previstas=transacoes.filter(t=>t.status==='prevista');
-  const vencidas=previstas.filter(t=>t.data<hoje&&t.tipo==='saida').length;
-  
+  // 🆕 A pagar ainda = saídas previstas que ainda não foram realizadas
+  const aPagar=previstas.filter(t=>t.tipo==='saida').reduce((a,t)=>a+Number(t.valor),0);
+  const aReceber=previstas.filter(t=>t.tipo==='entrada').reduce((a,t)=>a+Number(t.valor),0);
+  // 🆕 Saldo previsto do mês = (entradas reais + a receber) - (saídas reais + a pagar)
+  const saldoPrevisto=(entradasReal+aReceber)-(saidasReal+aPagar);
+  // 🆕 Contas vencidas não pagas
+  const vencidasArr=previstas.filter(t=>t.data<hoje&&t.tipo==='saida');
+  const vencidas=vencidasArr.length;
+  const totalVencido=vencidasArr.reduce((a,t)=>a+Number(t.valor),0);
+
   document.getElementById('container').innerHTML=`
     <div class="mes-nav">
       <button class="mes-nav-btn" onclick="mudarMes(-1)">‹</button>
@@ -241,9 +267,28 @@ function render(){
       <button class="mes-nav-btn" onclick="mudarMes(1)">›</button>
     </div>
     <div class="resumo-cards">
-      <div class="resumo-card"><div class="resumo-label">↓ Entradas</div><div class="resumo-valor brand">R$ ${fm(entradasReal)}</div></div>
-      <div class="resumo-card"><div class="resumo-label">↑ Saídas</div><div class="resumo-valor danger">R$ ${fm(saidasReal)}</div></div>
+      <div class="resumo-card"><div class="resumo-label">↓ Entradas (real)</div><div class="resumo-valor brand">R$ ${fm(entradasReal)}</div></div>
+      <div class="resumo-card"><div class="resumo-label">↑ Saídas (real)</div><div class="resumo-valor danger">R$ ${fm(saidasReal)}</div></div>
     </div>
+    ${(aPagar>0||aReceber>0)?`
+    <div class="painel-mes">
+      ${aReceber>0?`<div class="painel-linha"><div class="painel-label">📥 A receber ainda</div><div class="painel-val brand">+R$ ${fm(aReceber)}</div></div>`:''}
+      <div class="painel-linha"><div class="painel-label">📤 A pagar ainda este mês</div><div class="painel-val warning">-R$ ${fm(aPagar)}</div></div>
+      <div class="painel-saldo">
+        <div class="painel-saldo-label">${saldoPrevisto>=0?'🟢':'🔴'} Saldo previsto do mês</div>
+        <div class="painel-saldo-val ${saldoPrevisto>=0?'brand':'danger'}">${saldoPrevisto<0?'-':''}R$ ${fm(Math.abs(saldoPrevisto))}</div>
+      </div>
+    </div>
+    `:''}
+    ${vencidas>0?`
+    <div class="tatu-cutuca">
+      <div class="tatu-cutuca-emoji">🦔</div>
+      <div class="tatu-cutuca-txt">
+        <strong>Tatu:</strong> Você tem <strong>${vencidas} conta${vencidas>1?'s':''}</strong> que passou do vencimento (R$ ${fm(totalVencido)}) e não foi marcada como paga. Já pagou?
+        <br><button class="tatu-cutuca-btn" onclick="setFiltro('vencidas')">Ver vencidas →</button>
+      </div>
+    </div>
+    `:''}
     <div class="filtros">
       <div class="filtro-pill ${filtroAtual==='todas'?'active':''}" onclick="setFiltro('todas')">Todas (${transacoes.length})</div>
       <div class="filtro-pill ${filtroAtual==='entradas'?'active':''}" onclick="setFiltro('entradas')">Entradas</div>
@@ -254,7 +299,7 @@ function render(){
     </div>
     ${lista.length===0?`<div class="empty-state"><div class="empty-emoji">🦔</div><div class="empty-titulo">Nada por aqui ainda</div><div class="empty-sub">Toque no 🎤 pra falar ou no + pra adicionar</div></div>`:renderLista(lista,hoje)}
   `;
-  
+
   if(ultimoItemNovoId){
     setTimeout(()=>{
       const el=document.querySelector(`[data-item-id="${ultimoItemNovoId}"]`);
@@ -372,48 +417,41 @@ window.processarAudio=async function(){
     if(d.resultado&&!d.resultado.erro){
       propostaAudio=d.resultado;
       propostaAudio.texto_original=textoTranscrito;
-      // 🆕 v6.2: calcula preview das parcelas se houver
       calcularParcelasPreview();
       renderConfirmacao();
     }else{alert('🦔 '+(d.resultado?.erro||'Não entendi'));renderAudio()}
   }catch(e){alert('Erro: '+e.message);renderAudio()}
 };
 
-// 🆕 v6.2: calcula datas das parcelas usando fechamento/vencimento do cartão
 function calcularParcelasPreview(){
   parcelasPreview=[];
   const p=propostaAudio;
   if(!p.parcelado||!p.num_parcelas)return;
-  
+
   const numParc=Number(p.num_parcelas);
   const valorParc=Number(p.valor_parcela)||(Number(p.valor)/numParc);
-  
-  // Tenta achar o cartão
+
   let cartao=null;
   if(p.cartao_mencionado){
     const cm=p.cartao_mencionado.toLowerCase();
     cartao=contas.find(c=>c.tipo==='cartao_credito'&&(c.nome.toLowerCase().includes(cm)||c.banco?.toLowerCase().includes(cm)));
   }
-  
+
   const hoje=new Date();
   let primeiraData;
-  
+
   if(cartao&&cartao.dia_fechamento&&cartao.dia_vencimento){
-    // Calcula: hoje > fechamento? Vai pra fatura próxima
     const diaHoje=hoje.getDate();
     const diaFec=Number(cartao.dia_fechamento);
     const diaVen=Number(cartao.dia_vencimento);
     primeiraData=new Date(hoje.getFullYear(),hoje.getMonth(),diaVen);
     if(diaHoje>diaFec){
-      // já passou o fechamento → fatura do mês seguinte
       primeiraData.setMonth(primeiraData.getMonth()+1);
     }
     if(diaVen<=diaFec&&primeiraData<hoje){
-      // vencimento já passou esse mês
       primeiraData.setMonth(primeiraData.getMonth()+1);
     }
   }else{
-    // Sem cartão definido: usa 30 dias da data atual ou data mencionada
     if(p.data_mencionada){
       primeiraData=new Date(p.data_mencionada+'T12:00:00');
     }else{
@@ -421,7 +459,7 @@ function calcularParcelasPreview(){
       primeiraData.setDate(primeiraData.getDate()+30);
     }
   }
-  
+
   for(let i=0;i<numParc;i++){
     const dt=new Date(primeiraData);
     dt.setMonth(dt.getMonth()+i);
@@ -437,11 +475,11 @@ function renderConfirmacao(){
     const cm=(p.cartao_mencionado||p.conta_mencionada).toLowerCase();
     cs=contas.find(c=>c.nome.toLowerCase().includes(cm)||c.banco?.toLowerCase().includes(cm)||cm.includes(c.nome.toLowerCase().split(' ')[0]));
   }
-  
+
   const eParc=p.parcelado&&p.num_parcelas;
   const eFin=p.tipo_compra==='financiamento'&&p.tem_entrada;
   const dataFinal=p.data_mencionada||new Date().toISOString().split('T')[0];
-  
+
   let parcelasHTML='';
   if(eParc&&parcelasPreview.length>0){
     const primeira=parcelasPreview[0];
@@ -455,12 +493,12 @@ function renderConfirmacao(){
         ${parcelasPreview.length>1?`<div class="parcela-mini"><span class="parcela-mini-data">${ultima.numero}ª última (${dFmt(ultima.data)})</span><span class="parcela-mini-valor">R$ ${fm(ultima.valor)}</span></div>`:''}
       </div>`;
   }
-  
+
   let alertaFin='';
   if(eFin){
     alertaFin=`<div class="alerta-fin"><strong>⚠️ Financiamento detectado!</strong><br>Vou criar:<br>• Entrada hoje: <strong>R$ ${fm(p.valor_entrada)}</strong><br>• Dívida de <strong>R$ ${fm(p.num_parcelas*(p.valor_parcela||0))}</strong> em ${p.num_parcelas}x</div>`;
   }
-  
+
   document.getElementById('audio-modal-content').innerHTML=`
     <div class="audio-titulo">Confirma essa transação?</div>
     <div class="audio-sub">Tatu entendeu o que você falou. Confere antes de salvar:</div>
@@ -494,30 +532,26 @@ window.salvarAudio=async function(contaId){
     const grupoParc=eParc?crypto.randomUUID():null;
     const hojeISO=new Date().toISOString().split('T')[0];
     const dataPrimeira=p.data_mencionada||hojeISO;
-    
+
     let primeiraId=null;
-    
+
     if(eFin&&p.valor_entrada){
-      // 1. Cria saída ENTRADA hoje
       const{data:tEntrada,error:e0}=await supabase.from('transacoes').insert({user_id:usuario.id,valor:p.valor_entrada,descricao:`${p.descricao} (entrada)`,tipo:'saida',categoria:p.categoria_sugerida||'compras',data:hojeISO,conta_id:contaId||null,status:'realizada'}).select().single();
       if(e0)throw e0;
       primeiraId=tEntrada.id;
-      
-      // 2. Cria DÍVIDA com o valor parcelado
+
       const valorDivida=Number(p.num_parcelas)*Number(p.valor_parcela||0);
       const dV=parcelasPreview[parcelasPreview.length-1]?.data||hojeISO;
       const{data:divida}=await supabase.from('dividas').insert({user_id:usuario.id,credor:p.descricao,tipo:p.descricao.toLowerCase().includes('carro')||p.descricao.toLowerCase().includes('veículo')?'financ_veiculo':p.descricao.toLowerCase().includes('imóvel')||p.descricao.toLowerCase().includes('casa')?'financ_imovel':'financiamento',descricao:`Financiamento ${p.descricao}`,valor_original:valorDivida,valor_atual:valorDivida,data_vencimento:dV,data_inicio:hojeISO,status:'ativa',prioridade:2,num_parcelas:p.num_parcelas}).select().single();
-      
-      // 3. Cria N parcelas previstas
+
       const parcelasInsert=parcelasPreview.map(pp=>({user_id:usuario.id,valor:pp.valor,descricao:`${p.descricao} (${pp.numero}/${pp.total})`,tipo:'saida',categoria:p.categoria_sugerida||'compras',data:pp.data,conta_id:contaId||null,status:'prevista',parcelado:true,grupo_parcela:grupoParc,numero_parcela:pp.numero,total_parcelas:pp.total,divida_id:divida?.id}));
       await supabase.from('transacoes').insert(parcelasInsert);
-      
+
       ultimoItemNovoId=primeiraId;
       await darXP(30,'audio_financiamento','Áudio com financiamento');
       toast(`✅ ${p.descricao} • Entrada + ${p.num_parcelas}x criados!`);
     }
     else if(eParc){
-      // Parcelado simples (sem financiamento): só cria as N parcelas previstas
       const parcelasInsert=parcelasPreview.map(pp=>({user_id:usuario.id,valor:pp.valor,descricao:`${p.descricao} (${pp.numero}/${pp.total})`,tipo:p.tipo,categoria:p.categoria_sugerida||'outro',data:pp.data,conta_id:contaId||null,status:'prevista',parcelado:true,grupo_parcela:grupoParc,numero_parcela:pp.numero,total_parcelas:pp.total}));
       const{data:inseridas,error}=await supabase.from('transacoes').insert(parcelasInsert).select();
       if(error)throw error;
@@ -527,7 +561,6 @@ window.salvarAudio=async function(contaId){
       toast(`✅ ${p.descricao} • ${p.num_parcelas}x de R$ ${fm(p.valor_parcela)}`);
     }
     else{
-      // Simples: 1 transação só
       const hoje=hojeISO;
       const status=dataPrimeira>hoje?'prevista':'realizada';
       const{data,error}=await supabase.from('transacoes').insert({user_id:usuario.id,valor:p.valor,descricao:p.descricao,tipo:p.tipo,categoria:p.categoria_sugerida||'outro',data:dataPrimeira,conta_id:contaId||null,status}).select().single();
@@ -537,9 +570,8 @@ window.salvarAudio=async function(contaId){
       await darXP(15,'audio_transacao','Áudio');
       toast(`✅ ${p.descricao} • ${p.tipo==='entrada'?'+':'-'}R$ ${fm(p.valor)}`);
     }
-    
+
     fecharAudio();
-    // navega pro mês da primeira transação
     const dTrans=new Date(dataPrimeira+'T12:00:00');
     if(dTrans.getMonth()!==mesRef.getMonth()||dTrans.getFullYear()!==mesRef.getFullYear()){
       mesRef=dTrans;
@@ -580,13 +612,15 @@ function abrirAddManualComDados(dados){
       <div class="field"><label>Data</label><input type="date" id="m-data" value="${dados?.data_mencionada||hoje}"></div>
     </div>
     <div class="field"><label>Conta/Cartão</label><select id="m-conta"><option value="">Nenhuma</option>${contas.map(c=>`<option value="${c.id}">${c.icone||''} ${c.nome}</option>`).join('')}</select></div>
-    <button class="btn btn-primary" onclick="salvarManual()" style="width:100%;margin-top:10px;">${vf?'✅ Confirmar e salvar':'Salvar transação'}</button>`;
+    <button class="btn btn-primary" id="btn-salvar-manual" onclick="salvarManual()" style="width:100%;margin-top:10px;">${vf?'✅ Confirmar e salvar':'Salvar transação'}</button>`;
   document.getElementById('modal-add').classList.add('show');
 }
 
 window.selTipo=function(t){tipoAtual=t;document.querySelectorAll('.tipo-tab').forEach(tab=>tab.classList.remove('active'));document.querySelector(`.tipo-tab.${t}`).classList.add('active')};
 
+let salvandoManual=false;
 window.salvarManual=async function(){
+  if(salvandoManual)return;
   const valor=valorParaNum(document.getElementById('m-val').value);
   const desc=document.getElementById('m-desc').value.trim();
   const cat=document.getElementById('m-cat').value;
@@ -594,6 +628,9 @@ window.salvarManual=async function(){
   const contaId=document.getElementById('m-conta').value;
   if(!valor||valor<=0){alert('Informe o valor');return}
   if(!desc){alert('Digite uma descrição');return}
+  salvandoManual=true;
+  const btn=document.getElementById('btn-salvar-manual');
+  if(btn){btn.disabled=true;btn.textContent='Salvando...'}
   try{
     const hoje=new Date().toISOString().split('T')[0];
     const{data:novo,error}=await supabase.from('transacoes').insert({user_id:usuario.id,valor,descricao:desc,tipo:tipoAtual,categoria:cat,data,conta_id:contaId||null,status:data>hoje?'prevista':'realizada'}).select().single();
@@ -608,6 +645,7 @@ window.salvarManual=async function(){
     }
     await carregar();
   }catch(e){alert('Erro: '+e.message)}
+  finally{salvandoManual=false;if(btn){btn.disabled=false}}
 };
 
 window.processarFoto=async function(e){
@@ -673,7 +711,7 @@ window.abrirAcoes=function(id){
   document.getElementById('acoes-content').innerHTML=`
     <div class="acoes-titulo">${t.descricao}</div>
     <div class="acoes-sub">${eEnt?'+':'-'}R$ ${fm(t.valor)} • ${new Date(t.data+'T12:00:00').toLocaleDateString('pt-BR')}${eParc?` • Parcela ${t.numero_parcela}/${t.total_parcelas}`:''}</div>
-    ${!eRealiz?`<div class="acao-btn" onclick="marcarRealizada('${id}')"><div class="acao-icon brand">✓</div><div class="acao-info"><div class="acao-titulo">Marcar como realizada</div><div class="acao-info-sub">Confirma que aconteceu</div></div></div>`:''}
+    ${!eRealiz?`<div class="acao-btn" onclick="marcarRealizada('${id}')"><div class="acao-icon brand">✓</div><div class="acao-info"><div class="acao-titulo">Marcar como ${eEnt?'recebida':'paga'}</div><div class="acao-info-sub">Confirma que aconteceu de verdade</div></div></div>`:''}
     <div class="acao-btn" onclick="editarTrans('${id}')"><div class="acao-icon">✏️</div><div class="acao-info"><div class="acao-titulo">Editar</div><div class="acao-info-sub">Alterar valor, descrição</div></div></div>
     <div class="acao-btn" onclick="excluirTrans('${id}')"><div class="acao-icon danger">🗑️</div><div class="acao-info"><div class="acao-titulo" style="color:var(--danger);">Excluir ${eParc?'essa parcela':''}</div><div class="acao-info-sub">${eParc?'Só essa, mantém as outras':'Remove essa transação'}</div></div></div>
     ${eParc?`<div class="acao-btn" onclick="excluirGrupo('${t.grupo_parcela}')"><div class="acao-icon danger">🗑️</div><div class="acao-info"><div class="acao-titulo" style="color:var(--danger);">Excluir TODAS as ${t.total_parcelas} parcelas</div><div class="acao-info-sub">Remove o parcelamento inteiro</div></div></div>`:''}
@@ -685,7 +723,7 @@ window.marcarRealizada=async function(id){
   try{
     await supabase.from('transacoes').update({status:'realizada'}).eq('id',id);
     ultimoItemNovoId=id;
-    toast('✅ Marcada como realizada!');
+    toast('✅ Confirmada!');
     fecharModal('modal-acoes');
     await carregar();
   }catch(e){alert('Erro: '+e.message)}
@@ -748,6 +786,5 @@ function toast(t){
 }
 </script>
 <script src="polish.js?v=1"></script>
-
 </body>
 </html>
