@@ -3,985 +3,568 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0a0a0a">
-<title>dashboard • guardaí</title>
+<meta name="theme-color" content="#00d97e">
+<title>Dashboard • guardaí</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
-  
-  :root {
-    --bg: #0a0a0a;
-    --bg-card: #141414;
-    --bg-elev: #1c1c1c;
-    --bg-input: #181818;
-    --border: #252525;
-    --border-strong: #353535;
-    --brand: #00d97e;
-    --brand-hover: #00ba6b;
-    --brand-soft: rgba(0, 217, 126, 0.1);
-    --danger: #ff4757;
-    --danger-soft: rgba(255, 71, 87, 0.1);
-    --warning: #ffb800;
-    --warning-soft: rgba(255, 184, 0, 0.1);
-    --info: #38bdf8;
-    --info-soft: rgba(56, 189, 248, 0.1);
-    --ia: #a855f7;
-    --ia-soft: rgba(168, 85, 247, 0.1);
-    --text: #ffffff;
-    --text-mute: #a3a3a3;
-    --text-faint: #525252;
-  }
-  
-  html, body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', -apple-system, sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  
-  body { padding-bottom: 30px; }
-  
-  .header {
-    padding: 16px 20px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  
-  .back-btn {
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-  
-  .header-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    flex: 1;
-  }
-  
-  .brand-mark-mini {
-    width: 28px; height: 28px;
-    background: var(--brand);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-  }
-  
-  .brand-mark-mini::before {
-    content: '';
-    width: 10px; height: 10px;
-    border: 2px solid var(--bg);
-    border-radius: 3px;
-    border-top: none; border-right: none;
-  }
-  
-  .container {
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 16px 20px;
-  }
-  
-  /* MES NAV */
-  .mes-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 4px;
-    margin-bottom: 14px;
-  }
-  
-  .mes-btn {
-    width: 40px; height: 40px;
-    border-radius: 10px;
-    background: transparent;
-    border: none;
-    color: var(--text);
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: 700;
-  }
-  
-  .mes-btn:active { background: var(--bg-elev); }
-  
-  .mes-info { flex: 1; text-align: center; cursor: pointer; }
-  
-  .mes-nome {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    text-transform: capitalize;
-  }
-  
-  .mes-ano {
-    font-size: 11px;
-    color: var(--text-mute);
-    margin-top: -2px;
-  }
-  
-  /* SECTION CARD */
-  .chart-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 18px;
-    margin-bottom: 14px;
-  }
-  
-  .chart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 14px;
-  }
-  
-  .chart-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-  
-  .chart-subtitle {
-    font-size: 11px;
-    color: var(--text-mute);
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-  }
-  
-  /* PIZZA */
-  .pizza-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-  }
-  
-  .pizza-wrapper {
-    position: relative;
-    width: 200px;
-    height: 200px;
-  }
-  
-  .pizza-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-  }
-  
-  .pizza-center-label {
-    font-size: 10px;
-    color: var(--text-mute);
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-  
-  .pizza-center-valor {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--danger);
-  }
-  
-  .legenda {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  
-  .legenda-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 10px;
-    background: var(--bg-elev);
-    border-radius: 10px;
-    cursor: pointer;
-  }
-  
-  .legenda-item:active { transform: scale(0.99); }
-  
-  .legenda-bullet {
-    width: 12px; height: 12px;
-    border-radius: 3px;
-    flex-shrink: 0;
-  }
-  
-  .legenda-emoji {
-    font-size: 16px;
-    flex-shrink: 0;
-  }
-  
-  .legenda-info {
-    flex: 1;
-    min-width: 0;
-  }
-  
-  .legenda-nome {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  .legenda-pct {
-    font-size: 10px;
-    color: var(--text-mute);
-    margin-top: 1px;
-  }
-  
-  .legenda-valor {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    text-align: right;
-    white-space: nowrap;
-  }
-  
-  /* TOP 5 BARRAS */
-  .top-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .top-item {
-    cursor: pointer;
-  }
-  
-  .top-item:active { transform: scale(0.99); }
-  
-  .top-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 4px;
-    gap: 8px;
-  }
-  
-  .top-nome {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex: 1;
-    min-width: 0;
-  }
-  
-  .top-nome-texto {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  .top-valor {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    white-space: nowrap;
-  }
-  
-  .top-bar-bg {
-    height: 8px;
-    background: var(--bg-elev);
-    border-radius: 100px;
-    overflow: hidden;
-  }
-  
-  .top-bar-fill {
-    height: 100%;
-    border-radius: 100px;
-    transition: width 1s cubic-bezier(0.4, 0.0, 0.2, 1);
-  }
-  
-  /* COMPARATIVO */
-  .compare-container {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  
-  .compare-row {
-    display: flex;
-    align-items: flex-end;
-    gap: 10px;
-    height: 120px;
-  }
-  
-  .compare-col {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 6px;
-    height: 100%;
-  }
-  
-  .compare-valor-top {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    margin-bottom: 2px;
-  }
-  
-  .compare-bar {
-    width: 100%;
-    background: var(--bg-elev);
-    border-radius: 8px 8px 0 0;
-    transition: height 1s cubic-bezier(0.4, 0.0, 0.2, 1);
-    min-height: 4px;
-  }
-  
-  .compare-bar.atual.entrada {
-    background: linear-gradient(180deg, var(--brand) 0%, rgba(0, 217, 126, 0.5) 100%);
-  }
-  
-  .compare-bar.atual.saida {
-    background: linear-gradient(180deg, var(--danger) 0%, rgba(255, 71, 87, 0.5) 100%);
-  }
-  
-  .compare-bar.anterior {
-    background: linear-gradient(180deg, var(--border-strong) 0%, var(--bg-elev) 100%);
-  }
-  
-  .compare-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 10px;
-    color: var(--text-mute);
-    text-align: center;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  
-  .compare-legend {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    padding-top: 10px;
-    border-top: 1px solid var(--border);
-  }
-  
-  .compare-legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: var(--text-mute);
-  }
-  
-  .compare-legend-bullet {
-    width: 12px; height: 12px;
-    border-radius: 3px;
-  }
-  
-  .compare-resumo {
-    background: var(--bg-elev);
-    border-radius: 12px;
-    padding: 12px;
-    margin-top: 12px;
-    font-size: 12px;
-    line-height: 1.5;
-    color: var(--text-mute);
-  }
-  
-  .compare-resumo strong { color: var(--text); }
-  .compare-resumo .up { color: var(--danger); font-weight: 700; }
-  .compare-resumo .down { color: var(--brand); font-weight: 700; }
-  
-  /* EVOLUÇÃO LINHA */
-  .linha-container {
-    position: relative;
-    width: 100%;
-    height: 200px;
-  }
-  
-  .linha-svg {
-    width: 100%;
-    height: 100%;
-  }
-  
-  .linha-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
-  }
-  
-  .linha-stat {
-    text-align: center;
-  }
-  
-  .linha-stat-label {
-    font-size: 10px;
-    color: var(--text-mute);
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 2px;
-  }
-  
-  .linha-stat-valor {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-  }
-  
-  .linha-stat-valor.brand { color: var(--brand); }
-  .linha-stat-valor.danger { color: var(--danger); }
-  
-  /* EMPTY */
-  .empty {
-    background: var(--bg-card);
-    border: 1px dashed var(--border-strong);
-    border-radius: 16px;
-    padding: 40px 20px;
-    text-align: center;
-    margin-bottom: 14px;
-  }
-  
-  .empty-emoji { font-size: 50px; margin-bottom: 12px; }
-  
-  .empty-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-  
-  .empty-desc {
-    font-size: 13px;
-    color: var(--text-mute);
-    line-height: 1.5;
-    max-width: 280px;
-    margin: 0 auto;
-  }
-  
-  /* TATU INSIGHT */
-  .tatu-insight {
-    background: linear-gradient(135deg, var(--ia-soft) 0%, var(--bg-card) 100%);
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    border-radius: 16px;
-    padding: 14px;
-    margin-bottom: 14px;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-  }
-  
-  .tatu-emoji { font-size: 26px; flex-shrink: 0; }
-  
-  .tatu-texto {
-    flex: 1;
-    font-size: 12px;
-    line-height: 1.5;
-    color: var(--text-mute);
-  }
-  
-  .tatu-texto strong { color: var(--text); }
-  
-  .loader-circle {
-    width: 32px; height: 32px;
-    border: 3px solid var(--border);
-    border-radius: 50%;
-    border-top-color: var(--brand);
-    animation: spin 0.8s linear infinite;
-    margin: 60px auto;
-  }
-  
-  @keyframes spin { to { transform: rotate(360deg); } }
-  
-  /* Animação de entrada das fatias */
-  @keyframes drawSlice {
-    from { stroke-dashoffset: 1000; }
-    to { stroke-dashoffset: 0; }
-  }
-  
-  .pizza-slice {
-    animation: drawSlice 1.2s ease-out forwards;
-  }
-  
-  .hidden { display: none !important; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+:root{--bg:#0a0a0a;--bg-card:#141414;--bg-elev:#1c1c1c;--bg-input:#181818;--border:#252525;--brand:#00d97e;--brand-hover:#00ba6b;--brand-soft:rgba(0,217,126,0.1);--danger:#ff4757;--danger-soft:rgba(255,71,87,0.1);--warning:#ffb800;--warning-soft:rgba(255,184,0,0.1);--info:#38bdf8;--info-soft:rgba(56,189,248,0.1);--ia:#a855f7;--ia-soft:rgba(168,85,247,0.1);--text:#fff;--text-mute:#a3a3a3;--text-faint:#525252}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;min-height:100vh;overflow-x:hidden}
+body{padding-bottom:30px;padding-top:env(safe-area-inset-top)}
+input,textarea,select{color:#fff!important;-webkit-text-fill-color:#fff!important}
+
+.header{padding:16px 20px;background:var(--bg);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px}
+.header-back{width:36px;height:36px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px}
+.header-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;flex:1}
+.header-icon{font-size:22px;flex-shrink:0;margin-right:4px}
+
+.container{max-width:480px;margin:0 auto;padding:16px 20px}
+
+.periodo-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.periodo-tabs::-webkit-scrollbar{display:none}
+.periodo-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:100px;padding:8px 14px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;color:var(--text-mute);white-space:nowrap}
+.periodo-pill.active{background:var(--brand-soft);border-color:var(--brand);color:var(--brand)}
+
+/* CARD DESTAQUE */
+.card-destaque{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-hover) 100%);border-radius:20px;padding:20px;margin-bottom:16px;color:#001a0e;position:relative;overflow:hidden}
+.card-destaque::before{content:'';position:absolute;top:-50%;right:-10%;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,0.15) 0%,transparent 70%);pointer-events:none}
+.destaque-label{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;opacity:0.7;margin-bottom:4px;position:relative}
+.destaque-valor{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px;position:relative}
+.destaque-trend{display:flex;align-items:center;gap:6px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;position:relative}
+.destaque-trend.up{color:#001a0e}
+.destaque-trend.down{color:#7d0d0d}
+
+/* GRID DE CARDS */
+.cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.mini-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:14px}
+.mini-card-label{font-size:10px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.05em;font-weight:600;margin-bottom:4px}
+.mini-card-valor{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700}
+.mini-card-valor.brand{color:var(--brand)}
+.mini-card-valor.danger{color:var(--danger)}
+.mini-card-valor.warning{color:var(--warning)}
+.mini-card-sub{font-size:10px;color:var(--text-faint);margin-top:2px}
+
+/* GRÁFICOS */
+.grafico-card{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:16px}
+.grafico-titulo{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.grafico-titulo-txt{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700}
+.grafico-titulo-sub{font-size:11px;color:var(--text-mute)}
+.grafico-canvas-wrap{position:relative;height:220px}
+.grafico-canvas-wrap.pizza{height:240px}
+.grafico-canvas-wrap.compacto{height:180px}
+
+/* CATEGORIAS */
+.cats-lista{display:flex;flex-direction:column;gap:10px}
+.cat-row{display:flex;align-items:center;gap:12px}
+.cat-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.cat-info{flex:1;min-width:0}
+.cat-nome{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.cat-valor{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--danger)}
+.cat-bar{height:6px;background:var(--bg-input);border-radius:100px;overflow:hidden}
+.cat-bar-fill{height:100%;border-radius:100px;transition:width 0.6s cubic-bezier(0.34,1.2,0.64,1)}
+
+/* SAÚDE FINANCEIRA */
+.saude-card{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px}
+.saude-titulo{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.saude-medidor{position:relative;height:140px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.saude-info{text-align:center}
+.saude-status{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px}
+.saude-status.bom{color:var(--brand)}
+.saude-status.atencao{color:var(--warning)}
+.saude-status.critico{color:var(--danger)}
+.saude-desc{font-size:12px;color:var(--text-mute);line-height:1.5}
+
+/* TATU INSIGHT */
+.tatu-card{background:linear-gradient(135deg,var(--ia-soft) 0%,var(--bg-card) 100%);border:1px solid rgba(168,85,247,0.3);border-radius:16px;padding:16px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start}
+.tatu-emoji{font-size:32px;flex-shrink:0}
+.tatu-content{flex:1}
+.tatu-titulo{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--ia);margin-bottom:6px}
+.tatu-texto{font-size:13px;line-height:1.5;color:var(--text)}
+.tatu-texto strong{color:var(--brand)}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:30px 20px;color:var(--text-mute);font-size:13px}
+.empty-emoji{font-size:36px;margin-bottom:8px;opacity:0.5}
+
+.loader-circle{width:32px;height:32px;border:3px solid var(--border);border-radius:50%;border-top-color:var(--brand);animation:spin 0.8s linear infinite;margin:40px auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.secao-titulo{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:18px 4px 10px}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <button class="back-btn" onclick="window.location.href='home.html?v=1'">‹</button>
-  <div class="header-title">Dashboard</div>
-  <div class="brand-mark-mini" onclick="window.location.href='home.html?v=1'"></div>
+<button class="header-back" onclick="window.location.href='home.html?v='+Date.now()">‹</button>
+<div class="header-title">Dashboard</div>
+<div class="header-icon">📊</div>
 </div>
 
-<div class="container">
-
-  <div class="mes-nav">
-    <button class="mes-btn" onclick="navegarMes(-1)">‹</button>
-    <div class="mes-info">
-      <div class="mes-nome" id="mes-nome">—</div>
-      <div class="mes-ano" id="mes-ano">—</div>
-    </div>
-    <button class="mes-btn" onclick="navegarMes(1)">›</button>
-  </div>
-  
-  <div id="conteudo">
-    <div class="loader-circle"></div>
-  </div>
-
+<div class="container" id="container">
+<div class="loader-circle"></div>
 </div>
 
 <script type="module">
-  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-  
-  const SUPABASE_URL = 'https://gmbsxrxqrxpbgyyvifcd.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
-  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-  
-  let usuario;
-  let mesAtual = new Date();
-  mesAtual.setDate(1);
-  let transacoes = [];
-  let transAnt = [];
-  
-  // Paleta variada para pizza (10 cores)
-  const cores = [
-    '#00d97e', '#ff4757', '#ffb800', '#38bdf8', '#a855f7',
-    '#ec4899', '#14b8a6', '#f59e0b', '#8b5cf6', '#3b82f6'
-  ];
-  
-  (async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      window.location.href = 'index.html?v=1';
-      return;
-    }
-    usuario = session.user;
-    await carregarDados();
-    render();
-  })();
-  
-  async function carregarDados() {
-    const inicioMes = new Date(mesAtual.getFullYear(), mesAtual.getMonth(), 1).toISOString().split('T')[0];
-    const fimMes = new Date(mesAtual.getFullYear(), mesAtual.getMonth() + 1, 0).toISOString().split('T')[0];
-    
-    const inicioAnt = new Date(mesAtual.getFullYear(), mesAtual.getMonth() - 1, 1).toISOString().split('T')[0];
-    const fimAnt = new Date(mesAtual.getFullYear(), mesAtual.getMonth(), 0).toISOString().split('T')[0];
-    
-    const [atual, anterior] = await Promise.all([
-      supabase.from('transacoes').select('*, categorias(nome, icone, cor)').eq('user_id', usuario.id).gte('data', inicioMes).lte('data', fimMes),
-      supabase.from('transacoes').select('valor, tipo, categorias(nome)').eq('user_id', usuario.id).gte('data', inicioAnt).lte('data', fimAnt)
-    ]);
-    
-    transacoes = atual.data || [];
-    transAnt = anterior.data || [];
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const SUPABASE_URL='https://gmbsxrxqrxpbgyyvifcd.supabase.co';
+const SUPABASE_KEY='sb_publishable_NSOgcu93sTiSreGYi-Ha3g_bqYsAK22';
+const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const CATEGORIAS={alimentacao:{e:'🍔',n:'Alimentação',c:'#ff6b35'},transporte:{e:'🚗',n:'Transporte',c:'#3b82f6'},moradia:{e:'🏠',n:'Moradia',c:'#00d97e'},lazer:{e:'🎮',n:'Lazer',c:'#8b5cf6'},saude:{e:'🏥',n:'Saúde',c:'#ef4444'},educacao:{e:'🎓',n:'Educação',c:'#06b6d4'},vestuario:{e:'👕',n:'Vestuário',c:'#ec4899'},compras:{e:'🛒',n:'Compras',c:'#f59e0b'},servicos:{e:'🛠️',n:'Serviços',c:'#14b8a6'},salario:{e:'💼',n:'Salário',c:'#00d97e'},transferencia:{e:'🔁',n:'Transferência',c:'#a855f7'},outro:{e:'📌',n:'Outro',c:'#94a3b8'},aluguel:{e:'🏠',n:'Aluguel',c:'#00d97e'},condominio:{e:'🏢',n:'Condomínio',c:'#14b8a6'},luz:{e:'💡',n:'Luz',c:'#ffb800'},agua:{e:'💧',n:'Água',c:'#38bdf8'},gas:{e:'🔥',n:'Gás',c:'#ff6b35'},internet:{e:'🌐',n:'Internet',c:'#a855f7'},telefone:{e:'📱',n:'Telefone',c:'#a855f7'},streaming:{e:'🎬',n:'Streaming',c:'#8b5cf6'},academia:{e:'💪',n:'Academia',c:'#f59e0b'},plano_saude:{e:'🏥',n:'Plano saúde',c:'#ef4444'},escola:{e:'🎓',n:'Escola',c:'#3b82f6'},seguro:{e:'🛡️',n:'Seguro',c:'#6366f1'},iptu:{e:'🏛',n:'IPTU',c:'#f59e0b'},ipva:{e:'🚗',n:'IPVA',c:'#f59e0b'},combustivel:{e:'⛽',n:'Combustível',c:'#ff6b35'},assinatura:{e:'📺',n:'Assinatura',c:'#8b5cf6'}};
+
+let usuario;
+let periodoAtual='mes';
+let dadosCache={};
+
+(async()=>{
+  const{data:{session}}=await supabase.auth.getSession();
+  if(!session){window.location.href='index.html?v='+Date.now();return}
+  usuario=session.user;
+  await renderDashboard();
+})();
+
+function calcularPeriodo(p){
+  const hoje=new Date();
+  const fim=hoje.toISOString().split('T')[0];
+  let inicio;
+  if(p==='mes'){
+    inicio=new Date(hoje.getFullYear(),hoje.getMonth(),1).toISOString().split('T')[0];
+  }else if(p==='mes_passado'){
+    inicio=new Date(hoje.getFullYear(),hoje.getMonth()-1,1).toISOString().split('T')[0];
+    return{inicio,fim:new Date(hoje.getFullYear(),hoje.getMonth(),0).toISOString().split('T')[0]};
+  }else if(p==='3m'){
+    inicio=new Date(hoje.getFullYear(),hoje.getMonth()-3,1).toISOString().split('T')[0];
+  }else if(p==='6m'){
+    inicio=new Date(hoje.getFullYear(),hoje.getMonth()-6,1).toISOString().split('T')[0];
+  }else if(p==='ano'){
+    inicio=new Date(hoje.getFullYear(),0,1).toISOString().split('T')[0];
+  }else{
+    inicio='2020-01-01';
   }
+  return{inicio,fim};
+}
+
+async function carregarDados(){
+  const{inicio,fim}=calcularPeriodo(periodoAtual);
   
-  function renderMesNav() {
-    const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-    document.getElementById('mes-nome').textContent = meses[mesAtual.getMonth()];
-    document.getElementById('mes-ano').textContent = mesAtual.getFullYear();
-  }
+  const[contas,rendas,despesas,dividas,trans,trans6m]=await Promise.all([
+    supabase.from('contas').select('*').eq('user_id',usuario.id).eq('ativa',true),
+    supabase.from('rendas').select('*').eq('user_id',usuario.id),
+    supabase.from('compromissos').select('*').eq('user_id',usuario.id),
+    supabase.from('dividas').select('*').eq('user_id',usuario.id).eq('status','ativa'),
+    supabase.from('transacoes').select('*').eq('user_id',usuario.id).gte('data',inicio).lte('data',fim).order('data'),
+    supabase.from('transacoes').select('valor,tipo,data,status').eq('user_id',usuario.id).gte('data',new Date(new Date().getFullYear(),new Date().getMonth()-5,1).toISOString().split('T')[0]).eq('status','realizada')
+  ]);
   
-  window.navegarMes = async function(delta) {
-    mesAtual.setMonth(mesAtual.getMonth() + delta);
-    document.getElementById('conteudo').innerHTML = '<div class="loader-circle"></div>';
-    await carregarDados();
-    render();
+  return{
+    contas:contas.data||[],
+    rendas:rendas.data||[],
+    despesas:despesas.data||[],
+    dividas:dividas.data||[],
+    trans:trans.data||[],
+    trans6m:trans6m.data||[]
   };
+}
+
+async function renderDashboard(){
+  const d=await carregarDados();
   
-  function render() {
-    renderMesNav();
-    
-    if (transacoes.length === 0) {
-      document.getElementById('conteudo').innerHTML = `
-        <div class="empty">
-          <div class="empty-emoji">📊</div>
-          <div class="empty-title">Sem dados nesse mês</div>
-          <div class="empty-desc">Cadastre transações pra eu te mostrar onde seu dinheiro vai!</div>
-        </div>
-      `;
-      return;
-    }
-    
-    document.getElementById('conteudo').innerHTML = `
-      ${renderTatuInsight()}
-      ${renderPizzaCard()}
-      ${renderTopCategorias()}
-      ${renderEvolucaoMes()}
-      ${renderComparativo()}
-    `;
-    
-    // Animar barras após render
-    setTimeout(() => {
-      document.querySelectorAll('.top-bar-fill').forEach((bar, i) => {
-        setTimeout(() => {
-          bar.style.width = bar.dataset.width;
-        }, i * 100);
-      });
-      
-      document.querySelectorAll('.compare-bar').forEach((bar, i) => {
-        setTimeout(() => {
-          bar.style.height = bar.dataset.height;
-        }, i * 150);
-      });
-    }, 100);
+  // Calculos
+  const realizadas=d.trans.filter(t=>(t.status||'realizada')==='realizada');
+  const entradasReal=realizadas.filter(t=>t.tipo==='entrada').reduce((a,t)=>a+Number(t.valor),0);
+  const saidasReal=realizadas.filter(t=>t.tipo==='saida').reduce((a,t)=>a+Number(t.valor),0);
+  const saldoReal=entradasReal-saidasReal;
+  
+  // Patrimônio total (contas + cartões debt)
+  const contasReais=d.contas.filter(c=>c.tipo!=='cartao_credito');
+  let patrimonio=contasReais.reduce((a,c)=>a+Number(c.saldo_inicial||0),0);
+  // Aplica transacoes nas contas
+  const allTrans=d.trans6m.filter(t=>t.conta_id);
+  allTrans.forEach(t=>{
+    if(t.tipo==='entrada')patrimonio+=Number(t.valor);
+    else patrimonio-=Number(t.valor);
+  });
+  const totalDividas=d.dividas.reduce((a,x)=>a+Number(x.valor_atual||0),0);
+  const patrimonioLiquido=patrimonio-totalDividas;
+  
+  // Receitas mensais
+  const rendaMensal=d.rendas.reduce((a,r)=>a+Number(r.valor||0),0);
+  const despesaFixa=d.despesas.reduce((a,r)=>a+Number(r.valor||0),0);
+  const sobraMes=rendaMensal-despesaFixa;
+  
+  // Mês passado pra comparação
+  const{inicio:iniMP,fim:fimMP}=calcularPeriodo('mes_passado');
+  const transMP=await supabase.from('transacoes').select('valor,tipo,status').eq('user_id',usuario.id).gte('data',iniMP).lte('data',fimMP);
+  const transMPReal=(transMP.data||[]).filter(t=>(t.status||'realizada')==='realizada');
+  const entradasMP=transMPReal.filter(t=>t.tipo==='entrada').reduce((a,t)=>a+Number(t.valor),0);
+  const saidasMP=transMPReal.filter(t=>t.tipo==='saida').reduce((a,t)=>a+Number(t.valor),0);
+  
+  // % comprometido com fixas+dívidas
+  const pctComprometido=rendaMensal>0?Math.min(100,Math.round(((despesaFixa+(totalDividas/12))/rendaMensal)*100)):0;
+  
+  // Gastos por categoria
+  const gastosPorCat={};
+  realizadas.filter(t=>t.tipo==='saida').forEach(t=>{
+    const c=t.categoria||'outro';
+    if(!gastosPorCat[c])gastosPorCat[c]={valor:0,n:0};
+    gastosPorCat[c].valor+=Number(t.valor);
+    gastosPorCat[c].n++;
+  });
+  const topCats=Object.entries(gastosPorCat).map(([k,v])=>({k,...v})).sort((a,b)=>b.valor-a.valor).slice(0,5);
+  
+  // Evolução 6 meses
+  const meses6=[];
+  for(let i=5;i>=0;i--){
+    const d=new Date();
+    d.setMonth(d.getMonth()-i);
+    const mIni=new Date(d.getFullYear(),d.getMonth(),1).toISOString().split('T')[0];
+    const mFim=new Date(d.getFullYear(),d.getMonth()+1,0).toISOString().split('T')[0];
+    const mTrans=d.trans6m?.filter(t=>t.data>=mIni&&t.data<=mFim)||[];
+    meses6.push({
+      label:d.toLocaleDateString('pt-BR',{month:'short'}),
+      mIni,mFim,
+      entradas:mTrans.filter(t=>t.tipo==='entrada').reduce((a,t)=>a+Number(t.valor),0),
+      saidas:mTrans.filter(t=>t.tipo==='saida').reduce((a,t)=>a+Number(t.valor),0)
+    });
   }
+  // Refaz com dados reais 6m
+  meses6.forEach(m=>{
+    const mTrans=d.trans6m.filter(t=>t.data>=m.mIni&&t.data<=m.mFim);
+    m.entradas=mTrans.filter(t=>t.tipo==='entrada').reduce((a,t)=>a+Number(t.valor),0);
+    m.saidas=mTrans.filter(t=>t.tipo==='saida').reduce((a,t)=>a+Number(t.valor),0);
+    m.saldo=m.entradas-m.saidas;
+  });
   
-  function renderTatuInsight() {
-    const saidas = transacoes.filter(t => t.tipo === 'saida');
-    if (saidas.length === 0) return '';
+  // Patrimônio evolução (saldo acumulado)
+  let patrimAcum=patrimonio-meses6.reduce((a,m)=>a+m.saldo,0);
+  const patrimEvol=meses6.map(m=>{
+    patrimAcum+=m.saldo;
+    return patrimAcum;
+  });
+  
+  // Trends
+  const trendEntrada=entradasMP>0?((entradasReal-entradasMP)/entradasMP)*100:0;
+  const trendSaida=saidasMP>0?((saidasReal-saidasMP)/saidasMP)*100:0;
+  
+  // Saúde financeira
+  let saudeStatus,saudeDesc,saudeCor;
+  if(pctComprometido<=50&&totalDividas===0){saudeStatus='Excelente';saudeDesc='Você tem folga. Hora de investir!';saudeCor='bom';}
+  else if(pctComprometido<=70&&totalDividas<rendaMensal*3){saudeStatus='Boa';saudeDesc='Equilíbrio razoável. Cuide das dívidas.';saudeCor='bom';}
+  else if(pctComprometido<=90){saudeStatus='Atenção';saudeDesc='Compromissos altos. Revise gastos fixos.';saudeCor='atencao';}
+  else{saudeStatus='Crítico';saudeDesc='Comprometido demais. Negocie dívidas urgente!';saudeCor='critico';}
+  
+  const periodoLabels={mes:'Esse mês',mes_passado:'Mês passado','3m':'3 meses','6m':'6 meses',ano:'Esse ano',tudo:'Todo período'};
+  
+  // Insight Tatu
+  let insight='';
+  if(totalDividas>rendaMensal*6)insight=`Suas dívidas (<strong>R$ ${fm(totalDividas)}</strong>) são <strong>${(totalDividas/rendaMensal).toFixed(1)}x</strong> sua renda. Foco em negociar!`;
+  else if(saldoReal<0)insight=`<strong>Negativo de R$ ${fm(Math.abs(saldoReal))}</strong> nesse período. Vamos revisar onde tá indo o dinheiro?`;
+  else if(topCats[0]&&topCats[0].valor>rendaMensal*0.3)insight=`Maior gasto: <strong>${CATEGORIAS[topCats[0].k]?.n||topCats[0].k}</strong> (R$ ${fm(topCats[0].valor)}). Será que dá pra reduzir?`;
+  else if(patrimonioLiquido>0&&totalDividas===0)insight=`Você tá com <strong>+R$ ${fm(patrimonioLiquido)}</strong> de patrimônio líquido. Tá no caminho! 🚀`;
+  else insight=`Mantém o ritmo! Seus números tão sob controle.`;
+  
+  const html=`
+    <div class="periodo-tabs">
+      <div class="periodo-pill ${periodoAtual==='mes'?'active':''}" onclick="trocarPeriodo('mes')">Mês atual</div>
+      <div class="periodo-pill ${periodoAtual==='mes_passado'?'active':''}" onclick="trocarPeriodo('mes_passado')">Mês passado</div>
+      <div class="periodo-pill ${periodoAtual==='3m'?'active':''}" onclick="trocarPeriodo('3m')">3 meses</div>
+      <div class="periodo-pill ${periodoAtual==='6m'?'active':''}" onclick="trocarPeriodo('6m')">6 meses</div>
+      <div class="periodo-pill ${periodoAtual==='ano'?'active':''}" onclick="trocarPeriodo('ano')">Esse ano</div>
+    </div>
     
-    const total = saidas.reduce((a, t) => a + Number(t.valor), 0);
-    const porCat = agruparPorCategoria(saidas);
-    const topCat = porCat[0];
-    
-    let texto = '';
-    if (topCat && topCat.valor > total * 0.4) {
-      texto = `🦔 <strong>${topCat.nome}</strong> consumiu <strong>${((topCat.valor / total) * 100).toFixed(0)}%</strong> dos seus gastos. Vale a pena revisar!`;
-    } else if (saidas.length < 5) {
-      texto = `🦔 Você tem só ${saidas.length} gasto${saidas.length === 1 ? '' : 's'} cadastrado${saidas.length === 1 ? '' : 's'}. <strong>Cadastre mais</strong> pra análise mais profunda!`;
-    } else {
-      texto = `🦔 <strong>${saidas.length} transações</strong> esse mês. Dê uma olhada nos gráficos abaixo!`;
-    }
-    
-    return `
-      <div class="tatu-insight">
-        <div class="tatu-emoji">🦔</div>
-        <div class="tatu-texto">${texto}</div>
+    <div class="card-destaque">
+      <div class="destaque-label">💎 Patrimônio Líquido</div>
+      <div class="destaque-valor">R$ ${fm(patrimonioLiquido)}</div>
+      <div class="destaque-trend ${patrimonioLiquido>=0?'up':'down'}">
+        ${totalDividas>0?`📊 R$ ${fm(patrimonio)} bruto • R$ ${fm(totalDividas)} dívidas`:'✨ Sem dívidas!'}
       </div>
-    `;
-  }
-  
-  function agruparPorCategoria(trans) {
-    const map = {};
-    trans.forEach(t => {
-      const cat = t.categorias?.nome || 'Sem categoria';
-      const icone = t.categorias?.icone || '📌';
-      const cor = t.categorias?.cor || '#555';
-      if (!map[cat]) {
-        map[cat] = { nome: cat, icone, cor, valor: 0, count: 0 };
-      }
-      map[cat].valor += Number(t.valor);
-      map[cat].count += 1;
-    });
-    return Object.values(map).sort((a, b) => b.valor - a.valor);
-  }
-  
-  function renderPizzaCard() {
-    const saidas = transacoes.filter(t => t.tipo === 'saida');
-    if (saidas.length === 0) return '';
+    </div>
     
-    const total = saidas.reduce((a, t) => a + Number(t.valor), 0);
-    const cats = agruparPorCategoria(saidas);
+    <div class="cards-grid">
+      <div class="mini-card">
+        <div class="mini-card-label">↓ Entradas (${periodoLabels[periodoAtual]})</div>
+        <div class="mini-card-valor brand">R$ ${fm(entradasReal)}</div>
+        ${periodoAtual==='mes'&&entradasMP>0?`<div class="mini-card-sub" style="color:${trendEntrada>=0?'var(--brand)':'var(--danger)'}">${trendEntrada>=0?'▲':'▼'} ${Math.abs(trendEntrada).toFixed(0)}% vs mês passado</div>`:''}
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-label">↑ Saídas (${periodoLabels[periodoAtual]})</div>
+        <div class="mini-card-valor danger">R$ ${fm(saidasReal)}</div>
+        ${periodoAtual==='mes'&&saidasMP>0?`<div class="mini-card-sub" style="color:${trendSaida<=0?'var(--brand)':'var(--danger)'}">${trendSaida>=0?'▲':'▼'} ${Math.abs(trendSaida).toFixed(0)}% vs mês passado</div>`:''}
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-label">📥 Renda fixa/mês</div>
+        <div class="mini-card-valor brand">R$ ${fm(rendaMensal)}</div>
+        <div class="mini-card-sub">${d.rendas.length} renda${d.rendas.length===1?'':'s'}</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-label">📤 Fixas/mês</div>
+        <div class="mini-card-valor warning">R$ ${fm(despesaFixa)}</div>
+        <div class="mini-card-sub">${d.despesas.length} despesa${d.despesas.length===1?'':'s'}</div>
+      </div>
+    </div>
     
-    // Atribui cor pra cada categoria
-    cats.forEach((c, i) => {
-      c.corPizza = cores[i % cores.length];
-    });
+    <div class="saude-card">
+      <div class="saude-titulo">🩺 Saúde Financeira</div>
+      <div class="saude-medidor">
+        <canvas id="gauge-saude"></canvas>
+      </div>
+      <div class="saude-info">
+        <div class="saude-status ${saudeCor}">${saudeStatus}</div>
+        <div class="saude-desc">${saudeDesc}</div>
+      </div>
+    </div>
     
-    return `
-      <div class="chart-card">
-        <div class="chart-header">
-          <div class="chart-title">🍕 Onde foi seu dinheiro</div>
-          <div class="chart-subtitle">${saidas.length} gastos</div>
+    <div class="tatu-card">
+      <div class="tatu-emoji">🦔</div>
+      <div class="tatu-content">
+        <div class="tatu-titulo">Tatu observou...</div>
+        <div class="tatu-texto">${insight}</div>
+      </div>
+    </div>
+    
+    <div class="grafico-card">
+      <div class="grafico-titulo">
+        <div>
+          <div class="grafico-titulo-txt">📈 Evolução do Patrimônio</div>
+          <div class="grafico-titulo-sub">Últimos 6 meses</div>
         </div>
-        
-        <div class="pizza-container">
-          ${renderPizzaSVG(cats, total)}
-          
-          <div class="legenda">
-            ${cats.map((c, i) => `
-              <div class="legenda-item" onclick="window.location.href='transacoes.html?v=1'">
-                <div class="legenda-bullet" style="background:${c.corPizza};"></div>
-                <div class="legenda-emoji">${c.icone}</div>
-                <div class="legenda-info">
-                  <div class="legenda-nome">${c.nome}</div>
-                  <div class="legenda-pct">${((c.valor / total) * 100).toFixed(1)}% • ${c.count} gasto${c.count === 1 ? '' : 's'}</div>
-                </div>
-                <div class="legenda-valor">R$ ${formatarMoeda(c.valor)}</div>
+      </div>
+      <div class="grafico-canvas-wrap">
+        <canvas id="g-patrimonio"></canvas>
+      </div>
+    </div>
+    
+    <div class="grafico-card">
+      <div class="grafico-titulo">
+        <div>
+          <div class="grafico-titulo-txt">📊 Receita vs Despesa</div>
+          <div class="grafico-titulo-sub">Comparativo 6 meses</div>
+        </div>
+      </div>
+      <div class="grafico-canvas-wrap">
+        <canvas id="g-receita-despesa"></canvas>
+      </div>
+    </div>
+    
+    ${topCats.length>0?`
+    <div class="grafico-card">
+      <div class="grafico-titulo">
+        <div>
+          <div class="grafico-titulo-txt">🥧 Onde tá indo seu dinheiro</div>
+          <div class="grafico-titulo-sub">${periodoLabels[periodoAtual]}</div>
+        </div>
+      </div>
+      <div class="grafico-canvas-wrap pizza">
+        <canvas id="g-pizza"></canvas>
+      </div>
+    </div>
+    
+    <div class="grafico-card">
+      <div class="grafico-titulo">
+        <div>
+          <div class="grafico-titulo-txt">🏆 Top 5 Categorias</div>
+          <div class="grafico-titulo-sub">${periodoLabels[periodoAtual]}</div>
+        </div>
+      </div>
+      <div class="cats-lista">
+        ${topCats.map(c=>{
+          const cat=CATEGORIAS[c.k]||{e:'📌',n:c.k,c:'#94a3b8'};
+          const pct=saidasReal>0?(c.valor/saidasReal)*100:0;
+          return`<div class="cat-row">
+            <div class="cat-icon" style="background:${cat.c}25;color:${cat.c}">${cat.e}</div>
+            <div class="cat-info">
+              <div class="cat-nome">
+                <span>${cat.n} <span style="color:var(--text-faint);font-size:11px;">• ${c.n} ${c.n===1?'transação':'transações'}</span></span>
+                <span class="cat-valor">R$ ${fm(c.valor)}</span>
               </div>
-            `).join('')}
-          </div>
-        </div>
-      </div>
-    `;
-  }
-  
-  function renderPizzaSVG(cats, total) {
-    if (total === 0) return '';
-    
-    const cx = 100, cy = 100, r = 80;
-    let acumulado = 0;
-    
-    const slices = cats.map(c => {
-      const pct = c.valor / total;
-      const startAngle = acumulado * 2 * Math.PI - Math.PI / 2;
-      const endAngle = (acumulado + pct) * 2 * Math.PI - Math.PI / 2;
-      acumulado += pct;
-      
-      const x1 = cx + r * Math.cos(startAngle);
-      const y1 = cy + r * Math.sin(startAngle);
-      const x2 = cx + r * Math.cos(endAngle);
-      const y2 = cy + r * Math.sin(endAngle);
-      const largeArc = pct > 0.5 ? 1 : 0;
-      
-      // Se for fatia única (100%), desenhar círculo
-      if (pct >= 0.999) {
-        return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${c.corPizza}" />`;
-      }
-      
-      const path = `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`;
-      return `<path class="pizza-slice" d="${path}" fill="${c.corPizza}" />`;
-    }).join('');
-    
-    return `
-      <div class="pizza-wrapper">
-        <svg viewBox="0 0 200 200" class="linha-svg">
-          ${slices}
-          <circle cx="${cx}" cy="${cy}" r="50" fill="var(--bg-card)" />
-        </svg>
-        <div class="pizza-center">
-          <div class="pizza-center-label">Total</div>
-          <div class="pizza-center-valor">R$ ${formatarMoedaCompacto(total)}</div>
-        </div>
-      </div>
-    `;
-  }
-  
-  function renderTopCategorias() {
-    const saidas = transacoes.filter(t => t.tipo === 'saida');
-    if (saidas.length === 0) return '';
-    
-    const cats = agruparPorCategoria(saidas).slice(0, 5);
-    const maxValor = cats[0]?.valor || 1;
-    
-    return `
-      <div class="chart-card">
-        <div class="chart-header">
-          <div class="chart-title">🏆 Top 5 gastos</div>
-          <div class="chart-subtitle">Maiores categorias</div>
-        </div>
-        
-        <div class="top-list">
-          ${cats.map((c, i) => {
-            const pct = (c.valor / maxValor) * 100;
-            const corBar = i === 0 ? 'var(--danger)' : i === 1 ? 'var(--warning)' : i === 2 ? 'var(--info)' : 'var(--brand)';
-            return `
-              <div class="top-item" onclick="window.location.href='transacoes.html?v=1'">
-                <div class="top-row">
-                  <div class="top-nome">
-                    <span>${c.icone}</span>
-                    <span class="top-nome-texto">${c.nome}</span>
-                  </div>
-                  <div class="top-valor">R$ ${formatarMoeda(c.valor)}</div>
-                </div>
-                <div class="top-bar-bg">
-                  <div class="top-bar-fill" data-width="${pct}%" style="width:0%;background:${corBar};"></div>
-                </div>
+              <div class="cat-bar">
+                <div class="cat-bar-fill" style="width:${pct}%;background:${cat.c}"></div>
               </div>
-            `;
-          }).join('')}
-        </div>
+            </div>
+          </div>`;
+        }).join('')}
       </div>
-    `;
-  }
+    </div>
+    `:`<div class="grafico-card"><div class="empty"><div class="empty-emoji">📊</div>Sem gastos no período pra mostrar.<br>Cadastre transações na tela "Transações".</div></div>`}
+  `;
   
-  function renderEvolucaoMes() {
-    // Saldo dia a dia
-    const diasNoMes = new Date(mesAtual.getFullYear(), mesAtual.getMonth() + 1, 0).getDate();
-    const saldoPorDia = new Array(diasNoMes).fill(0);
-    const saldoAcumulado = new Array(diasNoMes).fill(0);
-    
-    transacoes.forEach(t => {
-      const dia = new Date(t.data + 'T00:00:00').getDate();
-      const valor = t.tipo === 'entrada' ? Number(t.valor) : -Number(t.valor);
-      saldoPorDia[dia - 1] += valor;
-    });
-    
-    let acum = 0;
-    for (let i = 0; i < diasNoMes; i++) {
-      acum += saldoPorDia[i];
-      saldoAcumulado[i] = acum;
-    }
-    
-    const maxVal = Math.max(...saldoAcumulado, 0);
-    const minVal = Math.min(...saldoAcumulado, 0);
-    const range = maxVal - minVal || 1;
-    
-    const w = 340, h = 160, pad = 20;
-    const stepX = (w - pad * 2) / (diasNoMes - 1);
-    
-    const points = saldoAcumulado.map((s, i) => {
-      const x = pad + i * stepX;
-      const y = pad + ((maxVal - s) / range) * (h - pad * 2);
-      return [x, y];
-    });
-    
-    const pathLine = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0]} ${p[1]}`).join(' ');
-    
-    // Area fill
-    const zeroY = pad + (maxVal / range) * (h - pad * 2);
-    const pathArea = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0]} ${p[1]}`).join(' ') + 
-                     ` L ${points[points.length-1][0]} ${zeroY} L ${points[0][0]} ${zeroY} Z`;
-    
-    const finalSaldo = saldoAcumulado[diasNoMes - 1];
-    const corLinha = finalSaldo >= 0 ? 'var(--brand)' : 'var(--danger)';
-    const corArea = finalSaldo >= 0 ? 'rgba(0, 217, 126, 0.15)' : 'rgba(255, 71, 87, 0.15)';
-    
-    const totalEntrada = transacoes.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
-    const totalSaida = transacoes.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
-    
-    return `
-      <div class="chart-card">
-        <div class="chart-header">
-          <div class="chart-title">📈 Evolução do mês</div>
-          <div class="chart-subtitle">Saldo dia a dia</div>
-        </div>
-        
-        <div class="linha-container">
-          <svg class="linha-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
-            <!-- Linha zero -->
-            <line x1="${pad}" y1="${zeroY}" x2="${w - pad}" y2="${zeroY}" stroke="var(--border)" stroke-width="1" stroke-dasharray="3,3" />
-            
-            <!-- Área -->
-            <path d="${pathArea}" fill="${corArea}" />
-            
-            <!-- Linha principal -->
-            <path d="${pathLine}" stroke="${corLinha}" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round" />
-            
-            <!-- Ponto final -->
-            <circle cx="${points[points.length-1][0]}" cy="${points[points.length-1][1]}" r="5" fill="${corLinha}" />
-            <circle cx="${points[points.length-1][0]}" cy="${points[points.length-1][1]}" r="3" fill="white" />
-          </svg>
-        </div>
-        
-        <div class="linha-info">
-          <div class="linha-stat">
-            <div class="linha-stat-label">↑ Entradas</div>
-            <div class="linha-stat-valor brand">R$ ${formatarMoedaCompacto(totalEntrada)}</div>
-          </div>
-          <div class="linha-stat">
-            <div class="linha-stat-label">↓ Saídas</div>
-            <div class="linha-stat-valor danger">R$ ${formatarMoedaCompacto(totalSaida)}</div>
-          </div>
-          <div class="linha-stat">
-            <div class="linha-stat-label">Saldo</div>
-            <div class="linha-stat-valor ${finalSaldo >= 0 ? 'brand' : 'danger'}">R$ ${formatarMoedaCompacto(finalSaldo)}</div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
+  document.getElementById('container').innerHTML=html;
   
-  function renderComparativo() {
-    const entradaAtual = transacoes.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
-    const saidaAtual = transacoes.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
-    const entradaAnt = transAnt.filter(t => t.tipo === 'entrada').reduce((a, t) => a + Number(t.valor), 0);
-    const saidaAnt = transAnt.filter(t => t.tipo === 'saida').reduce((a, t) => a + Number(t.valor), 0);
-    
-    const maxVal = Math.max(entradaAtual, saidaAtual, entradaAnt, saidaAnt, 1);
-    
-    const altEntradaAtual = (entradaAtual / maxVal) * 100;
-    const altSaidaAtual = (saidaAtual / maxVal) * 100;
-    const altEntradaAnt = (entradaAnt / maxVal) * 100;
-    const altSaidaAnt = (saidaAnt / maxVal) * 100;
-    
-    let resumo = '';
-    if (transAnt.length > 0) {
-      const diffSaida = saidaAtual - saidaAnt;
-      const pctSaida = saidaAnt > 0 ? ((diffSaida / saidaAnt) * 100).toFixed(0) : 0;
-      
-      if (Math.abs(diffSaida) < 50) {
-        resumo = `Seus gastos estão <strong>estáveis</strong> em relação ao mês anterior.`;
-      } else if (diffSaida > 0) {
-        resumo = `Você gastou <span class="up">R$ ${formatarMoeda(Math.abs(diffSaida))} a mais</span> (+${pctSaida}%) que no mês anterior.`;
-      } else {
-        resumo = `Você economizou <span class="down">R$ ${formatarMoeda(Math.abs(diffSaida))}</span> (${pctSaida}%) em relação ao mês anterior! 👏`;
+  // Desenha gráficos
+  setTimeout(()=>{
+    desenharGaugeSaude(pctComprometido,saudeCor);
+    desenharPatrimonio(meses6,patrimEvol);
+    desenharReceitaDespesa(meses6);
+    if(topCats.length>0)desenharPizza(topCats);
+  },100);
+}
+
+window.trocarPeriodo=function(p){
+  periodoAtual=p;
+  document.getElementById('container').innerHTML='<div class="loader-circle"></div>';
+  renderDashboard();
+};
+
+function desenharGaugeSaude(pct,cor){
+  const ctx=document.getElementById('gauge-saude');
+  if(!ctx)return;
+  const cores={bom:'#00d97e',atencao:'#ffb800',critico:'#ff4757'};
+  new Chart(ctx,{
+    type:'doughnut',
+    data:{
+      datasets:[{
+        data:[pct,100-pct],
+        backgroundColor:[cores[cor]||'#00d97e','#252525'],
+        borderWidth:0,
+        circumference:180,
+        rotation:270
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      cutout:'75%',
+      plugins:{legend:{display:false},tooltip:{enabled:false}}
+    },
+    plugins:[{
+      id:'centerText',
+      afterDraw(chart){
+        const{ctx,chartArea:{width,height}}=chart;
+        ctx.save();
+        ctx.font='bold 32px Space Grotesk';
+        ctx.fillStyle=cores[cor]||'#00d97e';
+        ctx.textAlign='center';
+        ctx.textBaseline='middle';
+        ctx.fillText(`${pct}%`,width/2,height*0.75);
+        ctx.font='600 10px Inter';
+        ctx.fillStyle='#a3a3a3';
+        ctx.fillText('COMPROMETIDO',width/2,height*0.95);
+        ctx.restore();
       }
-    } else {
-      resumo = `Sem dados do mês anterior pra comparar. <strong>Continue cadastrando</strong> que mês que vem temos comparativo!`;
+    }]
+  });
+}
+
+function desenharPatrimonio(meses,evol){
+  const ctx=document.getElementById('g-patrimonio');
+  if(!ctx)return;
+  const labels=meses.map(m=>m.label);
+  new Chart(ctx,{
+    type:'line',
+    data:{
+      labels,
+      datasets:[{
+        label:'Patrimônio',
+        data:evol,
+        borderColor:'#00d97e',
+        backgroundColor:(ctx)=>{
+          const chart=ctx.chart;
+          const{ctx:c,chartArea}=chart;
+          if(!chartArea)return null;
+          const grad=c.createLinearGradient(0,chartArea.top,0,chartArea.bottom);
+          grad.addColorStop(0,'rgba(0,217,126,0.4)');
+          grad.addColorStop(1,'rgba(0,217,126,0)');
+          return grad;
+        },
+        borderWidth:3,
+        tension:0.4,
+        fill:true,
+        pointBackgroundColor:'#00d97e',
+        pointBorderColor:'#0a0a0a',
+        pointBorderWidth:2,
+        pointRadius:5,
+        pointHoverRadius:7
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'#141414',
+          titleColor:'#fff',
+          bodyColor:'#00d97e',
+          padding:12,
+          borderColor:'#252525',
+          borderWidth:1,
+          callbacks:{label:(c)=>'R$ '+fm(c.parsed.y)}
+        }
+      },
+      scales:{
+        y:{
+          ticks:{color:'#525252',font:{size:10},callback:(v)=>'R$ '+(v/1000).toFixed(0)+'k'},
+          grid:{color:'#252525',drawBorder:false}
+        },
+        x:{
+          ticks:{color:'#a3a3a3',font:{size:11,weight:'600'}},
+          grid:{display:false}
+        }
+      }
     }
-    
-    return `
-      <div class="chart-card">
-        <div class="chart-header">
-          <div class="chart-title">📊 Mês atual vs Anterior</div>
-        </div>
-        
-        <div class="compare-container">
-          <div class="compare-row">
-            <div class="compare-col">
-              <div class="compare-valor-top" style="color:var(--brand);">R$ ${formatarMoedaCompacto(entradaAnt)}</div>
-              <div class="compare-bar anterior" data-height="${altEntradaAnt}%" style="height:0%;"></div>
-              <div class="compare-label">Ent. Anterior</div>
-            </div>
-            <div class="compare-col">
-              <div class="compare-valor-top" style="color:var(--brand);">R$ ${formatarMoedaCompacto(entradaAtual)}</div>
-              <div class="compare-bar atual entrada" data-height="${altEntradaAtual}%" style="height:0%;"></div>
-              <div class="compare-label">Ent. Atual</div>
-            </div>
-            <div class="compare-col">
-              <div class="compare-valor-top" style="color:var(--danger);">R$ ${formatarMoedaCompacto(saidaAnt)}</div>
-              <div class="compare-bar anterior" data-height="${altSaidaAnt}%" style="height:0%;"></div>
-              <div class="compare-label">Saí. Anterior</div>
-            </div>
-            <div class="compare-col">
-              <div class="compare-valor-top" style="color:var(--danger);">R$ ${formatarMoedaCompacto(saidaAtual)}</div>
-              <div class="compare-bar atual saida" data-height="${altSaidaAtual}%" style="height:0%;"></div>
-              <div class="compare-label">Saí. Atual</div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="compare-resumo">🦔 ${resumo}</div>
-      </div>
-    `;
-  }
-  
-  function formatarMoeda(v) {
-    return (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-  
-  function formatarMoedaCompacto(v) {
-    const n = Number(v) || 0;
-    if (Math.abs(n) >= 1000000) return (n / 1000000).toFixed(1) + 'M';
-    if (Math.abs(n) >= 10000) return (n / 1000).toFixed(1) + 'k';
-    return n.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-  }
+  });
+}
+
+function desenharReceitaDespesa(meses){
+  const ctx=document.getElementById('g-receita-despesa');
+  if(!ctx)return;
+  new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:meses.map(m=>m.label),
+      datasets:[
+        {label:'Entradas',data:meses.map(m=>m.entradas),backgroundColor:'#00d97e',borderRadius:6,borderSkipped:false},
+        {label:'Saídas',data:meses.map(m=>m.saidas),backgroundColor:'#ff4757',borderRadius:6,borderSkipped:false}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{labels:{color:'#a3a3a3',font:{size:11,weight:'600'},padding:10,usePointStyle:true,pointStyle:'circle'}},
+        tooltip:{
+          backgroundColor:'#141414',titleColor:'#fff',bodyColor:'#fff',padding:12,
+          borderColor:'#252525',borderWidth:1,
+          callbacks:{label:(c)=>c.dataset.label+': R$ '+fm(c.parsed.y)}
+        }
+      },
+      scales:{
+        y:{ticks:{color:'#525252',font:{size:10},callback:(v)=>'R$ '+(v/1000).toFixed(0)+'k'},grid:{color:'#252525'}},
+        x:{ticks:{color:'#a3a3a3',font:{size:11,weight:'600'}},grid:{display:false}}
+      }
+    }
+  });
+}
+
+function desenharPizza(topCats){
+  const ctx=document.getElementById('g-pizza');
+  if(!ctx)return;
+  const labels=topCats.map(c=>CATEGORIAS[c.k]?.n||c.k);
+  const data=topCats.map(c=>c.valor);
+  const cores=topCats.map(c=>CATEGORIAS[c.k]?.c||'#94a3b8');
+  new Chart(ctx,{
+    type:'doughnut',
+    data:{labels,datasets:[{data,backgroundColor:cores,borderColor:'#141414',borderWidth:3,hoverOffset:8}]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      cutout:'60%',
+      plugins:{
+        legend:{
+          position:'bottom',
+          labels:{color:'#a3a3a3',font:{size:11,weight:'600'},padding:8,usePointStyle:true,pointStyle:'circle',boxWidth:8}
+        },
+        tooltip:{
+          backgroundColor:'#141414',titleColor:'#fff',bodyColor:'#fff',padding:12,
+          borderColor:'#252525',borderWidth:1,
+          callbacks:{label:(c)=>c.label+': R$ '+fm(c.parsed)+' ('+((c.parsed/data.reduce((a,b)=>a+b,0))*100).toFixed(0)+'%)'}
+        }
+      }
+    }
+  });
+}
+
+function fm(v){return(Number(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
 </script>
 
+<script src="polish.js?v=1"></script>
 </body>
 </html>
