@@ -97,6 +97,14 @@ body{padding-bottom:100px;padding-top:env(safe-area-inset-top)}
 .alert-titulo{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--danger);margin-bottom:2px}
 .alert-sub{font-size:11px;color:var(--text-mute)}
 .alert-seta{color:var(--danger);font-size:18px}
+.alert-agiota{background:linear-gradient(135deg,var(--danger-soft) 0%,var(--bg-card) 100%);border:1px solid rgba(255,71,87,0.45);border-radius:14px;padding:14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px;cursor:pointer}
+.alert-agiota:active{transform:scale(0.99)}
+.alert-agiota-emoji{font-size:28px;flex-shrink:0}
+.alert-agiota-info{flex:1;min-width:0}
+.alert-agiota-titulo{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--danger);margin-bottom:3px}
+.alert-agiota-sub{font-size:12px;color:var(--text);line-height:1.45}
+.alert-agiota-sub strong{color:var(--danger)}
+.alert-agiota-seta{color:var(--danger);font-size:18px;align-self:center}
 .secao-titulo{display:flex;justify-content:space-between;align-items:center;margin:18px 4px 10px}
 .secao-titulo-txt{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--text-mute);font-weight:600;text-transform:uppercase;letter-spacing:0.1em}
 .secao-link{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--brand);font-weight:600;cursor:pointer}
@@ -247,7 +255,7 @@ body{padding-bottom:100px;padding-top:env(safe-area-inset-top)}
     <div class="menu-item" onclick="navegarPara('chat.html?v=3')"><div class="menu-item-icon ia">💬</div><div class="menu-item-info"><div class="menu-item-titulo">Tatu (Chat IA)</div><div class="menu-item-sub">Conversa com o assistente</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('contas.html?v=3')"><div class="menu-item-icon brand">🏦</div><div class="menu-item-info"><div class="menu-item-titulo">Vida Financeira</div><div class="menu-item-sub">Contas, cartões, rendas, fixas</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('transacoes.html?v=7')"><div class="menu-item-icon brand">💸</div><div class="menu-item-info"><div class="menu-item-titulo">Transações</div><div class="menu-item-sub">Entradas e saídas</div></div><div class="menu-item-arrow">›</div></div>
-    <div class="menu-item" onclick="navegarPara('dividas.html?v=3')"><div class="menu-item-icon danger">💳</div><div class="menu-item-info"><div class="menu-item-titulo">Dívidas</div><div class="menu-item-sub">Negociador IA</div></div><div class="menu-item-arrow">›</div></div>
+    <div class="menu-item" onclick="navegarPara('dividas.html?v=8')"><div class="menu-item-icon danger">💳</div><div class="menu-item-info"><div class="menu-item-titulo">Dívidas</div><div class="menu-item-sub">Negociador IA</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('metas.html?v=1')"><div class="menu-item-icon warning">🎯</div><div class="menu-item-info"><div class="menu-item-titulo">Metas</div><div class="menu-item-sub">Reserva e objetivos</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('dashboard.html?v=1')"><div class="menu-item-icon info">📊</div><div class="menu-item-info"><div class="menu-item-titulo">Dashboard</div><div class="menu-item-sub">Gráficos e análises</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('patrimonio.html?v=1')"><div class="menu-item-icon brand">💎</div><div class="menu-item-info"><div class="menu-item-titulo">Patrimônio</div><div class="menu-item-sub">Visão dos bens</div></div><div class="menu-item-arrow">›</div></div>
@@ -391,8 +399,13 @@ async function carregarTudo(){
   const hojeEntradas=hojeReal.filter(t=>t.tipo==='entrada').reduce((a,t)=>a+Number(t.valor),0);
   const hojeSaidas=hojeReal.filter(t=>t.tipo==='saida').reduce((a,t)=>a+Number(t.valor),0);
   const hojeTotal=hojeEntradas-hojeSaidas;
+
+  // 🆕 dívida de agiota (juros que rola no saldo): detecta e soma o juros mensal
+  const dividasAgiota=dividas.filter(d=>d.juros_rola===true&&Number(d.juros_mensal)>0);
+  const totalSaldoAgiota=dividasAgiota.reduce((a,d)=>a+Number(d.valor_atual||0),0);
+  const totalJurosAgiotaMes=dividasAgiota.reduce((a,d)=>a+(Number(d.valor_atual||0)*Number(d.juros_mensal)/100),0);
   
-  stats={contas:contasReais.length,cartoes:cartoes.length,dividas:dividas.length,totalDividas:dividas.reduce((a,d)=>a+Number(d.valor_atual),0),patrimonio,entradas,saidas,saldoMes,aReceber,aPagar,saldoPrevisto,vencidas:vencidas.length,totalVencidas,proximas:pxR.data||[],hojeEntradas,hojeSaidas,hojeTotal};
+  stats={contas:contasReais.length,cartoes:cartoes.length,dividas:dividas.length,totalDividas:dividas.reduce((a,d)=>a+Number(d.valor_atual),0),patrimonio,entradas,saidas,saldoMes,aReceber,aPagar,saldoPrevisto,vencidas:vencidas.length,totalVencidas,proximas:pxR.data||[],hojeEntradas,hojeSaidas,hojeTotal,qtdAgiota:dividasAgiota.length,totalSaldoAgiota,totalJurosAgiotaMes};
 }
 
 function calcularNivel(xp){return niveis.slice().reverse().find(n=>xp>=n.xp_min)||niveis[0]}
@@ -436,6 +449,19 @@ function render(){
   
   let alertHTML='';
   if(stats.vencidas>0)alertHTML=`<div class="alert-vencidas" onclick="window.location.href='transacoes.html?v=7'"><div class="alert-emoji">⚠️</div><div class="alert-info"><div class="alert-titulo">${stats.vencidas} conta${stats.vencidas===1?'':'s'} vencida${stats.vencidas===1?'':'s'}!</div><div class="alert-sub">Total: R$ ${fm(stats.totalVencidas)}</div></div><div class="alert-seta">›</div></div>`;
+
+  // 🆕 ALERTA AGIOTA — topo, prioridade nº1, só aparece se houver dívida com juros que rola
+  let agiotaHTML='';
+  if(stats.qtdAgiota>0&&stats.totalJurosAgiotaMes>0){
+    agiotaHTML=`<div class="alert-agiota" onclick="window.location.href='dividas.html?v=8'">
+      <div class="alert-agiota-emoji">🔴</div>
+      <div class="alert-agiota-info">
+        <div class="alert-agiota-titulo">${stats.qtdAgiota===1?'Dívida de juros te sangrando':stats.qtdAgiota+' dívidas de juros te sangrando'}</div>
+        <div class="alert-agiota-sub">Você perde <strong>R$ ${fm(stats.totalJurosAgiotaMes)}/mês</strong> só de juros, sem abater nada. Prioridade nº1: quitar isso. Toque pra ver o plano.</div>
+      </div>
+      <div class="alert-agiota-seta">›</div>
+    </div>`;
+  }
   
   let hojeHTML='';
   const hojeItens=transacoesHoje.slice(0,5);
@@ -495,7 +521,8 @@ function render(){
   }
   
   let insight='';
-  if(stats.vencidas>0)insight=`Você tem <strong>${stats.vencidas} conta${stats.vencidas===1?'':'s'} vencida${stats.vencidas===1?'':'s'}</strong>. Resolver isso já é um passo grande! 🦔`;
+  if(stats.qtdAgiota>0&&stats.totalJurosAgiotaMes>0)insight=`Cada mês que passa, o agiota leva <strong>R$ ${fm(stats.totalJurosAgiotaMes)}</strong> seu. Esse é o buraco que eu quero fechar primeiro com você. 🦔`;
+  else if(stats.vencidas>0)insight=`Você tem <strong>${stats.vencidas} conta${stats.vencidas===1?'':'s'} vencida${stats.vencidas===1?'':'s'}</strong>. Resolver isso já é um passo grande! 🦔`;
   else if(stats.totalDividas>0&&stats.entradas>0&&(stats.totalDividas/stats.entradas)>0.3)insight=`Suas dívidas (<strong>R$ ${fm(stats.totalDividas)}</strong>) são mais de 30% da renda. Usa o Negociador IA! 🦔`;
   else if(stats.saldoPrevisto<0)insight=`Saldo previsto pro fim do mês <strong>negativo</strong>. Que tal revisar gastos? 🦔`;
   else if(stats.contas===0&&stats.cartoes===0)insight=`Cadastra teus <strong>cartões e contas</strong> em "Vida Financeira"! 🦔`;
@@ -507,6 +534,7 @@ function render(){
       <div class="saudacao-titulo">${saud}, ${pnome}!</div>
       <div class="saudacao-sub">${stats.contas} conta${stats.contas===1?'':'s'} + ${stats.cartoes} cartões • ${stats.dividas} dívida${stats.dividas===1?'':'s'}</div>
     </div>
+    ${agiotaHTML}
     <div class="level-card" id="tut-nivel">
       <div class="level-top"><div><div class="level-label">Nível ${nivel.num}</div><div class="level-nome">${nivel.nome}</div></div><div class="level-xp"><div class="level-xp-num">${xp}</div><div class="level-xp-label">XP Total</div></div></div>
       <div class="level-bar"><div class="level-bar-fill" style="width:${pct}%"></div></div>
@@ -540,7 +568,7 @@ function render(){
     <div class="atalhos-grid">
       <div class="atalho-card" id="tut-vida" onclick="window.location.href='contas.html?v=3'"><div class="atalho-emoji">🏦</div><div class="atalho-titulo">Vida Financeira</div><div class="atalho-sub">Contas, cartões, fixas</div><div class="atalho-valor brand">R$ ${fm(stats.patrimonio)}</div></div>
       <div class="atalho-card" id="tut-trans" onclick="window.location.href='transacoes.html?v=7'"><div class="atalho-emoji">💸</div><div class="atalho-titulo">Transações</div><div class="atalho-sub">Entradas e saídas</div><div class="atalho-valor ${stats.saldoMes>=0?'brand':'danger'}">${stats.saldoMes>=0?'+':''}R$ ${fm(stats.saldoMes)}</div></div>
-      <div class="atalho-card" id="tut-divs" onclick="window.location.href='dividas.html?v=3'"><div class="atalho-emoji">💳</div><div class="atalho-titulo">Dívidas</div><div class="atalho-sub">Negociador IA</div><div class="atalho-valor ${stats.totalDividas>0?'danger':'brand'}">R$ ${fm(stats.totalDividas)}</div></div>
+      <div class="atalho-card" id="tut-divs" onclick="window.location.href='dividas.html?v=8'"><div class="atalho-emoji">💳</div><div class="atalho-titulo">Dívidas</div><div class="atalho-sub">Negociador IA</div><div class="atalho-valor ${stats.totalDividas>0?'danger':'brand'}">R$ ${fm(stats.totalDividas)}</div></div>
       <div class="atalho-card" id="tut-metas" onclick="window.location.href='metas.html?v=1'"><div class="atalho-emoji">🎯</div><div class="atalho-titulo">Metas</div><div class="atalho-sub">Reserva e objetivos</div></div>
       <div class="atalho-card" onclick="window.location.href='dashboard.html?v=1'"><div class="atalho-emoji">📊</div><div class="atalho-titulo">Dashboard</div><div class="atalho-sub">Gráficos</div></div>
       <div class="atalho-card" onclick="window.location.href='educacao.html?v=1'"><div class="atalho-emoji">🎓</div><div class="atalho-titulo">Educação</div><div class="atalho-sub">Trilha do Tatu</div><div class="atalho-valor brand">Nível ${nivel.num}</div></div>
