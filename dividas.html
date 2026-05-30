@@ -35,6 +35,13 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .alerta-agiota-emoji{font-size:20px;flex-shrink:0}
 .alerta-agiota-txt{font-size:12px;line-height:1.5;color:var(--text)}
 .alerta-agiota-txt strong{color:var(--danger)}
+.alerta-vencido{background:linear-gradient(135deg,var(--warning-soft) 0%,var(--bg-card) 100%);border:1px solid rgba(255,184,0,0.5);border-radius:14px;padding:14px;margin-bottom:16px}
+.alerta-vencido-top{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.alerta-vencido-emoji{font-size:22px;flex-shrink:0}
+.alerta-vencido-txt{font-size:12px;line-height:1.5;color:var(--text)}
+.alerta-vencido-txt strong{color:var(--warning)}
+.alerta-vencido-btn{width:100%;padding:11px;border-radius:10px;background:var(--warning);color:#1a1300;border:none;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+.alerta-vencido-btn:active{transform:scale(0.98)}
 .filtros{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
 .filtros::-webkit-scrollbar{display:none}
 .filtro-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:100px;padding:8px 14px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;color:var(--text-mute);white-space:nowrap}
@@ -74,6 +81,11 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .div-meta-item.juros{background:var(--danger-soft);color:var(--danger)}
 .div-juros-aviso{background:var(--danger-soft);border:1px solid rgba(255,71,87,0.3);border-radius:10px;padding:8px 10px;margin-bottom:10px;font-size:11px;line-height:1.45;color:var(--text)}
 .div-juros-aviso strong{color:var(--danger)}
+.div-vencido-box{background:var(--warning-soft);border:1px solid rgba(255,184,0,0.45);border-radius:10px;padding:10px;margin-bottom:10px}
+.div-vencido-txt{font-size:11px;line-height:1.45;color:var(--text);margin-bottom:8px}
+.div-vencido-txt strong{color:var(--warning)}
+.div-vencido-btn{width:100%;padding:9px;border-radius:9px;background:var(--warning);color:#1a1300;border:none;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.div-vencido-btn:active{transform:scale(0.98)}
 .div-progresso{height:6px;background:var(--bg-elev);border-radius:100px;overflow:hidden;margin-bottom:10px}
 .div-progresso-fill{height:100%;background:linear-gradient(90deg,var(--brand) 0%,var(--brand-hover) 100%);border-radius:100px;transition:width 0.5s}
 .div-acao-btn{width:100%;padding:10px;border-radius:10px;background:linear-gradient(135deg,var(--ia-soft) 0%,var(--bg-elev) 100%);border:1px solid rgba(168,85,247,0.3);color:var(--ia);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
@@ -142,6 +154,8 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .btn-primary:active{background:var(--brand-hover)}
 .btn-primary:disabled{opacity:0.5;cursor:not-allowed}
 .btn-secondary{background:var(--bg-elev);color:var(--text);border:1px solid var(--border)}
+.btn-warning{background:var(--warning);color:#1a1300;width:100%}
+.btn-warning:active{filter:brightness(0.92)}
 .acoes-modal{background:var(--bg-card);border-top:1px solid var(--border);border-radius:24px 24px 0 0;padding:20px;max-width:480px;width:100%}
 .acao-btn{display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;cursor:pointer}
 .acao-btn:active{background:var(--bg-elev)}
@@ -149,6 +163,7 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .acao-icon.brand{background:var(--brand-soft);color:var(--brand)}
 .acao-icon.info{background:var(--info-soft);color:var(--info)}
 .acao-icon.ia{background:var(--ia-soft);color:var(--ia)}
+.acao-icon.warning{background:var(--warning-soft);color:var(--warning)}
 .acao-icon.danger{background:var(--danger-soft);color:var(--danger)}
 .acao-info-titulo{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600}
 .acao-info-sub{font-size:11px;color:var(--text-mute)}
@@ -160,6 +175,16 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .ia-titulo{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--ia);text-align:center;margin-bottom:6px}
 .ia-sub{font-size:13px;color:var(--text-mute);text-align:center}
 .upload-hidden{display:none}
+.venc-item{background:var(--bg-input);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px}
+.venc-item-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.venc-item-cred{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700}
+.venc-item-val{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:var(--warning)}
+.venc-item-data{font-size:11px;color:var(--text-mute);margin-bottom:10px}
+.venc-item-acoes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.venc-btn{padding:10px;border-radius:9px;border:none;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.venc-btn.paguei{background:var(--brand);color:#001a0e}
+.venc-btn.nao{background:var(--danger-soft);color:var(--danger);border:1px solid rgba(255,71,87,0.4)}
+.venc-btn:active{transform:scale(0.98)}
 .xp-toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--brand);color:#001a0e;padding:14px 24px;border-radius:100px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;z-index:9999;box-shadow:0 8px 32px rgba(0,217,126,0.4);display:none;max-width:90%;text-align:center;animation:toastIn 0.3s ease}
 @keyframes toastIn{from{opacity:0;transform:translate(-50%,-20px)}to{opacity:1;transform:translate(-50%,0)}}
 </style>
@@ -178,6 +203,9 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 </div>
 <div class="modal-overlay" id="modal-pagar" onclick="if(event.target===this)fecharModal('modal-pagar')">
 <div class="modal" onclick="event.stopPropagation()" id="modal-pagar-content"></div>
+</div>
+<div class="modal-overlay" id="modal-vencidos" onclick="if(event.target===this)fecharModal('modal-vencidos')">
+<div class="modal" onclick="event.stopPropagation()" id="vencidos-content"></div>
 </div>
 <div class="modal-overlay" id="modal-acoes" onclick="if(event.target===this)fecharModal('modal-acoes')">
 <div class="acoes-modal" onclick="event.stopPropagation()" id="acoes-content"></div>
@@ -198,7 +226,7 @@ const TIPOS_DIV={cartao:{e:'💳',n:'Cartão'},emprestimo:{e:'💸',n:'Emprésti
 
 const MESES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 const JUROS_MESES_GERAR=12;
-const MARCA_JUROS='[JUROS_MENSAL]'; // 🆕 marca na descrição pra identificar (grupo_recorrencia é UUID, não dá pra usar texto)
+const MARCA_JUROS='[JUROS_MENSAL]';
 
 function ehFatura(d){return d.tipo==='cartao'}
 function ehJuros(d){return d.juros_rola===true}
@@ -206,12 +234,14 @@ function ehJuros(d){return d.juros_rola===true}
 let usuario;
 let dividas=[];
 let contas=[];
+let jurosVencidos=[];
 let filtroAtual='real';
 let dividaIdNegoc=null;
 let ultimoItemNovoId=null;
 let salvando=false;
 let pagandoParcial=false;
 let jurosLigado=false;
+let resolvendoVencido=false;
 
 (async()=>{
   const{data:{session}}=await supabase.auth.getSession();
@@ -229,6 +259,8 @@ async function carregarContas(){
 async function carregar(){
   const{data}=await supabase.from('dividas').select('*').eq('user_id',usuario.id).order('prioridade',{ascending:true}).order('data_vencimento',{ascending:true});
   dividas=data||[];
+  await reporJanelasJuros();
+  await detectarJurosVencidos();
   render();
 }
 
@@ -241,7 +273,6 @@ function diaCobranca(d){
   return Number(d.dia_cobranca_juros)|| (d.data_vencimento?new Date(d.data_vencimento+'T12:00:00').getDate():10);
 }
 
-// 🆕 apaga os juros previstos FUTUROS dessa dívida — identifica por divida_id + recorrente + marca na descrição
 async function apagarJurosFuturos(dividaId){
   const hoje=new Date().toISOString().split('T')[0];
   const{error}=await supabase.from('transacoes').delete()
@@ -253,7 +284,6 @@ async function apagarJurosFuturos(dividaId){
   if(error)console.error('apagarJurosFuturos',error);
 }
 
-// 🆕 gera os juros — SEM grupo_recorrencia (que é UUID). Usa divida_id + recorrente + marca na descrição
 async function gerarJurosFuturos(divida){
   const saldo=Number(divida.valor_atual);
   const taxa=Number(divida.juros_mensal);
@@ -293,6 +323,83 @@ async function regenerarJuros(divida){
   }
 }
 
+// 🆕 PENDÊNCIA 1: repõe a janela de 12 meses de juros futuros quando encolhe
+async function reporJanelasJuros(){
+  const hoje=new Date();hoje.setHours(12,0,0,0);
+  const hojeStr=hoje.toISOString().split('T')[0];
+  const ativasJuros=dividas.filter(d=>ehJuros(d)&&d.status==='ativa'&&Number(d.valor_atual)>0&&Number(d.juros_mensal)>0);
+  if(ativasJuros.length===0)return;
+
+  for(const d of ativasJuros){
+    // pega os juros futuros que já existem dessa dívida
+    const{data:futuros}=await supabase.from('transacoes').select('data')
+      .eq('user_id',usuario.id).eq('divida_id',d.id)
+      .eq('recorrente',true).eq('status','prevista')
+      .gte('data',hojeStr).order('data',{ascending:true});
+    const qtd=(futuros||[]).length;
+    if(qtd>=JUROS_MESES_GERAR)continue; // janela cheia, nada a fazer
+
+    // descobre o último mês já lançado pra continuar a partir dele (sem duplicar)
+    const dia=Math.min(28,diaCobranca(d));
+    const valorJuros=Math.round((Number(d.valor_atual)*Number(d.juros_mensal)/100)*100)/100;
+    const datasExistentes=new Set((futuros||[]).map(f=>f.data));
+
+    let ultimaData;
+    if(qtd>0){
+      ultimaData=new Date((futuros[futuros.length-1].data)+'T12:00:00');
+    }else{
+      // nenhuma futura: começa do próximo vencimento
+      ultimaData=new Date(hoje.getFullYear(),hoje.getMonth(),dia,12,0,0);
+      if(ultimaData<hoje)ultimaData.setMonth(ultimaData.getMonth()+1);
+      ultimaData.setMonth(ultimaData.getMonth()-1); // ajusta pro loop somar +1 e cair no mês certo
+    }
+
+    const faltam=JUROS_MESES_GERAR-qtd;
+    const linhas=[];
+    let base=new Date(ultimaData.getFullYear(),ultimaData.getMonth(),dia,12,0,0);
+    for(let i=0;i<faltam;i++){
+      base=new Date(base.getFullYear(),base.getMonth()+1,dia,12,0,0);
+      const ds=base.toISOString().split('T')[0];
+      if(datasExistentes.has(ds))continue;
+      linhas.push({
+        user_id:usuario.id,
+        valor:valorJuros,
+        descricao:`Juros ${d.credor} (${d.juros_mensal}% s/ saldo) ${MARCA_JUROS}`,
+        tipo:'saida',
+        categoria:'outro',
+        data:ds,
+        status:'prevista',
+        recorrente:true,
+        divida_id:d.id
+      });
+    }
+    if(linhas.length>0){
+      const{error}=await supabase.from('transacoes').insert(linhas);
+      if(error)console.error('reporJanelasJuros',error);
+    }
+  }
+}
+
+// 🆕 PENDÊNCIA 2: detecta juros vencidos não-pagos (prevista + data<hoje + marca)
+async function detectarJurosVencidos(){
+  jurosVencidos=[];
+  const hojeStr=new Date().toISOString().split('T')[0];
+  const ativasJuros=dividas.filter(d=>ehJuros(d)&&d.status==='ativa');
+  if(ativasJuros.length===0)return;
+  const ids=ativasJuros.map(d=>d.id);
+  const{data}=await supabase.from('transacoes').select('id,divida_id,valor,data,descricao')
+    .eq('user_id',usuario.id).in('divida_id',ids)
+    .eq('recorrente',true).eq('status','prevista')
+    .lt('data',hojeStr).order('data',{ascending:true});
+  const linhas=(data||[]).filter(t=>(t.descricao||'').includes(MARCA_JUROS));
+  // agrupa por dívida
+  for(const l of linhas){
+    const d=ativasJuros.find(x=>x.id===l.divida_id);
+    if(!d)continue;
+    jurosVencidos.push({...l,credor:d.credor,divida:d});
+  }
+}
+
 function render(){
   const hoje=new Date().toISOString().split('T')[0];
   const ativas=dividas.filter(d=>d.status==='ativa');
@@ -308,6 +415,8 @@ function render(){
 
   const dividasJuros=ativas.filter(d=>ehJuros(d));
   const totalJurosMes=dividasJuros.reduce((a,d)=>a+jurosDoMes(d),0);
+
+  const totalVencidos=jurosVencidos.reduce((a,j)=>a+Number(j.valor),0);
 
   let lista=[];
   let modoSecoes=false;
@@ -330,6 +439,15 @@ function render(){
           <div class="tot-valor">R$ ${fm(totalFatura)}</div>
           <div class="tot-sub">${faturas.length} fatura${faturas.length===1?'':'s'} • some quando paga</div>
         </div>
+      </div>
+    `:''}
+    ${jurosVencidos.length>0?`
+      <div class="alerta-vencido">
+        <div class="alerta-vencido-top">
+          <div class="alerta-vencido-emoji">⚠️</div>
+          <div class="alerta-vencido-txt"><strong>Tatu:</strong> você tem <strong>${jurosVencidos.length} cobrança${jurosVencidos.length===1?'':'s'} de juros vencida${jurosVencidos.length===1?'':'s'}</strong> (R$ ${fm(totalVencidos)}) que não foram marcadas como pagas. Se não pagou, o juros <strong>vira saldo</strong> e a dívida cresce. Bora resolver?</div>
+        </div>
+        <button class="alerta-vencido-btn" onclick="abrirVencidos()">Resolver juros vencidos →</button>
       </div>
     `:''}
     ${totalJurosMes>0?`
@@ -425,6 +543,10 @@ function renderDivida(d,hoje){
 
   const jm=eJuros&&!ePaga?jurosDoMes(d):0;
 
+  // 🆕 juros vencidos dessa dívida
+  const vencidosDessa=eJuros&&!ePaga?jurosVencidos.filter(j=>j.divida_id===d.id):[];
+  const totalVencDessa=vencidosDessa.reduce((a,j)=>a+Number(j.valor),0);
+
   return `
     <div class="divida-card ${cClass}" data-item-id="${d.id}" onclick="abrirAcoes('${d.id}')">
       <div class="div-top">
@@ -439,6 +561,7 @@ function renderDivida(d,hoje){
         </div>
       </div>
       ${eJuros&&!ePaga?`<div class="div-juros-aviso">🔴 Te custa <strong>R$ ${fm(jm)}/mês</strong> de juros (${d.juros_mensal}% sobre R$ ${fm(atual)}). O juros entra todo mês nas suas transações. Pagar só o juros <strong>não diminui</strong> o saldo — pra abater, use "Pagar um valor" aqui.</div>`:''}
+      ${vencidosDessa.length>0?`<div class="div-vencido-box"><div class="div-vencido-txt">⚠️ <strong>${vencidosDessa.length} juros vencido${vencidosDessa.length===1?'':'s'}</strong> (R$ ${fm(totalVencDessa)}) sem marcar. Se não pagou, vira saldo.</div><button class="div-vencido-btn" onclick="event.stopPropagation();abrirVencidos('${d.id}')">Resolver agora</button></div>`:''}
       ${temAbatimento?`<div class="div-progresso"><div class="div-progresso-fill" style="width:${pctPago}%;"></div></div>`:''}
       <div class="div-meta">
         ${ePaga&&dataPagaFmt?`<div class="div-meta-item pago">✓ PAGO em ${dataPagaFmt}</div>`:`<div class="div-meta-item">📅 ${eJuros?'Juros todo dia '+diaCobranca(d):new Date(d.data_vencimento+'T12:00:00').toLocaleDateString('pt-BR')}</div>`}
@@ -452,6 +575,95 @@ function renderDivida(d,hoje){
 }
 
 window.setFiltro=function(f){filtroAtual=f;render()};
+
+// 🆕 MODAL RESOLVER JUROS VENCIDOS (pagou / não paguei → bola de neve)
+window.abrirVencidos=function(soDividaId){
+  fecharModal('modal-acoes');
+  setTimeout(()=>{
+    let lista=jurosVencidos;
+    if(soDividaId)lista=jurosVencidos.filter(j=>j.divida_id===soDividaId);
+    if(lista.length===0){toast('Nenhum juros vencido por aqui');return}
+
+    const itensHTML=lista.map(j=>{
+      const dataFmt=new Date(j.data+'T12:00:00').toLocaleDateString('pt-BR');
+      return `
+        <div class="venc-item" id="venc-${j.id}">
+          <div class="venc-item-top">
+            <div class="venc-item-cred">${j.credor}</div>
+            <div class="venc-item-val">R$ ${fm(j.valor)}</div>
+          </div>
+          <div class="venc-item-data">Juros que venceu em ${dataFmt}</div>
+          <div class="venc-item-acoes">
+            <button class="venc-btn paguei" onclick="resolverVencido('${j.id}','paguei')">✓ Eu paguei</button>
+            <button class="venc-btn nao" onclick="resolverVencido('${j.id}','nao')">Não paguei → rolar</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    document.getElementById('vencidos-content').innerHTML=`
+      <div class="modal-titulo">
+        <span>⚠️ Juros vencidos</span>
+        <button class="modal-close" onclick="fecharModal('modal-vencidos')">✕</button>
+      </div>
+      <div class="juros-box show" style="margin-bottom:16px;">
+        <div class="juros-box-sub">🦔 <strong>Tatu:</strong> esses juros venceram e não foram marcados. Pra cada um: se você <strong>pagou</strong> (Pix, dinheiro), confirma que some daqui. Se <strong>não pagou</strong>, ele vira saldo da dívida (a dívida cresce — é a bola de neve do agiota). Eu nunca mexo no seu número sozinho, então me diz a verdade de cada um.</div>
+      </div>
+      ${itensHTML}
+      <button class="btn btn-secondary" onclick="fecharModal('modal-vencidos')" style="width:100%;margin-top:6px;">Fechar</button>
+    `;
+    document.getElementById('modal-vencidos').classList.add('show');
+  },soDividaId?300:0);
+};
+
+window.resolverVencido=async function(transacaoId,acao){
+  if(resolvendoVencido)return;
+  const j=jurosVencidos.find(x=>x.id===transacaoId);
+  if(!j)return;
+  const d=j.divida;
+  resolvendoVencido=true;
+
+  const itemEl=document.getElementById('venc-'+transacaoId);
+  if(itemEl)itemEl.style.opacity='0.5';
+
+  try{
+    if(acao==='paguei'){
+      // marca a cobrança como realizada — saldo NÃO muda
+      const{error}=await supabase.from('transacoes').update({status:'realizada'}).eq('id',transacaoId);
+      if(error)throw error;
+      await darXP(5,'juros_pago','Juros mensal pago: '+d.credor);
+      toast(`✓ Juros de ${d.credor} marcado como pago`);
+    }else{
+      // NÃO pagou → bola de neve: o juros incorpora ao saldo
+      const novoSaldo=Math.round((Number(d.valor_atual)+Number(j.valor))*100)/100;
+      // 1) marca a cobrança vencida como realizada (ela foi "resolvida", virou saldo)
+      const{error:e1}=await supabase.from('transacoes').update({status:'realizada',descricao:`Juros ${d.credor} NÃO PAGO → virou saldo ${MARCA_JUROS}`}).eq('id',transacaoId);
+      if(e1)throw e1;
+      // 2) aumenta o saldo da dívida
+      const novoMin=novoSaldo*Number(d.juros_mensal)/100;
+      const{error:e2}=await supabase.from('dividas').update({valor_atual:novoSaldo,valor_minimo_mensal:novoMin,atualizado_em:new Date().toISOString()}).eq('id',d.id);
+      if(e2)throw e2;
+      // 3) atualiza local e regenera os juros futuros sobre o saldo NOVO (maior)
+      d.valor_atual=novoSaldo;
+      await regenerarJuros({...d,status:'ativa'});
+      ultimoItemNovoId=d.id;
+      toast(`🔴 ${d.credor} • juros virou saldo • agora R$ ${fm(novoSaldo)}`);
+    }
+
+    // remove da lista local e recarrega
+    jurosVencidos=jurosVencidos.filter(x=>x.id!==transacaoId);
+    const aindaTem=jurosVencidos.length>0;
+    fecharModal('modal-vencidos');
+    await carregar();
+    // reabre se ainda houver vencidos (fluxo de resolver vários)
+    if(aindaTem)setTimeout(()=>abrirVencidos(),400);
+  }catch(e){
+    alert('Erro ao resolver: '+e.message);
+    if(itemEl)itemEl.style.opacity='1';
+  }finally{
+    resolvendoVencido=false;
+  }
+};
 
 window.abrirAdd=function(dados){
   salvando=false;
@@ -617,7 +829,6 @@ window.salvar=async function(editandoId){
   }
 };
 
-// ============== PAGAMENTO PARCIAL / ABATER ==============
 window.abrirPagar=function(id){
   fecharModal('modal-acoes');
   const d=dividas.find(x=>x.id===id);
@@ -794,10 +1005,18 @@ window.abrirAcoes=function(id){
   if(!d)return;
   const ePaga=d.status==='paga';
   const eJuros=ehJuros(d);
+  const vencidosDessa=eJuros&&!ePaga?jurosVencidos.filter(j=>j.divida_id===id):[];
 
   document.getElementById('acoes-content').innerHTML=`
     <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;margin-bottom:4px;">${d.credor}</div>
     <div style="font-size:11px;color:var(--text-mute);margin-bottom:16px;">R$ ${fm(d.valor_atual)} • ${(TIPOS_DIV[d.tipo]||TIPOS_DIV.outro).n}${eJuros?' • 🔴 juros rola':''}${ePaga?' • ✓ PAGA':''}</div>
+
+    ${vencidosDessa.length>0?`
+      <div class="acao-btn" onclick="abrirVencidos('${id}')">
+        <div class="acao-icon warning">⚠️</div>
+        <div><div class="acao-info-titulo">Resolver ${vencidosDessa.length} juros vencido${vencidosDessa.length===1?'':'s'}</div><div class="acao-info-sub">Pagou ou não? (pode virar saldo)</div></div>
+      </div>
+    `:''}
 
     ${!ePaga?`
       <div class="acao-btn" onclick="abrirPagar('${id}')">
