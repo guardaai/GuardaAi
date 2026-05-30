@@ -255,9 +255,10 @@ body{padding-bottom:100px;padding-top:env(safe-area-inset-top)}
     <div class="menu-item" onclick="navegarPara('chat.html?v=3')"><div class="menu-item-icon ia">💬</div><div class="menu-item-info"><div class="menu-item-titulo">Tatu (Chat IA)</div><div class="menu-item-sub">Conversa com o assistente</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('contas.html?v=3')"><div class="menu-item-icon brand">🏦</div><div class="menu-item-info"><div class="menu-item-titulo">Vida Financeira</div><div class="menu-item-sub">Contas, cartões, rendas, fixas</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('transacoes.html?v=7')"><div class="menu-item-icon brand">💸</div><div class="menu-item-info"><div class="menu-item-titulo">Transações</div><div class="menu-item-sub">Entradas e saídas</div></div><div class="menu-item-arrow">›</div></div>
-    <div class="menu-item" onclick="navegarPara('dividas.html?v=8')"><div class="menu-item-icon danger">💳</div><div class="menu-item-info"><div class="menu-item-titulo">Dívidas</div><div class="menu-item-sub">Negociador IA</div></div><div class="menu-item-arrow">›</div></div>
-    <div class="menu-item" onclick="navegarPara('metas.html?v=1')"><div class="menu-item-icon warning">🎯</div><div class="menu-item-info"><div class="menu-item-titulo">Metas</div><div class="menu-item-sub">Reserva e objetivos</div></div><div class="menu-item-arrow">›</div></div>
+    <div class="menu-item" onclick="navegarPara('dividas.html?v=9')"><div class="menu-item-icon danger">💳</div><div class="menu-item-info"><div class="menu-item-titulo">Dívidas</div><div class="menu-item-sub">Negociador IA</div></div><div class="menu-item-arrow">›</div></div>
+    <div class="menu-item" onclick="navegarPara('metas.html?v=3')"><div class="menu-item-icon warning">🎯</div><div class="menu-item-info"><div class="menu-item-titulo">Metas</div><div class="menu-item-sub">Reserva e objetivos</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('dashboard.html?v=1')"><div class="menu-item-icon info">📊</div><div class="menu-item-info"><div class="menu-item-titulo">Dashboard</div><div class="menu-item-sub">Gráficos e análises</div></div><div class="menu-item-arrow">›</div></div>
+    <div class="menu-item" onclick="navegarPara('relatorios.html?v=1')"><div class="menu-item-icon info">📈</div><div class="menu-item-info"><div class="menu-item-titulo">Relatórios 360°</div><div class="menu-item-sub">Entra vs sai, por categoria e conta</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('patrimonio.html?v=1')"><div class="menu-item-icon brand">💎</div><div class="menu-item-info"><div class="menu-item-titulo">Patrimônio</div><div class="menu-item-sub">Visão dos bens</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('educacao.html?v=1')"><div class="menu-item-icon ia">🎓</div><div class="menu-item-info"><div class="menu-item-titulo">Educação</div><div class="menu-item-sub">Trilha do Tatu</div></div><div class="menu-item-arrow">›</div></div>
   </div>
@@ -453,7 +454,7 @@ function render(){
   // 🆕 ALERTA AGIOTA — topo, prioridade nº1, só aparece se houver dívida com juros que rola
   let agiotaHTML='';
   if(stats.qtdAgiota>0&&stats.totalJurosAgiotaMes>0){
-    agiotaHTML=`<div class="alert-agiota" onclick="window.location.href='dividas.html?v=8'">
+    agiotaHTML=`<div class="alert-agiota" onclick="window.location.href='dividas.html?v=9'">
       <div class="alert-agiota-emoji">🔴</div>
       <div class="alert-agiota-info">
         <div class="alert-agiota-titulo">${stats.qtdAgiota===1?'Dívida de juros te sangrando':stats.qtdAgiota+' dívidas de juros te sangrando'}</div>
@@ -568,9 +569,10 @@ function render(){
     <div class="atalhos-grid">
       <div class="atalho-card" id="tut-vida" onclick="window.location.href='contas.html?v=3'"><div class="atalho-emoji">🏦</div><div class="atalho-titulo">Vida Financeira</div><div class="atalho-sub">Contas, cartões, fixas</div><div class="atalho-valor brand">R$ ${fm(stats.patrimonio)}</div></div>
       <div class="atalho-card" id="tut-trans" onclick="window.location.href='transacoes.html?v=7'"><div class="atalho-emoji">💸</div><div class="atalho-titulo">Transações</div><div class="atalho-sub">Entradas e saídas</div><div class="atalho-valor ${stats.saldoMes>=0?'brand':'danger'}">${stats.saldoMes>=0?'+':''}R$ ${fm(stats.saldoMes)}</div></div>
-      <div class="atalho-card" id="tut-divs" onclick="window.location.href='dividas.html?v=8'"><div class="atalho-emoji">💳</div><div class="atalho-titulo">Dívidas</div><div class="atalho-sub">Negociador IA</div><div class="atalho-valor ${stats.totalDividas>0?'danger':'brand'}">R$ ${fm(stats.totalDividas)}</div></div>
-      <div class="atalho-card" id="tut-metas" onclick="window.location.href='metas.html?v=1'"><div class="atalho-emoji">🎯</div><div class="atalho-titulo">Metas</div><div class="atalho-sub">Reserva e objetivos</div></div>
+      <div class="atalho-card" id="tut-divs" onclick="window.location.href='dividas.html?v=9'"><div class="atalho-emoji">💳</div><div class="atalho-titulo">Dívidas</div><div class="atalho-sub">Negociador IA</div><div class="atalho-valor ${stats.totalDividas>0?'danger':'brand'}">R$ ${fm(stats.totalDividas)}</div></div>
+      <div class="atalho-card" id="tut-metas" onclick="window.location.href='metas.html?v=3'"><div class="atalho-emoji">🎯</div><div class="atalho-titulo">Metas</div><div class="atalho-sub">Reserva e objetivos</div></div>
       <div class="atalho-card" onclick="window.location.href='dashboard.html?v=1'"><div class="atalho-emoji">📊</div><div class="atalho-titulo">Dashboard</div><div class="atalho-sub">Gráficos</div></div>
+      <div class="atalho-card" onclick="window.location.href='relatorios.html?v=1'"><div class="atalho-emoji">📈</div><div class="atalho-titulo">Relatórios 360°</div><div class="atalho-sub">Entra vs sai, categorias</div></div>
       <div class="atalho-card" onclick="window.location.href='educacao.html?v=1'"><div class="atalho-emoji">🎓</div><div class="atalho-titulo">Educação</div><div class="atalho-sub">Trilha do Tatu</div><div class="atalho-valor brand">Nível ${nivel.num}</div></div>
     </div>
   `;
