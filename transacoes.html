@@ -38,9 +38,11 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .painel-val.danger{color:var(--danger)}
 .painel-val.warning{color:var(--warning)}
 .painel-val.brand{color:var(--brand)}
+.painel-val.info{color:var(--info)}
 .painel-saldo{margin-top:8px;padding-top:10px;border-top:2px solid var(--border-strong);display:flex;align-items:center;justify-content:space-between}
 .painel-saldo-label{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--text)}
 .painel-saldo-val{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700}
+.painel-nota{font-size:10px;color:var(--text-faint);margin-top:8px;line-height:1.4;text-align:center}
 .tatu-cutuca{background:var(--warning-soft);border:1px solid rgba(255,184,0,0.4);border-radius:14px;padding:12px 14px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
 .tatu-cutuca-emoji{font-size:22px;flex-shrink:0}
 .tatu-cutuca-txt{font-size:12px;line-height:1.5;color:var(--text);flex:1}
@@ -56,6 +58,7 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .trans-card.vencida{border-left:3px solid var(--danger)}
 .trans-card.hoje{border-left:3px solid var(--warning)}
 .trans-card.parcelada{border-left:3px solid var(--ia)}
+.trans-card.nocartao{border-left:3px solid var(--info)}
 .trans-card.novo{animation:piscaItem 3.5s ease-out;background:var(--brand-soft);border-color:var(--brand);box-shadow:0 0 24px rgba(0,217,126,0.3)}
 @keyframes piscaItem{0%{transform:scale(0.95);opacity:0;background:var(--brand);border-color:var(--brand)}10%{transform:scale(1.02);opacity:1}30%{background:var(--brand-soft);transform:scale(1)}70%{background:var(--brand-soft);box-shadow:0 0 30px rgba(0,217,126,0.5)}100%{background:var(--bg-card);box-shadow:none}}
 .trans-icone{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
@@ -63,15 +66,17 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .trans-icone.saida{background:var(--danger-soft);color:var(--danger)}
 .trans-info{flex:1;min-width:0}
 .trans-desc{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.trans-data{font-size:11px;color:var(--text-mute);display:flex;align-items:center;gap:6px}
+.trans-data{font-size:11px;color:var(--text-mute);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .trans-badge{font-size:9px;padding:2px 5px;border-radius:4px;font-weight:700;text-transform:uppercase}
 .trans-badge.prevista{background:var(--info-soft);color:var(--info)}
 .trans-badge.vencida{background:var(--danger-soft);color:var(--danger)}
 .trans-badge.hoje{background:var(--warning-soft);color:var(--warning)}
 .trans-badge.parcela{background:var(--ia-soft);color:var(--ia)}
+.trans-badge.nocartao{background:var(--info-soft);color:var(--info)}
 .trans-valor{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;white-space:nowrap}
 .trans-valor.entrada{color:var(--brand)}
 .trans-valor.saida{color:var(--danger)}
+.trans-valor.nocartao{color:var(--text-mute)}
 .empty-state{background:var(--bg-card);border:1px dashed var(--border-strong);border-radius:14px;padding:40px 20px;text-align:center;margin-top:20px}
 .empty-emoji{font-size:48px;margin-bottom:12px}
 .empty-titulo{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;margin-bottom:4px}
@@ -125,6 +130,9 @@ input:-webkit-autofill,textarea:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px
 .parcela-mini-valor{font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--danger)}
 .alerta-fin{background:var(--warning-soft);border:1px solid rgba(255,184,0,0.3);border-radius:12px;padding:12px;margin-top:14px;font-size:12px;line-height:1.5}
 .alerta-fin strong{color:var(--warning)}
+.forma-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.forma-tab{background:var(--bg-input);border:2px solid var(--border);border-radius:12px;padding:10px;text-align:center;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:var(--text-mute)}
+.forma-tab.active{background:var(--info-soft);border-color:var(--info);color:var(--info)}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
 .modal-overlay.show{display:flex}
 .modal{background:var(--bg-card);border-top:1px solid var(--border);border-radius:24px 24px 0 0;padding:20px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
@@ -204,6 +212,7 @@ const CATEGORIAS={alimentacao:{e:'🍔',n:'Alimentação',c:'#ff6b35'},transport
 
 let usuario,perfil;
 let contas=[];
+let cartoesCreditoIds=new Set(); // 🆕 IDs das contas tipo cartao_credito
 let transacoes=[];
 let mesRef=new Date();
 let filtroAtual='todas';
@@ -224,6 +233,13 @@ let parcelasPreview=[];
 async function carregarContas(){
   const{data}=await supabase.from('contas').select('*').eq('user_id',usuario.id).eq('ativa',true);
   contas=data||[];
+  // 🆕 monta o conjunto de IDs que são cartão de crédito
+  cartoesCreditoIds=new Set(contas.filter(c=>c.tipo==='cartao_credito').map(c=>c.id));
+}
+
+// 🆕 regra única do double counting: saída no cartão de crédito NÃO soma no mês (já é/está na fatura)
+function noCartaoCredito(t){
+  return t.tipo==='saida' && t.conta_id && cartoesCreditoIds.has(t.conta_id);
 }
 
 async function carregar(){
@@ -248,15 +264,16 @@ function render(){
 
   const realiz=transacoes.filter(t=>(t.status||'realizada')==='realizada');
   const entradasReal=realiz.filter(t=>t.tipo==='entrada').reduce((a,t)=>a+Number(t.valor),0);
-  const saidasReal=realiz.filter(t=>t.tipo==='saida').reduce((a,t)=>a+Number(t.valor),0);
+  // 🆕 saídas reais NÃO contam o que está no cartão de crédito (já é fatura)
+  const saidasReal=realiz.filter(t=>t.tipo==='saida'&&!noCartaoCredito(t)).reduce((a,t)=>a+Number(t.valor),0);
   const previstas=transacoes.filter(t=>t.status==='prevista');
-  // 🆕 A pagar ainda = saídas previstas que ainda não foram realizadas
-  const aPagar=previstas.filter(t=>t.tipo==='saida').reduce((a,t)=>a+Number(t.valor),0);
+  // 🆕 a pagar ainda = saídas previstas que NÃO estão no cartão (fatura/assinatura no cartão não soma)
+  const aPagar=previstas.filter(t=>t.tipo==='saida'&&!noCartaoCredito(t)).reduce((a,t)=>a+Number(t.valor),0);
   const aReceber=previstas.filter(t=>t.tipo==='entrada').reduce((a,t)=>a+Number(t.valor),0);
-  // 🆕 Saldo previsto do mês = (entradas reais + a receber) - (saídas reais + a pagar)
+  // 🆕 total que está no cartão de crédito (mostrado à parte, não somado)
+  const noCartao=transacoes.filter(t=>noCartaoCredito(t)).reduce((a,t)=>a+Number(t.valor),0);
   const saldoPrevisto=(entradasReal+aReceber)-(saidasReal+aPagar);
-  // 🆕 Contas vencidas não pagas
-  const vencidasArr=previstas.filter(t=>t.data<hoje&&t.tipo==='saida');
+  const vencidasArr=previstas.filter(t=>t.data<hoje&&t.tipo==='saida'&&!noCartaoCredito(t));
   const vencidas=vencidasArr.length;
   const totalVencido=vencidasArr.reduce((a,t)=>a+Number(t.valor),0);
 
@@ -270,14 +287,16 @@ function render(){
       <div class="resumo-card"><div class="resumo-label">↓ Entradas (real)</div><div class="resumo-valor brand">R$ ${fm(entradasReal)}</div></div>
       <div class="resumo-card"><div class="resumo-label">↑ Saídas (real)</div><div class="resumo-valor danger">R$ ${fm(saidasReal)}</div></div>
     </div>
-    ${(aPagar>0||aReceber>0)?`
+    ${(aPagar>0||aReceber>0||noCartao>0)?`
     <div class="painel-mes">
       ${aReceber>0?`<div class="painel-linha"><div class="painel-label">📥 A receber ainda</div><div class="painel-val brand">+R$ ${fm(aReceber)}</div></div>`:''}
-      <div class="painel-linha"><div class="painel-label">📤 A pagar ainda este mês</div><div class="painel-val warning">-R$ ${fm(aPagar)}</div></div>
+      <div class="painel-linha"><div class="painel-label">📤 A pagar ainda (conta/boleto/pix)</div><div class="painel-val warning">-R$ ${fm(aPagar)}</div></div>
+      ${noCartao>0?`<div class="painel-linha"><div class="painel-label">💳 No cartão de crédito</div><div class="painel-val info">R$ ${fm(noCartao)}</div></div>`:''}
       <div class="painel-saldo">
         <div class="painel-saldo-label">${saldoPrevisto>=0?'🟢':'🔴'} Saldo previsto do mês</div>
         <div class="painel-saldo-val ${saldoPrevisto>=0?'brand':'danger'}">${saldoPrevisto<0?'-':''}R$ ${fm(Math.abs(saldoPrevisto))}</div>
       </div>
+      ${noCartao>0?`<div class="painel-nota">💳 O que está no cartão não soma aqui — já está na fatura. Veja faturas na tela Dívidas.</div>`:''}
     </div>
     `:''}
     ${vencidas>0?`
@@ -328,15 +347,18 @@ function renderLista(lista,hoje){
       const ePrev=t.status==='prevista';
       const eVenc=ePrev&&t.data<hoje;
       const eHoje=t.data===hoje;
+      const eNoCartao=noCartaoCredito(t);
       const cat=t.categoria?CATEGORIAS[t.categoria]:null;
       const emoji=cat?.e||(eEnt?'💰':'💸');
       const ehNovo=t.id===ultimoItemNovoId;
       const eParc=t.parcelado||t.total_parcelas>1;
+      const nomeCartao=eNoCartao?(contas.find(c=>c.id===t.conta_id)?.nome||'cartão'):'';
       let bClass='';
       let bdgHTML='';
-      if(eVenc){bClass='vencida';bdgHTML=`<span class="trans-badge vencida">VENCIDA</span>`}
+      if(eVenc&&!eNoCartao){bClass='vencida';bdgHTML=`<span class="trans-badge vencida">VENCIDA</span>`}
       else if(eHoje&&ePrev){bClass='hoje';bdgHTML=`<span class="trans-badge hoje">HOJE</span>`}
       else if(ePrev)bdgHTML=`<span class="trans-badge prevista">PREVISTA</span>`;
+      if(eNoCartao){bdgHTML+=`<span class="trans-badge nocartao">💳 ${nomeCartao}</span>`;bClass+=' nocartao'}
       if(eParc&&t.numero_parcela&&t.total_parcelas){bdgHTML+=`<span class="trans-badge parcela">${t.numero_parcela}/${t.total_parcelas}</span>`;bClass+=' parcelada'}
       if(ehNovo)bClass+=' novo';
       html+=`<div class="trans-card ${bClass}" data-item-id="${t.id}" onclick="abrirAcoes('${t.id}')">
@@ -345,7 +367,7 @@ function renderLista(lista,hoje){
           <div class="trans-desc">${t.descricao}</div>
           <div class="trans-data">${bdgHTML}${cat?.n||''}</div>
         </div>
-        <div class="trans-valor ${t.tipo}">${eEnt?'+':'-'}R$ ${fm(t.valor)}</div>
+        <div class="trans-valor ${eNoCartao?'nocartao':t.tipo}">${eEnt?'+':'-'}R$ ${fm(t.valor)}</div>
       </div>`;
     });
   });
@@ -611,12 +633,20 @@ function abrirAddManualComDados(dados){
       <div class="field"><label>Categoria</label><select id="m-cat">${Object.entries(CATEGORIAS).map(([k,v])=>`<option value="${k}" ${dados?.categoria_sugerida===k||dados?.categoria===k?'selected':''}>${v.e} ${v.n}</option>`).join('')}</select></div>
       <div class="field"><label>Data</label><input type="date" id="m-data" value="${dados?.data_mencionada||hoje}"></div>
     </div>
-    <div class="field"><label>Conta/Cartão</label><select id="m-conta"><option value="">Nenhuma</option>${contas.map(c=>`<option value="${c.id}">${c.icone||''} ${c.nome}</option>`).join('')}</select></div>
+    <div class="field"><label>Conta/Cartão</label><select id="m-conta" onchange="atualizaDicaForma()"><option value="">Nenhuma</option>${contas.map(c=>`<option value="${c.id}" data-tipo="${c.tipo||''}">${c.icone||''} ${c.nome}${c.tipo==='cartao_credito'?' (crédito)':''}</option>`).join('')}</select></div>
+    <div id="dica-forma" style="display:none;background:var(--info-soft);border:1px solid rgba(56,189,248,0.3);border-radius:10px;padding:10px;font-size:11px;color:var(--info);line-height:1.4;margin-bottom:10px;">💳 No cartão de crédito: isso entra na fatura e <strong>não soma</strong> no total do mês (a fatura é que conta). Serve pra detalhar pra onde foi o dinheiro.</div>
     <button class="btn btn-primary" id="btn-salvar-manual" onclick="salvarManual()" style="width:100%;margin-top:10px;">${vf?'✅ Confirmar e salvar':'Salvar transação'}</button>`;
   document.getElementById('modal-add').classList.add('show');
 }
 
-window.selTipo=function(t){tipoAtual=t;document.querySelectorAll('.tipo-tab').forEach(tab=>tab.classList.remove('active'));document.querySelector(`.tipo-tab.${t}`).classList.add('active')};
+window.atualizaDicaForma=function(){
+  const sel=document.getElementById('m-conta');
+  const opt=sel.options[sel.selectedIndex];
+  const tipo=opt?opt.getAttribute('data-tipo'):'';
+  document.getElementById('dica-forma').style.display=(tipo==='cartao_credito'&&tipoAtual==='saida')?'block':'none';
+};
+
+window.selTipo=function(t){tipoAtual=t;document.querySelectorAll('.tipo-tab').forEach(tab=>tab.classList.remove('active'));document.querySelector(`.tipo-tab.${t}`).classList.add('active');atualizaDicaForma()};
 
 let salvandoManual=false;
 window.salvarManual=async function(){
@@ -708,10 +738,11 @@ window.abrirAcoes=function(id){
   const eEnt=t.tipo==='entrada';
   const eRealiz=(t.status||'realizada')==='realizada';
   const eParc=t.parcelado&&t.grupo_parcela;
+  const eNoCartao=noCartaoCredito(t);
   document.getElementById('acoes-content').innerHTML=`
     <div class="acoes-titulo">${t.descricao}</div>
-    <div class="acoes-sub">${eEnt?'+':'-'}R$ ${fm(t.valor)} • ${new Date(t.data+'T12:00:00').toLocaleDateString('pt-BR')}${eParc?` • Parcela ${t.numero_parcela}/${t.total_parcelas}`:''}</div>
-    ${!eRealiz?`<div class="acao-btn" onclick="marcarRealizada('${id}')"><div class="acao-icon brand">✓</div><div class="acao-info"><div class="acao-titulo">Marcar como ${eEnt?'recebida':'paga'}</div><div class="acao-info-sub">Confirma que aconteceu de verdade</div></div></div>`:''}
+    <div class="acoes-sub">${eEnt?'+':'-'}R$ ${fm(t.valor)} • ${new Date(t.data+'T12:00:00').toLocaleDateString('pt-BR')}${eParc?` • Parcela ${t.numero_parcela}/${t.total_parcelas}`:''}${eNoCartao?' • 💳 no cartão (não soma no mês)':''}</div>
+    ${!eRealiz&&!eNoCartao?`<div class="acao-btn" onclick="marcarRealizada('${id}')"><div class="acao-icon brand">✓</div><div class="acao-info"><div class="acao-titulo">Marcar como ${eEnt?'recebida':'paga'}</div><div class="acao-info-sub">Confirma que aconteceu de verdade</div></div></div>`:''}
     <div class="acao-btn" onclick="editarTrans('${id}')"><div class="acao-icon">✏️</div><div class="acao-info"><div class="acao-titulo">Editar</div><div class="acao-info-sub">Alterar valor, descrição</div></div></div>
     <div class="acao-btn" onclick="excluirTrans('${id}')"><div class="acao-icon danger">🗑️</div><div class="acao-info"><div class="acao-titulo" style="color:var(--danger);">Excluir ${eParc?'essa parcela':''}</div><div class="acao-info-sub">${eParc?'Só essa, mantém as outras':'Remove essa transação'}</div></div></div>
     ${eParc?`<div class="acao-btn" onclick="excluirGrupo('${t.grupo_parcela}')"><div class="acao-icon danger">🗑️</div><div class="acao-info"><div class="acao-titulo" style="color:var(--danger);">Excluir TODAS as ${t.total_parcelas} parcelas</div><div class="acao-info-sub">Remove o parcelamento inteiro</div></div></div>`:''}
