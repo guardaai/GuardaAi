@@ -478,6 +478,8 @@
     font-weight: 500;
   }
   
+  .field label .obrig { color: var(--danger); font-weight: 700; }
+  
   .field input, .field select {
     width: 100%;
     background: var(--bg-input);
@@ -492,6 +494,11 @@
   .field input:focus, .field select:focus {
     outline: none;
     border-color: var(--brand);
+  }
+  
+  .field input.erro-campo {
+    border-color: var(--danger);
+    background: var(--danger-soft);
   }
   
   .field-row {
@@ -658,6 +665,18 @@
     font-size: 22px;
     padding: 0;
   }
+  
+  .ciclo-aviso {
+    background: var(--info-soft);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin: 0 0 12px;
+    font-size: 11px;
+    color: var(--info);
+    line-height: 1.5;
+  }
+  .ciclo-aviso strong { color: var(--info); }
   
   .btn {
     width: 100%;
@@ -1009,14 +1028,17 @@
             </div>
           </div>
         </div>
+        <div class="ciclo-aviso" style="margin-top:14px;">
+          🦔 <strong>Tatu precisa do fechamento e vencimento</strong> pra saber em qual fatura cada compra cai. Sem isso, não dá pra calcular a fatura certa. Tá no app do cartão ou na fatura.
+        </div>
         <div class="field-row">
           <div class="field">
-            <label>Fechamento (dia)</label>
+            <label>Fechamento (dia) <span class="obrig">*</span></label>
             <input type="number" id="c-fechamento" placeholder="25" min="1" max="31">
           </div>
           <div class="field">
-            <label>Vencimento (dia)</label>
-            <input type="number" id="c-vencimento" placeholder="5" min="1" max="31">
+            <label>Vencimento (dia) <span class="obrig">*</span></label>
+            <input type="number" id="c-vencimento" placeholder="3" min="1" max="31">
           </div>
         </div>
       </div>
@@ -1507,13 +1529,19 @@
       valorClasse = saldo >= 0 ? 'positivo' : 'negativo';
     }
     
+    // 🆕 alerta visual se cartão de crédito sem ciclo cadastrado
+    let alertaCiclo = '';
+    if (ehCartao && (!c.dia_fechamento || !c.dia_vencimento)) {
+      alertaCiclo = `<div class="item-tag" style="background:var(--danger-soft);color:var(--danger);">⚠️ SEM FECHAMENTO/VENCIMENTO</div>`;
+    }
+    
     return `
       <div class="item-card ${!c.ativa ? 'inativa' : ''}" onclick="abrirDetalhe('conta', '${c.id}')">
         <div class="item-icone" style="background:${c.cor}30;border:2px solid ${c.cor}66;color:${c.cor};">${c.icone}</div>
         <div class="item-info">
           <div class="item-nome">${c.nome}</div>
           <div class="item-tipo">${tiposContaLabel[c.tipo] || 'Outro'}${c.banco ? ' • ' + c.banco : ''}</div>
-          ${tag}
+          ${alertaCiclo || tag}
         </div>
         <div class="item-valor">
           <div class="item-valor-label">${valorLabel}</div>
@@ -1856,6 +1884,8 @@
     document.getElementById('c-fatura').value = '';
     document.getElementById('c-fechamento').value = '';
     document.getElementById('c-vencimento').value = '';
+    document.getElementById('c-fechamento').classList.remove('erro-campo');
+    document.getElementById('c-vencimento').classList.remove('erro-campo');
     document.getElementById('msg-conta').className = 'msg';
     document.getElementById('fatura-aberta-section').classList.add('hidden');
     tipoSelecionado = 'conta_corrente';
@@ -1879,6 +1909,8 @@
     btn.disabled = false;
     
     document.getElementById('msg-conta').className = 'msg';
+    document.getElementById('c-fechamento').classList.remove('erro-campo');
+    document.getElementById('c-vencimento').classList.remove('erro-campo');
     document.querySelectorAll('.banco-preset').forEach(el => el.classList.remove('active'));
     
     const tipo = r.tipo_conta || 'conta_corrente';
@@ -1937,6 +1969,9 @@
     
     const conf = r.confianca || 'média';
     let msgTexto = `✨ <strong>IA preencheu tudo!</strong> Confiança: ${conf}. Revise e ajuste.`;
+    if (tipo === 'cartao_credito' && (!r.dia_fechamento || !r.dia_vencimento)) {
+      msgTexto += `<br><br>⚠️ <strong>Preencha o fechamento e o vencimento</strong> — a IA não achou na imagem e o Tatu precisa deles.`;
+    }
     if (r.tem_divida && r.valor_divida) {
       msgTexto += `<br><br>💳 <strong>Fatura R$ ${formatarMoeda(r.valor_divida)} detectada</strong>. Vai virar dívida + transação prevista.`;
     }
@@ -1974,6 +2009,11 @@
     const btn = document.getElementById('btn-salvar-conta');
     const nome = document.getElementById('c-nome').value.trim();
     
+    const elFech = document.getElementById('c-fechamento');
+    const elVenc = document.getElementById('c-vencimento');
+    elFech.classList.remove('erro-campo');
+    elVenc.classList.remove('erro-campo');
+    
     if (!nome) {
       document.getElementById('msg-conta').className = 'msg show msg-error';
       document.getElementById('msg-conta').textContent = 'Preencha o nome';
@@ -1983,9 +2023,21 @@
     const isCartao = tipoSelecionado === 'cartao_credito';
     const saldoInicial = isCartao ? 0 : valorParaNumero(document.getElementById('c-saldo').value);
     const limite = isCartao ? valorParaNumero(document.getElementById('c-limite').value) : null;
-    const fechamento = isCartao ? (parseInt(document.getElementById('c-fechamento').value) || null) : null;
-    const vencimento = isCartao ? (parseInt(document.getElementById('c-vencimento').value) || null) : null;
+    const fechamento = isCartao ? (parseInt(elFech.value) || null) : null;
+    const vencimento = isCartao ? (parseInt(elVenc.value) || null) : null;
     const valorFatura = isCartao ? valorParaNumero(document.getElementById('c-fatura').value) : 0;
+    
+    // 🆕 OBRIGATÓRIO: cartão de crédito precisa de fechamento e vencimento
+    if (isCartao) {
+      let faltou = false;
+      if (!fechamento || fechamento < 1 || fechamento > 31) { elFech.classList.add('erro-campo'); faltou = true; }
+      if (!vencimento || vencimento < 1 || vencimento > 31) { elVenc.classList.add('erro-campo'); faltou = true; }
+      if (faltou) {
+        document.getElementById('msg-conta').className = 'msg show msg-error';
+        document.getElementById('msg-conta').innerHTML = '🦔 Pra cartão de crédito eu <strong>preciso do dia de fechamento e do dia de vencimento</strong> (entre 1 e 31). É o que me deixa calcular em qual fatura cada compra cai. Tá no app do cartão.';
+        return;
+      }
+    }
     
     btn.disabled = true;
     btn.textContent = 'Salvando...';
@@ -2529,7 +2581,14 @@
     
     document.getElementById('detalhe-titulo').textContent = `${c.icone} ${c.nome}`;
     
+    // 🆕 aviso se cartão sem ciclo
+    let avisoCiclo = '';
+    if (ehCartao && (!c.dia_fechamento || !c.dia_vencimento)) {
+      avisoCiclo = `<div class="info-box" style="background:var(--danger-soft);border-color:rgba(255,71,87,0.3);color:#ff6b78;">⚠️ <strong>Sem fechamento/vencimento.</strong> Toque em Editar e preencha — o Tatu precisa pra calcular as faturas.</div>`;
+    }
+    
     let html = `
+      ${avisoCiclo}
       <div class="saldo-total" style="margin-bottom:16px;">
         <div class="saldo-label">${ehCartao ? 'Limite total' : 'Saldo atual'}</div>
         <div class="saldo-valor ${ehCartao ? 'positivo' : (saldo >= 0 ? 'positivo' : 'negativo')}" style="color:${c.cor};">R$ ${formatarMoeda(ehCartao ? (c.limite || 0) : saldo)}</div>
@@ -2539,8 +2598,8 @@
         <div class="detalhe-linha"><div class="detalhe-label">Tipo</div><div class="detalhe-valor">${tiposContaLabel[c.tipo]}</div></div>
         <div class="detalhe-linha"><div class="detalhe-label">Banco</div><div class="detalhe-valor">${c.banco || '—'}</div></div>
         ${!ehCartao ? `<div class="detalhe-linha"><div class="detalhe-label">Saldo inicial</div><div class="detalhe-valor">R$ ${formatarMoeda(c.saldo_inicial || 0)}</div></div>` : ''}
-        ${ehCartao && c.dia_fechamento ? `<div class="detalhe-linha"><div class="detalhe-label">Fechamento</div><div class="detalhe-valor">Dia ${c.dia_fechamento}</div></div>` : ''}
-        ${ehCartao && c.dia_vencimento ? `<div class="detalhe-linha"><div class="detalhe-label">Vencimento</div><div class="detalhe-valor">Dia ${c.dia_vencimento}</div></div>` : ''}
+        ${ehCartao ? `<div class="detalhe-linha"><div class="detalhe-label">Fechamento</div><div class="detalhe-valor">${c.dia_fechamento ? 'Dia ' + c.dia_fechamento : '⚠️ falta'}</div></div>` : ''}
+        ${ehCartao ? `<div class="detalhe-linha"><div class="detalhe-label">Vencimento</div><div class="detalhe-valor">${c.dia_vencimento ? 'Dia ' + c.dia_vencimento : '⚠️ falta'}</div></div>` : ''}
         <div class="detalhe-linha"><div class="detalhe-label">Status</div><div class="detalhe-valor">${c.ativa ? '✓ Ativa' : '✗ Inativa'}</div></div>
       </div>
     `;
@@ -2617,6 +2676,8 @@
     btn.textContent = 'Salvar';
     btn.disabled = false;
     document.getElementById('msg-conta').className = 'msg';
+    document.getElementById('c-fechamento').classList.remove('erro-campo');
+    document.getElementById('c-vencimento').classList.remove('erro-campo');
     document.getElementById('fatura-aberta-section').classList.add('hidden');
     
     document.getElementById('c-nome').value = c.nome;
@@ -2725,6 +2786,6 @@
     setTimeout(() => { t.style.display = 'none'; }, 2500);
   }
 </script>
-
+<script src="polish.js?v=1"></script>
 </body>
 </html>
