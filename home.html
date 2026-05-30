@@ -3,7 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0a0a0a">
+<meta name="theme-color" content="#00d97e">
+<meta name="description" content="guardaí - Assistente financeiro pessoal com IA">
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="guardaí">
+<meta name="mobile-web-app-capable" content="yes">
+
 <title>guardaí</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -11,7 +21,7 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
 :root{--bg:#0a0a0a;--bg-card:#141414;--bg-elev:#1c1c1c;--bg-input:#181818;--border:#252525;--brand:#00d97e;--brand-hover:#00ba6b;--brand-soft:rgba(0,217,126,0.1);--danger:#ff4757;--danger-soft:rgba(255,71,87,0.1);--warning:#ffb800;--warning-soft:rgba(255,184,0,0.1);--info:#38bdf8;--info-soft:rgba(56,189,248,0.1);--ia:#a855f7;--ia-soft:rgba(168,85,247,0.1);--text:#fff;--text-mute:#a3a3a3;--text-faint:#525252}
 html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;min-height:100vh;overflow-x:hidden}
-body{padding-bottom:100px}
+body{padding-bottom:100px;padding-top:env(safe-area-inset-top)}
 .header{padding:16px 20px;background:var(--bg);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px}
 .brand-mark{width:36px;height:36px;background:var(--brand);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .brand-mark::before{content:'';width:14px;height:14px;border:2.5px solid var(--bg);border-radius:4px;border-top:none;border-right:none}
@@ -19,6 +29,13 @@ body{padding-bottom:100px}
 .header-btn{width:38px;height:38px;border-radius:10px;background:var(--bg-card);border:1px solid var(--border);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0}
 .header-btn:active{background:var(--bg-elev)}
 .container{max-width:480px;margin:0 auto;padding:20px}
+.pwa-banner{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-hover) 100%);border-radius:14px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;color:#001a0e;cursor:pointer;animation:fadeIn 0.4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.pwa-banner-emoji{font-size:24px;flex-shrink:0}
+.pwa-banner-info{flex:1;min-width:0}
+.pwa-banner-titulo{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;margin-bottom:1px}
+.pwa-banner-sub{font-size:11px;opacity:0.85}
+.pwa-banner-close{width:24px;height:24px;border:none;background:rgba(0,0,0,0.15);border-radius:50%;color:#001a0e;font-size:14px;font-weight:700;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .saudacao{margin-bottom:16px}
 .saudacao-titulo{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;letter-spacing:-0.02em;margin-bottom:4px}
 .saudacao-sub{font-size:13px;color:var(--text-mute)}
@@ -33,8 +50,6 @@ body{padding-bottom:100px}
 .level-bar{height:6px;background:rgba(0,0,0,0.2);border-radius:100px;overflow:hidden;margin-bottom:10px}
 .level-bar-fill{height:100%;background:#001a0e;border-radius:100px;transition:width 0.4s}
 .level-bottom{display:flex;justify-content:space-between;align-items:center;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600}
-
-/* 🆕 v2.4: CARD HOJE */
 .hoje-card{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:16px}
 .hoje-titulo{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .hoje-titulo-txt{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px}
@@ -59,7 +74,6 @@ body{padding-bottom:100px}
 .hoje-item-valor.saida{color:var(--danger)}
 .hoje-vazio{text-align:center;padding:16px 12px;color:var(--text-faint);font-size:12px;font-style:italic}
 .hoje-ver-todas{text-align:center;font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--brand);font-weight:600;padding:10px 0 4px;cursor:pointer}
-
 .resumo-mes{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:16px}
 .resumo-titulo{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .resumo-titulo-txt{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.1em}
@@ -230,9 +244,9 @@ body{padding-bottom:100px}
   </div>
   <div class="menu-section">
     <div class="menu-section-title">Principal</div>
-    <div class="menu-item" onclick="navegarPara('chat.html?v=2')"><div class="menu-item-icon ia">💬</div><div class="menu-item-info"><div class="menu-item-titulo">Tatu (Chat IA)</div><div class="menu-item-sub">Conversa com o assistente</div></div><div class="menu-item-arrow">›</div></div>
+    <div class="menu-item" onclick="navegarPara('chat.html?v=3')"><div class="menu-item-icon ia">💬</div><div class="menu-item-info"><div class="menu-item-titulo">Tatu (Chat IA)</div><div class="menu-item-sub">Conversa com o assistente</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('contas.html?v=3')"><div class="menu-item-icon brand">🏦</div><div class="menu-item-info"><div class="menu-item-titulo">Vida Financeira</div><div class="menu-item-sub">Contas, cartões, rendas, fixas</div></div><div class="menu-item-arrow">›</div></div>
-    <div class="menu-item" onclick="navegarPara('transacoes.html?v=6')"><div class="menu-item-icon brand">💸</div><div class="menu-item-info"><div class="menu-item-titulo">Transações</div><div class="menu-item-sub">Entradas e saídas</div></div><div class="menu-item-arrow">›</div></div>
+    <div class="menu-item" onclick="navegarPara('transacoes.html?v=7')"><div class="menu-item-icon brand">💸</div><div class="menu-item-info"><div class="menu-item-titulo">Transações</div><div class="menu-item-sub">Entradas e saídas</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('dividas.html?v=3')"><div class="menu-item-icon danger">💳</div><div class="menu-item-info"><div class="menu-item-titulo">Dívidas</div><div class="menu-item-sub">Negociador IA</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('metas.html?v=1')"><div class="menu-item-icon warning">🎯</div><div class="menu-item-info"><div class="menu-item-titulo">Metas</div><div class="menu-item-sub">Reserva e objetivos</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="navegarPara('dashboard.html?v=1')"><div class="menu-item-icon info">📊</div><div class="menu-item-info"><div class="menu-item-titulo">Dashboard</div><div class="menu-item-sub">Gráficos e análises</div></div><div class="menu-item-arrow">›</div></div>
@@ -243,6 +257,7 @@ body{padding-bottom:100px}
   <div class="menu-section">
     <div class="menu-section-title">Conta</div>
     <div class="menu-item" onclick="reiniciarTutorial()"><div class="menu-item-icon ia">🦔</div><div class="menu-item-info"><div class="menu-item-titulo">Ver tutorial</div><div class="menu-item-sub">Recapitular app</div></div><div class="menu-item-arrow">›</div></div>
+    <div class="menu-item" onclick="mostrarInstalarPWA()"><div class="menu-item-icon brand">📱</div><div class="menu-item-info"><div class="menu-item-titulo">Instalar no celular</div><div class="menu-item-sub">Vira app de verdade</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="emBreve('Perfil')"><div class="menu-item-icon">👤</div><div class="menu-item-info"><div class="menu-item-titulo">Meu Perfil</div></div><div class="menu-item-arrow">›</div></div>
     <div class="menu-item" onclick="emBreve('Configurações')"><div class="menu-item-icon">⚙️</div><div class="menu-item-info"><div class="menu-item-titulo">Configurações</div></div><div class="menu-item-arrow">›</div></div>
   </div>
@@ -265,7 +280,7 @@ body{padding-bottom:100px}
   <div class="menu-footer">
     <div class="menu-footer-brand">guardaí</div>
     <div>Assistente financeiro com IA</div>
-    <div>v2.4 • beta</div>
+    <div>v2.5 • beta</div>
   </div>
 </div>
 
@@ -279,6 +294,17 @@ body{padding-bottom:100px}
 </div>
 
 <div class="xp-toast" id="xp-toast">+50 XP 🎉</div>
+
+<script>
+// 🆕 v2.5: Registrar Service Worker pra PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('🦔 SW registrado:', reg.scope))
+      .catch(err => console.log('SW falhou:', err));
+  });
+}
+</script>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -296,7 +322,19 @@ let stats={};
 let contas=[];
 let transacoesHoje=[];
 let recognition=null,isRecording=false,textoTranscrito='',propostaAudio=null;
-let ultimoItemNovoId=null; // 🆕 v2.4
+let ultimoItemNovoId=null;
+let pwaInstalado=false;
+let pwaBannerFechado=false;
+
+// 🆕 v2.5: Detecta se já tá rodando como PWA instalado
+function checarPWAInstalado(){
+  if(window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true){
+    pwaInstalado=true;
+    return true;
+  }
+  return false;
+}
+checarPWAInstalado();
 
 (async()=>{
   const{data:{session}}=await supabase.auth.getSession();
@@ -349,7 +387,6 @@ async function carregarTudo(){
   const totalVencidas=vencidas.reduce((a,t)=>a+Number(t.valor),0);
   const saldoPrevisto=saldoMes+aReceber-aPagar;
   
-  // 🆕 v2.4: total do dia
   const hojeReal=transacoesHoje.filter(t=>(t.status||'realizada')==='realizada');
   const hojeEntradas=hojeReal.filter(t=>t.tipo==='entrada').reduce((a,t)=>a+Number(t.valor),0);
   const hojeSaidas=hojeReal.filter(t=>t.tipo==='saida').reduce((a,t)=>a+Number(t.valor),0);
@@ -382,10 +419,24 @@ function render(){
   const mesA=`${meses[new Date().getMonth()]} de ${new Date().getFullYear()}`;
   const hojeData=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'short'});
   
-  let alertHTML='';
-  if(stats.vencidas>0)alertHTML=`<div class="alert-vencidas" onclick="window.location.href='transacoes.html?v=6'"><div class="alert-emoji">⚠️</div><div class="alert-info"><div class="alert-titulo">${stats.vencidas} conta${stats.vencidas===1?'':'s'} vencida${stats.vencidas===1?'':'s'}!</div><div class="alert-sub">Total: R$ ${fm(stats.totalVencidas)}</div></div><div class="alert-seta">›</div></div>`;
+  // 🆕 v2.5: Banner PWA (só se não tá instalado e não foi fechado)
+  let pwaBannerHTML='';
+  const dismissed=localStorage.getItem('pwa_banner_dismissed');
+  if(!pwaInstalado&&!dismissed&&!pwaBannerFechado){
+    const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
+    pwaBannerHTML=`<div class="pwa-banner" onclick="mostrarInstalarPWA()">
+      <div class="pwa-banner-emoji">📱</div>
+      <div class="pwa-banner-info">
+        <div class="pwa-banner-titulo">Instalar o guardaí no celular</div>
+        <div class="pwa-banner-sub">${isIOS?'Adicionar à Tela de Início no Safari':'Toca pra ver como'}</div>
+      </div>
+      <button class="pwa-banner-close" onclick="event.stopPropagation();fecharBannerPWA()">✕</button>
+    </div>`;
+  }
   
-  // 🆕 v2.4: CARD HOJE
+  let alertHTML='';
+  if(stats.vencidas>0)alertHTML=`<div class="alert-vencidas" onclick="window.location.href='transacoes.html?v=7'"><div class="alert-emoji">⚠️</div><div class="alert-info"><div class="alert-titulo">${stats.vencidas} conta${stats.vencidas===1?'':'s'} vencida${stats.vencidas===1?'':'s'}!</div><div class="alert-sub">Total: R$ ${fm(stats.totalVencidas)}</div></div><div class="alert-seta">›</div></div>`;
+  
   let hojeHTML='';
   const hojeItens=transacoesHoje.slice(0,5);
   hojeHTML=`<div class="hoje-card">
@@ -406,7 +457,7 @@ function render(){
       const cat=t.categoria?CATEGORIAS[t.categoria]:null;
       const emoji=cat?.e||(eEnt?'💰':'💸');
       const ehNovo=t.id===ultimoItemNovoId;
-      hojeHTML+=`<div class="hoje-item ${ehNovo?'novo':''}" data-item-id="${t.id}" onclick="window.location.href='transacoes.html?v=6'">
+      hojeHTML+=`<div class="hoje-item ${ehNovo?'novo':''}" data-item-id="${t.id}" onclick="window.location.href='transacoes.html?v=7'">
         <div class="hoje-item-icon ${t.tipo}">${emoji}</div>
         <div class="hoje-item-info">
           <div class="hoje-item-desc">${t.descricao}</div>
@@ -418,7 +469,7 @@ function render(){
     hojeHTML+=`</div>`;
     
     if(transacoesHoje.length>5){
-      hojeHTML+=`<div class="hoje-ver-todas" onclick="window.location.href='transacoes.html?v=6'">Ver todas as ${transacoesHoje.length} →</div>`;
+      hojeHTML+=`<div class="hoje-ver-todas" onclick="window.location.href='transacoes.html?v=7'">Ver todas as ${transacoesHoje.length} →</div>`;
     }
   }else{
     hojeHTML+=`<div class="hoje-vazio">Nada cadastrado hoje. Toque no 🎤 pra falar!</div>`;
@@ -427,7 +478,7 @@ function render(){
   
   let proxHTML='';
   if(stats.proximas.length>0){
-    proxHTML=`<div class="secao-titulo"><div class="secao-titulo-txt">📅 Próximas contas</div><div class="secao-link" onclick="window.location.href='transacoes.html?v=6'">Ver todas →</div></div>`;
+    proxHTML=`<div class="secao-titulo"><div class="secao-titulo-txt">📅 Próximas contas</div><div class="secao-link" onclick="window.location.href='transacoes.html?v=7'">Ver todas →</div></div>`;
     const hj=new Date().toISOString().split('T')[0];
     stats.proximas.forEach(t=>{
       const d=new Date(t.data+'T12:00:00');
@@ -439,7 +490,7 @@ function render(){
       else if(eUrg){bg=`<span class="proxima-badge urgente">EM ${dias}D</span>`;cc='urgente'}
       else{bg=`<span class="proxima-badge future">EM ${dias}D</span>`;cc=''}
       const eEnt=t.tipo==='entrada';
-      proxHTML+=`<div class="proxima-card ${cc}" onclick="window.location.href='transacoes.html?v=6'"><div class="proxima-icone" style="${eEnt?'background:var(--brand-soft);color:var(--brand);':''}">${eEnt?'💰':'📅'}</div><div class="proxima-info"><div class="proxima-desc">${t.descricao}</div><div class="proxima-data">${d.toLocaleDateString('pt-BR',{day:'numeric',month:'short'})} ${bg}</div></div><div class="proxima-valor" style="${eEnt?'color:var(--brand);':''}">${eEnt?'+':'-'}R$ ${fm(t.valor)}</div></div>`;
+      proxHTML+=`<div class="proxima-card ${cc}" onclick="window.location.href='transacoes.html?v=7'"><div class="proxima-icone" style="${eEnt?'background:var(--brand-soft);color:var(--brand);':''}">${eEnt?'💰':'📅'}</div><div class="proxima-info"><div class="proxima-desc">${t.descricao}</div><div class="proxima-data">${d.toLocaleDateString('pt-BR',{day:'numeric',month:'short'})} ${bg}</div></div><div class="proxima-valor" style="${eEnt?'color:var(--brand);':''}">${eEnt?'+':'-'}R$ ${fm(t.valor)}</div></div>`;
     });
   }
   
@@ -451,6 +502,7 @@ function render(){
   else insight=`Tá indo bem! Próximo: <strong>${proxN.nome}</strong>. 🦔`;
   
   document.getElementById('container').innerHTML=`
+    ${pwaBannerHTML}
     <div class="saudacao">
       <div class="saudacao-titulo">${saud}, ${pnome}!</div>
       <div class="saudacao-sub">${stats.contas} conta${stats.contas===1?'':'s'} + ${stats.cartoes} cartões • ${stats.dividas} dívida${stats.dividas===1?'':'s'}</div>
@@ -487,7 +539,7 @@ function render(){
     <div class="tatu-card"><div class="tatu-emoji">🦔</div><div class="tatu-content"><div class="tatu-titulo">Tatu observou...</div><div class="tatu-texto">${insight}</div></div></div>
     <div class="atalhos-grid">
       <div class="atalho-card" id="tut-vida" onclick="window.location.href='contas.html?v=3'"><div class="atalho-emoji">🏦</div><div class="atalho-titulo">Vida Financeira</div><div class="atalho-sub">Contas, cartões, fixas</div><div class="atalho-valor brand">R$ ${fm(stats.patrimonio)}</div></div>
-      <div class="atalho-card" id="tut-trans" onclick="window.location.href='transacoes.html?v=6'"><div class="atalho-emoji">💸</div><div class="atalho-titulo">Transações</div><div class="atalho-sub">Entradas e saídas</div><div class="atalho-valor ${stats.saldoMes>=0?'brand':'danger'}">${stats.saldoMes>=0?'+':''}R$ ${fm(stats.saldoMes)}</div></div>
+      <div class="atalho-card" id="tut-trans" onclick="window.location.href='transacoes.html?v=7'"><div class="atalho-emoji">💸</div><div class="atalho-titulo">Transações</div><div class="atalho-sub">Entradas e saídas</div><div class="atalho-valor ${stats.saldoMes>=0?'brand':'danger'}">${stats.saldoMes>=0?'+':''}R$ ${fm(stats.saldoMes)}</div></div>
       <div class="atalho-card" id="tut-divs" onclick="window.location.href='dividas.html?v=3'"><div class="atalho-emoji">💳</div><div class="atalho-titulo">Dívidas</div><div class="atalho-sub">Negociador IA</div><div class="atalho-valor ${stats.totalDividas>0?'danger':'brand'}">R$ ${fm(stats.totalDividas)}</div></div>
       <div class="atalho-card" id="tut-metas" onclick="window.location.href='metas.html?v=1'"><div class="atalho-emoji">🎯</div><div class="atalho-titulo">Metas</div><div class="atalho-sub">Reserva e objetivos</div></div>
       <div class="atalho-card" onclick="window.location.href='dashboard.html?v=1'"><div class="atalho-emoji">📊</div><div class="atalho-titulo">Dashboard</div><div class="atalho-sub">Gráficos</div></div>
@@ -495,17 +547,36 @@ function render(){
     </div>
   `;
   
-  // 🆕 v2.4: aplica pisca + scroll no item novo
   if(ultimoItemNovoId){
     setTimeout(()=>{
       const el=document.querySelector(`[data-item-id="${ultimoItemNovoId}"]`);
-      if(el){
-        el.scrollIntoView({behavior:'smooth',block:'center'});
-      }
+      if(el){el.scrollIntoView({behavior:'smooth',block:'center'})}
       setTimeout(()=>{ultimoItemNovoId=null},3800);
     },200);
   }
 }
+
+window.fecharBannerPWA=function(){
+  localStorage.setItem('pwa_banner_dismissed','1');
+  pwaBannerFechado=true;
+  render();
+};
+
+window.mostrarInstalarPWA=function(){
+  fecharMenu();
+  setTimeout(()=>{
+    const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
+    if(pwaInstalado){
+      alert('🦔 guardaí já tá instalado no seu celular! ✅\n\nVocê tá usando ele como app.');
+      return;
+    }
+    if(isIOS){
+      alert('📱 INSTALAR NO IPHONE\n\n1. Toca no botão Compartilhar (□ com ↑)\n2. Role pra baixo\n3. Toca em "Adicionar à Tela de Início"\n4. Confirma\n\n🦔 Pronto! Vai aparecer um ícone do guardaí na tela do iPhone.\n\nBenefícios:\n• Abre rapidão\n• Microfone não pede permissão toda hora\n• Funciona offline (parcial)\n• Tela cheia');
+    }else{
+      alert('📱 INSTALAR\n\nNo Chrome/Edge: menu (⋮) → "Instalar app"\nNo navegador: deve aparecer banner "Instalar"\n\n🦔 Vira app de verdade na sua tela inicial!');
+    }
+  },300);
+};
 
 window.abrirAudio=function(){
   if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){alert('🦔 Seu navegador não suporta áudio.\n\nUse Safari (iPhone) ou Chrome.');return}
@@ -520,7 +591,7 @@ function renderAudio(){
     <button class="mic-btn ${isRecording?'recording':''}" id="mic-btn" onclick="toggleRec()">${isRecording?'⏹️':'🎤'}</button>
     <div class="mic-status ${isRecording?'recording':''}">${isRecording?'🔴 Ouvindo... fale agora':(textoTranscrito?'✅ Pronto!':'Toque pra falar')}</div>
     <div class="transcricao-box ${textoTranscrito?'':'placeholder'}" id="transcricao-box">${textoTranscrito||'O que você falar vai aparecer aqui...'}</div>
-    ${!textoTranscrito?`<div class="exemplos"><div class="exemplos-titulo">💡 Exemplos</div><div class="exemplo-item">paguei 15 reais no espetinho no Santander</div><div class="exemplo-item">recebi 300 do amigo João em dinheiro</div><div class="exemplo-item">gastei 80 reais de Uber no cartão Nubank</div></div>`:''}
+    ${!textoTranscrito?`<div class="exemplos"><div class="exemplos-titulo">💡 Exemplos</div><div class="exemplo-item">paguei 15 reais no espetinho no Santander</div><div class="exemplo-item">bolsa 600 em 6x no Nubank</div><div class="exemplo-item">recebi 300 do amigo João em dinheiro</div></div>`:''}
     <div class="audio-acoes">
       <button class="btn btn-secondary" onclick="fecharAudio()">Cancelar</button>
       <button class="btn btn-ia" onclick="processarAudio()" ${!textoTranscrito||isRecording?'disabled':''}>🦔 IA interpretar</button>
@@ -582,6 +653,14 @@ function renderConfirmacao(){
     const cm=p.conta_mencionada.toLowerCase();
     cs=contas.find(c=>c.nome.toLowerCase().includes(cm)||c.banco?.toLowerCase().includes(cm)||cm.includes(c.nome.toLowerCase().split(' ')[0]));
   }
+  // 🆕 v2.5: redireciona pra transacoes se for parcelado/financiamento (complexo, melhor lá)
+  if(p.parcelado||p.tipo_compra==='financiamento'){
+    alert('🦔 Detectei parcelamento/financiamento!\n\nVou te levar pra tela de Transações onde dá pra revisar tudo direitinho.');
+    fecharAudio();
+    sessionStorage.setItem('audio_pendente',JSON.stringify(p));
+    window.location.href='transacoes.html?v=7';
+    return;
+  }
   document.getElementById('audio-modal-content').innerHTML=`
     <div class="audio-titulo">Confirma a transação?</div>
     <div class="audio-sub">Tatu entendeu o que falou. Confere antes de salvar:</div>
@@ -592,6 +671,7 @@ function renderConfirmacao(){
       <div class="conf-row"><div class="conf-label">Descrição</div><div class="conf-valor" style="font-size:14px;">${p.descricao}</div></div>
       <div class="conf-row"><div class="conf-label">Categoria</div><div class="conf-valor" style="font-size:14px;">${cat.e} ${cat.n}</div></div>
       ${cs?`<div class="conf-row"><div class="conf-label">Conta</div><div class="conf-valor" style="font-size:14px;">${cs.icone} ${cs.nome}</div></div>`:''}
+      ${p.data_mencionada?`<div class="conf-row"><div class="conf-label">Data</div><div class="conf-valor" style="font-size:14px;">${new Date(p.data_mencionada+'T12:00:00').toLocaleDateString('pt-BR')}</div></div>`:''}
     </div>
     <div style="margin-top:20px;display:flex;gap:10px;">
       <button class="btn btn-secondary" onclick="renderAudio()">🔄 Falar de novo</button>
@@ -602,9 +682,12 @@ function renderConfirmacao(){
 window.salvarAudio=async function(contaId){
   const p=propostaAudio;
   try{
-    const{data,error}=await supabase.from('transacoes').insert({user_id:usuario.id,valor:p.valor,descricao:p.descricao,tipo:p.tipo,categoria:p.categoria_sugerida||'outro',data:new Date().toISOString().split('T')[0],conta_id:contaId||null,status:'realizada'}).select().single();
+    const data=p.data_mencionada||new Date().toISOString().split('T')[0];
+    const hoje=new Date().toISOString().split('T')[0];
+    const status=data>hoje?'prevista':'realizada';
+    const{data:novo,error}=await supabase.from('transacoes').insert({user_id:usuario.id,valor:p.valor,descricao:p.descricao,tipo:p.tipo,categoria:p.categoria_sugerida||'outro',data,conta_id:contaId||null,status}).select().single();
     if(error)throw error;
-    ultimoItemNovoId=data.id; // 🆕 marca pra piscar
+    ultimoItemNovoId=novo.id;
     await darXP(15,'audio_transacao','Áudio');
     mostrarToast(`✅ ${p.descricao} • ${p.tipo==='entrada'?'+':'-'}R$ ${fm(p.valor)}`);
     fecharAudio();
@@ -627,7 +710,7 @@ const PASSOS_TUT=[
   {target:'tut-trans',titulo:'Transações',texto:'Histórico completo. Filtra por entrada/saída/vencidas. 💸'},
   {target:'tut-divs',titulo:'Dívidas + Negociador',texto:'<strong>Negociador IA</strong> pra fazer acordos com bancos. Modelo Serasa Limpa Nome! 💪'},
   {target:'tut-metas',titulo:'Metas',texto:'Reserva, sonhos, objetivos. 🎯'},
-  {target:'btn-menu',titulo:'Menu',texto:'Acessa <strong>tudo</strong>: chat Tatu, dashboard, perfil, logout. ⚙️'}
+  {target:'btn-menu',titulo:'Menu',texto:'Acessa <strong>tudo</strong>: chat Tatu, dashboard, perfil, instalar app no celular, logout. ⚙️'}
 ];
 let passoT=0;
 
