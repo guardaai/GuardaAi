@@ -178,15 +178,12 @@ async function montarContexto(){
     const saidasMes=realizadasMes.filter(t=>t.tipo==='saida').reduce((a,t)=>a+Number(t.valor),0);
     const vencidas=tm.filter(t=>t.status==='prevista'&&t.tipo==='saida'&&t.data<hoje);
     
-    // gastos do mês por categoria (só saídas realizadas)
     const porCat={};
     realizadasMes.filter(t=>t.tipo==='saida').forEach(t=>{const k=t.categoria||'outro';porCat[k]=(porCat[k]||0)+Number(t.valor||0)});
     const catOrdenada=Object.entries(porCat).sort((a,b)=>b[1]-a[1]);
     
-    // últimas transações detalhadas (até 25)
     const ultimas=tm.slice(0,25);
     
-    // dívidas de juros (agiota)
     const agiotas=di.filter(x=>x.juros_rola===true&&Number(x.juros_mensal)>0);
     const totalJurosMes=agiotas.reduce((a,x)=>a+Number(x.valor_atual)*Number(x.juros_mensal)/100,0);
     
@@ -304,13 +301,61 @@ function formatarTexto(t){
 }
 
 // ===== VOZ: Tatu lê em voz alta =====
-function limparPraFala(t){
-  return t.replace(/\*\*/g,'').replace(/[*_#`]/g,'').replace(/🦔|🔴|⚠️|✅|💪|🎯|💰|📊|💸|📅|💡|🎉|🚀/g,'').trim();
+// converte "R$ 5.000,00" / "5000" em fala por extenso: "5 mil reais"
+function numeroPorExtenso(n){
+  n=Math.round(n);
+  if(n===0)return 'zero';
+  if(n<0)return 'menos '+numeroPorExtenso(-n);
+  const u=['','um','dois','três','quatro','cinco','seis','sete','oito','nove','dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
+  const dez=['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta','oitenta','noventa'];
+  const cem=['','cento','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'];
+  function ate999(x){
+    if(x===0)return '';
+    if(x===100)return 'cem';
+    let s='';
+    const c=Math.floor(x/100),resto=x%100;
+    if(c>0)s+=cem[c];
+    if(resto>0){
+      if(s)s+=' e ';
+      if(resto<20)s+=u[resto];
+      else{const dd=Math.floor(resto/10),uu=resto%10;s+=dez[dd];if(uu>0)s+=' e '+u[uu]}
+    }
+    return s;
+  }
+  let partes=[];
+  const bilhao=Math.floor(n/1000000000);n=n%1000000000;
+  const milhao=Math.floor(n/1000000);n=n%1000000;
+  const mil=Math.floor(n/1000);n=n%1000;
+  const resto=n;
+  if(bilhao>0)partes.push(ate999(bilhao)+(bilhao===1?' bilhão':' bilhões'));
+  if(milhao>0)partes.push(ate999(milhao)+(milhao===1?' milhão':' milhões'));
+  if(mil>0)partes.push(mil===1?'mil':ate999(mil)+' mil');
+  if(resto>0)partes.push(ate999(resto));
+  return partes.join(' e ');
+}
+function prepararFala(t){
+  let s=t;
+  // troca valores em reais por extenso: "R$ 5.000,00" -> "5 mil reais"
+  s=s.replace(/R\$\s?([\d.]+)(?:,(\d{2}))?/g,(m,inteiro,cents)=>{
+    const num=parseInt(inteiro.replace(/\./g,''))||0;
+    let txt=numeroPorExtenso(num)+(num===1?' real':' reais');
+    if(cents&&parseInt(cents)>0)txt+=' e '+numeroPorExtenso(parseInt(cents))+(parseInt(cents)===1?' centavo':' centavos');
+    return txt;
+  });
+  // troca % por "por cento"
+  s=s.replace(/(\d+)\s?%/g,'$1 por cento');
+  // remove markdown
+  s=s.replace(/\*\*/g,'').replace(/[*_#`]/g,'');
+  // remove TODOS os emojis e símbolos pictográficos
+  s=s.replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\u{FE0F}\u{200D}]/gu,'');
+  // limpa espaços duplicados
+  s=s.replace(/\s{2,}/g,' ').trim();
+  return s;
 }
 function falar(texto){
   if(!('speechSynthesis' in window))return;
   window.speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(limparPraFala(texto));
+  const u=new SpeechSynthesisUtterance(prepararFala(texto));
   u.lang='pt-BR';
   u.rate=1.05;
   u.pitch=1.0;
@@ -325,7 +370,6 @@ window.toggleVoz=function(){
   b.textContent=vozLigada?'🔊':'🔇';
   b.classList.toggle('ativo',vozLigada);
   if(!vozLigada&&'speechSynthesis' in window)window.speechSynthesis.cancel();
-  // dispara carregamento das vozes (alguns navegadores precisam)
   if(vozLigada&&'speechSynthesis' in window)window.speechSynthesis.getVoices();
 };
 
@@ -348,7 +392,6 @@ window.enviar=async function(){
   document.getElementById('sugestoes-area').innerHTML='';
   
   try{
-    // histórico nativo pro Tatu (últimas trocas, sem a pergunta atual e sem loading)
     const historico=mensagens
       .filter(m=>!m.loading)
       .slice(-11,-1)
